@@ -1,106 +1,27 @@
 package com.censoredsoftware.demigods.greek.ability.passive;
 
-import java.util.List;
-
-import org.bukkit.Material;
+import com.censoredsoftware.demigods.engine.mythos.Deity;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.censoredsoftware.demigods.greek.ability.GreekAbility;
+import com.google.common.collect.Lists;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.scheduler.BukkitRunnable;
 
-import com.censoredsoftware.demigods.engine.data.Skill;
-import com.censoredsoftware.demigods.engine.mythos.Ability;
-import com.censoredsoftware.demigods.engine.mythos.Deity;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.google.common.collect.Lists;
+import java.util.List;
 
-public class NoDamage implements Ability
+public class NoDamage extends GreekAbility.Passive
 {
-	private final static String name = "No Damage", command = null;
-	private final static int cost = 0, delay = 0, repeat = 0;
+	private final static String name = "No Damage";
+	private final static int repeat = 0;
 	private final static List<String> details = Lists.newArrayList("Take no corruption, give no corruption.");
-	private String deity, permission;
-	private final static Skill.Type type = Skill.Type.PASSIVE;
 
-	public NoDamage(String deity, String permission)
+	public NoDamage(final String deity)
 	{
-		this.deity = deity;
-		this.permission = permission;
-	}
-
-	@Override
-	public String getDeity()
-	{
-		return deity;
-	}
-
-	@Override
-	public String getName()
-	{
-		return name;
-	}
-
-	@Override
-	public String getCommand()
-	{
-		return command;
-	}
-
-	@Override
-	public String getPermission()
-	{
-		return permission;
-	}
-
-	@Override
-	public int getCost()
-	{
-		return cost;
-	}
-
-	@Override
-	public int getDelay()
-	{
-		return delay;
-	}
-
-	@Override
-	public int getRepeat()
-	{
-		return repeat;
-	}
-
-	@Override
-	public List<String> getDetails()
-	{
-		return details;
-	}
-
-	@Override
-	public Skill.Type getType()
-	{
-		return type;
-	}
-
-	@Override
-	public Material getWeapon()
-	{
-		return null;
-	}
-
-	@Override
-	public boolean hasWeapon()
-	{
-		return getWeapon() != null;
-	}
-
-	@Override
-	public Listener getListener()
-	{
-		return new Listener()
+		super(name, deity, repeat, details, new Listener()
 		{
 			@EventHandler(priority = EventPriority.HIGHEST)
 			public void onEntityDamange(EntityDamageEvent damageEvent)
@@ -129,12 +50,6 @@ public class NoDamage implements Ability
 					damageEvent.setCancelled(true);
 				}
 			}
-		};
-	}
-
-	@Override
-	public BukkitRunnable getRunnable()
-	{
-		return null;
+		}, null);
 	}
 }

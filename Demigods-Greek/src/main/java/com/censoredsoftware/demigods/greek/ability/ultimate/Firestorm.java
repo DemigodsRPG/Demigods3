@@ -1,218 +1,107 @@
 package com.censoredsoftware.demigods.greek.ability.ultimate;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Vector;
-
 import com.censoredsoftware.demigods.engine.DemigodsPlugin;
 import com.censoredsoftware.demigods.engine.data.Battle;
 import com.censoredsoftware.demigods.engine.data.DCharacter;
 import com.censoredsoftware.demigods.engine.data.DPlayer;
 import com.censoredsoftware.demigods.engine.data.Skill;
-import com.censoredsoftware.demigods.engine.mythos.Ability;
-import com.censoredsoftware.demigods.engine.mythos.Deity;
 import com.censoredsoftware.demigods.engine.util.Abilities;
-import com.censoredsoftware.demigods.engine.util.Zones;
+import com.censoredsoftware.demigods.greek.ability.GreekAbility;
+import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
-public class Firestorm implements Ability
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+public class Firestorm extends GreekAbility
 {
 	private final static String name = "Firestorm", command = "firestorm";
 	private final static int cost = 5500, delay = 15, repeat = 0;
 	private final static List<String> details = Lists.newArrayList("Rain fireballs from the sky.");
-	private String deity, permission;
 	private final static Skill.Type type = Skill.Type.ULTIMATE;
 
-	public Firestorm(String deity, String permission)
+	public Firestorm(String deity)
 	{
-		this.deity = deity;
-		this.permission = permission;
-	}
-
-	@Override
-	public String getDeity()
-	{
-		return deity;
-	}
-
-	@Override
-	public String getName()
-	{
-		return name;
-	}
-
-	@Override
-	public String getCommand()
-	{
-		return command;
-	}
-
-	@Override
-	public String getPermission()
-	{
-		return permission;
-	}
-
-	@Override
-	public int getCost()
-	{
-		return cost;
-	}
-
-	@Override
-	public int getDelay()
-	{
-		return delay;
-	}
-
-	@Override
-	public int getRepeat()
-	{
-		return repeat;
-	}
-
-	@Override
-	public List<String> getDetails()
-	{
-		return details;
-	}
-
-	@Override
-	public Skill.Type getType()
-	{
-		return type;
-	}
-
-	@Override
-	public Material getWeapon()
-	{
-		return null;
-	}
-
-	@Override
-	public boolean hasWeapon()
-	{
-		return getWeapon() != null;
-	}
-
-	@Override
-	public Listener getListener()
-	{
-		final Firestorm instance = this;
-
-		return new Listener()
+		super(name, command, deity, cost, delay, repeat, details, type, null, new Predicate<Player>()
 		{
-			@EventHandler(priority = EventPriority.HIGH)
-			public void onPlayerInteract(PlayerInteractEvent interactEvent)
+			@Override
+			public boolean apply(final Player player)
 			{
-				if(Zones.inNoDemigodsZone(interactEvent.getPlayer().getLocation())) return;
-
-				if(!Abilities.isLeftClick(interactEvent)) return;
-
-				// Set variables
-				Player player = interactEvent.getPlayer();
+				// Define variables
 				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
-				if(!Deity.Util.canUseDeitySilent(character, deity)) return;
+				if(!Abilities.preProcessAbility(player, cost)) return false;
 
-				if(player.getItemInHand() != null && character.getMeta().checkBound(name, player.getItemInHand().getType()))
+				// Define variables
+				int ultimateSkillLevel = character.getMeta().getSkill(Skill.Type.ULTIMATE).getLevel();
+				int total = 3 * (int) Math.pow(ultimateSkillLevel, 0.25);
+				int radius = (int) Math.log10(10 * ultimateSkillLevel) * 25;
+
+				List<LivingEntity> entities = new ArrayList<>();
+
+				for(final Entity entity : player.getNearbyEntities(radius, radius, radius))
 				{
-					if(!DCharacter.Util.isCooledDown(character, name, false)) return;
+					// TODO: Abilities should work on mobs/animals too, just obviously not start a battle. Also simplify this (maybe with a util method?).
 
-					// Process the cost and cooldown
-					Abilities.processAbility(character, instance);
-
-					// Use the ability
-					Util.firestorm(player);
-				}
-			}
-		};
-	}
-
-	@Override
-	public BukkitRunnable getRunnable()
-	{
-		return null;
-	}
-
-	public static class Util
-	{
-		// The actual ability command
-		public static void firestorm(final Player player)
-		{
-			// Define variables
-			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
-
-			if(!Abilities.doAbilityPreProcess(player, cost)) return;
-
-            // Define variables
-			int ultimateSkillLevel = character.getMeta().getSkill(Skill.Type.ULTIMATE).getLevel();
-			int total = 3 * (int) Math.pow(ultimateSkillLevel, 0.25);
-			int radius = (int) Math.log10(10 * ultimateSkillLevel) * 25;
-
-			ArrayList<LivingEntity> entities = new ArrayList<>();
-
-			for(final Entity entity : player.getNearbyEntities(radius, radius, radius))
-			{
-				// TODO: Abilities should work on mobs/animals too, just obviously not start a battle. Also simplify this (maybe with a util method?).
-
-				// Validate them first
-				if(!(entity instanceof LivingEntity)) continue;
-				if(entity instanceof Player)
-				{
-					DCharacter opponent = DPlayer.Util.getPlayer((Player) entity).getCurrent();
-					if(opponent != null && DCharacter.Util.areAllied(character, opponent)) continue;
-				}
-				if(!Battle.Util.canParticipate(entity) || !Battle.Util.canTarget(Battle.Util.defineParticipant(entity))) continue;
-
-				entities.add((LivingEntity) entity);
-			}
-
-            final ArrayList<LivingEntity> targets = new ArrayList<>(entities);
-
-			// Now shoot them
-			for(int i = 0; i <= total; i++)
-			{
-				Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.plugin(), new BukkitRunnable()
-                {
-					@Override
-					public void run()
+					// Validate them first
+					if(!(entity instanceof LivingEntity)) continue;
+					if(entity instanceof Player)
 					{
-						for(final LivingEntity target : targets)
-						{
-							// Skip if they died, reduces lag
-							if(target.isDead()) continue;
-
-							// Shoot 'em up!
-							Location ground = target.getLocation();
-							Location air = new Location(ground.getWorld(), ground.getX(), ground.getY() + 20, ground.getZ());
-
-							org.bukkit.entity.Fireball fireball = (org.bukkit.entity.Fireball) target.getWorld().spawnEntity(air, EntityType.FIREBALL);
-							fireball.setShooter(player);
-							fireball.getDirection().zero();
-							fireball.setIsIncendiary(true);
-							fireball.setBounce(false);
-							fireball.setYield(0F);
-							Vector path = ground.toVector().subtract(air.toVector());
-							fireball.setDirection(path.multiply(2));
-							fireball.setVelocity(fireball.getDirection().multiply(3));
-						}
+						DCharacter opponent = DPlayer.Util.getPlayer((Player) entity).getCurrent();
+						if(opponent != null && DCharacter.Util.areAllied(character, opponent)) continue;
 					}
-				}, i * 20);
+					if(Battle.Util.canParticipate(entity) && !Battle.Util.canTarget(Battle.Util.defineParticipant(entity))) continue;
+
+					entities.add((LivingEntity) entity);
+				}
+
+				final List<LivingEntity> targets = Lists.newArrayList(entities);
+
+				// Now shoot them
+				for(int i = 0; i <= total; i++)
+					shootFireball(player, targets, i);
+
+				return true;
 			}
-		}
+		}, null, null);
+	}
+
+	public static void shootFireball(final Player shooter, final Collection<LivingEntity> targets, int delay)
+	{
+		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.plugin(), new BukkitRunnable()
+		{
+			@Override
+			public void run()
+			{
+				for(final LivingEntity target : targets)
+				{
+					// Skip if they died, reduces lag
+					if(target.isDead()) continue;
+
+					// Shoot 'em up!
+					Location ground = target.getLocation();
+					Location air = new Location(ground.getWorld(), ground.getX(), ground.getY() + 20, ground.getZ());
+
+					org.bukkit.entity.Fireball fireball = (org.bukkit.entity.Fireball) target.getWorld().spawnEntity(air, EntityType.FIREBALL);
+					fireball.setShooter(shooter);
+					fireball.getDirection().zero();
+					fireball.setIsIncendiary(true);
+					fireball.setBounce(false);
+					fireball.setYield(0F);
+					Vector path = ground.toVector().subtract(air.toVector());
+					fireball.setDirection(path.multiply(2));
+					fireball.setVelocity(fireball.getDirection().multiply(3));
+				}
+			}
+		}, delay * 20);
 	}
 }

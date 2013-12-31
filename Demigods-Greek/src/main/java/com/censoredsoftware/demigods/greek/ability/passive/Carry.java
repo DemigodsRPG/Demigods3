@@ -1,7 +1,11 @@
-package com.censoredsoftware.demigods.greek.ability.support;
+package com.censoredsoftware.demigods.greek.ability.passive;
 
-import java.util.List;
-
+import com.censoredsoftware.demigods.engine.data.DCharacter;
+import com.censoredsoftware.demigods.engine.data.DPlayer;
+import com.censoredsoftware.demigods.engine.mythos.Deity;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.censoredsoftware.demigods.greek.ability.GreekAbility;
+import com.google.common.collect.Lists;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -9,102 +13,18 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
-import org.bukkit.scheduler.BukkitRunnable;
 
-import com.censoredsoftware.demigods.engine.data.DCharacter;
-import com.censoredsoftware.demigods.engine.data.DPlayer;
-import com.censoredsoftware.demigods.engine.data.Skill;
-import com.censoredsoftware.demigods.engine.mythos.Ability;
-import com.censoredsoftware.demigods.engine.mythos.Deity;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.google.common.collect.Lists;
+import java.util.List;
 
-public class Carry implements Ability
+public class Carry extends GreekAbility.Passive
 {
-	private final static String name = "Carry", command = null;
-	private final static int cost = 0, delay = 0, repeat = 20;
+	private final static String name = "Carry";
+	private final static int repeat = 20;
 	private final static List<String> details = Lists.newArrayList("Hold a leash to carry others on your shoulders.");
-	private String deity, permission;
-	private boolean needsLead;
-	private final static Skill.Type type = Skill.Type.SUPPORT;
 
-	public Carry(final String deity, String permission, boolean needsLead)
+	public Carry(final String deity, final boolean needsLead)
 	{
-		this.deity = deity;
-		this.permission = permission;
-		this.needsLead = needsLead;
-	}
-
-	@Override
-	public String getDeity()
-	{
-		return deity;
-	}
-
-	@Override
-	public String getName()
-	{
-		return name;
-	}
-
-	@Override
-	public String getCommand()
-	{
-		return command;
-	}
-
-	@Override
-	public String getPermission()
-	{
-		return permission;
-	}
-
-	@Override
-	public int getCost()
-	{
-		return cost;
-	}
-
-	@Override
-	public int getDelay()
-	{
-		return delay;
-	}
-
-	@Override
-	public int getRepeat()
-	{
-		return repeat;
-	}
-
-	@Override
-	public List<String> getDetails()
-	{
-		return details;
-	}
-
-	@Override
-	public Skill.Type getType()
-	{
-		return type;
-	}
-
-	@Override
-	public Material getWeapon()
-	{
-		return null;
-	}
-
-	@Override
-	public boolean hasWeapon()
-	{
-		return getWeapon() != null;
-	}
-
-	@Override
-	public Listener getListener()
-	{
-		return new Listener()
+		super(name, deity, repeat, details, new Listener()
 		{
 			@EventHandler(priority = EventPriority.MONITOR)
 			private void onPlayerInteractEntityEvent(PlayerInteractEntityEvent event)
@@ -134,12 +54,6 @@ public class Carry implements Ability
 				if(needsLead && player.getInventory().getItem(event.getNewSlot()) != null && !player.getInventory().getItem(event.getNewSlot()).getType().equals(Material.LEASH)) player.getPassenger().leaveVehicle();
 				else if(player.getInventory().getItem(event.getNewSlot()) != null) player.getPassenger().leaveVehicle();
 			}
-		};
-	}
-
-	@Override
-	public BukkitRunnable getRunnable()
-	{
-		return null;
+		}, null);
 	}
 }

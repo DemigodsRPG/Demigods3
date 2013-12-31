@@ -1,110 +1,28 @@
 package com.censoredsoftware.demigods.greek.ability.passive;
 
-import java.util.List;
-
+import com.censoredsoftware.demigods.engine.mythos.Deity;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.censoredsoftware.demigods.greek.ability.GreekAbility;
+import com.google.common.collect.Lists;
 import org.bukkit.Material;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-import com.censoredsoftware.demigods.engine.data.DCharacter;
-import com.censoredsoftware.demigods.engine.data.Skill;
-import com.censoredsoftware.demigods.engine.mythos.Ability;
-import com.censoredsoftware.demigods.engine.mythos.Deity;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.google.common.collect.Lists;
+import java.util.List;
 
-public class Swim implements Ability
+public class Swim extends GreekAbility.Passive
 {
-	private final static String name = "Swim", command = null;
-	private final static int cost = 0, delay = 0, repeat = 20;
+	private final static String name = "Swim";
+	private final static int repeat = 20;
 	private final static List<String> details = Lists.newArrayList("Crouch while in water to swim quickly.");
-	private String deity, permission;
-	private final static Skill.Type type = Skill.Type.PASSIVE;
 
-	public Swim(final String deity, String permission)
+	public Swim(final String deity)
 	{
-		this.deity = deity;
-		this.permission = permission;
-	}
-
-	@Override
-	public String getDeity()
-	{
-		return deity;
-	}
-
-	@Override
-	public String getName()
-	{
-		return name;
-	}
-
-	@Override
-	public String getCommand()
-	{
-		return command;
-	}
-
-	@Override
-	public String getPermission()
-	{
-		return permission;
-	}
-
-	@Override
-	public int getCost()
-	{
-		return cost;
-	}
-
-	@Override
-	public int getDelay()
-	{
-		return delay;
-	}
-
-	@Override
-	public int getRepeat()
-	{
-		return repeat;
-	}
-
-	@Override
-	public List<String> getDetails()
-	{
-		return details;
-	}
-
-	@Override
-	public Skill.Type getType()
-	{
-		return type;
-	}
-
-	@Override
-	public Material getWeapon()
-	{
-		return null;
-	}
-
-	@Override
-	public boolean hasWeapon()
-	{
-		return getWeapon() != null;
-	}
-
-	@Override
-	public Listener getListener()
-	{
-		return new Listener()
+		super(name, deity, repeat, details, new Listener()
 		{
 			@EventHandler(priority = EventPriority.HIGHEST)
 			private void onPlayerMoveEvent(PlayerMoveEvent event)
@@ -118,36 +36,10 @@ public class Swim implements Ability
 				Material locationMaterial = player.getLocation().getBlock().getType();
 				if((locationMaterial.equals(Material.STATIONARY_WATER) || locationMaterial.equals(Material.WATER)) && player.isSneaking())
 				{
-					player.removePotionEffect(PotionEffectType.SLOW);
 					Vector victor = (player.getPassenger() != null && player.getLocation().getDirection().getY() > 0 ? player.getLocation().getDirection().clone().setY(0) : player.getLocation().getDirection()).normalize().multiply(1.3D);
 					player.setVelocity(new Vector(victor.getX(), victor.getY(), victor.getZ()));
 				}
 			}
-		};
-	}
-
-	@Override
-	public BukkitRunnable getRunnable()
-	{
-		return new BukkitRunnable()
-		{
-			@Override
-			public void run()
-			{
-				for(DCharacter character : DCharacter.Util.getOnlineCharactersWithAbility(name))
-				{
-					Player player = character.getOfflinePlayer().getPlayer();
-					if(!Zones.inNoDemigodsZone(player.getLocation())) potionEffect(player);
-				}
-			}
-
-			private void potionEffect(LivingEntity entity)
-			{
-				Material locationMaterial = entity.getLocation().getBlock().getType();
-				if(locationMaterial.equals(Material.STATIONARY_WATER) || locationMaterial.equals(Material.WATER)) return;
-				entity.removePotionEffect(PotionEffectType.SLOW);
-				entity.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 120, 1, false));
-			}
-		};
+		}, null);
 	}
 }

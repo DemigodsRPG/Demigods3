@@ -1,7 +1,18 @@
 package com.censoredsoftware.demigods.engine.util;
 
-import java.util.*;
-
+import com.censoredsoftware.censoredlib.util.Strings;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.data.Battle;
+import com.censoredsoftware.demigods.engine.data.DCharacter;
+import com.censoredsoftware.demigods.engine.data.DPet;
+import com.censoredsoftware.demigods.engine.data.DPlayer;
+import com.censoredsoftware.demigods.engine.language.English;
+import com.censoredsoftware.demigods.engine.mythos.Ability;
+import com.censoredsoftware.demigods.engine.mythos.Deity;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -16,19 +27,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockIterator;
 
-import com.censoredsoftware.censoredlib.util.Strings;
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.data.Battle;
-import com.censoredsoftware.demigods.engine.data.DCharacter;
-import com.censoredsoftware.demigods.engine.data.DPet;
-import com.censoredsoftware.demigods.engine.data.DPlayer;
-import com.censoredsoftware.demigods.engine.language.English;
-import com.censoredsoftware.demigods.engine.mythos.Ability;
-import com.censoredsoftware.demigods.engine.mythos.Deity;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
+import java.util.*;
 
 public class Abilities
 {
@@ -41,13 +40,19 @@ public class Abilities
 	 * @param character the character to manipulate.
 	 * @param ability the ability whose details to use.
 	 */
-	public static void processAbility(DCharacter character, Ability ability)
+	public static void postProcessAbility(DCharacter character, Ability ability)
 	{
 		DCharacter.Util.setCoolDown(character, ability.getName(), System.currentTimeMillis() + ability.getDelay());
 		character.getMeta().subtractFavor(ability.getCost());
 	}
 
-	public static boolean doAbilityPreProcess(Player player, int cost)
+	public static void activateCooldown(DCharacter character, Ability ability)
+	{
+		int cooldownMultiplier = (int) (ability.getDelay() * ((double) character.getMeta().getAscensions() / 100));
+		DCharacter.Util.setCoolDown(character, ability.getName(), System.currentTimeMillis() + cooldownMultiplier * 1000);
+	}
+
+	public static boolean preProcessAbility(Player player, int cost)
 	{
 		DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
@@ -67,18 +72,18 @@ public class Abilities
 	/**
 	 * Returns true if the ability for <code>player</code>, called <code>name</code>,
 	 * with a cost of <code>cost</code>, that is Type <code>type</code>, that
-	 * is doTargeting the LivingEntity <code>target</code>, has passed all pre-process tests.
+	 * is target the LivingEntity <code>target</code>, has passed all pre-process tests.
 	 * 
 	 * @param player the Player doing the ability
 	 * @param target the LivingEntity being targeted
 	 * @param cost the cost (in favor) of the ability
 	 * @return true/false depending on if all pre-process tests have passed
 	 */
-	public static boolean doAbilityPreProcess(Player player, LivingEntity target, int cost)
+	public static boolean preProcessAbility(Player player, LivingEntity target, int cost)
 	{
 		DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
-		if(doAbilityPreProcess(player, cost))
+		if(preProcessAbility(player, cost))
 		{
 			if(target == null)
 			{
@@ -105,13 +110,13 @@ public class Abilities
 		return false;
 	}
 
-	public static Set<LivingEntity> doAbilityPreProcess(Player player, Collection<Entity> targets, int cost)
+	public static Set<LivingEntity> preProcessAbility(Player player, Collection<Entity> targets, int cost)
 	{
 		DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
 		Set<LivingEntity> set = Sets.newHashSet();
 
-		if(doAbilityPreProcess(player, cost))
+		if(preProcessAbility(player, cost))
 		{
 			for(Entity target : targets)
 			{
@@ -149,7 +154,7 @@ public class Abilities
 	}
 
 	/**
-	 * Returns the LivingEntity that <code>player</code> is doTargeting.
+	 * Returns the LivingEntity that <code>player</code> is target.
 	 * 
 	 * @param player the player
 	 * @return the targeted LivingEntity
@@ -227,7 +232,7 @@ public class Abilities
 	 * @param target the targeted LivingEntity
 	 * @return true/false depending on if the ability hits or misses
 	 */
-	public static boolean doTargeting(Player player, Location target, boolean notify)
+	public static boolean target(Player player, Location target, boolean notify)
 	{
 		DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 		Location toHit = adjustedAimLocation(character, target);
@@ -238,15 +243,15 @@ public class Abilities
 
 	/**
 	 * Returns the location that <code>character</code> is actually aiming
-	 * at when doTargeting <code>target</code>.
+	 * at when target <code>target</code>.
 	 * 
 	 * @param character the character triggering the ability callAbilityEvent
-	 * @param target the location the character is doTargeting at
+	 * @param target the location the character is target at
 	 * @return the aimed at location
 	 */
 	public static Location adjustedAimLocation(DCharacter character, Location target)
 	{
-		// TODO: This needs major work.
+		// FIXME: This needs major work.
 
 		int accuracy = character.getDeity().getAccuracy();
 		if(accuracy < 3) accuracy = 3;
@@ -317,7 +322,6 @@ public class Abilities
 			{
 				// Ensure that the deity can be used, permission allows it, etc
 				if(!Deity.Util.canUseDeity(character, ability.getDeity())) return true;
-				if(!player.hasPermission(ability.getPermission())) return true;
 
 				// Handle enabling the command
 				String abilityName = ability.getName();
@@ -340,7 +344,7 @@ public class Abilities
 					else if(ability.hasWeapon() && !itemInHand.getType().equals(ability.getWeapon()))
 					{
 						// Weapon required
-						player.sendMessage(ChatColor.RED + English.ERROR_BIND_WEAPON_REQUIRED.getLine().replace("{weapon}", Strings.beautify(ability.getWeapon().name()).toLowerCase()).replace("{ability}", abilityName));
+						player.sendMessage(ChatColor.RED + English.ERROR_BIND_WEAPON_REQUIRED.getLine().replace("{weapon}", Strings.beautify(ability.getWeapon().getItemType().name()).toLowerCase()).replace("{ability}", abilityName));
 						return true;
 					}
 

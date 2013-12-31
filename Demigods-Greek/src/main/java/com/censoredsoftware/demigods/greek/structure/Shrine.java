@@ -11,6 +11,7 @@ import com.censoredsoftware.demigods.engine.mythos.Deity;
 import com.censoredsoftware.demigods.engine.mythos.Structure;
 import com.censoredsoftware.demigods.engine.util.Admins;
 import com.censoredsoftware.demigods.engine.util.Configs;
+import com.censoredsoftware.demigods.engine.util.Messages;
 import com.censoredsoftware.demigods.engine.util.Zones;
 import com.censoredsoftware.demigods.greek.language.English;
 import com.google.common.base.Function;
@@ -159,10 +160,10 @@ public class Shrine extends GreekStructure
 							player.sendMessage(string.replace("{alliance}", character.getAlliance() + "s").replace("{deity}", character.getDeity().getName()));
 						event.setCancelled(true);
 					}
-					catch(Exception e)
+					catch(Exception errored)
 					{
 						// Creation of shrine failed...
-						e.printStackTrace();
+						Messages.logException(errored);
 					}
 				}
 			}

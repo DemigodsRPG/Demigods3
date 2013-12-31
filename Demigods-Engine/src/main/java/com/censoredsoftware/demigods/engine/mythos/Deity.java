@@ -1,6 +1,7 @@
 package com.censoredsoftware.demigods.engine.mythos;
 
 import com.censoredsoftware.censoredlib.helper.ConfigFile2;
+import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.data.DCharacter;
 import com.censoredsoftware.demigods.engine.data.DPlayer;
 import com.google.common.collect.ImmutableSet;
@@ -105,6 +106,11 @@ public interface Deity
 			if(character == null) return false;
 			if(!character.getOfflinePlayer().isOnline()) return canUseDeitySilent(character, deity);
 			Player player = character.getOfflinePlayer().getPlayer();
+			if(!player.hasPermission(Demigods.mythos().getDeity(deity).getPermission()))
+			{
+				player.sendMessage(ChatColor.RED + "You don't have permission to use " + deity + "!");
+				return false;
+			}
 			if(!character.isDeity(deity))
 			{
 				player.sendMessage(ChatColor.RED + "You haven't claimed " + deity + "! You can't do that!");
@@ -115,7 +121,7 @@ public interface Deity
 
 		public static boolean canUseDeitySilent(DCharacter character, String deity)
 		{
-			return character != null && character.isDeity(deity);
+			return !(character.getOfflinePlayer().isOnline() && !character.getOfflinePlayer().getPlayer().hasPermission(Demigods.mythos().getDeity(deity).getPermission())) && character != null && character.isDeity(deity);
 		}
 
 		public static boolean canUseDeitySilent(Player player, String deityName)

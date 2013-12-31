@@ -1,19 +1,5 @@
 package com.censoredsoftware.demigods.engine.command;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
-
-import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.PluginManager;
-
 import com.censoredsoftware.censoredlib.helper.WrappedCommand;
 import com.censoredsoftware.censoredlib.language.Symbol;
 import com.censoredsoftware.censoredlib.util.Strings;
@@ -33,6 +19,19 @@ import com.censoredsoftware.demigods.engine.util.Messages;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.PluginManager;
+
+import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
 
 public class MainCommand extends WrappedCommand
 {
@@ -206,7 +205,7 @@ public class MainCommand extends WrappedCommand
 								player.sendMessage("  " + ChatColor.GRAY + Symbol.RIGHTWARD_ARROW + " " + deity.getColor() + deity.getName() + ChatColor.GRAY + " - " + deity.getShortDescription() + (deity.getFlags().contains(Deity.Flag.DIFFICULT) ? ChatColor.RED + " (" + Symbol.CAUTION + " DIFFICULT)" : ""));
 								player.sendMessage(" ");
 
-                                // Claim items
+								// Claim items
 								if(claimItems.size() == 1)
 								{
 									player.sendMessage("   " + ChatColor.GRAY + Symbol.RIGHTWARD_ARROW_HOLLOW + " Claim Item: " + ChatColor.LIGHT_PURPLE + ChatColor.ITALIC + StringUtils.join(claimItems, ""));
@@ -219,7 +218,7 @@ public class MainCommand extends WrappedCommand
 								// Abilities
 								for(Ability ability : deity.getAbilities())
 								{
-                                    player.sendMessage(" ");
+									player.sendMessage(" ");
 									player.sendMessage("   " + ChatColor.GRAY + Symbol.RIGHTWARD_ARROW_HOLLOW + ChatColor.YELLOW + " " + ability.getName() + (ability.getCommand() != null ? ChatColor.GRAY + " (" + ChatColor.GREEN + "/" + ability.getCommand() + ChatColor.GRAY + ")" : ChatColor.GRAY) + " (" + ChatColor.GOLD + ability.getType().getName() + ChatColor.GRAY + ")" + (ability.getCost() > 0 ? ChatColor.GRAY + " (" + ChatColor.RED + ability.getCost() + ChatColor.GRAY + " favor per use)" : ""));
 									for(String detail : ability.getDetails())
 									{
@@ -229,7 +228,7 @@ public class MainCommand extends WrappedCommand
 
 								player.sendMessage(" ");
 
-					return true;
+								return true;
 							}
 							catch(Exception errored)
 							{
@@ -518,6 +517,7 @@ public class MainCommand extends WrappedCommand
 				{
 					// Nothing was edited
 					owner.sendMessage(ChatColor.RED + "Invalid value to update specified.");
+					return true;
 				}
 
 				// Message the administrator to confirm

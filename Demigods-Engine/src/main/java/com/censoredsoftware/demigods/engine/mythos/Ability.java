@@ -1,9 +1,10 @@
 package com.censoredsoftware.demigods.engine.mythos;
 
 import com.censoredsoftware.demigods.engine.data.Skill;
-import org.bukkit.Material;
+import com.google.common.base.Predicate;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
-import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.material.MaterialData;
 
 import java.util.List;
 
@@ -15,8 +16,6 @@ public interface Ability
 
 	public String getCommand();
 
-	public String getPermission();
-
 	public int getCost();
 
 	public int getDelay();
@@ -27,11 +26,13 @@ public interface Ability
 
 	public Skill.Type getType();
 
-	public Material getWeapon();
+	public MaterialData getWeapon();
 
 	public boolean hasWeapon();
 
+	public Predicate<Player> getActionPredicate();
+
 	public Listener getListener();
 
-	public BukkitRunnable getRunnable();
+	public Runnable getRunnable();
 }

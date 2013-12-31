@@ -3,160 +3,53 @@ package com.censoredsoftware.demigods.greek.ability.offense;
 import com.censoredsoftware.demigods.engine.data.DCharacter;
 import com.censoredsoftware.demigods.engine.data.DPlayer;
 import com.censoredsoftware.demigods.engine.data.Skill;
-import com.censoredsoftware.demigods.engine.mythos.Ability;
-import com.censoredsoftware.demigods.engine.mythos.Deity;
 import com.censoredsoftware.demigods.engine.util.Abilities;
-import com.censoredsoftware.demigods.engine.util.Zones;
+import com.censoredsoftware.demigods.greek.ability.GreekAbility;
+import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.material.MaterialData;
 
 import java.util.List;
 
-public class Reel implements Ability
+public class Reel extends GreekAbility
 {
 	private final static String name = "Reel", command = "reel";
 	private final static int cost = 120, delay = 1100, repeat = 0;
-	private final static Material weapon = Material.FISHING_ROD;
 	private final static List<String> details = Lists.newArrayList("Use a fishing rod for a stronger attack.");
-	private String deity, permission;
 	private final static Skill.Type type = Skill.Type.OFFENSE;
+	private final static MaterialData weapon = new MaterialData(Material.FISHING_ROD);
 
-	public Reel(String deity, String permission)
+	public Reel(String deity)
 	{
-		this.deity = deity;
-		this.permission = permission;
-	}
-
-	@Override
-	public String getDeity()
-	{
-		return deity;
-	}
-
-	@Override
-	public String getName()
-	{
-		return name;
-	}
-
-	@Override
-	public String getCommand()
-	{
-		return command;
-	}
-
-	@Override
-	public String getPermission()
-	{
-		return permission;
-	}
-
-	@Override
-	public int getCost()
-	{
-		return cost;
-	}
-
-	@Override
-	public int getDelay()
-	{
-		return delay;
-	}
-
-	@Override
-	public int getRepeat()
-	{
-		return repeat;
-	}
-
-	@Override
-	public List<String> getDetails()
-	{
-		return details;
-	}
-
-	@Override
-	public Skill.Type getType()
-	{
-		return type;
-	}
-
-	@Override
-	public Material getWeapon()
-	{
-		return weapon;
-	}
-
-	@Override
-	public boolean hasWeapon()
-	{
-		return getWeapon() != null;
-	}
-
-	@Override
-	public Listener getListener()
-	{
-		return new Listener()
+		super(name, command, deity, cost, delay, repeat, details, type, weapon, new Predicate<Player>()
 		{
-			@EventHandler(priority = EventPriority.HIGHEST)
-			public void onPlayerInteract(PlayerInteractEvent interactEvent)
-			{
-				if(Zones.inNoDemigodsZone(interactEvent.getPlayer().getLocation())) return;
 
+			@Override
+			public boolean apply(Player player)
+			{
 				// Set variables
-				Player player = interactEvent.getPlayer();
 				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+				int damage = (int) Math.ceil(0.37286 * Math.pow(character.getMeta().getAscensions() * 100, 0.371238)); // TODO
+				LivingEntity target = Abilities.autoTarget(player);
 
-				if(!Abilities.isLeftClick(interactEvent)) return;
+				if(!Abilities.preProcessAbility(player, target, cost)) return false;
 
-				if(!Deity.Util.canUseDeitySilent(character, deity)) return;
+				if(!Abilities.target(player, target.getLocation(), true)) return false;
 
-				if(player.getItemInHand() != null && character.getMeta().checkBound(name, player.getItemInHand().getType()))
+				Abilities.dealDamage(player, target, damage, EntityDamageEvent.DamageCause.CUSTOM);
+
+				if(target.getLocation().getBlock().getType() == Material.AIR)
 				{
-					if(!DCharacter.Util.isCooledDown(character, name, false)) return;
-
-					Util.reel(player);
+					target.getLocation().getBlock().setType(Material.WATER);
+					target.getLocation().getBlock().setData((byte) 0x8);
 				}
+
+				return true;
 			}
-		};
-	}
-
-	@Override
-	public BukkitRunnable getRunnable()
-	{
-		return null;
-	}
-
-	public static class Util
-	{
-		public static void reel(Player player)
-		{
-			// Set variables
-			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
-			int damage = (int) Math.ceil(0.37286 * Math.pow(character.getMeta().getAscensions() * 100, 0.371238)); // TODO
-			LivingEntity target = Abilities.autoTarget(player);
-
-			if(!Abilities.doAbilityPreProcess(player, target, cost)) return;
-			character.getMeta().subtractFavor(cost);
-			DCharacter.Util.setCoolDown(character, name, System.currentTimeMillis() + delay);
-
-			if(!Abilities.doTargeting(player, target.getLocation(), true)) return;
-
-			Abilities.dealDamage(player, target, damage, EntityDamageEvent.DamageCause.CUSTOM);
-
-			if(target.getLocation().getBlock().getType() == Material.AIR)
-			{
-				target.getLocation().getBlock().setType(Material.WATER);
-				target.getLocation().getBlock().setData((byte) 0x8);
-			}
-		}
+		}, null, null);
 	}
 }

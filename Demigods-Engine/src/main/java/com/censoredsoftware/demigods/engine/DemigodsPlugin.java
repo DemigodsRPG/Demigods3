@@ -147,7 +147,6 @@ public class DemigodsPlugin extends CensoredJavaPlugin
 			catch(Exception errored)
 			{
 				getLogger().warning(errored.getMessage());
-				errored.printStackTrace();
 			}
 		}
 	}

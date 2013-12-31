@@ -719,10 +719,10 @@ public class Battle implements ConfigurationSerializable
 		}
 
 		/**
-		 * Returns true if doTargeting is allowed for <code>player</code>.
+		 * Returns true if target is allowed for <code>player</code>.
 		 * 
 		 * @param participant the player to check.
-		 * @return true/false depending on if doTargeting is allowed.
+		 * @return true/false depending on if target is allowed.
 		 */
 		public static boolean canTarget(Participant participant) // TODO REDO THIS
 		{

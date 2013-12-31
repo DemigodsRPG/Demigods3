@@ -5,18 +5,15 @@ import com.censoredsoftware.censoredlib.util.Spigots;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.DemigodsPlugin;
 import com.censoredsoftware.demigods.engine.data.CLocationManager;
-import com.censoredsoftware.demigods.engine.data.DCharacter;
-import com.censoredsoftware.demigods.engine.data.DPlayer;
 import com.censoredsoftware.demigods.engine.data.Skill;
-import com.censoredsoftware.demigods.engine.mythos.Ability;
-import com.censoredsoftware.demigods.engine.mythos.Deity;
 import com.censoredsoftware.demigods.engine.util.Abilities;
 import com.censoredsoftware.demigods.engine.util.Zones;
+import com.censoredsoftware.demigods.greek.ability.GreekAbility;
+import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import org.bukkit.*;
 import org.bukkit.block.BlockFace;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
@@ -24,119 +21,46 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
 import java.util.Set;
 
-public class Discoball implements Ability
+public class Discoball extends GreekAbility
 {
+	private static Set<FallingBlock> discoBalls = Sets.newHashSet();
+
 	private final static String name = "Discoball of Doom", command = "discoball";
 	private final static int cost = 30, delay = 30, repeat = 4;
 	private final static List<String> details = Lists.newArrayList("Spread the music while causing destruction.");
-	private final static Set<FallingBlock> discoBalls = Sets.newHashSet();
-	private String deity, permission;
 	private final static Skill.Type type = Skill.Type.ULTIMATE;
 
-	public Discoball(String deity, String permission)
+	public Discoball(String deity)
 	{
-		this.deity = deity;
-		this.permission = permission;
-	}
-
-	@Override
-	public String getDeity()
-	{
-		return deity;
-	}
-
-	@Override
-	public String getName()
-	{
-		return name;
-	}
-
-	@Override
-	public String getCommand()
-	{
-		return command;
-	}
-
-	@Override
-	public String getPermission()
-	{
-		return permission;
-	}
-
-	@Override
-	public int getCost()
-	{
-		return cost;
-	}
-
-	@Override
-	public int getDelay()
-	{
-		return delay;
-	}
-
-	@Override
-	public int getRepeat()
-	{
-		return repeat;
-	}
-
-	@Override
-	public List<String> getDetails()
-	{
-		return details;
-	}
-
-	@Override
-	public Skill.Type getType()
-	{
-		return type;
-	}
-
-	@Override
-	public Material getWeapon()
-	{
-		return null;
-	}
-
-	@Override
-	public boolean hasWeapon()
-	{
-		return getWeapon() != null;
-	}
-
-	@Override
-	public Listener getListener()
-	{
-		return new Listener()
+		super(name, command, deity, cost, delay, repeat, details, type, null, new Predicate<Player>()
 		{
-			@EventHandler(priority = EventPriority.HIGHEST)
-			public void onPlayerInteract(PlayerInteractEvent interactEvent)
+			@Override
+			public boolean apply(final Player player)
 			{
-				if(Zones.inNoDemigodsZone(interactEvent.getPlayer().getLocation())) return;
+				if(!Abilities.preProcessAbility(player, cost)) return false;
 
-				// Set variables
-				Player player = interactEvent.getPlayer();
-				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+				balls(player);
 
-				if(!Abilities.isLeftClick(interactEvent)) return;
+				player.sendMessage(ChatColor.YELLOW + "Dance!");
 
-				if(!Deity.Util.canUseDeitySilent(character, deity)) return;
-
-				if(player.getItemInHand() != null && character.getMeta().checkBound(name, player.getItemInHand().getType()))
+				Bukkit.getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.plugin(), new Runnable()
 				{
-					if(!DCharacter.Util.isCooledDown(character, name, true)) return;
+					@Override
+					public void run()
+					{
+						player.sendMessage(ChatColor.RED + "B" + ChatColor.GOLD + "o" + ChatColor.YELLOW + "o" + ChatColor.GREEN + "g" + ChatColor.AQUA + "i" + ChatColor.LIGHT_PURPLE + "e" + ChatColor.DARK_PURPLE + " W" + ChatColor.BLUE + "o" + ChatColor.RED + "n" + ChatColor.GOLD + "d" + ChatColor.YELLOW + "e" + ChatColor.GREEN + "r" + ChatColor.AQUA + "l" + ChatColor.LIGHT_PURPLE + "a" + ChatColor.DARK_PURPLE + "n" + ChatColor.BLUE + "d" + ChatColor.RED + "!");
+					}
+				}, 40);
 
-					Util.discoBall(player);
-				}
+				return true;
 			}
-
+		}, new Listener()
+		{
 			@EventHandler(priority = EventPriority.HIGHEST)
 			public void onBlockChange(EntityChangeBlockEvent changeEvent)
 			{
@@ -151,13 +75,7 @@ public class Discoball implements Ability
 					block.remove();
 				}
 			}
-		};
-	}
-
-	@Override
-	public BukkitRunnable getRunnable()
-	{
-		return new BukkitRunnable()
+		}, new Runnable()
 		{
 			@Override
 			public void run()
@@ -168,196 +86,54 @@ public class Discoball implements Ability
 					{
 						Location location = block.getLocation();
 						if(Zones.inNoDemigodsZone(location)) return;
-						Util.playRandomNote(location, 2F);
-						Util.sparkleSparkle(location);
-						Util.destoryNearby(location);
+						playRandomNote(location, 2F);
+						sparkleSparkle(location);
+						destoryNearby(location);
 					}
 				}
 			}
-		};
+		});
 	}
 
-	public static class RainbowWalking implements Ability
+	public static void balls(Player player)
 	{
-		private final static String name = "Rainbow Walking", command = null;
-		private final static int cost = 0, delay = 0, repeat = 5;
-		private final static List<String> details = Lists.newArrayList("Spread the disco while sneaking.");
-		private String deity, permission;
-		private final static Skill.Type type = Skill.Type.PASSIVE;
-
-		public RainbowWalking(String deity, String permission)
-		{
-			this.deity = deity;
-			this.permission = permission;
-		}
-
-		@Override
-		public String getDeity()
-		{
-			return deity;
-		}
-
-		@Override
-		public String getName()
-		{
-			return name;
-		}
-
-		@Override
-		public String getCommand()
-		{
-			return command;
-		}
-
-		@Override
-		public String getPermission()
-		{
-			return permission;
-		}
-
-		@Override
-		public int getCost()
-		{
-			return cost;
-		}
-
-		@Override
-		public int getDelay()
-		{
-			return delay;
-		}
-
-		@Override
-		public int getRepeat()
-		{
-			return repeat;
-		}
-
-		@Override
-		public List<String> getDetails()
-		{
-			return details;
-		}
-
-		@Override
-		public Skill.Type getType()
-		{
-			return type;
-		}
-
-		@Override
-		public Material getWeapon()
-		{
-			return null;
-		}
-
-		@Override
-		public boolean hasWeapon()
-		{
-			return getWeapon() != null;
-		}
-
-		@Override
-		public Listener getListener()
-		{
-			return null;
-		}
-
-		@Override
-		public BukkitRunnable getRunnable()
-		{
-			return new BukkitRunnable()
-			{
-				@Override
-				public void run()
-				{
-					for(DCharacter online : DCharacter.Util.getOnlineCharactersWithDeity("DrD1sco"))
-					{
-						Player player = online.getOfflinePlayer().getPlayer();
-						if(Zones.inNoDemigodsZone(player.getLocation()) || !player.isSneaking() || player.isFlying() || Zones.inNoPvpZone(player.getLocation()) || Zones.inNoBuildZone(player, player.getLocation())) continue;
-						doEffect(player);
-					}
-				}
-
-				private void doEffect(Player player)
-				{
-					for(Entity entity : player.getNearbyEntities(30, 30, 30))
-						if(entity instanceof Player) Util.rainbow(player, (Player) entity);
-					Util.rainbow(player, player);
-					Util.playRandomNote(player.getLocation(), 0.5F);
-				}
-			};
-		}
+		for(Location location : CLocationManager.getCirclePoints(new Location(player.getWorld(), player.getLocation().getBlockX(), player.getLocation().getBlockY() + 30 < 256 ? player.getLocation().getBlockY() + 30 : 256, player.getLocation().getBlockZ()), 3.0, 50))
+			spawnBall(location);
 	}
 
-	public static class Util
+	public static void spawnBall(Location location)
 	{
-		public static void discoBall(final Player player)
+		final FallingBlock discoBall = location.getWorld().spawnFallingBlock(location, Material.GLOWSTONE, (byte) 0);
+		discoBalls.add(discoBall);
+		Bukkit.getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.plugin(), new BukkitRunnable()
 		{
-			// Set variables
-			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
-
-			if(!Abilities.doAbilityPreProcess(player, cost)) return;
-			character.getMeta().subtractFavor(cost);
-			DCharacter.Util.setCoolDown(character, name, System.currentTimeMillis() + delay);
-
-			// Cooldown
-			DCharacter.Util.setCoolDown(character, name, System.currentTimeMillis() + delay * 1000);
-
-			balls(player);
-
-			player.sendMessage(ChatColor.YELLOW + "Dance!");
-
-			Bukkit.getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.plugin(), new BukkitRunnable()
+			@Override
+			public void run()
 			{
-				@Override
-				public void run()
-				{
-					player.sendMessage(ChatColor.RED + "B" + ChatColor.GOLD + "o" + ChatColor.YELLOW + "o" + ChatColor.GREEN + "g" + ChatColor.AQUA + "i" + ChatColor.LIGHT_PURPLE + "e" + ChatColor.DARK_PURPLE + " W" + ChatColor.BLUE + "o" + ChatColor.RED + "n" + ChatColor.GOLD + "d" + ChatColor.YELLOW + "e" + ChatColor.GREEN + "r" + ChatColor.AQUA + "l" + ChatColor.LIGHT_PURPLE + "a" + ChatColor.DARK_PURPLE + "n" + ChatColor.BLUE + "d" + ChatColor.RED + "!");
-				}
-			}, 40);
-		}
+				discoBalls.remove(discoBall);
+				discoBall.remove();
+			}
+		}, 600);
+	}
 
-		public static void balls(Player player)
-		{
-			for(Location location : CLocationManager.getCirclePoints(new Location(player.getWorld(), player.getLocation().getBlockX(), player.getLocation().getBlockY() + 30 < 256 ? player.getLocation().getBlockY() + 30 : 256, player.getLocation().getBlockZ()), 3.0, 50))
-				spawnBall(location);
-		}
+	public static void rainbow(Player disco, Player player)
+	{
+		player.sendBlockChange(disco.getLocation().getBlock().getRelative(BlockFace.DOWN).getLocation(), Material.WOOL, (byte) Randoms.generateIntRange(0, 15));
+		if(Demigods.Util.isRunningSpigot()) Spigots.playParticle(disco.getLocation(), Effect.COLOURED_DUST, 1, 0, 1, 10F, 100, 30);
+	}
 
-		public static void spawnBall(Location location)
-		{
-			final FallingBlock discoBall = location.getWorld().spawnFallingBlock(location, Material.GLOWSTONE, (byte) 0);
-			discoBalls.add(discoBall);
-			Bukkit.getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.plugin(), new BukkitRunnable()
-			{
-				@Override
-				public void run()
-				{
-					discoBalls.remove(discoBall);
-					discoBall.remove();
-				}
-			}, 600);
-		}
+	public static void playRandomNote(Location location, float volume)
+	{
+		location.getWorld().playSound(location, Sound.NOTE_BASS_GUITAR, volume, (float) ((double) Randoms.generateIntRange(5, 10) / 10.0));
+	}
 
-		public static void rainbow(Player disco, Player player)
-		{
-			player.sendBlockChange(disco.getLocation().getBlock().getRelative(BlockFace.DOWN).getLocation(), Material.WOOL, (byte) Randoms.generateIntRange(0, 15));
-			if(Demigods.Util.isRunningSpigot()) Spigots.playParticle(disco.getLocation(), Effect.COLOURED_DUST, 1, 0, 1, 10F, 100, 30);
-		}
+	public static void sparkleSparkle(Location location)
+	{
+		if(Demigods.Util.isRunningSpigot()) Spigots.playParticle(location, Effect.CRIT, 1, 1, 1, 10F, 1000, 30);
+	}
 
-		public static void playRandomNote(Location location, float volume)
-		{
-			location.getWorld().playSound(location, Sound.NOTE_BASS_GUITAR, volume, (float) ((double) Randoms.generateIntRange(5, 10) / 10.0));
-		}
-
-		public static void sparkleSparkle(Location location)
-		{
-			if(Demigods.Util.isRunningSpigot()) Spigots.playParticle(location, Effect.CRIT, 1, 1, 1, 10F, 1000, 30);
-		}
-
-		public static void destoryNearby(Location location)
-		{
-			location.getWorld().createExplosion(location, 2F);
-		}
+	public static void destoryNearby(Location location)
+	{
+		location.getWorld().createExplosion(location, 2F);
 	}
 }

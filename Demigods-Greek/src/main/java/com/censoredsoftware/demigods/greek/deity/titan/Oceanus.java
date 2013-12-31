@@ -1,22 +1,21 @@
 package com.censoredsoftware.demigods.greek.deity.titan;
 
-import java.util.*;
-
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-
 import com.censoredsoftware.demigods.engine.mythos.Ability;
 import com.censoredsoftware.demigods.engine.mythos.Alliance;
 import com.censoredsoftware.demigods.engine.mythos.Deity;
+import com.censoredsoftware.demigods.greek.ability.passive.Carry;
 import com.censoredsoftware.demigods.greek.ability.passive.NoDrown;
 import com.censoredsoftware.demigods.greek.ability.passive.Swim;
-import com.censoredsoftware.demigods.greek.ability.support.Carry;
 import com.censoredsoftware.demigods.greek.deity.GreekAlliance;
 import com.censoredsoftware.demigods.greek.deity.GreekDeity;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+
+import java.util.*;
 
 public class Oceanus extends GreekDeity
 {
@@ -29,7 +28,7 @@ public class Oceanus extends GreekDeity
 	public final static Map<Material, Integer> forsakeItems = Maps.newHashMap(ImmutableMap.of(Material.COOKED_FISH, 4, Material.FISHING_ROD, 1));
 	public final static List<String> lore = Arrays.asList();
 	public final static Set<Deity.Flag> flags = Sets.newHashSet(Deity.Flag.MAJOR_DEITY, Deity.Flag.PLAYABLE);
-	public final static List<Ability> abilities = Lists.newArrayList(new Swim(name, permission), new NoDrown(name, permission), new Carry(name, permission, true));
+	public final static List<Ability> abilities = Lists.newArrayList((Ability) new Swim(name), new NoDrown(name), new Carry(name, true));
 
 	// Mood Manager
 	private static EnumMap<Mood, MoodPack> moodPacks = Maps.newEnumMap(Deity.Mood.class);

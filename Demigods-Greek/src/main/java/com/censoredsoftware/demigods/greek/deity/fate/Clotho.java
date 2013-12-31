@@ -1,20 +1,12 @@
 package com.censoredsoftware.demigods.greek.deity.fate;
 
-import java.util.Arrays;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Set;
-
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-
 import com.censoredsoftware.demigods.engine.mythos.Ability;
 import com.censoredsoftware.demigods.engine.mythos.Alliance;
 import com.censoredsoftware.demigods.engine.mythos.Deity;
 import com.censoredsoftware.demigods.greek.ability.passive.AlwaysInvisible;
+import com.censoredsoftware.demigods.greek.ability.passive.Carry;
 import com.censoredsoftware.demigods.greek.ability.passive.NoDamage;
 import com.censoredsoftware.demigods.greek.ability.passive.Swim;
-import com.censoredsoftware.demigods.greek.ability.support.Carry;
 import com.censoredsoftware.demigods.greek.ability.ultimate.Discoball;
 import com.censoredsoftware.demigods.greek.deity.GreekAlliance;
 import com.censoredsoftware.demigods.greek.deity.GreekDeity;
@@ -22,6 +14,13 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+
+import java.util.Arrays;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Set;
 
 public class Clotho extends GreekDeity
 {
@@ -35,7 +34,7 @@ public class Clotho extends GreekDeity
 	private static final ImmutableMap<Material, Integer> forsakeItems = ImmutableMap.of(Material.BEDROCK, 10);
 	public final static List<String> lore = Arrays.asList();
 	private static final Set<Deity.Flag> flags = Sets.newHashSet(Deity.Flag.MAJOR_DEITY, Deity.Flag.PLAYABLE, Deity.Flag.NO_BATTLE, Deity.Flag.NO_SHRINE);
-	private static final List<Ability> abilities = Lists.newArrayList(new NoDamage(name, permission), new AlwaysInvisible(name, permission), new Swim(name, permission), new Carry(name, permission, false), new Discoball(name, permission));
+	private static final List<Ability> abilities = Lists.newArrayList(new NoDamage(name), new AlwaysInvisible(name), new Swim(name), new Carry(name, false), new Discoball(name));
 
 	// Mood Manager
 	private static EnumMap<Deity.Mood, Deity.MoodPack> moodPacks = Maps.newEnumMap(Deity.Mood.class);

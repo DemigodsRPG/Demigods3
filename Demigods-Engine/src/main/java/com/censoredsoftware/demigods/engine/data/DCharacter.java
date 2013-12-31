@@ -1,17 +1,5 @@
 package com.censoredsoftware.demigods.engine.data;
 
-import java.util.*;
-
-import org.bukkit.*;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.scheduler.BukkitRunnable;
-
 import com.censoredsoftware.censoredlib.data.inventory.CEnderInventory;
 import com.censoredsoftware.censoredlib.data.inventory.CInventory;
 import com.censoredsoftware.censoredlib.data.inventory.CItemStack;
@@ -28,6 +16,18 @@ import com.censoredsoftware.demigods.engine.util.Messages;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
+import org.bukkit.*;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.material.MaterialData;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.*;
 
 public class DCharacter implements Participant, ConfigurationSerializable
 {
@@ -564,6 +564,18 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		Util.delete(getId());
 	}
 
+	public List<Ability> getAbilities()
+	{
+		List<Ability> list = Lists.newArrayList();
+
+		list.addAll(getDeity().getAbilities());
+
+		for(Deity minorDeity : getMinorDeities())
+			list.addAll(minorDeity.getAbilities());
+
+		return list;
+	}
+
 	public void sendAllianceMessage(String message)
 	{
 		DemigodsChatEvent chatEvent = new DemigodsChatEvent(message, DCharacter.Util.getOnlineCharactersWithAlliance(getAlliance()));
@@ -927,9 +939,9 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			});
 		}
 
-		public boolean checkBound(String abilityName, Material material)
+		public boolean checkBound(String abilityName, MaterialData material) // TODO Check for data not just the name
 		{
-			return getBinds().containsKey(abilityName) && binds.get(abilityName).equals(material.name());
+			return getBinds().containsKey(abilityName) && binds.get(abilityName).equals(material.getItemType().name());
 		}
 
 		public boolean isBound(Ability ability)

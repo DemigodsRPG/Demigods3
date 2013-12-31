@@ -1,23 +1,22 @@
 package com.censoredsoftware.demigods.greek.deity.fate;
 
-import java.util.*;
-
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-
 import com.censoredsoftware.demigods.engine.mythos.Ability;
 import com.censoredsoftware.demigods.engine.mythos.Alliance;
 import com.censoredsoftware.demigods.engine.mythos.Deity;
 import com.censoredsoftware.demigods.greek.ability.offense.Fireball;
 import com.censoredsoftware.demigods.greek.ability.passive.AlwaysInvisible;
+import com.censoredsoftware.demigods.greek.ability.passive.Carry;
 import com.censoredsoftware.demigods.greek.ability.passive.NoDamage;
-import com.censoredsoftware.demigods.greek.ability.support.Carry;
 import com.censoredsoftware.demigods.greek.deity.GreekAlliance;
 import com.censoredsoftware.demigods.greek.deity.GreekDeity;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+
+import java.util.*;
 
 public class Atropos extends GreekDeity
 {
@@ -30,7 +29,7 @@ public class Atropos extends GreekDeity
 	public final static Map<Material, Integer> forsakeItems = Maps.newHashMap(ImmutableMap.of(Material.BEDROCK, 10));
 	public final static List<String> lore = Arrays.asList();
 	public final static Set<Deity.Flag> flags = Sets.newHashSet(Deity.Flag.MAJOR_DEITY, Deity.Flag.PLAYABLE, Deity.Flag.NO_BATTLE, Deity.Flag.NO_SHRINE);
-	public final static List<Ability> abilities = Lists.newArrayList(new NoDamage(name, permission), new AlwaysInvisible(name, permission), new Fireball(name, permission), new Carry(name, permission, false));
+	public final static List<Ability> abilities = Lists.newArrayList(new NoDamage(name), new AlwaysInvisible(name), new Fireball(name), new Carry(name, false));
 
 	// Mood Manager
 	private static EnumMap<Deity.Mood, Deity.MoodPack> moodPacks = Maps.newEnumMap(Deity.Mood.class);

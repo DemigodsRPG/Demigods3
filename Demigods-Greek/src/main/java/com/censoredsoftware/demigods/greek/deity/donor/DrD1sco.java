@@ -1,14 +1,10 @@
 package com.censoredsoftware.demigods.greek.deity.donor;
 
-import java.util.*;
-
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-
 import com.censoredsoftware.demigods.engine.mythos.Ability;
 import com.censoredsoftware.demigods.engine.mythos.Alliance;
 import com.censoredsoftware.demigods.engine.mythos.Deity;
 import com.censoredsoftware.demigods.greek.ability.passive.RainbowHorse;
+import com.censoredsoftware.demigods.greek.ability.passive.RainbowWalking;
 import com.censoredsoftware.demigods.greek.ability.ultimate.Discoball;
 import com.censoredsoftware.demigods.greek.deity.GreekAlliance;
 import com.censoredsoftware.demigods.greek.deity.GreekDeity;
@@ -16,6 +12,10 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+
+import java.util.*;
 
 public class DrD1sco extends GreekDeity
 {
@@ -28,7 +28,7 @@ public class DrD1sco extends GreekDeity
 	public final static Map<Material, Integer> forsakeItems = Maps.newHashMap(ImmutableMap.of(Material.NOTE_BLOCK, 4));
 	public final static List<String> lore = Arrays.asList();
 	public final static Set<Deity.Flag> flags = Sets.newHashSet(Deity.Flag.MAJOR_DEITY, Deity.Flag.NON_PLAYABLE);
-	public final static List<Ability> abilities = Lists.newArrayList(new Discoball.RainbowWalking(name, permission), new RainbowHorse(name, permission), new Discoball(name, permission));
+	public final static List<Ability> abilities = Lists.newArrayList(new RainbowWalking(name), new RainbowHorse(name), new Discoball(name));
 
 	// Mood Manager
 	private static EnumMap<Mood, MoodPack> moodPacks = Maps.newEnumMap(Deity.Mood.class);
