@@ -1,8 +1,7 @@
 package com.censoredsoftware.demigods.engine.listener;
 
-import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.battle.Battle;
-import com.censoredsoftware.demigods.engine.language.Translation;
+import com.censoredsoftware.demigods.engine.language.Text;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPet;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
@@ -43,7 +42,7 @@ public class EntityListener implements Listener
 			// No PvP
 			if(!DPlayer.Util.getPlayer(hitting).canPvp() || !Battle.Util.canTarget(Battle.Util.defineParticipant(attacked)))
 			{
-				hitting.sendMessage(ChatColor.GRAY + Demigods.LANGUAGE.getText(Translation.Text.NO_PVP_ZONE));
+				hitting.sendMessage(ChatColor.GRAY + Text.NO_PVP_ZONE.english());
 				event.setCancelled(true);
 				return;
 			}

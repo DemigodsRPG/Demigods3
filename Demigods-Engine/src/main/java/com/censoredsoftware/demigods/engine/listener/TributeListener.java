@@ -1,10 +1,9 @@
 package com.censoredsoftware.demigods.engine.listener;
 
-import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.data.DataManager;
 import com.censoredsoftware.demigods.engine.data.TributeManager;
 import com.censoredsoftware.demigods.engine.deity.Deity;
-import com.censoredsoftware.demigods.engine.language.Translation;
+import com.censoredsoftware.demigods.engine.language.Text;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
 import com.censoredsoftware.demigods.engine.structure.Structure;
@@ -57,12 +56,12 @@ public class TributeListener implements Listener
 			// Return if the player is mortal
 			if(!DPlayer.Util.getPlayer(player).hasCurrent())
 			{
-				player.sendMessage(ChatColor.RED + Demigods.LANGUAGE.getText(Translation.Text.DISABLED_MORTAL));
+				player.sendMessage(ChatColor.RED + Text.DISABLED_MORTAL.english());
 				return;
 			}
 			else if(save.getOwner() != null && !character.getDeity().equals(DCharacter.Util.load(save.getOwner()).getDeity()))
 			{
-				player.sendMessage(Demigods.LANGUAGE.getText(Translation.Text.MUST_BE_ALLIED_TO_TRIBUTE).replace("{deity}", DCharacter.Util.load(save.getOwner()).getDeity().getName()));
+				player.sendMessage(Text.MUST_BE_ALLIED_TO_TRIBUTE.english().replace("{deity}", DCharacter.Util.load(save.getOwner()).getDeity().getName()));
 				return;
 			}
 			tribute(character, save);
@@ -126,8 +125,8 @@ public class TributeListener implements Listener
 				// Message them
 				if(shrineOwnerPlayer.isOnline() && DPlayer.Util.getPlayer(shrineOwner.getOfflinePlayer()).getCurrent().getId().equals(shrineOwner.getId()))
 				{
-					((Player) shrineOwnerPlayer).sendMessage(Demigods.LANGUAGE.getText(Translation.Text.EXTERNAL_SHRINE_TRIBUTE));
-					((Player) shrineOwnerPlayer).sendMessage(Demigods.LANGUAGE.getText(Translation.Text.FAVOR_CAP_INCREASED).replace("{cap}", shrineOwner.getMeta().getMaxFavor().toString()));
+					((Player) shrineOwnerPlayer).sendMessage(Text.EXTERNAL_SHRINE_TRIBUTE.english());
+					((Player) shrineOwnerPlayer).sendMessage(Text.FAVOR_CAP_INCREASED.english().replace("{cap}", shrineOwner.getMeta().getMaxFavor().toString()));
 				}
 			}
 			else if(character.getMeta().getMaxFavor() > maxFavorBefore && !player.getName().equals(shrineOwnerPlayer.getName()))
@@ -141,8 +140,8 @@ public class TributeListener implements Listener
 				// Message them
 				if(shrineOwnerPlayer.isOnline() && DPlayer.Util.getPlayer(shrineOwner.getOfflinePlayer()).getCurrent().getId().equals(shrineOwner.getId()))
 				{
-					((Player) shrineOwnerPlayer).sendMessage(Demigods.LANGUAGE.getText(Translation.Text.EXTERNAL_SHRINE_TRIBUTE));
-					if(shrineOwner.getMeta().getMaxFavor() > ownerFavorBefore) ((Player) shrineOwnerPlayer).sendMessage(Demigods.LANGUAGE.getText(Translation.Text.FAVOR_CAP_INCREASED).replace("{cap}", shrineOwner.getMeta().getMaxFavor().toString()));
+					((Player) shrineOwnerPlayer).sendMessage(Text.EXTERNAL_SHRINE_TRIBUTE.english());
+					if(shrineOwner.getMeta().getMaxFavor() > ownerFavorBefore) ((Player) shrineOwnerPlayer).sendMessage(Text.FAVOR_CAP_INCREASED.english().replace("{cap}", shrineOwner.getMeta().getMaxFavor().toString()));
 				}
 			}
 
@@ -154,19 +153,19 @@ public class TributeListener implements Listener
 		if(character.getMeta().getMaxFavor() >= Configs.getSettingInt("caps.favor"))
 		{
 			// They have already met the max favor cap
-			player.sendMessage(Demigods.LANGUAGE.getText(Translation.Text.DEITY_PLEASED).replace("{deity}", character.getDeity().getName()));
-			if(character.getMeta().getFavor() > favorBefore) player.sendMessage(Demigods.LANGUAGE.getText(Translation.Text.BLESSED_WITH_FAVOR).replace("{favor}", "" + (character.getMeta().getFavor() - favorBefore)));
+			player.sendMessage(Text.DEITY_PLEASED.english().replace("{deity}", character.getDeity().getName()));
+			if(character.getMeta().getFavor() > favorBefore) player.sendMessage(Text.BLESSED_WITH_FAVOR.english().replace("{favor}", "" + (character.getMeta().getFavor() - favorBefore)));
 		}
 		else if(character.getMeta().getMaxFavor() > maxFavorBefore)
 		{
 			// Message the tributer
-			player.sendMessage(Demigods.LANGUAGE.getText(Translation.Text.DEITY_PLEASED).replace("{deity}", character.getDeity().getName()));
-			player.sendMessage(Demigods.LANGUAGE.getText(Translation.Text.FAVOR_CAP_INCREASED).replace("{cap}", character.getMeta().getMaxFavor().toString()));
+			player.sendMessage(Text.DEITY_PLEASED.english().replace("{deity}", character.getDeity().getName()));
+			player.sendMessage(Text.FAVOR_CAP_INCREASED.english().replace("{cap}", character.getMeta().getMaxFavor().toString()));
 		}
 		else if(items > 0)
 		{
 			// They aren't good enough, let them know!
-			player.sendMessage(Demigods.LANGUAGE.getText(Translation.Text.INSUFFICIENT_TRIBUTES).replace("{deity}", character.getDeity().getName()));
+			player.sendMessage(Text.INSUFFICIENT_TRIBUTES.english().replace("{deity}", character.getDeity().getName()));
 		}
 
 		// Clear the tribute case
@@ -179,7 +178,7 @@ public class TributeListener implements Listener
 		Deity shrineDeity = character.getDeity();
 
 		// Open the tribute inventory
-		Inventory ii = Bukkit.getServer().createInventory(player, 27, Demigods.LANGUAGE.getText(Translation.Text.CHEST_TRIBUTE_TO).replace("{deity}", shrineDeity.getName()));
+		Inventory ii = Bukkit.getServer().createInventory(player, 27, Text.CHEST_TRIBUTE_TO.english().replace("{deity}", shrineDeity.getName()));
 		player.openInventory(ii);
 		DataManager.saveTemp(player.getName(), character.getName(), save.getId());
 	}

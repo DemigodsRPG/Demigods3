@@ -1,10 +1,9 @@
 package com.censoredsoftware.demigods.engine.listener;
 
-import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.DemigodsPlugin;
 import com.censoredsoftware.demigods.engine.data.DataManager;
 import com.censoredsoftware.demigods.engine.item.DivineItem;
-import com.censoredsoftware.demigods.engine.language.Translation;
+import com.censoredsoftware.demigods.engine.language.Text;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
 import com.censoredsoftware.demigods.engine.structure.Structure;
 import com.censoredsoftware.demigods.engine.structure.StructureData;
@@ -39,7 +38,7 @@ public class FlagListener implements Listener
 		if(Structure.Util.partOfStructureWithFlag(event.getBlock().getLocation(), Structure.Flag.PROTECTED_BLOCKS, Structure.Flag.DESTRUCT_ON_BREAK))
 		{
 			event.setCancelled(true);
-			event.getPlayer().sendMessage(ChatColor.YELLOW + Demigods.LANGUAGE.getText(Translation.Text.PROTECTED_BLOCK));
+			event.getPlayer().sendMessage(ChatColor.YELLOW + Text.PROTECTED_BLOCK.english());
 		}
 	}
 
@@ -51,7 +50,7 @@ public class FlagListener implements Listener
 		if(Structure.Util.partOfStructureWithFlag(location, Structure.Flag.PROTECTED_BLOCKS, Structure.Flag.DESTRUCT_ON_BREAK))
 		{
 			event.setCancelled(true);
-			event.getPlayer().sendMessage(ChatColor.YELLOW + Demigods.LANGUAGE.getText(Translation.Text.PROTECTED_BLOCK));
+			event.getPlayer().sendMessage(ChatColor.YELLOW + Text.PROTECTED_BLOCK.english());
 			return;
 		}
 	}

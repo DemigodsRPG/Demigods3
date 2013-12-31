@@ -1,9 +1,8 @@
 package com.censoredsoftware.demigods.engine.data.util;
 
 import com.censoredsoftware.censoredlib.data.player.Notification;
-import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.data.DataManager;
-import com.censoredsoftware.demigods.engine.language.Translation;
+import com.censoredsoftware.demigods.engine.language.Text;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.google.common.collect.Sets;
 import org.bukkit.entity.Player;
@@ -94,7 +93,7 @@ public class Notifications
 		if(character.getOfflinePlayer().isOnline())
 		{
 			Player player = character.getOfflinePlayer().getPlayer();
-			for(String message : Demigods.LANGUAGE.getTextBlock(Translation.Text.NOTIFICATION_RECEIVED))
+			for(String message : Text.NOTIFICATION_RECEIVED.englishBlock())
 			{
 				player.sendMessage(message);
 			}

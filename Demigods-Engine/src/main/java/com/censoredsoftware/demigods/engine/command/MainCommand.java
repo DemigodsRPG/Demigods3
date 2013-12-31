@@ -10,7 +10,7 @@ import com.censoredsoftware.demigods.engine.ability.Ability;
 import com.censoredsoftware.demigods.engine.data.DataManager;
 import com.censoredsoftware.demigods.engine.deity.Alliance;
 import com.censoredsoftware.demigods.engine.deity.Deity;
-import com.censoredsoftware.demigods.engine.language.Translation;
+import com.censoredsoftware.demigods.engine.language.Text;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
 import com.censoredsoftware.demigods.engine.util.Admins;
@@ -57,7 +57,7 @@ public class MainCommand extends WrappedCommand
 				PluginManager pluginManager = DemigodsPlugin.inst().getServer().getPluginManager();
 				pluginManager.disablePlugin(DemigodsPlugin.inst());
 				pluginManager.enablePlugin(DemigodsPlugin.inst());
-				sender.sendMessage(ChatColor.GREEN + Demigods.LANGUAGE.getText(Translation.Text.RELOAD_COMPLETE));
+				sender.sendMessage(ChatColor.GREEN + Text.RELOAD_COMPLETE.english());
 				return true;
 			}
 		}
@@ -292,9 +292,9 @@ public class MainCommand extends WrappedCommand
 		}
 		else if(args[1].equalsIgnoreCase("clear") && args[1].equalsIgnoreCase("data") && args[2].equalsIgnoreCase("yesdoitforsurepermanently"))
 		{
-			sender.sendMessage(ChatColor.RED + Demigods.LANGUAGE.getText(Translation.Text.ADMIN_CLEAR_DATA_STARTING));
+			sender.sendMessage(ChatColor.RED + Text.ADMIN_CLEAR_DATA_STARTING.english());
 			DataManager.flushData();
-			sender.sendMessage(ChatColor.GREEN + Demigods.LANGUAGE.getText(Translation.Text.ADMIN_CLEAR_DATA_FINISHED));
+			sender.sendMessage(ChatColor.GREEN + Text.ADMIN_CLEAR_DATA_FINISHED.english());
 			return true;
 		}
 

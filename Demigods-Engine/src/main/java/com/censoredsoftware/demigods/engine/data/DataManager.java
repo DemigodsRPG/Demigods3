@@ -11,7 +11,7 @@ import com.censoredsoftware.demigods.engine.DemigodsPlugin;
 import com.censoredsoftware.demigods.engine.battle.Battle;
 import com.censoredsoftware.demigods.engine.data.util.ServerDatas;
 import com.censoredsoftware.demigods.engine.data.util.TimedDatas;
-import com.censoredsoftware.demigods.engine.language.Translation;
+import com.censoredsoftware.demigods.engine.language.Text;
 import com.censoredsoftware.demigods.engine.player.*;
 import com.censoredsoftware.demigods.engine.structure.StructureData;
 import com.google.common.base.Supplier;
@@ -73,7 +73,7 @@ public class DataManager
 	{
 		// Kick everyone
 		for(Player player : Bukkit.getOnlinePlayers())
-			player.kickPlayer(ChatColor.GREEN + Demigods.LANGUAGE.getText(Translation.Text.DATA_RESET_KICK));
+			player.kickPlayer(ChatColor.GREEN + Text.DATA_RESET_KICK.english());
 
 		// Clear the data
 		itemStacks.clear();

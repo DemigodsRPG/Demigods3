@@ -1,20 +1,18 @@
 package com.censoredsoftware.demigods.engine.player;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
+import com.censoredsoftware.demigods.engine.battle.Battle;
+import com.censoredsoftware.demigods.engine.battle.Participant;
+import com.censoredsoftware.demigods.engine.data.DataManager;
+import com.censoredsoftware.demigods.engine.language.Text;
+import com.censoredsoftware.demigods.engine.util.Configs;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.battle.Battle;
-import com.censoredsoftware.demigods.engine.battle.Participant;
-import com.censoredsoftware.demigods.engine.data.DataManager;
-import com.censoredsoftware.demigods.engine.language.Translation;
-import com.censoredsoftware.demigods.engine.util.Configs;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class Skill implements ConfigurationSerializable
 {
@@ -263,7 +261,7 @@ public class Skill implements ConfigurationSerializable
 
 				if(character.getOfflinePlayer().isOnline())
 				{
-					for(String string : Demigods.LANGUAGE.getTextBlock(Translation.Text.NOTIFICATION_SKILL_POINTS_RECEIVED))
+					for(String string : Text.NOTIFICATION_SKILL_POINTS_RECEIVED.englishBlock())
 						character.getOfflinePlayer().getPlayer().sendMessage(string.replace("{skillpoints}", "" + skillPoints));
 				}
 			}

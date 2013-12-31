@@ -13,7 +13,6 @@ import com.censoredsoftware.demigods.engine.data.TaskManager;
 import com.censoredsoftware.demigods.engine.deity.Alliance;
 import com.censoredsoftware.demigods.engine.deity.Deity;
 import com.censoredsoftware.demigods.engine.item.DivineItem;
-import com.censoredsoftware.demigods.engine.language.Translation;
 import com.censoredsoftware.demigods.engine.listener.*;
 import com.censoredsoftware.demigods.engine.mythos.Mythos;
 import com.censoredsoftware.demigods.engine.mythos.MythosSet;
@@ -59,7 +58,6 @@ public class Demigods extends CensoredCentralizedClass
 	// Public Static Access
 	public static final String SAVE_PATH;
 	public static final ConversationFactory CONVERSATION_FACTORY;
-	public static final Translation LANGUAGE;
 	public static final ScoreboardManager SCOREBOARD_MANAGER;
 
 	// Mythos
@@ -81,9 +79,6 @@ public class Demigods extends CensoredCentralizedClass
 
 		// Conversation factory static access.
 		CONVERSATION_FACTORY = new ConversationFactory(DemigodsPlugin.inst());
-
-		// Language data.
-		LANGUAGE = new Translation();
 
 		// Scoreboard manager.
 		SCOREBOARD_MANAGER = Bukkit.getScoreboardManager();
@@ -351,7 +346,7 @@ public class Demigods extends CensoredCentralizedClass
 				}
 				catch(Exception ignored)
 				{
-                    // ignored
+					// ignored
 				}
 			}
 
@@ -389,7 +384,7 @@ public class Demigods extends CensoredCentralizedClass
 				}
 				catch(Exception ignored)
 				{
-                    // ignored
+					// ignored
 				}
 			}
 
@@ -405,8 +400,8 @@ public class Demigods extends CensoredCentralizedClass
 				}
 				catch(Exception ignored)
 				{
-                    // ignored
-                }
+					// ignored
+				}
 			}
 
 			// Alliances, Deities, and Abilities
@@ -446,7 +441,7 @@ public class Demigods extends CensoredCentralizedClass
 			}
 			catch(Exception ignored)
 			{
-                // ignored
+				// ignored
 			}
 			return false;
 		}

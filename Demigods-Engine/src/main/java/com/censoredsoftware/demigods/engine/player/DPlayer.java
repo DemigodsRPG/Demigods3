@@ -8,7 +8,7 @@ import com.censoredsoftware.demigods.engine.DemigodsPlugin;
 import com.censoredsoftware.demigods.engine.battle.Battle;
 import com.censoredsoftware.demigods.engine.conversation.Prayer;
 import com.censoredsoftware.demigods.engine.data.DataManager;
-import com.censoredsoftware.demigods.engine.language.Translation;
+import com.censoredsoftware.demigods.engine.language.Text;
 import com.censoredsoftware.demigods.engine.util.Configs;
 import com.censoredsoftware.demigods.engine.util.Messages;
 import com.censoredsoftware.demigods.engine.util.Zones;
@@ -158,7 +158,7 @@ public class DPlayer implements ConfigurationSerializable
 		if(!canPvp() && !inNoPvpZone)
 		{
 			setCanPvp(true);
-			player.sendMessage(ChatColor.GRAY + Demigods.LANGUAGE.getText(Translation.Text.UNSAFE_FROM_PVP));
+			player.sendMessage(ChatColor.GRAY + Text.UNSAFE_FROM_PVP.english());
 		}
 		else if(!inNoPvpZone)
 		{
@@ -179,7 +179,7 @@ public class DPlayer implements ConfigurationSerializable
 					{
 						if(getCurrent() != null && Battle.Util.isInBattle(getCurrent())) return;
 						setCanPvp(false);
-						player.sendMessage(ChatColor.GRAY + Demigods.LANGUAGE.getText(Translation.Text.SAFE_FROM_PVP));
+						player.sendMessage(ChatColor.GRAY + Text.SAFE_FROM_PVP.english());
 					}
 				}
 			}, (delay * 20));
@@ -496,11 +496,11 @@ public class DPlayer implements ConfigurationSerializable
 				player.sendMessage(" ");
 				if(messages.size() == 1)
 				{
-					player.sendMessage(ChatColor.ITALIC + "" + ChatColor.GRAY + Demigods.LANGUAGE.getText(Translation.Text.HELD_BACK_MESSAGE));
+					player.sendMessage(ChatColor.ITALIC + "" + ChatColor.GRAY + Text.HELD_BACK_MESSAGE.english());
 				}
 				else
 				{
-					player.sendMessage(ChatColor.ITALIC + "" + ChatColor.GRAY + Demigods.LANGUAGE.getText(Translation.Text.HELD_BACK_MESSAGES).replace("{size}", "" + messages.size()));
+					player.sendMessage(ChatColor.ITALIC + "" + ChatColor.GRAY + Text.HELD_BACK_MESSAGES.english().replace("{size}", "" + messages.size()));
 				}
 				for(String message : messages)
 					player.sendMessage(message);
@@ -686,7 +686,7 @@ public class DPlayer implements ConfigurationSerializable
 			{
 				// Message them
 				Messages.clearRawChat(player);
-				for(String message : Demigods.LANGUAGE.getTextBlock(Translation.Text.PRAYER_ENDED))
+				for(String message : Text.PRAYER_ENDED.englishBlock())
 					player.sendRawMessage(message);
 
 				// Toggle off

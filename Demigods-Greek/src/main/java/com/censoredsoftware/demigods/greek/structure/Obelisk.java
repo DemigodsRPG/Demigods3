@@ -4,10 +4,9 @@ import com.censoredsoftware.censoredlib.schematic.BlockData;
 import com.censoredsoftware.censoredlib.schematic.Schematic;
 import com.censoredsoftware.censoredlib.schematic.Selection;
 import com.censoredsoftware.censoredlib.util.Colors;
-import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.data.DataManager;
 import com.censoredsoftware.demigods.engine.deity.Deity;
-import com.censoredsoftware.demigods.engine.language.Translation;
+import com.censoredsoftware.demigods.engine.language.Text;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
 import com.censoredsoftware.demigods.engine.structure.Structure;
@@ -175,7 +174,7 @@ public class Obelisk extends GreekStructure
 						save.setOwner(character.getId());
 						inst().birth(save, character);
 
-						player.sendMessage(ChatColor.GRAY + Demigods.LANGUAGE.getText(Translation.Text.NOTIFICATION_OBELISK_CREATED));
+						player.sendMessage(ChatColor.GRAY + Text.NOTIFICATION_OBELISK_CREATED));
 						event.setCancelled(true);
 					}
 					catch(Exception e)
@@ -201,12 +200,12 @@ public class Obelisk extends GreekStructure
 
 					Admins.sendDebug(ChatColor.RED + "Obelisk owned by (" + owner.getName() + ") at: " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ() + " removed.");
 
-					player.sendMessage(ChatColor.GREEN + Demigods.LANGUAGE.getText(Translation.Text.ADMIN_WAND_REMOVE_OBELISK_COMPLETE));
+					player.sendMessage(ChatColor.GREEN + Text.ADMIN_WAND_REMOVE_OBELISK_COMPLETE));
 				}
 				else
 				{
 					DataManager.saveTimed(player.getName(), "destroy_obelisk", true, 5);
-					player.sendMessage(ChatColor.RED + Demigods.LANGUAGE.getText(Translation.Text.ADMIN_WAND_REMOVE_OBELISK));
+					player.sendMessage(ChatColor.RED + Text.ADMIN_WAND_REMOVE_OBELISK));
 				}
 			}
 		}

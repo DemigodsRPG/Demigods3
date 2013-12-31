@@ -1,11 +1,10 @@
 package com.censoredsoftware.demigods.engine.listener;
 
 import com.censoredsoftware.censoredlib.helper.QuitReasonHandler;
-import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.DemigodsPlugin;
 import com.censoredsoftware.demigods.engine.battle.Battle;
 import com.censoredsoftware.demigods.engine.data.DataManager;
-import com.censoredsoftware.demigods.engine.language.Translation;
+import com.censoredsoftware.demigods.engine.language.Text;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
 import com.censoredsoftware.demigods.engine.util.Configs;
@@ -72,8 +71,8 @@ public class PlayerListener implements Listener
 		// Demigods welcome message
 		if(Configs.getSettingBoolean("misc.welcome_message"))
 		{
-			player.sendMessage(Demigods.LANGUAGE.getText(Translation.Text.RUNNING_DG_VERSION).replace("{version}", DemigodsPlugin.inst().getDescription().getVersion()));
-			player.sendMessage(Demigods.LANGUAGE.getText(Translation.Text.DG_FOR_MORE_INFORMATION));
+			player.sendMessage(Text.RUNNING_DG_VERSION.english().replace("{version}", DemigodsPlugin.inst().getDescription().getVersion()));
+			player.sendMessage(Text.DG_FOR_MORE_INFORMATION.english());
 		}
 
 		// TODO First join book
@@ -83,22 +82,22 @@ public class PlayerListener implements Listener
 		if(character != null && character.getMeta().hasNotifications())
 		{
 			int size = character.getMeta().getNotifications().size();
-			player.sendMessage(size == 1 ? Demigods.LANGUAGE.getText(Translation.Text.UNREAD_NOTIFICATION) : Demigods.LANGUAGE.getText(Translation.Text.UNREAD_NOTIFICATIONS).replace("{size}", "" + size));
-			player.sendMessage(Demigods.LANGUAGE.getText(Translation.Text.FIND_ALTAR_TO_VIEW_NOTIFICATIONS));
+			player.sendMessage(size == 1 ? Text.UNREAD_NOTIFICATION.english() : Text.UNREAD_NOTIFICATIONS.english().replace("{size}", "" + size));
+			player.sendMessage(Text.FIND_ALTAR_TO_VIEW_NOTIFICATIONS.english());
 		}
 
 		// Remove temp battle data
 		if(DataManager.hasKeyTemp(player.getName(), "quit_during_battle"))
 		{
 			DataManager.removeTemp(player.getName(), "quit_during_battle");
-			player.sendMessage(Demigods.LANGUAGE.getText(Translation.Text.WELCOME_BACK_IN_BATTLE));
+			player.sendMessage(Text.WELCOME_BACK_IN_BATTLE.english());
 		}
 
 		// Alert of losing battle due to leaving
 		if(DataManager.hasKeyTemp(player.getName(), "quit_during_battle_final"))
 		{
 			DataManager.removeTemp(player.getName(), "quit_during_battle_final");
-			player.sendMessage(Demigods.LANGUAGE.getText(Translation.Text.WELCOME_BACK_BATTLE_LOST));
+			player.sendMessage(Text.WELCOME_BACK_BATTLE_LOST.english());
 		}
 	}
 
@@ -112,26 +111,26 @@ public class PlayerListener implements Listener
 	public void onPlayerQuit(PlayerQuitEvent event)
 	{
 		final String name = event.getPlayer().getName();
-		String message = Demigods.LANGUAGE.getText(Translation.Text.DISCONNECT_QUITTING).replace("{name}", name);
+		String message = Text.DISCONNECT_QUITTING.english().replace("{name}", name);
 		switch(QuitReasonHandler.latestQuit)
 		{
 			case GENERIC_REASON:
-				message = Demigods.LANGUAGE.getText(Translation.Text.DISCONNECT_GENERIC).replace("{name}", name);
+				message = Text.DISCONNECT_GENERIC.english().replace("{name}", name);
 				break;
 			case SPAM:
-				message = Demigods.LANGUAGE.getText(Translation.Text.DISCONNECT_SPAM).replace("{name}", name);
+				message = Text.DISCONNECT_SPAM.english().replace("{name}", name);
 				break;
 			case END_OF_STREAM:
-				message = Demigods.LANGUAGE.getText(Translation.Text.DISCONNECT_EOS).replace("{name}", name);
+				message = Text.DISCONNECT_EOS.english().replace("{name}", name);
 				break;
 			case OVERFLOW:
-				message = Demigods.LANGUAGE.getText(Translation.Text.DISCONNECT_OVERFLOW).replace("{name}", name);
+				message = Text.DISCONNECT_OVERFLOW.english().replace("{name}", name);
 				break;
 			case QUITTING:
-				message = Demigods.LANGUAGE.getText(Translation.Text.DISCONNECT_QUITTING).replace("{name}", name);
+				message = Text.DISCONNECT_QUITTING.english().replace("{name}", name);
 				break;
 			case TIMEOUT:
-				message = Demigods.LANGUAGE.getText(Translation.Text.DISCONNECT_TIMEOUT).replace("{name}", name);
+				message = Text.DISCONNECT_TIMEOUT.english().replace("{name}", name);
 				break;
 		}
 		event.setQuitMessage(message);
@@ -155,7 +154,7 @@ public class PlayerListener implements Listener
 							Battle battle = Battle.Util.getBattle(loggingOff);
 							battle.removeParticipant(loggingOff);
 							DataManager.removeTemp(name, "quit_during_battle");
-							battle.sendMessage(Demigods.LANGUAGE.getText(Translation.Text.DISCONNECT_DURING_BATTLE).replace("{name}", loggingOff.getName()));
+							battle.sendMessage(Text.DISCONNECT_DURING_BATTLE.english().replace("{name}", loggingOff.getName()));
 							DataManager.saveTemp(name, "quit_during_battle_final", true);
 						}
 					}
