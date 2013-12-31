@@ -2,8 +2,8 @@ package com.censoredsoftware.demigods.engine.listener;
 
 import com.censoredsoftware.censoredlib.util.Vehicles;
 import com.censoredsoftware.demigods.engine.data.*;
-import com.censoredsoftware.demigods.engine.data.util.CLocations;
 import com.censoredsoftware.demigods.engine.mythos.Structure;
+import com.censoredsoftware.demigods.engine.util.CLocations;
 import com.censoredsoftware.demigods.engine.util.Configs;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;

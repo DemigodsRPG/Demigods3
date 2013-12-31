@@ -1,4 +1,4 @@
-package com.censoredsoftware.demigods.engine.data.util;
+package com.censoredsoftware.demigods.engine.util;
 
 import com.censoredsoftware.censoredlib.data.location.CLocation;
 import com.censoredsoftware.censoredlib.data.location.Region;

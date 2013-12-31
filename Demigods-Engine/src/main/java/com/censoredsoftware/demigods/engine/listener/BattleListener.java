@@ -1,7 +1,7 @@
 package com.censoredsoftware.demigods.engine.listener;
 
 import com.censoredsoftware.demigods.engine.data.*;
-import com.censoredsoftware.demigods.engine.data.util.CLocations;
+import com.censoredsoftware.demigods.engine.util.CLocations;
 import com.censoredsoftware.demigods.engine.util.Configs;
 import com.censoredsoftware.demigods.engine.util.Zones;
 import org.bukkit.ChatColor;
