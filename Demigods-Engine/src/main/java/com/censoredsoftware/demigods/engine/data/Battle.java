@@ -8,7 +8,6 @@ import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.DemigodsPlugin;
 import com.censoredsoftware.demigods.engine.mythos.Alliance;
 import com.censoredsoftware.demigods.engine.mythos.Deity;
-import com.censoredsoftware.demigods.engine.util.CLocations;
 import com.censoredsoftware.demigods.engine.util.Configs;
 import com.censoredsoftware.demigods.engine.util.Messages;
 import com.censoredsoftware.demigods.engine.util.Zones;
@@ -110,7 +109,7 @@ public class Battle implements ConfigurationSerializable
 
 	void setStartLocation(Location location)
 	{
-		this.startLoc = CLocations.create(location).getId();
+		this.startLoc = CLocationManager.create(location).getId();
 	}
 
 	void setStartTime(long time)
@@ -168,7 +167,7 @@ public class Battle implements ConfigurationSerializable
 
 	public Location getStartLocation()
 	{
-		return CLocations.load(this.startLoc).toLocation();
+		return CLocationManager.load(this.startLoc).toLocation();
 	}
 
 	public long getStartTime()
@@ -605,7 +604,7 @@ public class Battle implements ConfigurationSerializable
 		public static Collection<Location> battleBorder(final Battle battle)
 		{
 			if(!Demigods.Util.isRunningSpigot()) throw new SpigotNotFoundException();
-			return Collections2.transform(CLocations.getCirclePoints(battle.getStartLocation(), battle.getRange(), 120), new Function<Location, Location>()
+			return Collections2.transform(CLocationManager.getCirclePoints(battle.getStartLocation(), battle.getRange(), 120), new Function<Location, Location>()
 			{
 				@Override
 				public Location apply(Location point)
@@ -632,8 +631,8 @@ public class Battle implements ConfigurationSerializable
 
 			// Now change the angle
 			Location changed = target.clone();
-			changed.setYaw(180 - CLocations.toDegree(Math.atan2(Y, X)));
-			changed.setPitch(90 - CLocations.toDegree(Math.acos(Z)));
+			changed.setYaw(180 - CLocationManager.toDegree(Math.atan2(Y, X)));
+			changed.setPitch(90 - CLocationManager.toDegree(Math.acos(Z)));
 			return changed;
 		}
 
@@ -650,7 +649,7 @@ public class Battle implements ConfigurationSerializable
 
 		public static List<Location> getSafeRespawnPoints(final Battle battle)
 		{
-			return Lists.newArrayList(Collections2.filter(Collections2.transform(CLocations.getCirclePoints(battle.getStartLocation(), battle.getRange() - 1.5, 100), new Function<Location, Location>()
+			return Lists.newArrayList(Collections2.filter(Collections2.transform(CLocationManager.getCirclePoints(battle.getStartLocation(), battle.getRange() - 1.5, 100), new Function<Location, Location>()
 			{
 				@Override
 				public Location apply(Location point)

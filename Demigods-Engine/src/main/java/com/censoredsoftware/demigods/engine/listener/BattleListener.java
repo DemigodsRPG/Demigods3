@@ -1,7 +1,6 @@
 package com.censoredsoftware.demigods.engine.listener;
 
 import com.censoredsoftware.demigods.engine.data.*;
-import com.censoredsoftware.demigods.engine.util.CLocations;
 import com.censoredsoftware.demigods.engine.util.Configs;
 import com.censoredsoftware.demigods.engine.util.Zones;
 import org.bukkit.ChatColor;
@@ -164,7 +163,7 @@ public class BattleListener implements Listener
 		if(Battle.Util.isInBattle(participant))
 		{
 			Battle battle = Battle.Util.getBattle(participant);
-			if(!event.getTo().getWorld().equals(battle.getStartLocation().getWorld()) || CLocations.distanceFlat(event.getTo(), battle.getStartLocation()) > battle.getRange()) event.setCancelled(true);
+			if(!event.getTo().getWorld().equals(battle.getStartLocation().getWorld()) || CLocationManager.distanceFlat(event.getTo(), battle.getStartLocation()) > battle.getRange()) event.setCancelled(true);
 		}
 	}
 }

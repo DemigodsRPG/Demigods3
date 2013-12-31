@@ -8,8 +8,6 @@ import com.censoredsoftware.censoredlib.data.player.Notification;
 import com.censoredsoftware.censoredlib.helper.ConfigFile;
 import com.censoredsoftware.demigods.engine.DemigodsPlugin;
 import com.censoredsoftware.demigods.engine.language.English;
-import com.censoredsoftware.demigods.engine.util.ServerDatas;
-import com.censoredsoftware.demigods.engine.util.TimedDatas;
 import com.google.common.base.Supplier;
 import com.google.common.collect.Table;
 import com.google.common.collect.Tables;
@@ -132,7 +130,7 @@ public class DataManager
 	public static void saveTimed(String key, String subKey, Object data, Integer seconds)
 	{
 		// Remove the data if it exists already
-		TimedDatas.remove(key, subKey);
+		TimedDataManager.remove(key, subKey);
 
 		// Create and save the timed data
 		TimedData timedData = new TimedData();
@@ -150,7 +148,7 @@ public class DataManager
 	public static void saveTimedWeek(String key, String subKey, Object data)
 	{
 		// Remove the data if it exists already
-		TimedDatas.remove(key, subKey);
+		TimedDataManager.remove(key, subKey);
 
 		// Create and save the timed data
 		TimedData timedData = new TimedData();
@@ -164,22 +162,22 @@ public class DataManager
 
 	public static void removeTimed(String key, String subKey)
 	{
-		TimedDatas.remove(key, subKey);
+		TimedDataManager.remove(key, subKey);
 	}
 
 	public static boolean hasTimed(String key, String subKey)
 	{
-		return TimedDatas.find(key, subKey) != null;
+		return TimedDataManager.find(key, subKey) != null;
 	}
 
 	public static Object getTimedValue(String key, String subKey)
 	{
-		return TimedDatas.find(key, subKey).getData();
+		return TimedDataManager.find(key, subKey).getData();
 	}
 
 	public static long getTimedExpiration(String key, String subKey)
 	{
-		return TimedDatas.find(key, subKey).getExpiration();
+		return TimedDataManager.find(key, subKey).getExpiration();
 	}
 
 	/*
@@ -188,7 +186,7 @@ public class DataManager
 	public static void saveServerData(String key, String subKey, Object data)
 	{
 		// Remove the data if it exists already
-		ServerDatas.remove(key, subKey);
+		ServerDataManager.remove(key, subKey);
 
 		// Create and save the timed data
 		ServerData serverData = new ServerData();
@@ -201,17 +199,17 @@ public class DataManager
 
 	public static void removeServerData(String key, String subKey)
 	{
-		ServerDatas.remove(key, subKey);
+		ServerDataManager.remove(key, subKey);
 	}
 
 	public static boolean hasServerData(String key, String subKey)
 	{
-		return ServerDatas.find(key, subKey) != null;
+		return ServerDataManager.find(key, subKey) != null;
 	}
 
 	public static Object getServerDataValue(String key, String subKey)
 	{
-		return ServerDatas.find(key, subKey).getData();
+		return ServerDataManager.find(key, subKey).getData();
 	}
 
 	public static enum File

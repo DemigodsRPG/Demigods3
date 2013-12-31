@@ -1,10 +1,10 @@
 package com.censoredsoftware.demigods.engine.listener;
 
+import com.censoredsoftware.demigods.engine.data.CLocationManager;
 import com.censoredsoftware.demigods.engine.data.DCharacter;
 import com.censoredsoftware.demigods.engine.data.DPlayer;
 import com.censoredsoftware.demigods.engine.data.StructureData;
 import com.censoredsoftware.demigods.engine.mythos.Structure;
-import com.censoredsoftware.demigods.engine.util.CLocations;
 import com.censoredsoftware.demigods.engine.util.Zones;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
@@ -114,7 +114,7 @@ public class GriefListener implements Listener
 		if(event.getEntityType() != EntityType.FALLING_BLOCK || event.getBlock().getRelative(BlockFace.DOWN).getType().equals(Material.AIR)) return;
 		FallingBlock block = (FallingBlock) event.getEntity();
 		Location blockLocation = block.getLocation();
-		if(Structure.Util.isInRadiusWithFlag(CLocations.getFloorBelowLocation(block.getLocation()), Structure.Flag.NO_GRIEFING))
+		if(Structure.Util.isInRadiusWithFlag(CLocationManager.getFloorBelowLocation(block.getLocation()), Structure.Flag.NO_GRIEFING))
 		{
 			// Break the block
 			event.setCancelled(true);

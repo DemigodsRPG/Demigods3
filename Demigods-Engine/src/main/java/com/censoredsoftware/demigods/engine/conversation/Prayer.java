@@ -9,18 +9,13 @@ import com.censoredsoftware.censoredlib.util.Titles;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.DemigodsPlugin;
 import com.censoredsoftware.demigods.engine.base.DemigodsConversation;
-import com.censoredsoftware.demigods.engine.data.DCharacter;
-import com.censoredsoftware.demigods.engine.data.DPlayer;
-import com.censoredsoftware.demigods.engine.data.DataManager;
-import com.censoredsoftware.demigods.engine.data.Skill;
+import com.censoredsoftware.demigods.engine.data.*;
 import com.censoredsoftware.demigods.engine.language.English;
 import com.censoredsoftware.demigods.engine.mythos.Alliance;
 import com.censoredsoftware.demigods.engine.mythos.Deity;
 import com.censoredsoftware.demigods.engine.mythos.Structure;
-import com.censoredsoftware.demigods.engine.util.CLocations;
 import com.censoredsoftware.demigods.engine.util.Configs;
 import com.censoredsoftware.demigods.engine.util.Messages;
-import com.censoredsoftware.demigods.engine.util.Notifications;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -214,12 +209,12 @@ public class Prayer implements WrappedConversation
 
 				for(Map.Entry<String, Object> entry : character.getMeta().getWarps().entrySet())
 				{
-					Location location = CLocations.load(UUID.fromString(entry.getValue().toString())).toLocation();
+					Location location = CLocationManager.load(UUID.fromString(entry.getValue().toString())).toLocation();
 					player.sendRawMessage((player.getLocation().distance(location) < 8 ? ChatColor.LIGHT_PURPLE : ChatColor.GRAY) + "    " + StringUtils.capitalize(entry.getKey().toLowerCase()) + ChatColor.GRAY + " (" + StringUtils.capitalize(location.getWorld().getName().toLowerCase()) + ": " + Math.round(location.getX()) + ", " + Math.round(location.getY()) + ", " + Math.round(location.getZ()) + ")");
 				}
 				for(Map.Entry<String, Object> entry : character.getMeta().getInvites().entrySet())
 				{
-					Location location = CLocations.load(UUID.fromString(entry.getValue().toString())).toLocation();
+					Location location = CLocationManager.load(UUID.fromString(entry.getValue().toString())).toLocation();
 					player.sendRawMessage((player.getLocation().distance(location) < 8 ? ChatColor.LIGHT_PURPLE : ChatColor.GRAY) + "    " + StringUtils.capitalize(entry.getKey().toLowerCase()) + ChatColor.GRAY + " (" + StringUtils.capitalize(location.getWorld().getName().toLowerCase()) + ": " + Math.round(location.getX()) + ", " + Math.round(location.getY()) + ", " + Math.round(location.getZ()) + ") " + ChatColor.GREEN + "Invited by [ALLAN!!]"); // TODO: Invited by
 				}
 
@@ -350,7 +345,7 @@ public class Prayer implements WrappedConversation
 
 				// Define variables
 				DCharacter invitee = DCharacter.Util.charExists(arg1) ? DCharacter.Util.getCharacterByName(arg1) : DPlayer.Util.getPlayer(Bukkit.getOfflinePlayer(arg1)).getCurrent();
-				Location warp = CLocations.load(UUID.fromString(character.getMeta().getWarps().get(arg2).toString())).toLocation(); // NPE (can't figure out why)
+				Location warp = CLocationManager.load(UUID.fromString(character.getMeta().getWarps().get(arg2).toString())).toLocation(); // NPE (can't figure out why)
 
 				// Add the invite
 				invitee.getMeta().addInvite(character.getName(), warp);
@@ -371,10 +366,10 @@ public class Prayer implements WrappedConversation
 				DPlayer.Util.togglePrayingSilent(player, false, true);
 
 				// Teleport and message
-				if(character.getMeta().getWarps().containsKey(arg1.toLowerCase())) player.teleport(CLocations.load(UUID.fromString(character.getMeta().getWarps().get(arg1.toLowerCase()).toString())).toLocation());
+				if(character.getMeta().getWarps().containsKey(arg1.toLowerCase())) player.teleport(CLocationManager.load(UUID.fromString(character.getMeta().getWarps().get(arg1.toLowerCase()).toString())).toLocation());
 				else if(character.getMeta().getInvites().containsKey(arg1.toLowerCase()))
 				{
-					player.teleport(CLocations.load(UUID.fromString(character.getMeta().getInvites().get(arg1.toLowerCase()).toString())).toLocation());
+					player.teleport(CLocationManager.load(UUID.fromString(character.getMeta().getInvites().get(arg1.toLowerCase()).toString())).toLocation());
 					character.getMeta().removeInvite(arg1.toLowerCase());
 				}
 				player.sendMessage(ChatColor.GRAY + "Teleported to " + ChatColor.LIGHT_PURPLE + StringUtils.capitalize(arg1.toLowerCase()) + ChatColor.GRAY + ".");
@@ -572,7 +567,7 @@ public class Prayer implements WrappedConversation
 
 			for(String string : character.getMeta().getNotifications())
 			{
-				Notification notification = Notifications.load(UUID.fromString(string));
+				Notification notification = NotificationManager.load(UUID.fromString(string));
 				// Determine color
 				ChatColor color;
 				switch(notification.getDanger())
@@ -624,7 +619,7 @@ public class Prayer implements WrappedConversation
 			{
 				// Clear them
 				for(String string : character.getMeta().getNotifications())
-					Notifications.remove(Notifications.load(UUID.fromString(string)));
+					NotificationManager.remove(NotificationManager.load(UUID.fromString(string)));
 				character.getMeta().clearNotifications();
 
 				// Send to the menu

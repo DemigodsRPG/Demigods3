@@ -3,7 +3,6 @@ package com.censoredsoftware.demigods.engine.listener;
 import com.censoredsoftware.censoredlib.util.Vehicles;
 import com.censoredsoftware.demigods.engine.data.*;
 import com.censoredsoftware.demigods.engine.mythos.Structure;
-import com.censoredsoftware.demigods.engine.util.CLocations;
 import com.censoredsoftware.demigods.engine.util.Configs;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
@@ -40,8 +39,8 @@ public class MoveListener implements Listener
 		if(Battle.Util.isInBattle(participant))
 		{
 			Battle battle = Battle.Util.getBattle(participant);
-			boolean toBool = CLocations.distanceFlat(to, battle.getStartLocation()) > battle.getRange();
-			boolean fromBool = CLocations.distanceFlat(from, battle.getStartLocation()) > battle.getRange();
+			boolean toBool = CLocationManager.distanceFlat(to, battle.getStartLocation()) > battle.getRange();
+			boolean fromBool = CLocationManager.distanceFlat(from, battle.getStartLocation()) > battle.getRange();
 			if(toBool && !fromBool) DataManager.saveTemp((participant.getEntity().getPassenger() == null ? participant.getId().toString() : participant.getRelatedCharacter().getId().toString()), "battle_safe_location", from);
 			if(toBool)
 			{
@@ -66,7 +65,7 @@ public class MoveListener implements Listener
 				@Override
 				public boolean apply(Location location)
 				{
-					return CLocations.distanceFlat(to, location) < 1;
+					return CLocationManager.distanceFlat(to, location) < 1;
 				}
 			});
 			boolean fromBool = Iterables.any(data.getLocations(), new Predicate<Location>()
@@ -74,7 +73,7 @@ public class MoveListener implements Listener
 				@Override
 				public boolean apply(Location location)
 				{
-					return CLocations.distanceFlat(from, location) < 1;
+					return CLocationManager.distanceFlat(from, location) < 1;
 				}
 			});
 			if(toBool && !fromBool && entity instanceof Player && !data.getType().isAllowed().apply((Player) entity)) DataManager.saveTemp(DPlayer.Util.getPlayer((Player) entity).getMojangAccount(), "invisible_wall_location", from);

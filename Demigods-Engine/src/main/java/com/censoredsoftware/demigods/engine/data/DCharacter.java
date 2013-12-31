@@ -11,8 +11,6 @@ import com.censoredsoftware.demigods.engine.mythos.Ability;
 import com.censoredsoftware.demigods.engine.mythos.Alliance;
 import com.censoredsoftware.demigods.engine.mythos.Deity;
 import com.censoredsoftware.demigods.engine.mythos.Structure;
-import com.censoredsoftware.demigods.engine.util.CItemStacks;
-import com.censoredsoftware.demigods.engine.util.CLocations;
 import com.censoredsoftware.demigods.engine.util.Configs;
 import com.censoredsoftware.demigods.engine.util.Messages;
 import com.google.common.base.Function;
@@ -78,7 +76,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			location = UUID.fromString(conf.getString("location"));
 			try
 			{
-				CLocations.load(location);
+				CLocationManager.load(location);
 			}
 			catch(Exception errored)
 			{
@@ -90,7 +88,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			bedSpawn = UUID.fromString(conf.getString("bedSpawn"));
 			try
 			{
-				CLocations.load(bedSpawn);
+				CLocationManager.load(bedSpawn);
 			}
 			catch(Exception errored)
 			{
@@ -217,12 +215,12 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 	public void setLocation(Location location)
 	{
-		this.location = CLocations.create(location).getId();
+		this.location = CLocationManager.create(location).getId();
 	}
 
 	public void setBedSpawn(Location location)
 	{
-		this.bedSpawn = CLocations.create(location).getId();
+		this.bedSpawn = CLocationManager.create(location).getId();
 	}
 
 	public void setGameMode(GameMode gameMode)
@@ -329,13 +327,13 @@ public class DCharacter implements Participant, ConfigurationSerializable
 	public Location getLocation()
 	{
 		if(location == null) return null;
-		return CLocations.load(location).toLocation();
+		return CLocationManager.load(location).toLocation();
 	}
 
 	public Location getBedSpawn()
 	{
 		if(bedSpawn == null) return null;
-		return CLocations.load(bedSpawn).toLocation();
+		return CLocationManager.load(bedSpawn).toLocation();
 	}
 
 	public GameMode getGameMode()
@@ -646,12 +644,12 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 		protected CItemStack create(ItemStack itemStack)
 		{
-			return CItemStacks.create(itemStack);
+			return CItemStackManager.create(itemStack);
 		}
 
 		protected CItemStack load(UUID itemStack)
 		{
-			return CItemStacks.load(itemStack);
+			return CItemStackManager.load(itemStack);
 		}
 
 		protected void delete()
@@ -674,12 +672,12 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 		protected CItemStack create(ItemStack itemStack)
 		{
-			return CItemStacks.create(itemStack);
+			return CItemStackManager.create(itemStack);
 		}
 
 		protected CItemStack load(UUID itemStack)
 		{
-			return CItemStacks.load(itemStack);
+			return CItemStackManager.load(itemStack);
 		}
 
 		protected void delete()
@@ -813,7 +811,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 		public void addWarp(String name, Location location)
 		{
-			warps.put(name.toLowerCase(), CLocations.create(location).getId().toString());
+			warps.put(name.toLowerCase(), CLocationManager.create(location).getId().toString());
 			Util.saveMeta(this);
 		}
 
@@ -841,7 +839,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 		public void addInvite(String name, Location location)
 		{
-			getInvites().put(name.toLowerCase(), CLocations.create(location).getId().toString());
+			getInvites().put(name.toLowerCase(), CLocationManager.create(location).getId().toString());
 			Util.saveMeta(this);
 		}
 
