@@ -1,7 +1,7 @@
 package com.censoredsoftware.demigods.engine.listener;
 
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.player.DPlayer;
+import com.censoredsoftware.demigods.engine.base.DemigodsCommand;
+import com.censoredsoftware.demigods.engine.data.DPlayer;
 import com.censoredsoftware.demigods.engine.util.Abilities;
 import com.censoredsoftware.demigods.engine.util.Messages;
 import com.censoredsoftware.demigods.engine.util.Zones;
@@ -23,7 +23,7 @@ public class ChatListener implements Listener
 	public static void init()
 	{
 		Set<String> commands = Sets.newHashSet();
-		for(Demigods.DemigodsCommand command : Demigods.DemigodsCommand.values())
+		for(DemigodsCommand command : DemigodsCommand.values())
 			commands.addAll(command.getCommand().getCommands());
 		commands.add("demigod");
 		commands.add("dg");

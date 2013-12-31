@@ -3,16 +3,16 @@ package com.censoredsoftware.demigods.greek.structure;
 import com.censoredsoftware.censoredlib.schematic.Schematic;
 import com.censoredsoftware.censoredlib.schematic.Selection;
 import com.censoredsoftware.censoredlib.util.Colors;
+import com.censoredsoftware.demigods.engine.data.DCharacter;
+import com.censoredsoftware.demigods.engine.data.DPlayer;
 import com.censoredsoftware.demigods.engine.data.DataManager;
-import com.censoredsoftware.demigods.engine.deity.Deity;
-import com.censoredsoftware.demigods.engine.player.DCharacter;
-import com.censoredsoftware.demigods.engine.player.DPlayer;
-import com.censoredsoftware.demigods.engine.structure.Structure;
-import com.censoredsoftware.demigods.engine.structure.StructureData;
+import com.censoredsoftware.demigods.engine.data.StructureData;
+import com.censoredsoftware.demigods.engine.mythos.Deity;
+import com.censoredsoftware.demigods.engine.mythos.Structure;
 import com.censoredsoftware.demigods.engine.util.Admins;
 import com.censoredsoftware.demigods.engine.util.Configs;
 import com.censoredsoftware.demigods.engine.util.Zones;
-import com.censoredsoftware.demigods.greek.language.Text;
+import com.censoredsoftware.demigods.greek.language.English;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import org.bukkit.*;
@@ -155,7 +155,7 @@ public class Shrine extends GreekStructure
 							player.setItemInHand(new ItemStack(Material.AIR));
 						}
 
-						for(String string : Text.NOTIFICATION_SHRINE_CREATED.englishBlock())
+						for(String string : English.NOTIFICATION_SHRINE_CREATED.getLines())
 							player.sendMessage(string.replace("{alliance}", character.getAlliance() + "s").replace("{deity}", character.getDeity().getName()));
 						event.setCancelled(true);
 					}
@@ -182,12 +182,12 @@ public class Shrine extends GreekStructure
 
 					Admins.sendDebug(ChatColor.RED + "Shrine of (" + owner.getDeity() + ") at: " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ() + " removed.");
 
-					player.sendMessage(ChatColor.GREEN + Text.ADMIN_WAND_REMOVE_SHRINE_COMPLETE.english());
+					player.sendMessage(ChatColor.GREEN + English.ADMIN_WAND_REMOVE_SHRINE_COMPLETE.getLine());
 				}
 				else
 				{
 					DataManager.saveTimed(player.getName(), "destroy_shrine", true, 5);
-					player.sendMessage(ChatColor.RED + Text.ADMIN_WAND_REMOVE_SHRINE.english());
+					player.sendMessage(ChatColor.RED + English.ADMIN_WAND_REMOVE_SHRINE.getLine());
 				}
 			}
 		}

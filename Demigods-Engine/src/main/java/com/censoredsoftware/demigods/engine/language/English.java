@@ -6,7 +6,7 @@ import org.bukkit.ChatColor;
 import java.util.ArrayList;
 import java.util.List;
 
-public enum Text
+public enum English
 {
 	NOTIFICATION_SKILL_POINTS_RECEIVED(new ArrayList<String>()
 	{
@@ -56,13 +56,13 @@ public enum Text
 	private String english;
 	private List<String> englishBlock;
 
-	private Text(String english)
+	private English(String english)
 	{
 		this.english = english;
 		this.englishBlock = Lists.newArrayList();
 	}
 
-	private Text(List<String> englishBlock)
+	private English(List<String> englishBlock)
 	{
 		this.english = "";
 		this.englishBlock = englishBlock;
@@ -74,12 +74,12 @@ public enum Text
 		return english;
 	}
 
-	public String english()
+	public String getLine()
 	{
 		return english;
 	}
 
-	public List<String> englishBlock()
+	public List<String> getLines()
 	{
 		return englishBlock;
 	}

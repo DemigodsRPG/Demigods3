@@ -1,10 +1,6 @@
 package com.censoredsoftware.demigods.engine.mythos;
 
 import com.censoredsoftware.censoredlib.trigger.Trigger;
-import com.censoredsoftware.demigods.engine.deity.Alliance;
-import com.censoredsoftware.demigods.engine.deity.Deity;
-import com.censoredsoftware.demigods.engine.item.DivineItem;
-import com.censoredsoftware.demigods.engine.structure.Structure;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;

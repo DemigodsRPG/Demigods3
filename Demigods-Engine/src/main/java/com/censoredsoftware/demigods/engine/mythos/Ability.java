@@ -1,6 +1,6 @@
-package com.censoredsoftware.demigods.engine.deity;
+package com.censoredsoftware.demigods.engine.mythos;
 
-import com.censoredsoftware.demigods.engine.player.Skill;
+import com.censoredsoftware.demigods.engine.data.Skill;
 import org.bukkit.Material;
 import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;

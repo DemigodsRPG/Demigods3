@@ -1,6 +1,5 @@
-package com.censoredsoftware.demigods.engine.battle;
+package com.censoredsoftware.demigods.engine.data;
 
-import com.censoredsoftware.demigods.engine.player.DCharacter;
 import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
 

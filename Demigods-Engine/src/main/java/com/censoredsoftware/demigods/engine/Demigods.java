@@ -2,24 +2,17 @@ package com.censoredsoftware.demigods.engine;
 
 import com.censoredsoftware.censoredlib.helper.CensoredCentralizedClass;
 import com.censoredsoftware.censoredlib.helper.QuitReasonHandler;
-import com.censoredsoftware.censoredlib.helper.WrappedCommand;
 import com.censoredsoftware.censoredlib.helper.WrappedConversation;
-import com.censoredsoftware.demigods.engine.command.DevelopmentCommands;
-import com.censoredsoftware.demigods.engine.command.GeneralCommands;
-import com.censoredsoftware.demigods.engine.command.MainCommand;
-import com.censoredsoftware.demigods.engine.conversation.Prayer;
-import com.censoredsoftware.demigods.engine.data.TaskManager;
-import com.censoredsoftware.demigods.engine.deity.Ability;
-import com.censoredsoftware.demigods.engine.deity.Alliance;
-import com.censoredsoftware.demigods.engine.deity.Deity;
-import com.censoredsoftware.demigods.engine.item.DivineItem;
-import com.censoredsoftware.demigods.engine.listener.*;
-import com.censoredsoftware.demigods.engine.mythos.Mythos;
-import com.censoredsoftware.demigods.engine.mythos.MythosSet;
-import com.censoredsoftware.demigods.engine.player.DCharacter;
-import com.censoredsoftware.demigods.engine.player.DPlayer;
-import com.censoredsoftware.demigods.engine.player.Skill;
-import com.censoredsoftware.demigods.engine.structure.Structure;
+import com.censoredsoftware.demigods.engine.base.DemigodsConversation;
+import com.censoredsoftware.demigods.engine.base.DemigodsListener;
+import com.censoredsoftware.demigods.engine.base.DemigodsPermission;
+import com.censoredsoftware.demigods.engine.data.DCharacter;
+import com.censoredsoftware.demigods.engine.data.DPlayer;
+import com.censoredsoftware.demigods.engine.data.DataManager;
+import com.censoredsoftware.demigods.engine.data.Skill;
+import com.censoredsoftware.demigods.engine.listener.ChatListener;
+import com.censoredsoftware.demigods.engine.listener.SpigotFeatures;
+import com.censoredsoftware.demigods.engine.mythos.*;
 import com.censoredsoftware.demigods.engine.util.Abilities;
 import com.censoredsoftware.demigods.engine.util.Configs;
 import com.censoredsoftware.demigods.engine.util.Messages;
@@ -32,9 +25,8 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.ConversationFactory;
-import org.bukkit.conversations.Prompt;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
@@ -215,7 +207,7 @@ public class Demigods extends CensoredCentralizedClass
 		PluginManager register = Bukkit.getServer().getPluginManager();
 
 		// Base Game
-		if(mythos().useBaseGame()) for(BaseGameListener baseGameListener : BaseGameListener.values())
+		if(mythos().useBaseGame()) for(DemigodsListener baseGameListener : DemigodsListener.values())
 			register.registerEvents(baseGameListener.getListener(), DemigodsPlugin.plugin());
 
 		// Mythos
@@ -307,121 +299,99 @@ public class Demigods extends CensoredCentralizedClass
 		ChatListener.init();
 	}
 
-	protected void loadPermissions(boolean load) // FIXME Much too complicated
+	protected void loadPermissions(final boolean load)
 	{
 		final PluginManager register = Bukkit.getServer().getPluginManager();
 
-		if(load)
+		// Default
+		for(DemigodsPermission demigodsPermission : DemigodsPermission.values())
 		{
-			// Default
-			for(DemigodsPermission demigodsPermission : DemigodsPermission.values())
+			Permission permission = demigodsPermission.getPermission();
+			// catch errors to avoid any possible buggy permissions
+			try
 			{
-				Permission permission = demigodsPermission.getPermission();
-				// catch errors to avoid any possible buggy permissions
-				try
-				{
-					for(Map.Entry<String, Boolean> entry : permission.getChildren().entrySet())
-						register.addPermission(new Permission(entry.getKey(), entry.getValue() ? PermissionDefault.TRUE : PermissionDefault.FALSE));
-					register.addPermission(permission);
-				}
-				catch(Exception ignored)
-				{
-					// ignored
-				}
+				for(Map.Entry<String, Boolean> entry : permission.getChildren().entrySet())
+					registerPermission(register, new Permission(entry.getKey(), entry.getValue() ? PermissionDefault.TRUE : PermissionDefault.FALSE), load);
+				registerPermission(register, permission, load);
 			}
-
-			// Mythos
-			for(Permission permission : mythos().getPermissions())
+			catch(Exception ignored)
 			{
-				// catch errors to avoid any possible buggy permissions
-				try
-				{
-					for(Map.Entry<String, Boolean> entry : permission.getChildren().entrySet())
-						register.addPermission(new Permission(entry.getKey(), entry.getValue() ? PermissionDefault.TRUE : PermissionDefault.FALSE));
-					register.addPermission(permission);
-				}
-				catch(Exception ignored)
-				{
-					// ignored
-				}
+				// ignored
 			}
-
-			// Alliances, Deities, and Abilities
-			for(final Alliance alliance : mythos().getAlliances())
-			{
-				register.addPermission(new Permission(alliance.getPermission(), "The permission to use the " + alliance.getName() + " alliance.", alliance.getPermissionDefault(), new HashMap<String, Boolean>()
-				{
-					{
-						for(Deity deity : Alliance.Util.getLoadedDeitiesInAlliance(alliance))
-						{
-							register.addPermission(new Permission(deity.getPermission(), alliance.getPermissionDefault()));
-							put(deity.getPermission(), alliance.getPermissionDefault().equals(PermissionDefault.TRUE));
-						}
-					}
-				}));
-			}
-
-			// Skill types
-			for(Skill.Type skill : Skill.Type.values())
-				register.addPermission(skill.getPermission());
 		}
-		else
+
+		// Mythos
+		for(Permission permission : mythos().getPermissions())
 		{
-			// Default
-			for(DemigodsPermission demigodsPermission : DemigodsPermission.values())
+			// catch errors to avoid any possible buggy permissions
+			try
 			{
-				Permission permission = demigodsPermission.getPermission();
-				// catch errors to avoid any possible buggy permissions
-				try
-				{
-					for(Map.Entry<String, Boolean> entry : permission.getChildren().entrySet())
-						register.removePermission(new Permission(entry.getKey(), entry.getValue() ? PermissionDefault.TRUE : PermissionDefault.FALSE));
-					register.removePermission(permission);
-				}
-				catch(Exception ignored)
-				{
-					// ignored
-				}
+				for(Map.Entry<String, Boolean> entry : permission.getChildren().entrySet())
+					registerPermission(register, new Permission(entry.getKey(), entry.getValue() ? PermissionDefault.TRUE : PermissionDefault.FALSE), load);
+				registerPermission(register, permission, load);
 			}
-
-			// Mythos
-			for(Permission permission : mythos().getPermissions())
+			catch(Exception ignored)
 			{
-				// catch errors to avoid any possible buggy permissions
-				try
-				{
-					for(Map.Entry<String, Boolean> entry : permission.getChildren().entrySet())
-						register.removePermission(new Permission(entry.getKey(), entry.getValue() ? PermissionDefault.TRUE : PermissionDefault.FALSE));
-					register.removePermission(permission);
-				}
-				catch(Exception ignored)
-				{
-					// ignored
-				}
+				// ignored
 			}
+		}
 
-			// Alliances, Deities, and Abilities
-			for(final Alliance alliance : mythos().getAlliances())
+		// Alliances, Deities, and Abilities
+		for(final Alliance alliance : mythos().getAlliances())
+		{
+			registerPermission(register, new Permission(alliance.getPermission(), "The permission to use the " + alliance.getName() + " alliance.", alliance.getPermissionDefault(), new HashMap<String, Boolean>()
 			{
-				register.removePermission(new Permission(alliance.getPermission(), "The permission to use the " + alliance.getName() + " alliance.", alliance.getPermissionDefault(), new HashMap<String, Boolean>()
 				{
+					for(Deity deity : Alliance.Util.getLoadedDeitiesInAlliance(alliance))
 					{
-						for(Deity deity : Alliance.Util.getLoadedDeitiesInAlliance(alliance))
-						{
-							register.removePermission(new Permission(deity.getPermission(), alliance.getPermissionDefault()));
-							put(deity.getPermission(), alliance.getPermissionDefault().equals(PermissionDefault.TRUE));
-						}
+						registerPermission(register, new Permission(deity.getPermission(), alliance.getPermissionDefault()), load);
+						put(deity.getPermission(), alliance.getPermissionDefault().equals(PermissionDefault.TRUE));
 					}
-				}));
-			}
+				}
+			}), load);
+		}
 
-			// Skill types
-			for(Skill.Type skill : Skill.Type.values())
-				register.removePermission(skill.getPermission());
+		// Skill types
+		for(Skill.Type skill : Skill.Type.values())
+			registerPermission(register, skill.getPermission(), load);
+	}
+
+	static void uninit()
+	{
+		if(DemigodsPlugin.READY)
+		{
+			// Save all the data.
+			DataManager.save();
+
+			// Handle online characters
+			for(DCharacter character : DCharacter.Util.getOnlineCharacters())
+			{
+				// Toggle prayer off and clear the session
+				DPlayer.Util.togglePrayingSilent(character.getOfflinePlayer().getPlayer(), false, false);
+				DPlayer.Util.clearPrayerSession(character.getOfflinePlayer().getPlayer());
+			}
+		}
+
+		// Cancel all threads, event calls, and unregister permissions.
+		try
+		{
+			TaskManager.stopThreads();
+			HandlerList.unregisterAll(DemigodsPlugin.plugin());
+			Demigods.unloadPermissions();
+		}
+		catch(Exception ignored)
+		{
+			// ignored
 		}
 	}
 
-	protected static void unloadPermissions()
+	static void registerPermission(PluginManager register, Permission permission, boolean load)
+	{
+		if(load) register.addPermission(permission);
+		else register.removePermission(permission);
+	}
+
+	static void unloadPermissions()
 	{
 		INST.loadPermissions(false);
 	}
@@ -440,92 +410,6 @@ public class Demigods extends CensoredCentralizedClass
 				// ignored
 			}
 			return false;
-		}
-	}
-
-	// Listeners
-	public enum BaseGameListener
-	{
-		BATTLE(new BattleListener()), CHAT(new ChatListener()), ENTITY(new EntityListener()), FLAG(new FlagListener()), GRIEF(new GriefListener()), MOVE(new MoveListener()), PLAYER(new PlayerListener()), TRIBUTE(new TributeListener());
-
-		private Listener listener;
-
-		private BaseGameListener(Listener listener)
-		{
-			this.listener = listener;
-		}
-
-		public Listener getListener()
-		{
-			return listener;
-		}
-	}
-
-	// Permissions
-	public enum DemigodsPermission
-	{
-		BASIC(new Permission("demigods.basic", "The very basic permissions for Demigods.", PermissionDefault.TRUE, new HashMap<String, Boolean>()
-		{
-			{
-				put("demigods.basic.create", true);
-				put("demigods.basic.forsake", true);
-			}
-		})), ADMIN(new Permission("demigods.admin", "The admin permissions for Demigods.", PermissionDefault.OP)), PVP_AREA_COOLDOWN(new Permission("demigods.bypass.pvpareacooldown", "Bypass the wait for leaving/entering PVP zones.", PermissionDefault.FALSE));
-
-		private Permission permission;
-
-		private DemigodsPermission(Permission permission)
-		{
-			this.permission = permission;
-		}
-
-		public Permission getPermission()
-		{
-			return permission;
-		}
-	}
-
-	// Conversations
-	public enum DemigodsConversation
-	{
-		PRAYER(new Prayer());
-
-		private final WrappedConversation conversationInfo;
-
-		private DemigodsConversation(WrappedConversation conversationInfo)
-		{
-			this.conversationInfo = conversationInfo;
-		}
-
-		public WrappedConversation getConversation()
-		{
-			return this.conversationInfo;
-		}
-
-		// Can't touch this. Naaaaaa na-na-na.. Ba-dum, ba-dum.
-		public static interface Category extends Prompt
-		{
-			public String getChatName(ConversationContext context);
-
-			public boolean canUse(ConversationContext context);
-		}
-	}
-
-	// Commands
-	public enum DemigodsCommand
-	{
-		MAIN(new MainCommand()), GENERAL(new GeneralCommands()), DEVELOPMENT(new DevelopmentCommands());
-
-		private WrappedCommand command;
-
-		private DemigodsCommand(WrappedCommand command)
-		{
-			this.command = command;
-		}
-
-		public WrappedCommand getCommand()
-		{
-			return command;
 		}
 	}
 }

@@ -1,7 +1,7 @@
 package com.censoredsoftware.demigods.exclusive.district;
 
 import com.censoredsoftware.censoredlib.data.location.Region;
-import com.censoredsoftware.demigods.engine.structure.StructureData;
+import com.censoredsoftware.demigods.engine.data.StructureData;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Range;

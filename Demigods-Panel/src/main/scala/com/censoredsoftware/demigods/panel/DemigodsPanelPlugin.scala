@@ -1,17 +1,14 @@
 package com.censoredsoftware.demigods.panel
 
-import com.censoredsoftware.demigods.engine.mythos.{Mythos, MythosPlugin}
+import com.censoredsoftware.demigods.engine.mythos._
 import com.censoredsoftware.censoredlib.trigger.Trigger
 import org.bukkit.permissions.Permission
 import org.bukkit.event.Listener
-import com.censoredsoftware.demigods.engine.structure.Structure
-import com.censoredsoftware.demigods.engine.deity.{Alliance, Deity}
-import com.censoredsoftware.demigods.engine.item.DivineItem
 import com.google.common.collect.{ImmutableSet, ImmutableCollection}
 import org.bukkit.Bukkit
 import org.bukkit.plugin.ServicePriority
 import org.bukkit.inventory.ItemStack
-import com.censoredsoftware.demigods.engine.item.DivineItem.Flag
+import DivineItem.Flag
 
 class DemigodsPanelPlugin extends MythosPlugin
 {

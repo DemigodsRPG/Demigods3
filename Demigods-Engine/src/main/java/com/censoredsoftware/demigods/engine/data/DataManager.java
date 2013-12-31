@@ -7,12 +7,9 @@ import com.censoredsoftware.censoredlib.data.location.CLocation;
 import com.censoredsoftware.censoredlib.data.player.Notification;
 import com.censoredsoftware.censoredlib.helper.ConfigFile;
 import com.censoredsoftware.demigods.engine.DemigodsPlugin;
-import com.censoredsoftware.demigods.engine.battle.Battle;
 import com.censoredsoftware.demigods.engine.data.util.ServerDatas;
 import com.censoredsoftware.demigods.engine.data.util.TimedDatas;
-import com.censoredsoftware.demigods.engine.language.Text;
-import com.censoredsoftware.demigods.engine.player.*;
-import com.censoredsoftware.demigods.engine.structure.StructureData;
+import com.censoredsoftware.demigods.engine.language.English;
 import com.google.common.base.Supplier;
 import com.google.common.collect.Table;
 import com.google.common.collect.Tables;
@@ -77,7 +74,7 @@ public class DataManager
 	{
 		// Kick everyone
 		for(Player player : Bukkit.getOnlinePlayers())
-			player.kickPlayer(ChatColor.GREEN + Text.DATA_RESET_KICK.english());
+			player.kickPlayer(ChatColor.GREEN + English.DATA_RESET_KICK.getLine());
 
 		// Clear the data
 		itemStacks.clear();

@@ -1,10 +1,10 @@
 package com.censoredsoftware.demigods.engine.listener;
 
-import com.censoredsoftware.demigods.engine.battle.Battle;
-import com.censoredsoftware.demigods.engine.language.Text;
-import com.censoredsoftware.demigods.engine.player.DCharacter;
-import com.censoredsoftware.demigods.engine.player.DPet;
-import com.censoredsoftware.demigods.engine.player.DPlayer;
+import com.censoredsoftware.demigods.engine.data.Battle;
+import com.censoredsoftware.demigods.engine.data.DCharacter;
+import com.censoredsoftware.demigods.engine.data.DPet;
+import com.censoredsoftware.demigods.engine.data.DPlayer;
+import com.censoredsoftware.demigods.engine.language.English;
 import com.censoredsoftware.demigods.engine.util.Messages;
 import com.censoredsoftware.demigods.engine.util.Zones;
 import org.bukkit.Bukkit;
@@ -42,7 +42,7 @@ public class EntityListener implements Listener
 			// No PvP
 			if(!DPlayer.Util.getPlayer(hitting).canPvp() || !Battle.Util.canTarget(Battle.Util.defineParticipant(attacked)))
 			{
-				hitting.sendMessage(ChatColor.GRAY + Text.NO_PVP_ZONE.english());
+				hitting.sendMessage(ChatColor.GRAY + English.NO_PVP_ZONE.getLine());
 				event.setCancelled(true);
 				return;
 			}

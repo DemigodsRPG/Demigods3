@@ -6,12 +6,12 @@ import com.censoredsoftware.censoredlib.util.Maps2;
 import com.censoredsoftware.censoredlib.util.Strings;
 import com.censoredsoftware.censoredlib.util.Titles;
 import com.censoredsoftware.demigods.engine.DemigodsPlugin;
-import com.censoredsoftware.demigods.engine.battle.Battle;
+import com.censoredsoftware.demigods.engine.data.Battle;
+import com.censoredsoftware.demigods.engine.data.DCharacter;
+import com.censoredsoftware.demigods.engine.data.DPlayer;
 import com.censoredsoftware.demigods.engine.data.TributeManager;
-import com.censoredsoftware.demigods.engine.deity.Alliance;
-import com.censoredsoftware.demigods.engine.language.Text;
-import com.censoredsoftware.demigods.engine.player.DCharacter;
-import com.censoredsoftware.demigods.engine.player.DPlayer;
+import com.censoredsoftware.demigods.engine.language.English;
+import com.censoredsoftware.demigods.engine.mythos.Alliance;
 import com.censoredsoftware.demigods.engine.util.Messages;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
@@ -127,7 +127,7 @@ public class GeneralCommands extends WrappedCommand
 		DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 		if(character == null)
 		{
-			player.sendMessage(Text.DISABLED_MORTAL.english());
+			player.sendMessage(English.DISABLED_MORTAL.getLine());
 			return true;
 		}
 

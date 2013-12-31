@@ -1,7 +1,7 @@
 package com.censoredsoftware.demigods.exclusive.district;
 
-import com.censoredsoftware.demigods.engine.deity.Alliance;
-import com.censoredsoftware.demigods.engine.deity.Deity;
+import com.censoredsoftware.demigods.engine.mythos.Alliance;
+import com.censoredsoftware.demigods.engine.mythos.Deity;
 import com.google.common.collect.ImmutableCollection;
 
 import javax.swing.plaf.synth.Region;

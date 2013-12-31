@@ -8,16 +8,17 @@ import com.censoredsoftware.censoredlib.util.Times;
 import com.censoredsoftware.censoredlib.util.Titles;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.DemigodsPlugin;
+import com.censoredsoftware.demigods.engine.base.DemigodsConversation;
+import com.censoredsoftware.demigods.engine.data.DCharacter;
+import com.censoredsoftware.demigods.engine.data.DPlayer;
 import com.censoredsoftware.demigods.engine.data.DataManager;
+import com.censoredsoftware.demigods.engine.data.Skill;
 import com.censoredsoftware.demigods.engine.data.util.CLocations;
 import com.censoredsoftware.demigods.engine.data.util.Notifications;
-import com.censoredsoftware.demigods.engine.deity.Alliance;
-import com.censoredsoftware.demigods.engine.deity.Deity;
-import com.censoredsoftware.demigods.engine.language.Text;
-import com.censoredsoftware.demigods.engine.player.DCharacter;
-import com.censoredsoftware.demigods.engine.player.DPlayer;
-import com.censoredsoftware.demigods.engine.player.Skill;
-import com.censoredsoftware.demigods.engine.structure.Structure;
+import com.censoredsoftware.demigods.engine.language.English;
+import com.censoredsoftware.demigods.engine.mythos.Alliance;
+import com.censoredsoftware.demigods.engine.mythos.Deity;
+import com.censoredsoftware.demigods.engine.mythos.Structure;
 import com.censoredsoftware.demigods.engine.util.Configs;
 import com.censoredsoftware.demigods.engine.util.Messages;
 import com.google.common.collect.Lists;
@@ -61,9 +62,9 @@ public class Prayer implements WrappedConversation
 		CONFIRM_FORSAKE('F', new ConfirmForsake()), CANCEL_FORSAKE('X', new CancelForsake()), CONFIRM_CHARACTER('C', new ConfirmCharacter()), CANCEL_CREATE_CHARACTER('X', new CancelCreateCharacter()), CREATE_CHARACTER('1', new CreateCharacter()), VIEW_CHARACTERS('2', new ViewCharacters()), VIEW_WARPS('3', new ViewWarps()), FORSAKE_CHARACTER('4', new Forsake()), VIEW_SKILL_POINTS('5', new ViewSkills()), VIEW_NOTIFICATIONS('6', new ViewNotifications());
 
 		private final char id;
-		private final Demigods.DemigodsConversation.Category category;
+		private final DemigodsConversation.Category category;
 
-		private Menu(char id, Demigods.DemigodsConversation.Category category)
+		private Menu(char id, DemigodsConversation.Category category)
 		{
 			this.id = id;
 			this.category = category;
@@ -74,7 +75,7 @@ public class Prayer implements WrappedConversation
 			return this.id;
 		}
 
-		public Demigods.DemigodsConversation.Category getCategory()
+		public DemigodsConversation.Category getCategory()
 		{
 			return this.category;
 		}
@@ -146,7 +147,7 @@ public class Prayer implements WrappedConversation
 			Messages.clearRawChat(player);
 			player.sendRawMessage(ChatColor.AQUA + " -- Prayer Menu --------------------------------------");
 			player.sendRawMessage(" ");
-			for(String message : Text.PRAYER_INTRO.englishBlock())
+			for(String message : English.PRAYER_INTRO.getLines())
 				player.sendRawMessage(message);
 			player.sendRawMessage(" ");
 			player.sendRawMessage(ChatColor.GRAY + " To begin, choose an option by entering its number in the chat:");
@@ -181,7 +182,7 @@ public class Prayer implements WrappedConversation
 	}
 
 	// Warps
-	static class ViewWarps extends ValidatingPrompt implements Demigods.DemigodsConversation.Category
+	static class ViewWarps extends ValidatingPrompt implements DemigodsConversation.Category
 	{
 		@Override
 		public String getChatName(ConversationContext context)
@@ -236,16 +237,16 @@ public class Prayer implements WrappedConversation
 			}
 
 			// Display notifications if available
-			if(context.getSessionData("warp_notifications") != null && !((List<Text>) context.getSessionData("warp_notifications")).isEmpty())
+			if(context.getSessionData("warp_notifications") != null && !((List<English>) context.getSessionData("warp_notifications")).isEmpty())
 			{
 				// Grab the notifications
-				List<Text> notifications = (List<Text>) context.getSessionData("warp_notifications");
+				List<English> notifications = (List<English>) context.getSessionData("warp_notifications");
 
 				player.sendRawMessage(" ");
 
 				// List them
-				for(Text notification : notifications)
-					player.sendRawMessage("  " + notification.english());
+				for(English notification : notifications)
+					player.sendRawMessage("  " + notification.getLine());
 
 				// Remove them
 				notifications.clear();
@@ -265,34 +266,34 @@ public class Prayer implements WrappedConversation
 
 			// Create and save the notification list
 			context.setSessionData("warp_notifications", Lists.newArrayList());
-			List<Text> notifications = (List<Text>) context.getSessionData("warp_notifications");
+			List<English> notifications = (List<English>) context.getSessionData("warp_notifications");
 
 			// Check validity
 			if(message.equalsIgnoreCase("menu")) return true;
 			else if(arg0.equalsIgnoreCase("new"))
 			{
 				if(StringUtils.isAlphanumeric(arg1) && !character.getMeta().getWarps().containsKey(arg1.toLowerCase())) return true;
-				notifications.add(Text.NOTIFICATION_ERROR_CREATING_WARP);
+				notifications.add(English.NOTIFICATION_ERROR_CREATING_WARP);
 			}
 			else if(arg0.equalsIgnoreCase("warp"))
 			{
 				if((character.getMeta().getWarps().containsKey(arg1.toLowerCase()) || character.getMeta().getInvites().containsKey(arg1.toLowerCase()))) return true;
-				notifications.add(Text.NOTIFICATION_ERROR_WARPING);
+				notifications.add(English.NOTIFICATION_ERROR_WARPING);
 			}
 			else if(arg0.equalsIgnoreCase("delete"))
 			{
 				if((character.getMeta().getWarps().containsKey(arg1.toLowerCase()) || character.getMeta().getInvites().containsKey(arg1.toLowerCase()))) return true;
-				notifications.add(Text.NOTIFICATION_ERROR_DELETING_WARP);
+				notifications.add(English.NOTIFICATION_ERROR_DELETING_WARP);
 			}
 			else if(arg0.equalsIgnoreCase("invite"))
 			{
 				if((DCharacter.Util.charExists(arg1) || (DPlayer.Util.getPlayerFromName(arg1) != null && DPlayer.Util.getPlayerFromName(arg1).getCurrent() != null)) && arg2 != null && character.getMeta().getWarps().containsKey(arg2.toLowerCase())) return true;
-				notifications.add(Text.NOTIFICATION_ERROR_INVITING);
+				notifications.add(English.NOTIFICATION_ERROR_INVITING);
 			}
 			else
 			{
 				// Fallback notification
-				notifications.add(Text.NOTIFICATION_ERROR_MISC);
+				notifications.add(English.NOTIFICATION_ERROR_MISC);
 			}
 
 			return false;
@@ -310,7 +311,7 @@ public class Prayer implements WrappedConversation
 
 			// Create and save the notification list
 			context.setSessionData("warp_notifications", Lists.newArrayList());
-			List<Text> notifications = (List<Text>) context.getSessionData("warp_notifications");
+			List<English> notifications = (List<English>) context.getSessionData("warp_notifications");
 
 			Messages.clearRawChat(player);
 
@@ -322,7 +323,7 @@ public class Prayer implements WrappedConversation
 			if(arg0.equalsIgnoreCase("new"))
 			{
 				// Save notification
-				notifications.add(Text.NOTIFICATION_WARP_CREATED);
+				notifications.add(English.NOTIFICATION_WARP_CREATED);
 
 				// Add the warp
 				character.getMeta().addWarp(arg1, player.getLocation());
@@ -333,7 +334,7 @@ public class Prayer implements WrappedConversation
 			else if(arg0.equalsIgnoreCase("delete"))
 			{
 				// Save notification
-				notifications.add(Text.NOTIFICATION_WARP_DELETED);
+				notifications.add(English.NOTIFICATION_WARP_DELETED);
 
 				// Remove the warp/invite
 				if(character.getMeta().getWarps().containsKey(arg1.toLowerCase())) character.getMeta().removeWarp(arg1);
@@ -345,7 +346,7 @@ public class Prayer implements WrappedConversation
 			else if(arg0.equalsIgnoreCase("invite"))
 			{
 				// Save notification
-				notifications.add(Text.NOTIFICATION_INVITE_SENT);
+				notifications.add(English.NOTIFICATION_INVITE_SENT);
 
 				// Define variables
 				DCharacter invitee = DCharacter.Util.charExists(arg1) ? DCharacter.Util.getCharacterByName(arg1) : DPlayer.Util.getPlayer(Bukkit.getOfflinePlayer(arg1)).getCurrent();
@@ -383,7 +384,7 @@ public class Prayer implements WrappedConversation
 	}
 
 	// Skills
-	static class ViewSkills extends ValidatingPrompt implements Demigods.DemigodsConversation.Category
+	static class ViewSkills extends ValidatingPrompt implements DemigodsConversation.Category
 	{
 		@Override
 		public String getChatName(ConversationContext context)
@@ -408,7 +409,7 @@ public class Prayer implements WrappedConversation
 			Messages.clearRawChat(player);
 			player.sendRawMessage(ChatColor.YELLOW + Titles.chatTitle("Viewing Skills"));
 			player.sendRawMessage(" ");
-			player.sendRawMessage("  " + Text.DIRECTIONS_MAIN_MENU_PRAYER);
+			player.sendRawMessage("  " + English.DIRECTIONS_MAIN_MENU_PRAYER);
 			player.sendRawMessage(" ");
 
 			for(Skill skill : character.getMeta().getSkills())
@@ -429,16 +430,16 @@ public class Prayer implements WrappedConversation
 			}
 
 			// Display notifications if available
-			if(context.getSessionData("skill_notifications") != null && !((List<Text>) context.getSessionData("skill_notifications")).isEmpty())
+			if(context.getSessionData("skill_notifications") != null && !((List<English>) context.getSessionData("skill_notifications")).isEmpty())
 			{
 				// Grab the notifications
-				List<Text> notifications = (List<Text>) context.getSessionData("skill_notifications");
+				List<English> notifications = (List<English>) context.getSessionData("skill_notifications");
 
 				player.sendRawMessage(" ");
 
 				// List them
-				for(Text notification : notifications)
-					player.sendRawMessage("  " + notification.english());
+				for(English notification : notifications)
+					player.sendRawMessage("  " + notification.getLine());
 
 				// Remove them
 				notifications.clear();
@@ -454,7 +455,7 @@ public class Prayer implements WrappedConversation
 
 			// Create and save the notification list
 			context.setSessionData("skill_notifications", Lists.newArrayList());
-			List<Text> notifications = (List<Text>) context.getSessionData("skill_notifications");
+			List<English> notifications = (List<English>) context.getSessionData("skill_notifications");
 
 			try
 			{
@@ -476,19 +477,19 @@ public class Prayer implements WrappedConversation
 					}
 					else
 					{
-						notifications.add(Text.NOTIFICATION_ERROR_UNOBTAINED_SKILL);
+						notifications.add(English.NOTIFICATION_ERROR_UNOBTAINED_SKILL);
 						return false;
 					}
 				}
 				else
 				{
-					notifications.add(Text.NOTIFICATION_ERROR_SKILL_DOESNT_EXIST);
+					notifications.add(English.NOTIFICATION_ERROR_SKILL_DOESNT_EXIST);
 					return false;
 				}
 			}
 			catch(Exception errored)
 			{
-				notifications.add(Text.NOTIFICATION_ERROR_MISC);
+				notifications.add(English.NOTIFICATION_ERROR_MISC);
 				return false;
 			}
 		}
@@ -503,7 +504,7 @@ public class Prayer implements WrappedConversation
 
 			// Create and save the notifications
 			context.setSessionData("skill_notifications", Lists.newArrayList());
-			List<Text> notifications = (List<Text>) context.getSessionData("skill_notifications");
+			List<English> notifications = (List<English>) context.getSessionData("skill_notifications");
 
 			if(message.equalsIgnoreCase("menu"))
 			{
@@ -529,12 +530,12 @@ public class Prayer implements WrappedConversation
 					character.getMeta().subtractSkillPoints(points);
 
 					// Save the notification
-					notifications.add(Text.NOTIFICATION_SKILL_POINTS_ASSIGNED);
+					notifications.add(English.NOTIFICATION_SKILL_POINTS_ASSIGNED);
 				}
 				else
 				{
 					// They don't have enough points, save the notification
-					notifications.add(Text.ERROR_NOT_ENOUGH_SKILL_POINTS);
+					notifications.add(English.ERROR_NOT_ENOUGH_SKILL_POINTS);
 				}
 			}
 
@@ -543,7 +544,7 @@ public class Prayer implements WrappedConversation
 	}
 
 	// Notifications
-	static class ViewNotifications extends ValidatingPrompt implements Demigods.DemigodsConversation.Category
+	static class ViewNotifications extends ValidatingPrompt implements DemigodsConversation.Category
 	{
 		@Override
 		public String getChatName(ConversationContext context)
@@ -596,7 +597,7 @@ public class Prayer implements WrappedConversation
 			}
 
 			player.sendRawMessage(" ");
-			for(String message : Text.NOTIFICATIONS_PRAYER_FOOTER.englishBlock())
+			for(String message : English.NOTIFICATIONS_PRAYER_FOOTER.getLines())
 				player.sendRawMessage(message);
 
 			return "";
@@ -634,7 +635,7 @@ public class Prayer implements WrappedConversation
 	}
 
 	// DCharacter viewing
-	static class ViewCharacters extends ValidatingPrompt implements Demigods.DemigodsConversation.Category
+	static class ViewCharacters extends ValidatingPrompt implements DemigodsConversation.Category
 	{
 		@Override
 		public String getChatName(ConversationContext context)
@@ -757,7 +758,7 @@ public class Prayer implements WrappedConversation
 	}
 
 	// Deity forsaking
-	static class Forsake extends ValidatingPrompt implements Demigods.DemigodsConversation.Category
+	static class Forsake extends ValidatingPrompt implements DemigodsConversation.Category
 	{
 		@Override
 		public String getChatName(ConversationContext context)
@@ -832,7 +833,7 @@ public class Prayer implements WrappedConversation
 	}
 
 	// Forsaking confirmation
-	static class ConfirmForsake extends ValidatingPrompt implements Demigods.DemigodsConversation.Category
+	static class ConfirmForsake extends ValidatingPrompt implements DemigodsConversation.Category
 	{
 		@Override
 		public String getChatName(ConversationContext context)
@@ -892,7 +893,7 @@ public class Prayer implements WrappedConversation
 	}
 
 	// Forsaking cancellation
-	static class CancelForsake extends MessagePrompt implements Demigods.DemigodsConversation.Category
+	static class CancelForsake extends MessagePrompt implements DemigodsConversation.Category
 	{
 		@Override
 		public String getChatName(ConversationContext context)
@@ -927,7 +928,7 @@ public class Prayer implements WrappedConversation
 	}
 
 	// DCharacter creation
-	static class CreateCharacter extends ValidatingPrompt implements Demigods.DemigodsConversation.Category
+	static class CreateCharacter extends ValidatingPrompt implements DemigodsConversation.Category
 	{
 		@Override
 		public String getChatName(ConversationContext context)
@@ -979,12 +980,12 @@ public class Prayer implements WrappedConversation
 				else
 				{
 					// Grab the errors
-					List<Text> errors = (List<Text>) context.getSessionData("name_errors");
+					List<English> errors = (List<English>) context.getSessionData("name_errors");
 
 					// List the errors
-					for(Text error : errors)
+					for(English error : errors)
 					{
-						player.sendRawMessage(ChatColor.RED + "  " + error.english().replace("{maxCaps}", String.valueOf(Configs.getSettingInt("character.max_caps_in_name"))));
+						player.sendRawMessage(ChatColor.RED + "  " + error.getLine().replace("{maxCaps}", String.valueOf(Configs.getSettingInt("character.max_caps_in_name"))));
 					}
 
 					// Ask for a new name
@@ -1001,13 +1002,13 @@ public class Prayer implements WrappedConversation
 				if(name.length() < 2 || name.length() > 13 || !StringUtils.isAlphanumeric(name) || Strings.hasCapitalLetters(name, Configs.getSettingInt("character.max_caps_in_name")) || DCharacter.Util.charExists(name) || Strings.containsAnyInCollection(name, getBlackList()))
 				{
 					// Create the list
-					List<Text> errors = Lists.newArrayList();
+					List<English> errors = Lists.newArrayList();
 
 					// Check the errors
-					if(name.length() < 2 || name.length() >= 13) errors.add(Text.ERROR_NAME_LENGTH);
-					if(!StringUtils.isAlphanumeric(name)) errors.add(Text.ERROR_ALPHA_NUMERIC);
-					if(Strings.hasCapitalLetters(name, Configs.getSettingInt("character.max_caps_in_name"))) errors.add(Text.ERROR_MAX_CAPS);
-					if(DCharacter.Util.charExists(name) || Strings.containsAnyInCollection(name, getBlackList())) errors.add(Text.ERROR_CHAR_EXISTS);
+					if(name.length() < 2 || name.length() >= 13) errors.add(English.ERROR_NAME_LENGTH);
+					if(!StringUtils.isAlphanumeric(name)) errors.add(English.ERROR_ALPHA_NUMERIC);
+					if(Strings.hasCapitalLetters(name, Configs.getSettingInt("character.max_caps_in_name"))) errors.add(English.ERROR_MAX_CAPS);
+					if(DCharacter.Util.charExists(name) || Strings.containsAnyInCollection(name, getBlackList())) errors.add(English.ERROR_CHAR_EXISTS);
 
 					// Save the info
 					context.setSessionData("name_errors", errors);
@@ -1213,7 +1214,7 @@ public class Prayer implements WrappedConversation
 	}
 
 	// DCharacter confirmation
-	static class ConfirmCharacter extends ValidatingPrompt implements Demigods.DemigodsConversation.Category
+	static class ConfirmCharacter extends ValidatingPrompt implements DemigodsConversation.Category
 	{
 		@Override
 		public String getChatName(ConversationContext context)
@@ -1268,7 +1269,7 @@ public class Prayer implements WrappedConversation
 	}
 
 	// DCharacter creation cancellation
-	static class CancelCreateCharacter extends MessagePrompt implements Demigods.DemigodsConversation.Category
+	static class CancelCreateCharacter extends MessagePrompt implements DemigodsConversation.Category
 	{
 		@Override
 		public String getChatName(ConversationContext context)
@@ -1319,7 +1320,7 @@ public class Prayer implements WrappedConversation
 				{
 					if(DPlayer.Util.getPlayer(player).canPvp())
 					{
-						for(String message : Text.PVP_NO_PRAYER.englishBlock())
+						for(String message : English.PVP_NO_PRAYER.getLines())
 							player.sendMessage(message);
 						event.setCancelled(true);
 						return;
@@ -1330,7 +1331,7 @@ public class Prayer implements WrappedConversation
 
 					// Tell nearby players that the user is praying
 					for(Entity entity : player.getNearbyEntities(20, 20, 20))
-						if(entity instanceof Player) ((Player) entity).sendMessage(ChatColor.AQUA + Text.KNELT_FOR_PRAYER.english().replace("{player}", ChatColor.stripColor(player.getDisplayName())));
+						if(entity instanceof Player) ((Player) entity).sendMessage(ChatColor.AQUA + English.KNELT_FOR_PRAYER.getLine().replace("{player}", ChatColor.stripColor(player.getDisplayName())));
 				}
 				else if(DPlayer.Util.isPraying(player))
 				{
@@ -1410,7 +1411,7 @@ public class Prayer implements WrappedConversation
 								player.playSound(player.getLocation(), Sound.ENDERDRAGON_DEATH, 1F, 1F);
 
 								// Message them and do cool things
-								player.sendMessage(ChatColor.GREEN + Text.CHARACTER_CREATE_COMPLETE.english().replace("{deity}", deityName));
+								player.sendMessage(ChatColor.GREEN + English.CHARACTER_CREATE_COMPLETE.getLine().replace("{deity}", deityName));
 								player.getWorld().strikeLightningEffect(player.getLocation());
 
 								// Fancy particles

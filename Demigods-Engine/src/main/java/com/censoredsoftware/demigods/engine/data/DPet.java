@@ -1,9 +1,7 @@
-package com.censoredsoftware.demigods.engine.player;
+package com.censoredsoftware.demigods.engine.data;
 
 import com.censoredsoftware.censoredlib.data.player.Pet;
-import com.censoredsoftware.demigods.engine.battle.Participant;
-import com.censoredsoftware.demigods.engine.data.DataManager;
-import com.censoredsoftware.demigods.engine.deity.Deity;
+import com.censoredsoftware.demigods.engine.mythos.Deity;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;

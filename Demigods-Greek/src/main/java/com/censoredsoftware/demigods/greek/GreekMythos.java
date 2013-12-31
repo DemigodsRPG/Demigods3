@@ -1,12 +1,7 @@
 package com.censoredsoftware.demigods.greek;
 
 import com.censoredsoftware.censoredlib.trigger.Trigger;
-import com.censoredsoftware.demigods.engine.deity.Alliance;
-import com.censoredsoftware.demigods.engine.deity.Deity;
-import com.censoredsoftware.demigods.engine.item.DivineItem;
-import com.censoredsoftware.demigods.engine.mythos.Mythos;
-import com.censoredsoftware.demigods.engine.mythos.MythosPlugin;
-import com.censoredsoftware.demigods.engine.structure.Structure;
+import com.censoredsoftware.demigods.engine.mythos.*;
 import com.censoredsoftware.demigods.greek.deity.GreekAlliance;
 import com.censoredsoftware.demigods.greek.deity.fate.Atropos;
 import com.censoredsoftware.demigods.greek.deity.fate.Clotho;

@@ -1,4 +1,4 @@
-package com.censoredsoftware.demigods.engine.deity;
+package com.censoredsoftware.demigods.engine.mythos;
 
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.google.common.base.Predicate;

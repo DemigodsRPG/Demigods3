@@ -1,9 +1,6 @@
-package com.censoredsoftware.demigods.engine.player;
+package com.censoredsoftware.demigods.engine.data;
 
-import com.censoredsoftware.demigods.engine.battle.Battle;
-import com.censoredsoftware.demigods.engine.battle.Participant;
-import com.censoredsoftware.demigods.engine.data.DataManager;
-import com.censoredsoftware.demigods.engine.language.Text;
+import com.censoredsoftware.demigods.engine.language.English;
 import com.censoredsoftware.demigods.engine.util.Configs;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
@@ -261,7 +258,7 @@ public class Skill implements ConfigurationSerializable
 
 				if(character.getOfflinePlayer().isOnline())
 				{
-					for(String string : Text.NOTIFICATION_SKILL_POINTS_RECEIVED.englishBlock())
+					for(String string : English.NOTIFICATION_SKILL_POINTS_RECEIVED.getLines())
 						character.getOfflinePlayer().getPlayer().sendMessage(string.replace("{skillpoints}", "" + skillPoints));
 				}
 			}

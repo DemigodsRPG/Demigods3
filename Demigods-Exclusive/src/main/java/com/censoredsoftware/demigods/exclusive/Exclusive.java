@@ -1,6 +1,6 @@
 package com.censoredsoftware.demigods.exclusive;
 
-import com.censoredsoftware.demigods.engine.deity.Alliance;
+import com.censoredsoftware.demigods.engine.mythos.Alliance;
 import com.censoredsoftware.demigods.engine.mythos.Mythos;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;

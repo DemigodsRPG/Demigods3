@@ -1,6 +1,6 @@
 package com.censoredsoftware.demigods.greek.item;
 
-import com.censoredsoftware.demigods.engine.item.DivineItem;
+import com.censoredsoftware.demigods.engine.mythos.DivineItem;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;

@@ -1,7 +1,7 @@
 package com.censoredsoftware.demigods.greek.item.weapon;
 
 import com.censoredsoftware.censoredlib.util.Items;
-import com.censoredsoftware.demigods.engine.item.DivineItem;
+import com.censoredsoftware.demigods.engine.mythos.DivineItem;
 import com.censoredsoftware.demigods.engine.util.Zones;
 import com.censoredsoftware.demigods.greek.item.GreekItem;
 import org.bukkit.ChatColor;

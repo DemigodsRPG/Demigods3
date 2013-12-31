@@ -1,7 +1,7 @@
 package com.censoredsoftware.demigods.engine.util;
 
 import com.censoredsoftware.demigods.engine.DemigodsPlugin;
-import com.censoredsoftware.demigods.engine.player.DemigodsChatEvent;
+import com.censoredsoftware.demigods.engine.data.DemigodsChatEvent;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

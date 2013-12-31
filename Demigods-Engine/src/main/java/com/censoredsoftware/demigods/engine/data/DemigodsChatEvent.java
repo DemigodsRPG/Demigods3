@@ -1,4 +1,4 @@
-package com.censoredsoftware.demigods.engine.player;
+package com.censoredsoftware.demigods.engine.data;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;

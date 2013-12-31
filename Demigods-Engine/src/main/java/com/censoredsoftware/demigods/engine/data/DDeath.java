@@ -1,7 +1,6 @@
-package com.censoredsoftware.demigods.engine.player;
+package com.censoredsoftware.demigods.engine.data;
 
 import com.censoredsoftware.censoredlib.data.player.Death;
-import com.censoredsoftware.demigods.engine.data.DataManager;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;

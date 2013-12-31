@@ -1,4 +1,4 @@
-package com.censoredsoftware.demigods.engine.item;
+package com.censoredsoftware.demigods.engine.mythos;
 
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;

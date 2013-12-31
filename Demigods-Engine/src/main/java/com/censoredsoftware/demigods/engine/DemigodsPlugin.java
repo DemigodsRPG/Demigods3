@@ -2,15 +2,10 @@ package com.censoredsoftware.demigods.engine;
 
 import com.censoredsoftware.censoredlib.CensoredLibPlugin;
 import com.censoredsoftware.censoredlib.helper.CensoredJavaPlugin;
-import com.censoredsoftware.demigods.engine.data.DataManager;
-import com.censoredsoftware.demigods.engine.data.TaskManager;
-import com.censoredsoftware.demigods.engine.player.DCharacter;
-import com.censoredsoftware.demigods.engine.player.DPlayer;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
 import org.bukkit.Bukkit;
-import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
@@ -65,31 +60,7 @@ public class DemigodsPlugin extends CensoredJavaPlugin
 	@Override
 	public void onDisable()
 	{
-		if(READY)
-		{
-			// Save all the data.
-			DataManager.save();
-
-			// Handle online characters
-			for(DCharacter character : DCharacter.Util.getOnlineCharacters())
-			{
-				// Toggle prayer off and clear the session
-				DPlayer.Util.togglePrayingSilent(character.getOfflinePlayer().getPlayer(), false, false);
-				DPlayer.Util.clearPrayerSession(character.getOfflinePlayer().getPlayer());
-			}
-		}
-
-		// Cancel all threads, event calls, and unregister permissions.
-		try
-		{
-			TaskManager.stopThreads();
-			HandlerList.unregisterAll(this);
-			Demigods.unloadPermissions();
-		}
-		catch(Exception ignored)
-		{
-			// ignored
-		}
+		Demigods.uninit();
 
 		message("disabled");
 	}

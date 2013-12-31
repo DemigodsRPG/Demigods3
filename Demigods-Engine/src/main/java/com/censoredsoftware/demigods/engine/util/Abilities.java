@@ -2,13 +2,13 @@ package com.censoredsoftware.demigods.engine.util;
 
 import com.censoredsoftware.censoredlib.util.Strings;
 import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.battle.Battle;
-import com.censoredsoftware.demigods.engine.deity.Ability;
-import com.censoredsoftware.demigods.engine.deity.Deity;
-import com.censoredsoftware.demigods.engine.language.Text;
-import com.censoredsoftware.demigods.engine.player.DCharacter;
-import com.censoredsoftware.demigods.engine.player.DPet;
-import com.censoredsoftware.demigods.engine.player.DPlayer;
+import com.censoredsoftware.demigods.engine.data.Battle;
+import com.censoredsoftware.demigods.engine.data.DCharacter;
+import com.censoredsoftware.demigods.engine.data.DPet;
+import com.censoredsoftware.demigods.engine.data.DPlayer;
+import com.censoredsoftware.demigods.engine.language.English;
+import com.censoredsoftware.demigods.engine.mythos.Ability;
+import com.censoredsoftware.demigods.engine.mythos.Deity;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
@@ -314,19 +314,19 @@ public class Abilities
 					if(itemInHand == null || itemInHand.getType().equals(Material.AIR))
 					{
 						// Slot must not be empty
-						player.sendMessage(ChatColor.RED + Text.ERROR_EMPTY_SLOT.english());
+						player.sendMessage(ChatColor.RED + English.ERROR_EMPTY_SLOT.getLine());
 						return true;
 					}
 					else if(character.getMeta().isBound(itemInHand.getType()))
 					{
 						// Material already bound
-						player.sendMessage(ChatColor.RED + Text.ERROR_MATERIAL_BOUND.english());
+						player.sendMessage(ChatColor.RED + English.ERROR_MATERIAL_BOUND.getLine());
 						return true;
 					}
 					else if(ability.hasWeapon() && !itemInHand.getType().equals(ability.getWeapon()))
 					{
 						// Weapon required
-						player.sendMessage(ChatColor.RED + Text.ERROR_BIND_WEAPON_REQUIRED.english().replace("{weapon}", Strings.beautify(ability.getWeapon().name()).toLowerCase()).replace("{ability}", abilityName));
+						player.sendMessage(ChatColor.RED + English.ERROR_BIND_WEAPON_REQUIRED.getLine().replace("{weapon}", Strings.beautify(ability.getWeapon().name()).toLowerCase()).replace("{ability}", abilityName));
 						return true;
 					}
 
@@ -334,7 +334,7 @@ public class Abilities
 					character.getMeta().setBind(ability, itemInHand.getType());
 
 					// Let them know
-					player.sendMessage(ChatColor.GREEN + Text.SUCCESS_ABILITY_BOUND.english().replace("{ability}", StringUtils.capitalize(abilityName)).replace("{material}", (Strings.beginsWithVowel(itemInHand.getType().name()) ? "an " : "a ") + Strings.beautify(itemInHand.getType().name()).toLowerCase()));
+					player.sendMessage(ChatColor.GREEN + English.SUCCESS_ABILITY_BOUND.getLine().replace("{ability}", StringUtils.capitalize(abilityName)).replace("{material}", (Strings.beginsWithVowel(itemInHand.getType().name()) ? "an " : "a ") + Strings.beautify(itemInHand.getType().name()).toLowerCase()));
 
 					return true;
 				}
@@ -344,7 +344,7 @@ public class Abilities
 					character.getMeta().removeBind(ability);
 
 					// Let them know
-					player.sendMessage(ChatColor.GREEN + Text.SUCCESS_ABILITY_UNBOUND.english().replace("{ability}", StringUtils.capitalize(abilityName)));
+					player.sendMessage(ChatColor.GREEN + English.SUCCESS_ABILITY_UNBOUND.getLine().replace("{ability}", StringUtils.capitalize(abilityName)));
 
 					return true;
 				}

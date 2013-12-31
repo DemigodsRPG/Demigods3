@@ -1,7 +1,6 @@
-package com.censoredsoftware.demigods.engine.player;
+package com.censoredsoftware.demigods.engine.data;
 
 import com.censoredsoftware.censoredlib.data.player.SavedPotion;
-import com.censoredsoftware.demigods.engine.data.DataManager;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.potion.PotionEffect;
 

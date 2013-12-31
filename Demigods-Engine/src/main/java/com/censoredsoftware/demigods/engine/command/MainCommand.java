@@ -6,13 +6,13 @@ import com.censoredsoftware.censoredlib.util.Strings;
 import com.censoredsoftware.censoredlib.util.Times;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.DemigodsPlugin;
+import com.censoredsoftware.demigods.engine.data.DCharacter;
+import com.censoredsoftware.demigods.engine.data.DPlayer;
 import com.censoredsoftware.demigods.engine.data.DataManager;
-import com.censoredsoftware.demigods.engine.deity.Ability;
-import com.censoredsoftware.demigods.engine.deity.Alliance;
-import com.censoredsoftware.demigods.engine.deity.Deity;
-import com.censoredsoftware.demigods.engine.language.Text;
-import com.censoredsoftware.demigods.engine.player.DCharacter;
-import com.censoredsoftware.demigods.engine.player.DPlayer;
+import com.censoredsoftware.demigods.engine.language.English;
+import com.censoredsoftware.demigods.engine.mythos.Ability;
+import com.censoredsoftware.demigods.engine.mythos.Alliance;
+import com.censoredsoftware.demigods.engine.mythos.Deity;
 import com.censoredsoftware.demigods.engine.util.Admins;
 import com.censoredsoftware.demigods.engine.util.Configs;
 import com.censoredsoftware.demigods.engine.util.Messages;
@@ -57,7 +57,7 @@ public class MainCommand extends WrappedCommand
 				PluginManager pluginManager = DemigodsPlugin.plugin().getServer().getPluginManager();
 				pluginManager.disablePlugin(DemigodsPlugin.plugin());
 				pluginManager.enablePlugin(DemigodsPlugin.plugin());
-				sender.sendMessage(ChatColor.GREEN + Text.RELOAD_COMPLETE.english());
+				sender.sendMessage(ChatColor.GREEN + English.RELOAD_COMPLETE.getLine());
 				return true;
 			}
 		}
@@ -292,9 +292,9 @@ public class MainCommand extends WrappedCommand
 		}
 		else if(args[1].equalsIgnoreCase("clear") && args[1].equalsIgnoreCase("data") && args[2].equalsIgnoreCase("yesdoitforsurepermanently"))
 		{
-			sender.sendMessage(ChatColor.RED + Text.ADMIN_CLEAR_DATA_STARTING.english());
+			sender.sendMessage(ChatColor.RED + English.ADMIN_CLEAR_DATA_STARTING.getLine());
 			DataManager.flushData();
-			sender.sendMessage(ChatColor.GREEN + Text.ADMIN_CLEAR_DATA_FINISHED.english());
+			sender.sendMessage(ChatColor.GREEN + English.ADMIN_CLEAR_DATA_FINISHED.getLine());
 			return true;
 		}
 
