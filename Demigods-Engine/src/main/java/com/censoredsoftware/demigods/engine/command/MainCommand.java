@@ -195,7 +195,7 @@ public class MainCommand extends WrappedCommand
 									@Override
 									public String apply(Map.Entry<Material, Integer> entry)
 									{
-										return entry.getValue() + " " + Strings.beautify(Strings.plural(entry.getKey().name().toLowerCase(), entry.getValue()));
+										return entry.getValue() + " " + Strings.beautify(Strings.plural(entry.getKey().name(), entry.getValue())).toLowerCase();
 									}
 								});
 

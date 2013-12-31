@@ -146,7 +146,7 @@ public class Shrine extends GreekStructure
 						save.setOwner(character.getId());
 						inst().birth(save, character);
 
-						// Consume ITEM in hand
+						// Consume item in hand
 						ItemStack item = player.getItemInHand();
 						if(item.getAmount() > 1)
 						{
@@ -158,7 +158,7 @@ public class Shrine extends GreekStructure
 						}
 
 						for(String string : English.NOTIFICATION_SHRINE_CREATED.getLines())
-							player.sendMessage(string.replace("{ALLIANCE}", character.getAlliance() + "s").replace("{deity}", character.getDeity().getName()));
+							player.sendMessage(string.replace("{alliance}", character.getAlliance() + "s").replace("{deity}", character.getDeity().getName()));
 						event.setCancelled(true);
 					}
 					catch(Exception errored)

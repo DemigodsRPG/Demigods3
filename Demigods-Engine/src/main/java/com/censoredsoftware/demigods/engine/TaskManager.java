@@ -22,15 +22,15 @@ public class TaskManager
 
 	public static void startThreads()
 	{
-		// Start SYNC demigods runnable
+		// Start sync demigods runnable
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(DemigodsPlugin.plugin(), Util.getSyncDemigodsRunnable(), 20, 20);
 		Admins.sendDebug("Main Demigods SYNC runnable enabled...");
 
-		// Start SYNC demigods runnable
+		// Start async demigods runnable
 		Bukkit.getScheduler().scheduleAsyncRepeatingTask(DemigodsPlugin.plugin(), Util.getAsyncDemigodsRunnable(), 20, 20);
 		Admins.sendDebug("Main Demigods ASYNC runnable enabled...");
 
-		// Start FAVOR runnable
+		// Start favor runnable
 		Bukkit.getScheduler().scheduleAsyncRepeatingTask(DemigodsPlugin.plugin(), Util.getFavorRunnable(), 20, (Configs.getSettingInt("regeneration_rates.favor") * 20));
 		Admins.sendDebug("Favor regeneration runnable enabled...");
 
