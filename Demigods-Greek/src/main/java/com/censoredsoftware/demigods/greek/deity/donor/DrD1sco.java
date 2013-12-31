@@ -27,7 +27,7 @@ public class DrD1sco extends GreekDeity
 	public final static Map<Material, Integer> CLAIM_ITEMS = Maps.newHashMap(ImmutableMap.of(Material.JUKEBOX, 2));
 	public final static Map<Material, Integer> FORSAKE_ITEMS = Maps.newHashMap(ImmutableMap.of(Material.NOTE_BLOCK, 4));
 	public final static List<String> LORE = Arrays.asList();
-	public final static Set<Deity.Flag> FLAGS = Sets.newHashSet(Deity.Flag.MAJOR_DEITY, Deity.Flag.NON_PLAYABLE);
+	public final static Set<Deity.Flag> FLAGS = Sets.newHashSet(Deity.Flag.MAJOR_DEITY, Deity.Flag.PLAYABLE);
 	public final static List<Ability> ABILITIES = Lists.newArrayList(new RainbowWalking(NAME), new RainbowHorse(NAME), new Discoball(NAME));
 
 	// Mood Manager
