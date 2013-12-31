@@ -53,4 +53,11 @@ public class Hades extends GreekDeity
 	{
 		super(name, permission, alliance, color, claimItems, forsakeItems, shortDescription, lore, flags, abilities, accuracy, favorRegen, maxFavor, maxHealth, favorBank, moodPacks);
 	}
+
+	private static final Deity INST = new Hades();
+
+	public static Deity inst()
+	{
+		return INST;
+	}
 }

@@ -51,8 +51,15 @@ public class Atropos extends GreekDeity
 	// Mood Manager
 	private static EnumMap<Deity.Mood, Deity.MoodPack> moodPacks = Maps.newEnumMap(Deity.Mood.class);
 
-	public Atropos()
+	private Atropos()
 	{
 		super(name, permission, alliance, color, claimItems, forsakeItems, shortDescription, lore, flags, abilities, accuracy, favorRegen, maxFavor, maxHealth, favorBank, moodPacks);
+	}
+
+	private static final Deity INST = new Atropos();
+
+	public static Deity inst()
+	{
+		return INST;
 	}
 }

@@ -14,7 +14,6 @@ import com.censoredsoftware.demigods.engine.structure.StructureData;
 import com.censoredsoftware.demigods.engine.util.Admins;
 import com.censoredsoftware.demigods.engine.util.Configs;
 import com.censoredsoftware.demigods.engine.util.Zones;
-import com.censoredsoftware.demigods.greek.GreekMythos;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import org.bukkit.*;
@@ -142,9 +141,9 @@ public class Shrine extends GreekStructure
 					{
 						// Shrine created!
 						Admins.sendDebug(ChatColor.RED + "Shrine created by " + character.getName() + " (" + character.getDeity() + ") at: " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ());
-						StructureData save = GreekMythos.SHRINE.createNew(location, true);
+						StructureData save = inst().createNew(location, true);
 						save.setOwner(character.getId());
-						GreekMythos.SHRINE.birth(save, character);
+						inst().birth(save, character);
 
 						// Consume item in hand
 						ItemStack item = player.getItemInHand();
@@ -240,7 +239,7 @@ public class Shrine extends GreekStructure
 		}
 	};
 
-	public Shrine()
+	private Shrine()
 	{
 		super(name, ShrineDesign.values(), getDesign, createNew, sanctify, corrupt, birth, kill, flags, listener, radius, allow, sanctity, sanctityRegen);
 	}
@@ -291,5 +290,12 @@ public class Shrine extends GreekStructure
 			if(block.getRelative(1, 0, 1).getType().isSolid()) return false;
 			return !block.getRelative(1, 0, -1).getType().isSolid() && !block.getRelative(-1, 0, 1).getType().isSolid() && !block.getRelative(-1, 0, -1).getType().isSolid();
 		}
+	}
+
+	private static final Structure INST = new Shrine();
+
+	public static Structure inst()
+	{
+		return INST;
 	}
 }

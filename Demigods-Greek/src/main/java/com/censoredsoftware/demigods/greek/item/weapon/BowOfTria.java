@@ -1,9 +1,9 @@
 package com.censoredsoftware.demigods.greek.item.weapon;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
-
+import com.censoredsoftware.censoredlib.util.Items;
+import com.censoredsoftware.demigods.engine.item.DivineItem;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.censoredsoftware.demigods.greek.item.GreekItem;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Arrow;
@@ -18,10 +18,9 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 
-import com.censoredsoftware.censoredlib.util.Items;
-import com.censoredsoftware.demigods.engine.item.DivineItem;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.censoredsoftware.demigods.greek.item.GreekItem;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class BowOfTria extends GreekItem
 {
@@ -82,8 +81,15 @@ public class BowOfTria extends GreekItem
 		}
 	};
 
-	public BowOfTria()
+	private BowOfTria()
 	{
 		super(name, description, flags, category, item, recipe, listener);
+	}
+
+	private static final DivineItem INST = new BowOfTria();
+
+	public static DivineItem inst()
+	{
+		return INST;
 	}
 }

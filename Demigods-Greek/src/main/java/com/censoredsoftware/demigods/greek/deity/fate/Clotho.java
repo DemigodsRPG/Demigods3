@@ -50,8 +50,15 @@ public class Clotho extends GreekDeity
 	// Mood Manager
 	private static EnumMap<Deity.Mood, Deity.MoodPack> moodPacks = Maps.newEnumMap(Deity.Mood.class);
 
-	public Clotho()
+	private Clotho()
 	{
 		super(name, permission, alliance, color, claimItems, forsakeItems, shortDescription, lore, flags, abilities, accuracy, favorRegen, maxFavor, maxHealth, favorBank, moodPacks);
+	}
+
+	private static final Deity INST = new Clotho();
+
+	public static Deity inst()
+	{
+		return INST;
 	}
 }

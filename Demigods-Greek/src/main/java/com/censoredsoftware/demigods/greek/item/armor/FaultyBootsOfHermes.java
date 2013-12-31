@@ -1,9 +1,9 @@
 package com.censoredsoftware.demigods.greek.item.armor;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
-
+import com.censoredsoftware.censoredlib.util.Items;
+import com.censoredsoftware.demigods.engine.item.DivineItem;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.censoredsoftware.demigods.greek.item.GreekItem;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -17,10 +17,9 @@ import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.util.Vector;
 
-import com.censoredsoftware.censoredlib.util.Items;
-import com.censoredsoftware.demigods.engine.item.DivineItem;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.censoredsoftware.demigods.greek.item.GreekItem;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class FaultyBootsOfHermes extends GreekItem
 {
@@ -81,8 +80,15 @@ public class FaultyBootsOfHermes extends GreekItem
 		}
 	};
 
-	public FaultyBootsOfHermes()
+	private FaultyBootsOfHermes()
 	{
 		super(name, description, flags, category, item, recipe, listener);
+	}
+
+	private static final DivineItem INST = new FaultyBootsOfHermes();
+
+	public static DivineItem inst()
+	{
+		return INST;
 	}
 }

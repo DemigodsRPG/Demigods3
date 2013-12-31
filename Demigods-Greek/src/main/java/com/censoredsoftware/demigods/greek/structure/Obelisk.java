@@ -15,7 +15,6 @@ import com.censoredsoftware.demigods.engine.structure.StructureData;
 import com.censoredsoftware.demigods.engine.util.Admins;
 import com.censoredsoftware.demigods.engine.util.Configs;
 import com.censoredsoftware.demigods.engine.util.Zones;
-import com.censoredsoftware.demigods.greek.GreekMythos;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import org.bukkit.*;
@@ -172,9 +171,9 @@ public class Obelisk extends GreekStructure
 					{
 						// Obelisk created!
 						Admins.sendDebug(ChatColor.RED + "Obelisk created by " + character.getName() + " at: " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ());
-						StructureData save = GreekMythos.OBELISK.createNew(location, true);
+						StructureData save = inst().createNew(location, true);
 						save.setOwner(character.getId());
-						GreekMythos.OBELISK.birth(save, character);
+						inst().birth(save, character);
 
 						player.sendMessage(ChatColor.GRAY + Demigods.LANGUAGE.getText(Translation.Text.NOTIFICATION_OBELISK_CREATED));
 						event.setCancelled(true);
@@ -288,7 +287,7 @@ public class Obelisk extends GreekStructure
 		}
 	};
 
-	public Obelisk()
+	private Obelisk()
 	{
 		super(name, ObeliskDesign.values(), getDesign, createNew, sanctify, corrupt, birth, kill, flags, listener, radius, allow, sanctity, sanctityRegen);
 	}
@@ -337,5 +336,12 @@ public class Obelisk extends GreekStructure
 			if(block.getRelative(1, 0, 1).getType().isSolid()) return false;
 			return !block.getRelative(1, 0, -1).getType().isSolid() && !block.getRelative(-1, 0, 1).getType().isSolid() && !block.getRelative(-1, 0, -1).getType().isSolid();
 		}
+	}
+
+	private static final Structure INST = new Obelisk();
+
+	public static Structure inst()
+	{
+		return INST;
 	}
 }

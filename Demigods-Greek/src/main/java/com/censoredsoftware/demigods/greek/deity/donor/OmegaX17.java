@@ -48,8 +48,15 @@ public class OmegaX17 extends GreekDeity
 	// Mood Manager
 	private static EnumMap<Mood, MoodPack> moodPacks = Maps.newEnumMap(Deity.Mood.class);
 
-	public OmegaX17()
+	private OmegaX17()
 	{
 		super(name, permission, alliance, color, claimItems, forsakeItems, shortDescription, lore, flags, abilities, accuracy, favorRegen, maxFavor, maxHealth, favorBank, moodPacks);
+	}
+
+	private static final Deity INST = new OmegaX17();
+
+	public static Deity inst()
+	{
+		return INST;
 	}
 }

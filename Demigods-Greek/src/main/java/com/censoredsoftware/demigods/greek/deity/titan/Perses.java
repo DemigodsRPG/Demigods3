@@ -50,8 +50,15 @@ public class Perses extends GreekDeity
 	// Mood Manager
 	private static EnumMap<Mood, MoodPack> moodPacks = Maps.newEnumMap(Deity.Mood.class);
 
-	public Perses()
+	private Perses()
 	{
 		super(name, permission, alliance, color, claimItems, forsakeItems, shortDescription, lore, flags, abilities, accuracy, favorRegen, maxFavor, maxHealth, favorBank, moodPacks);
+	}
+
+	private static final Deity INST = new Perses();
+
+	public static Deity inst()
+	{
+		return INST;
 	}
 }

@@ -15,10 +15,8 @@ import com.censoredsoftware.demigods.greek.deity.god.Poseidon;
 import com.censoredsoftware.demigods.greek.deity.god.Zeus;
 import com.censoredsoftware.demigods.greek.deity.titan.Oceanus;
 import com.censoredsoftware.demigods.greek.deity.titan.Perses;
-import com.censoredsoftware.demigods.greek.item.armor.BootsOfPagos;
 import com.censoredsoftware.demigods.greek.item.armor.FaultyBootsOfHermes;
 import com.censoredsoftware.demigods.greek.item.book.BookOfPrayer;
-import com.censoredsoftware.demigods.greek.item.book.WelcomeBook;
 import com.censoredsoftware.demigods.greek.item.weapon.BowOfTria;
 import com.censoredsoftware.demigods.greek.structure.Altar;
 import com.censoredsoftware.demigods.greek.structure.Obelisk;
@@ -95,27 +93,10 @@ public class GreekMythos extends MythosPlugin
 		return true;
 	}
 
-	/**
-	 * Books
-	 */
-	public static final BookOfPrayer BOOK_OF_PRAYER = new BookOfPrayer();
-	public static final WelcomeBook WELCOME_BOOK = new WelcomeBook();
-
-	/**
-	 * Weapons
-	 */
-	public static final BowOfTria BOW_OF_TRIA = new BowOfTria();
-
-	/**
-	 * Armor
-	 */
-	public static final BootsOfPagos BOOTS_OF_PAGOS = new BootsOfPagos();
-	public static final FaultyBootsOfHermes FAULTY_BOOTS_OF_HERMES = new FaultyBootsOfHermes();
-
 	@Override
 	public ImmutableCollection<DivineItem> getDivineItems()
 	{
-		return ImmutableSet.of((DivineItem) BOOK_OF_PRAYER, WELCOME_BOOK, BOW_OF_TRIA, BOOTS_OF_PAGOS, FAULTY_BOOTS_OF_HERMES);
+		return ImmutableSet.of(BookOfPrayer.inst(), BowOfTria.inst(), BookOfPrayer.inst(), FaultyBootsOfHermes.inst());
 	}
 
 	@Override
@@ -124,39 +105,16 @@ public class GreekMythos extends MythosPlugin
 		return ImmutableSet.copyOf((Alliance[]) GreekAlliance.values());
 	}
 
-	/*
-	 * Gods
-	 */
-	public static final Zeus ZEUS = new Zeus();
-	public static final Poseidon POSEIDON = new Poseidon();
-
-	/*
-	 * Titans
-	 */
-	public static final Perses PERSES = new Perses();
-	public static final Oceanus OCEANUS = new Oceanus();
-
-	/*
-	 * Fates
-	 */
-	public static final Clotho CLOTHO = new Clotho();
-	public static final Lachesis LACHESIS = new Lachesis();
-	public static final Atropos ATROPOS = new Atropos();
-
 	@Override
 	public ImmutableCollection<Deity> getDeities()
 	{
-		return ImmutableSet.of((Deity) ZEUS, POSEIDON, PERSES, OCEANUS, CLOTHO, LACHESIS, ATROPOS);
+		return ImmutableSet.of(Zeus.inst(), Poseidon.inst(), Perses.inst(), Oceanus.inst(), Clotho.inst(), Lachesis.inst(), Atropos.inst());
 	}
-
-	public static final Altar ALTAR = new Altar();
-	public static final Obelisk OBELISK = new Obelisk();
-	public static final Shrine SHRINE = new Shrine();
 
 	@Override
 	public ImmutableCollection<Structure> getStructures()
 	{
-		return ImmutableSet.of((Structure) ALTAR, OBELISK, SHRINE);
+		return ImmutableSet.of(Altar.inst(), Obelisk.inst(), Shrine.inst());
 	}
 
 	public Boolean levelSeperateSkills()

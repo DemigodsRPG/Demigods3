@@ -50,8 +50,15 @@ public class Zeus extends GreekDeity
 	// Mood Manager
 	private static EnumMap<Mood, MoodPack> moodPacks = Maps.newEnumMap(Deity.Mood.class);
 
-	public Zeus()
+	private Zeus()
 	{
 		super(name, permission, alliance, color, claimItems, forsakeItems, shortDescription, lore, flags, abilities, accuracy, favorRegen, maxFavor, maxHealth, favorBank, moodPacks);
+	}
+
+	private static final Deity INST = new Zeus();
+
+	public static Deity inst()
+	{
+		return INST;
 	}
 }

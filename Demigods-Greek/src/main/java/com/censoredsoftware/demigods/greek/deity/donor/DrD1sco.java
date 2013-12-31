@@ -49,8 +49,15 @@ public class DrD1sco extends GreekDeity
 	// Mood Manager
 	private static EnumMap<Mood, MoodPack> moodPacks = Maps.newEnumMap(Deity.Mood.class);
 
-	public DrD1sco()
+	private DrD1sco()
 	{
 		super(name, permission, alliance, color, claimItems, forsakeItems, shortDescription, lore, flags, abilities, accuracy, favorRegen, maxFavor, maxHealth, favorBank, moodPacks);
+	}
+
+	private static final Deity INST = new DrD1sco();
+
+	public static Deity inst()
+	{
+		return INST;
 	}
 }

@@ -1,9 +1,12 @@
 package com.censoredsoftware.demigods.greek.item.armor;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
-
+import com.censoredsoftware.censoredlib.util.Items;
+import com.censoredsoftware.demigods.engine.item.DivineItem;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.censoredsoftware.demigods.greek.item.GreekItem;
+import com.google.common.collect.DiscreteDomains;
+import com.google.common.collect.Ranges;
+import com.google.common.collect.Sets;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -18,13 +21,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 
-import com.censoredsoftware.censoredlib.util.Items;
-import com.censoredsoftware.demigods.engine.item.DivineItem;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.censoredsoftware.demigods.greek.item.GreekItem;
-import com.google.common.collect.DiscreteDomains;
-import com.google.common.collect.Ranges;
-import com.google.common.collect.Sets;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class BootsOfPagos extends GreekItem
 {
@@ -79,9 +78,16 @@ public class BootsOfPagos extends GreekItem
 		}
 	};
 
-	public BootsOfPagos()
+	private BootsOfPagos()
 	{
 		super(name, description, flags, category, item, recipe, listener);
+	}
+
+	private static final DivineItem INST = new BootsOfPagos();
+
+	public static DivineItem inst()
+	{
+		return INST;
 	}
 
 	public static Set<Location> getSquare(Location center)
