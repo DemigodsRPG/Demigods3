@@ -25,6 +25,8 @@ public class AbilityListener implements Listener
 		final Player player = interactEvent.getPlayer();
 		final DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
+		if(character == null || !character.isUsable()) return;
+
 		for(Ability ability : Collections2.filter(character.getAbilities(), new Predicate<Ability>()
 		{
 			@Override
