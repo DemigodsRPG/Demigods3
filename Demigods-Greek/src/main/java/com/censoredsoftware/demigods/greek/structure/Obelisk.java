@@ -6,7 +6,6 @@ import com.censoredsoftware.censoredlib.schematic.Selection;
 import com.censoredsoftware.censoredlib.util.Colors;
 import com.censoredsoftware.demigods.engine.data.DataManager;
 import com.censoredsoftware.demigods.engine.deity.Deity;
-import com.censoredsoftware.demigods.engine.language.Text;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
 import com.censoredsoftware.demigods.engine.structure.Structure;
@@ -14,6 +13,7 @@ import com.censoredsoftware.demigods.engine.structure.StructureData;
 import com.censoredsoftware.demigods.engine.util.Admins;
 import com.censoredsoftware.demigods.engine.util.Configs;
 import com.censoredsoftware.demigods.engine.util.Zones;
+import com.censoredsoftware.demigods.greek.language.Text;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import org.bukkit.*;
@@ -174,7 +174,7 @@ public class Obelisk extends GreekStructure
 						save.setOwner(character.getId());
 						inst().birth(save, character);
 
-						player.sendMessage(ChatColor.GRAY + Text.NOTIFICATION_OBELISK_CREATED));
+						player.sendMessage(ChatColor.GRAY + Text.NOTIFICATION_OBELISK_CREATED.english());
 						event.setCancelled(true);
 					}
 					catch(Exception e)
@@ -200,12 +200,12 @@ public class Obelisk extends GreekStructure
 
 					Admins.sendDebug(ChatColor.RED + "Obelisk owned by (" + owner.getName() + ") at: " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ() + " removed.");
 
-					player.sendMessage(ChatColor.GREEN + Text.ADMIN_WAND_REMOVE_OBELISK_COMPLETE));
+					player.sendMessage(ChatColor.GREEN + Text.ADMIN_WAND_REMOVE_OBELISK_COMPLETE.english());
 				}
 				else
 				{
 					DataManager.saveTimed(player.getName(), "destroy_obelisk", true, 5);
-					player.sendMessage(ChatColor.RED + Text.ADMIN_WAND_REMOVE_OBELISK));
+					player.sendMessage(ChatColor.RED + Text.ADMIN_WAND_REMOVE_OBELISK.english());
 				}
 			}
 		}
