@@ -2,7 +2,6 @@ package com.censoredsoftware.demigods.engine.command;
 
 import java.util.Collection;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -42,7 +41,7 @@ public class MainCommand extends WrappedCommand
 	}
 
 	@Override
-	public Set<String> getCommands()
+	public java.util.Set getCommands()
 	{
 		return Sets.newHashSet("demigods", "deity");
 	}
@@ -310,7 +309,7 @@ public class MainCommand extends WrappedCommand
 		return true;
 	}
 
-	static class doCheck implements AdminCommand
+	static class Check implements AdminCommand
 	{
 		@Override
 		public String getName()
@@ -391,7 +390,7 @@ public class MainCommand extends WrappedCommand
 		}
 	}
 
-	static class doRemove implements AdminCommand
+	static class Remove implements AdminCommand
 	{
 		@Override
 		public String getName()
@@ -458,7 +457,7 @@ public class MainCommand extends WrappedCommand
 		}
 	}
 
-	static class doSet implements AdminCommand
+	static class Set implements AdminCommand
 	{
 		@Override
 		public String getName()
@@ -540,7 +539,7 @@ public class MainCommand extends WrappedCommand
 		}
 	}
 
-	static class doAdd implements AdminCommand
+	static class Add implements AdminCommand
 	{
 		@Override
 		public String getName()
@@ -621,7 +620,7 @@ public class MainCommand extends WrappedCommand
 		}
 	}
 
-	static class doSub implements AdminCommand
+	static class Sub implements AdminCommand
 	{
 		@Override
 		public String getName()
@@ -704,7 +703,7 @@ public class MainCommand extends WrappedCommand
 
 	public enum AdminCommands
 	{
-		CHECK(new doCheck()), REMOVE(new doRemove()), SET(new doSet()), ADD(new doAdd()), SUBTRACT(new doSub());
+		CHECK(new Check()), REMOVE(new Remove()), SET(new Set()), ADD(new Add()), SUBTRACT(new Sub());
 
 		private AdminCommand command;
 

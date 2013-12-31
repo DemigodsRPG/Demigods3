@@ -1499,11 +1499,9 @@ public class Prayer implements WrappedConversation
 				// Clear the confirmation case
 				event.getInventory().clear();
 			}
-			catch(Exception errored)
+			catch(Exception ignored)
 			{
-				// Print error for debugging
-				// Messages.logException(errored);
-				errored.printStackTrace();
+				// Ignored
 			}
 		}
 
