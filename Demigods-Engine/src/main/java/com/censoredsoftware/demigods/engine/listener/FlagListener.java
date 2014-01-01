@@ -52,7 +52,6 @@ public class FlagListener implements Listener
 		{
 			event.setCancelled(true);
 			event.getPlayer().sendMessage(ChatColor.YELLOW + English.PROTECTED_BLOCK.getLine());
-			return;
 		}
 	}
 

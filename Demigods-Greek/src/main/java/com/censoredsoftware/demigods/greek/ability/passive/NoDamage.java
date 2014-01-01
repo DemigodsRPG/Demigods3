@@ -1,7 +1,9 @@
 package com.censoredsoftware.demigods.greek.ability.passive;
 
-import java.util.List;
-
+import com.censoredsoftware.demigods.engine.mythos.Deity;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.censoredsoftware.demigods.greek.ability.GreekAbility;
+import com.google.common.collect.Lists;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -9,10 +11,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 
-import com.censoredsoftware.demigods.engine.mythos.Deity;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.censoredsoftware.demigods.greek.ability.GreekAbility;
-import com.google.common.collect.Lists;
+import java.util.List;
 
 public class NoDamage extends GreekAbility.Passive
 {
@@ -25,7 +24,7 @@ public class NoDamage extends GreekAbility.Passive
 		super(NAME, deity, REPEAT, DETAILS, new Listener()
 		{
 			@EventHandler(priority = EventPriority.HIGHEST)
-			public void onEntityDamange(EntityDamageEvent damageEvent)
+			public void onEntityDamage(EntityDamageEvent damageEvent)
 			{
 				if(Zones.inNoDemigodsZone(damageEvent.getEntity().getLocation())) return;
 				if(damageEvent.getEntity() instanceof Player)

@@ -40,7 +40,7 @@ public class MainCommand extends WrappedCommand
 	}
 
 	@Override
-	public java.util.Set getCommands()
+	public java.util.Set<String> getCommands()
 	{
 		return Sets.newHashSet("demigods", "deity");
 	}
@@ -487,7 +487,7 @@ public class MainCommand extends WrappedCommand
 
 			DCharacter character = DCharacter.Util.getCharacterByName(args[3]);
 			int amount = Integer.parseInt(args[4]);
-			String updatedValue = null;
+			String updatedValue;
 
 			if(character != null)
 			{

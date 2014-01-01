@@ -77,7 +77,7 @@ public class Admins
 	 */
 	public static ArrayList<Player> getOnlineAdmins()
 	{
-		ArrayList<Player> toReturn = new ArrayList<Player>();
+		ArrayList<Player> toReturn = new ArrayList<>();
 		for(Player player : Bukkit.getOnlinePlayers())
 		{
 			if(player.hasPermission("demigods.admin")) toReturn.add(player);

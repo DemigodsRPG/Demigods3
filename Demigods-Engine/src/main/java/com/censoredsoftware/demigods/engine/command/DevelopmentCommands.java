@@ -50,8 +50,7 @@ public class DevelopmentCommands extends WrappedCommand
 		if("test1".equalsIgnoreCase(command.getName())) return test1(sender, args);
 		if("test2".equalsIgnoreCase(command.getName())) return test2(sender, args);
 		if("test3".equalsIgnoreCase(command.getName())) return test3(sender, args);
-		if("obelisk".equalsIgnoreCase(command.getName())) return obelisk(sender, args);
-		return false;
+		return "obelisk".equalsIgnoreCase(command.getName()) && obelisk(sender, args);
 	}
 
 	private static boolean test1(CommandSender sender, final String[] args)

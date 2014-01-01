@@ -51,8 +51,7 @@ public class GeneralCommands extends WrappedCommand
 		if("binds".equalsIgnoreCase(command.getName())) return binds(sender);
 		if("leaderboard".equalsIgnoreCase(command.getName())) return leaderboard(sender);
 		if("tributes".equalsIgnoreCase(command.getName())) return tributes(sender);
-		if("names".equalsIgnoreCase(command.getName())) return names(sender);
-		return false;
+		return "names".equalsIgnoreCase(command.getName()) && names(sender);
 	}
 
 	private boolean check(CommandSender sender)

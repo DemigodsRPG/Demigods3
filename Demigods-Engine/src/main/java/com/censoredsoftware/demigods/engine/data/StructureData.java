@@ -102,7 +102,7 @@ public class StructureData implements ConfigurationSerializable
 	@Override
 	public Map<String, Object> serialize()
 	{
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>();
 		map.put("type", type);
 		map.put("referenceLocation", referenceLocation.toString());
 		if(optionalLocation != null) map.put("optionalLocation", optionalLocation.toString());

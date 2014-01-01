@@ -1,15 +1,5 @@
 package com.censoredsoftware.demigods.greek.ability.ultimate;
 
-import java.util.List;
-
-import org.bukkit.Bukkit;
-import org.bukkit.WeatherType;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.scheduler.BukkitRunnable;
-
 import com.censoredsoftware.demigods.engine.DemigodsPlugin;
 import com.censoredsoftware.demigods.engine.data.Battle;
 import com.censoredsoftware.demigods.engine.data.DCharacter;
@@ -19,6 +9,15 @@ import com.censoredsoftware.demigods.engine.mythos.Ability;
 import com.censoredsoftware.demigods.greek.ability.GreekAbility;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
+import org.bukkit.Bukkit;
+import org.bukkit.WeatherType;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.List;
 
 public class Storm extends GreekAbility
 {
@@ -50,7 +49,7 @@ public class Storm extends GreekAbility
 				{
 					// Validate them first
 					if(!(entity instanceof LivingEntity)) continue;
-					if((entity instanceof Player))
+					if(entity instanceof Player)
 					{
 						DCharacter opponent = DPlayer.Util.getPlayer((Player) entity).getCurrent();
 						if(opponent != null && DCharacter.Util.areAllied(character, opponent)) continue;

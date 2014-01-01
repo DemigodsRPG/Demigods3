@@ -101,7 +101,7 @@ public class Skill implements ConfigurationSerializable
 	@Override
 	public Map<String, Object> serialize()
 	{
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>();
 		map.put("type", type);
 		map.put("points", points);
 		map.put("level", level);

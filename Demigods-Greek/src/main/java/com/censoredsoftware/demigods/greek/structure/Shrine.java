@@ -1,21 +1,5 @@
 package com.censoredsoftware.demigods.greek.structure;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
-
-import org.bukkit.*;
-import org.bukkit.block.Block;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.MaterialData;
-
 import com.censoredsoftware.censoredlib.schematic.Schematic;
 import com.censoredsoftware.censoredlib.schematic.Selection;
 import com.censoredsoftware.censoredlib.util.Colors;
@@ -32,6 +16,21 @@ import com.censoredsoftware.demigods.engine.util.Zones;
 import com.censoredsoftware.demigods.greek.language.English;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
+import org.bukkit.*;
+import org.bukkit.block.Block;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.MaterialData;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Shrine extends GreekStructure
 {
@@ -288,8 +287,7 @@ public class Shrine extends GreekStructure
 			if(!block.getRelative(-1, 0, 0).getType().equals(Material.COBBLESTONE)) return false;
 			if(!block.getRelative(0, 0, 1).getType().equals(Material.COBBLESTONE)) return false;
 			if(!block.getRelative(0, 0, -1).getType().equals(Material.COBBLESTONE)) return false;
-			if(block.getRelative(1, 0, 1).getType().isSolid()) return false;
-			return !block.getRelative(1, 0, -1).getType().isSolid() && !block.getRelative(-1, 0, 1).getType().isSolid() && !block.getRelative(-1, 0, -1).getType().isSolid();
+			return !block.getRelative(1, 0, 1).getType().isSolid() && !block.getRelative(1, 0, -1).getType().isSolid() && !block.getRelative(-1, 0, 1).getType().isSolid() && !block.getRelative(-1, 0, -1).getType().isSolid();
 		}
 	}
 

@@ -1,5 +1,11 @@
 package com.censoredsoftware.demigods.engine.listener;
 
+import com.censoredsoftware.censoredlib.util.Vehicles;
+import com.censoredsoftware.demigods.engine.data.*;
+import com.censoredsoftware.demigods.engine.mythos.Structure;
+import com.censoredsoftware.demigods.engine.util.Configs;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -9,13 +15,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.vehicle.VehicleMoveEvent;
-
-import com.censoredsoftware.censoredlib.util.Vehicles;
-import com.censoredsoftware.demigods.engine.data.*;
-import com.censoredsoftware.demigods.engine.mythos.Structure;
-import com.censoredsoftware.demigods.engine.util.Configs;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
 
 public class MoveListener implements Listener
 {
@@ -51,7 +50,7 @@ public class MoveListener implements Listener
 					DataManager.removeTemp(participant.getId().toString(), "battle_safe_location");
 				}
 				else Vehicles.teleport(entity, Battle.Util.randomRespawnPoint(battle));
-			};
+			}
 		}
 	}
 
@@ -88,7 +87,7 @@ public class MoveListener implements Listener
 					entity.teleport((Location) DataManager.getValueTemp(DPlayer.Util.getPlayer((Player) entity).getMojangAccount(), "invisible_wall_location"));
 					DataManager.removeTemp(DPlayer.Util.getPlayer((Player) entity).getMojangAccount(), "invisible_wall_location");
 				}
-			};
+			}
 		}
 	}
 }

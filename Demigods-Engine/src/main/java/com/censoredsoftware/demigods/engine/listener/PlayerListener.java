@@ -175,9 +175,9 @@ public class PlayerListener implements Listener
 		if(character != null)
 		{
 			character.setAlive(true);
-			double maxhealth = character.getMaxHealth();
-			event.getPlayer().setMaxHealth(maxhealth);
-			event.getPlayer().setHealth(maxhealth);
+			double maxHealth = character.getMaxHealth();
+			event.getPlayer().setMaxHealth(maxHealth);
+			event.getPlayer().setHealth(maxHealth);
 		}
 	}
 

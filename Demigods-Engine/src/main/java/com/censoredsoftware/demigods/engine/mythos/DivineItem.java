@@ -1,10 +1,10 @@
 package com.censoredsoftware.demigods.engine.mythos;
 
-import java.util.Set;
-
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
+
+import java.util.Set;
 
 public interface DivineItem
 {
@@ -27,11 +27,11 @@ public interface DivineItem
 
 	public enum Flag
 	{
-		UNENCHANTABLE;
+		UNENCHANTABLE
 	}
 
 	public enum Category
 	{
-		ARMOR, WEAPON, CONSUMABLE, BOOK;
+		ARMOR, WEAPON, CONSUMABLE, BOOK
 	}
 }

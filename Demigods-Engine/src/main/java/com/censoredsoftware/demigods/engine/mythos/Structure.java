@@ -107,7 +107,7 @@ public interface Structure
 		public static Set<StructureData> getStructuresInRegionalArea(Location location)
 		{
 			final Region center = Region.Util.getRegion(location);
-			Set<StructureData> set = new HashSet<StructureData>();
+			Set<StructureData> set = new HashSet<>();
 			for(Region region : center.getSurroundingRegions())
 				set.addAll(getStructuresInSingleRegion(region));
 			return set;

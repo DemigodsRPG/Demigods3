@@ -54,7 +54,3 @@ commands:
     test3:
         usage: /test3
         #permission: demigods.admin
-#    hspawn:
-#        usage: /hspawn
-#    nearestaltar:
-#        usage: /nearestaltar

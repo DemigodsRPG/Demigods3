@@ -1,19 +1,16 @@
 package com.censoredsoftware.demigods.engine.template;
 
-import java.util.List;
-
+import com.censoredsoftware.demigods.engine.data.Skill;
+import com.censoredsoftware.demigods.engine.mythos.Ability;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Lists;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.material.MaterialData;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.censoredsoftware.demigods.engine.data.DCharacter;
-import com.censoredsoftware.demigods.engine.data.DPlayer;
-import com.censoredsoftware.demigods.engine.data.Skill;
-import com.censoredsoftware.demigods.engine.mythos.Ability;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Lists;
+import java.util.List;
 
 public class TemplateAbility implements Ability
 {
@@ -97,7 +94,6 @@ public class TemplateAbility implements Ability
 			public boolean apply(Player player)
 			{
 				// Define variables
-				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 				LivingEntity target = Ability.Util.autoTarget(player);
 
 				if(!Ability.Util.target(player, target.getLocation(), true)) return false;

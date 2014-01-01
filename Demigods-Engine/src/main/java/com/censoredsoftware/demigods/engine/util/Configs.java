@@ -6,12 +6,12 @@ import org.bukkit.configuration.Configuration;
 import java.util.List;
 
 /**
- * Module to load configuration settings from any passed in PLUGIN's config.yml.
+ * Module to load configuration settings from any passed in plugin's config.yml.
  */
 public class Configs
 {
 	/**
-	 * Constructor to create a new Configs for the given PLUGIN's <code>instance</code>.
+	 * Constructor to create a new Configs for the given plugin's <code>instance</code>.
 	 * 
 	 * @param instance The demigods instance the Configs attaches to.
 	 * @param copyDefaults Boolean for copying the default config.yml found inside this demigods over the config file utilized by this library.

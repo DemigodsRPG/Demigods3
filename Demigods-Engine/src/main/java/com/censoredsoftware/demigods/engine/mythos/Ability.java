@@ -78,12 +78,7 @@ public interface Ability
 				player.sendMessage(ChatColor.YELLOW + "You do not have enough favor.");
 				return false;
 			}
-			else if(!DCharacter.Util.isCooledDown(character, ability.getName()))
-			{
-				// player.sendMessage(ChatColor.YELLOW + "That ability has not cooled down."); FIXME Send this in a not spammy way.
-				return false;
-			}
-			else return true;
+			else return DCharacter.Util.isCooledDown(character, ability.getName());
 		}
 
 		/**

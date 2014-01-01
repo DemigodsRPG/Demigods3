@@ -1,19 +1,5 @@
 package com.censoredsoftware.demigods.greek.ability.ultimate;
 
-import java.util.List;
-import java.util.Set;
-
-import org.bukkit.*;
-import org.bukkit.block.BlockFace;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.FallingBlock;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityChangeBlockEvent;
-import org.bukkit.scheduler.BukkitRunnable;
-
 import com.censoredsoftware.censoredlib.util.Randoms;
 import com.censoredsoftware.censoredlib.util.Spigots;
 import com.censoredsoftware.demigods.engine.Demigods;
@@ -25,6 +11,19 @@ import com.censoredsoftware.demigods.greek.ability.GreekAbility;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import org.bukkit.*;
+import org.bukkit.block.BlockFace;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.FallingBlock;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityChangeBlockEvent;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.List;
+import java.util.Set;
 
 public class Discoball extends GreekAbility
 {
@@ -38,7 +37,7 @@ public class Discoball extends GreekAbility
 	{
 		super(NAME, COMMAND, deity, COST, DELAY, REPEAT, DETAILS, TYPE, null, new Predicate<Player>()
 		{
-	@Override
+			@Override
 			public boolean apply(final Player player)
 			{
 				balls(player);
@@ -85,7 +84,7 @@ public class Discoball extends GreekAbility
 						if(Zones.inNoDemigodsZone(location)) return;
 						playRandomNote(location, 2F);
 						sparkleSparkle(location);
-						destoryNearby(location);
+						destroyNearby(location);
 					}
 				}
 			}
@@ -129,7 +128,7 @@ public class Discoball extends GreekAbility
 		if(Demigods.Util.isRunningSpigot()) Spigots.playParticle(location, Effect.CRIT, 1, 1, 1, 10F, 1000, 30);
 	}
 
-	public static void destoryNearby(Location location)
+	public static void destroyNearby(Location location)
 	{
 		location.getWorld().createExplosion(location, 2F);
 	}

@@ -114,11 +114,7 @@ public class Prayer implements WrappedConversation
 
 			return prayerConversation;
 		}
-		catch(IllegalAccessException ignored)
-		{
-			// ignored
-		}
-		catch(NoSuchFieldException ignored)
+		catch(IllegalAccessException | NoSuchFieldException ignored)
 		{
 			// ignored
 		}
@@ -256,8 +252,8 @@ public class Prayer implements WrappedConversation
 			// Define variables
 			DCharacter character = DPlayer.Util.getPlayer((Player) context.getForWhom()).getCurrent();
 			String arg0 = message.split(" ")[0];
-			String arg1 = message.split(" ").length >= 2 ? message.split(" ")[1] : null;
-			String arg2 = message.split(" ").length >= 3 ? message.split(" ")[2] : null;
+			String arg1 = message.split(" ").length >= 2 ? message.split(" ")[1] : "";
+			String arg2 = message.split(" ").length >= 3 ? message.split(" ")[2] : "";
 
 			// Create and save the notification list
 			context.setSessionData("warp_notifications", Lists.newArrayList());
