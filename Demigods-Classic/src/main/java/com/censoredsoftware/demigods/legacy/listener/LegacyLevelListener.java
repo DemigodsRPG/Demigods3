@@ -1,7 +1,7 @@
 package com.censoredsoftware.demigods.legacy.listener;
 
-import com.censoredsoftware.demigods.engine.player.DCharacter;
-import com.censoredsoftware.demigods.engine.player.DPlayer;
+import com.censoredsoftware.demigods.engine.data.DCharacter;
+import com.censoredsoftware.demigods.engine.data.DPlayer;
 import com.censoredsoftware.demigods.engine.util.Zones;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
