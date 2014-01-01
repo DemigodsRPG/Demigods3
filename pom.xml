@@ -13,6 +13,7 @@
         <module>Demigods-Greek</module>
         <module>Demigods-Panel</module>
         <module>Demigods-Exclusive</module>
+        <module>Demigods-Classic</module>
     </modules>
 
     <name>Demigods</name>

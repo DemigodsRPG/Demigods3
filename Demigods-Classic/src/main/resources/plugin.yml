@@ -1,0 +1,5 @@
+name: DemigodsLegacy
+main: com.censoredsoftware.demigods.legacy.DemigodsLegacyPlugin
+version: ${project.version}
+authors: [_Alex, HmmmQuestionMark, marinating]
+depend: [Demigods]
