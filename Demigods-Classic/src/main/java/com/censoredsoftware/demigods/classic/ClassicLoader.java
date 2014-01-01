@@ -1,4 +1,4 @@
-package com.censoredsoftware.demigods.legacy;
+package com.censoredsoftware.demigods.classic;
 
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import com.censoredsoftware.censoredlib.util.Randoms;
@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
-public class LegacyLoader
+public class ClassicLoader
 {
 	private final static Logger log = Logger.getLogger("Minecraft");
 	private final static String PATH = "plugins/Demigods/";
@@ -116,7 +116,7 @@ public class LegacyLoader
 
 	public static void convertLegacyData()
 	{
-		for(String legacyPlayer : LegacyLoader.getCompleteData().keySet())
+		for(String legacyPlayer : ClassicLoader.getCompleteData().keySet())
 			convertPlayer(legacyPlayer);
 	}
 

@@ -1,4 +1,4 @@
-package com.censoredsoftware.demigods.legacy.listener;
+package com.censoredsoftware.demigods.classic.listener;
 
 import com.censoredsoftware.demigods.engine.data.Battle;
 import com.censoredsoftware.demigods.engine.data.DCharacter;
@@ -12,7 +12,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
-public class LegacyBattleListener implements Listener
+public class ClassicBattleListener implements Listener
 {
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public static void onDamageBy(EntityDamageByEntityEvent event)
