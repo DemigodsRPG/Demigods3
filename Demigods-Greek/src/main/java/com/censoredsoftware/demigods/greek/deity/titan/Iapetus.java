@@ -17,16 +17,16 @@ import com.google.common.collect.Sets;
 
 public class Iapetus extends GreekDeity
 {
-	public final static String NAME = "Iapetus", SHORT_DESCRIPTION = ChatColor.GRAY + "The Titan of mortality.";
-	public final static Alliance ALLIANCE = GreekAlliance.TITAN;
-	public final static String PERMISSION = ALLIANCE.getPermission() + "." + NAME.toLowerCase();
-	public final static int ACCURACY = 15, FAVOR_REGEN = 5, MAX_FAVOR = 20000, MAX_HEALTH = 40, FAVOR_BANK = 10000;
-	public final static ChatColor COLOR = ChatColor.RED;
-	public final static Map<Material, Integer> CLAIM_ITEMS = Maps.newHashMap(ImmutableMap.of(Material.ARROW, 2, Material.WOOD_SWORD, 1));
-	public final static Map<Material, Integer> FORSAKE_ITEMS = Maps.newHashMap(ImmutableMap.of(Material.GOLD_SWORD, 4));
-	public final static List<String> LORE = Arrays.asList();
-	public final static Set<Deity.Flag> FLAGS = Sets.newHashSet(Deity.Flag.MAJOR_DEITY, Deity.Flag.NON_PLAYABLE);
-	public final static List<Ability> ABILITIES = Lists.newArrayList();
+	public static final String NAME = "Iapetus", SHORT_DESCRIPTION = ChatColor.GRAY + "The Titan of mortality.";
+	public static final Alliance ALLIANCE = GreekAlliance.TITAN;
+	public static final String PERMISSION = ALLIANCE.getPermission() + "." + NAME.toLowerCase();
+	public static final int ACCURACY = 15, FAVOR_REGEN = 5, MAX_FAVOR = 20000, MAX_HEALTH = 40, FAVOR_BANK = 10000;
+	public static final ChatColor COLOR = ChatColor.RED;
+	public static final Map<Material, Integer> CLAIM_ITEMS = Maps.newHashMap(ImmutableMap.of(Material.ARROW, 2, Material.WOOD_SWORD, 1));
+	public static final Map<Material, Integer> FORSAKE_ITEMS = Maps.newHashMap(ImmutableMap.of(Material.GOLD_SWORD, 4));
+	public static final List<String> LORE = Arrays.asList();
+	public static final Set<Deity.Flag> FLAGS = Sets.newHashSet(Deity.Flag.MAJOR_DEITY, Deity.Flag.NON_PLAYABLE);
+	public static final List<Ability> ABILITIES = Lists.newArrayList();
 
 	// Mood Manager
 	private static EnumMap<Mood, MoodPack> moodPacks = Maps.newEnumMap(Deity.Mood.class);

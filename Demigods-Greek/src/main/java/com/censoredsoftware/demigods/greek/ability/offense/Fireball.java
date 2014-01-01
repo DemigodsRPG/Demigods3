@@ -16,14 +16,14 @@ import com.google.common.collect.Lists;
 
 public class Fireball extends GreekAbility
 {
-	private final static String name = "Fireball", command = "fireball";
-	private final static int cost = 100, delay = 5, repeat = 0;
-	private final static List<String> details = Lists.newArrayList("Send a fireball flying at your enemy.");
-	private final static Skill.Type type = Skill.Type.OFFENSE;
+	private static final String NAME = "Fireball", COMMAND = "fireball";
+	private static final int COST = 100, DELAY = 2, REPEAT = 0;
+	private static final List<String> DETAILS = Lists.newArrayList("Send a fireball flying at your enemy.");
+	private static final Skill.Type TYPE = Skill.Type.OFFENSE;
 
 	public Fireball(String deity)
 	{
-		super(name, command, deity, cost, delay, repeat, details, type, null, new Predicate<Player>()
+		super(NAME, COMMAND, deity, COST, DELAY, REPEAT, DETAILS, TYPE, null, new Predicate<Player>()
 		{
 			@Override
 			public boolean apply(Player player)
@@ -37,13 +37,12 @@ public class Fireball extends GreekAbility
 				{
 					target = Ability.Util.autoTarget(player).getLocation();
 					notify = true;
-					if(!Ability.Util.preProcessAbility(player, entity, Fireball.cost) || entity.getEntityId() == player.getEntityId()) return false;
+					if(entity.getEntityId() == player.getEntityId()) return false;
 				}
 				else
 				{
 					target = Ability.Util.directTarget(player);
 					notify = false;
-					if(!Ability.Util.preProcessAbility(player, Fireball.cost)) return false;
 				}
 
 				if(!Ability.Util.target(player, target, notify)) return false;

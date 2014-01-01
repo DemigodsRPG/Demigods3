@@ -18,7 +18,6 @@ import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.data.DCharacter;
 import com.censoredsoftware.demigods.engine.data.DPlayer;
 import com.censoredsoftware.demigods.engine.data.Skill;
-import com.censoredsoftware.demigods.engine.mythos.Ability;
 import com.censoredsoftware.demigods.greek.ability.GreekAbility;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
@@ -26,21 +25,21 @@ import com.google.common.collect.Sets;
 
 public class Swarm extends GreekAbility
 {
-	private final static String name = "Swarm", command = "swarm";
-	private final static int cost = 3700, delay = 600, repeat = 0;
-	private final static List<String> details = Lists.newArrayList("Swarm your enemies with powerful zombies.");
-	private final static Skill.Type type = Skill.Type.ULTIMATE;
+	private static final String NAME = "Swarm", COMMAND = "swarm";
+	private static final int COST = 3700, DELAY = 500, REPEAT = 0;
+	private static final List<String> DETAILS = Lists.newArrayList("Swarm your enemies with powerful zombies.");
+	private static final Skill.Type TYPE = Skill.Type.ULTIMATE;
 
 	public Swarm(String deity)
 	{
-		super(name, command, deity, cost, delay, repeat, details, type, null, new Predicate<Player>()
+		super(NAME, COMMAND, deity, COST, DELAY, REPEAT, DETAILS, TYPE, null, new Predicate<Player>()
 		{
 			@Override
 			public boolean apply(Player player)
 			{
 				// Define variables
 				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
-				Set<LivingEntity> targets = Ability.Util.preProcessAbility(player, player.getNearbyEntities(50, 50, 50), cost);
+				Set<LivingEntity> targets = Sets.newHashSet(); /* TODO: Ability.Util.preProcessAbility(player, player.getNearbyEntities(50, 50, 50), NAME); */
 
 				if(targets == null || targets.isEmpty()) return false;
 

@@ -18,7 +18,7 @@ import com.google.common.collect.Lists;
 public class TemplateAbility implements Ability
 {
 	private static final String NAME = "Test", COMMAND = "test";
-	private static final int COST = 170, DELAY = 1500, REPEAT = 0;
+	private static final int COST = 170, DELAY = 1, REPEAT = 0;
 	private static final List<String> DETAILS = Lists.newArrayList("Test your target.");
 	private static final Skill.Type TYPE = Skill.Type.OFFENSE;
 	private final String deity;
@@ -99,10 +99,6 @@ public class TemplateAbility implements Ability
 				// Define variables
 				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 				LivingEntity target = Ability.Util.autoTarget(player);
-
-				if(!Ability.Util.preProcessAbility(player, target, COST)) return false;
-				DCharacter.Util.setCoolDown(character, NAME, System.currentTimeMillis() + DELAY);
-				character.getMeta().subtractFavor(COST);
 
 				if(!Ability.Util.target(player, target.getLocation(), true)) return false;
 

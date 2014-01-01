@@ -18,15 +18,15 @@ import com.google.common.collect.Lists;
 
 public class Reel extends GreekAbility
 {
-	private final static String name = "Reel", command = "reel";
-	private final static int cost = 120, delay = 1100, repeat = 0;
-	private final static List<String> details = Lists.newArrayList("Use a fishing rod for a stronger attack.");
-	private final static Skill.Type type = Skill.Type.OFFENSE;
-	private final static MaterialData weapon = new MaterialData(Material.FISHING_ROD);
+	private static final String NAME = "Reel", COMMAND = "reel";
+	private static final int COST = 120, DELAY = 4, REPEAT = 0;
+	private static final List<String> DETAILS = Lists.newArrayList("Use a fishing rod for a stronger attack.");
+	private static final Skill.Type TYPE = Skill.Type.OFFENSE;
+	private static final MaterialData WEAPON = new MaterialData(Material.FISHING_ROD);
 
 	public Reel(String deity)
 	{
-		super(name, command, deity, cost, delay, repeat, details, type, weapon, new Predicate<Player>()
+		super(NAME, COMMAND, deity, COST, DELAY, REPEAT, DETAILS, TYPE, WEAPON, new Predicate<Player>()
 		{
 
 			@Override
@@ -36,8 +36,6 @@ public class Reel extends GreekAbility
 				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 				int damage = (int) Math.ceil(0.37286 * Math.pow(character.getMeta().getAscensions() * 100, 0.371238)); // TODO
 				LivingEntity target = Ability.Util.autoTarget(player);
-
-				if(!Ability.Util.preProcessAbility(player, target, cost)) return false;
 
 				if(!Ability.Util.target(player, target.getLocation(), true)) return false;
 

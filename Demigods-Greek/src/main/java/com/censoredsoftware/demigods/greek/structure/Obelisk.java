@@ -1,5 +1,21 @@
 package com.censoredsoftware.demigods.greek.structure;
 
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.bukkit.*;
+import org.bukkit.block.Block;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.material.MaterialData;
+
 import com.censoredsoftware.censoredlib.schematic.BlockData;
 import com.censoredsoftware.censoredlib.schematic.Schematic;
 import com.censoredsoftware.censoredlib.schematic.Selection;
@@ -17,21 +33,6 @@ import com.censoredsoftware.demigods.engine.util.Zones;
 import com.censoredsoftware.demigods.greek.language.English;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
-import org.bukkit.*;
-import org.bukkit.block.Block;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.material.MaterialData;
-
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
 
 public class Obelisk extends GreekStructure
 {
@@ -222,7 +223,7 @@ public class Obelisk extends GreekStructure
 	};
 	private static final float sanctity = /* 850F */150F, sanctityRegen = 1F;
 
-	private final static Schematic general = new Schematic("general", "HmmmQuestionMark", 3)
+	private static final Schematic general = new Schematic("general", "HmmmQuestionMark", 3)
 	{
 		{
 			// Everything else.
@@ -246,7 +247,7 @@ public class Obelisk extends GreekStructure
 			add(new Selection(-1, 5, 1, BlockData.Preset.VINE_4));
 		}
 	};
-	private final static Schematic desert = new Schematic("desert", "HmmmQuestionMark", 3)
+	private static final Schematic desert = new Schematic("desert", "HmmmQuestionMark", 3)
 	{
 		{
 			// Everything else.
@@ -266,7 +267,7 @@ public class Obelisk extends GreekStructure
 			add(new Selection(0, 5, 0, Material.REDSTONE_LAMP_ON));
 		}
 	};
-	private final static Schematic nether = new Schematic("nether", "HmmmQuestionMark", 3)
+	private static final Schematic nether = new Schematic("nether", "HmmmQuestionMark", 3)
 	{
 		{
 			// Everything else.

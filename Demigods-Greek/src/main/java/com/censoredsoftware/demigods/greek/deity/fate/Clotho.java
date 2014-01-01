@@ -33,7 +33,7 @@ public class Clotho extends GreekDeity
 	private static final ChatColor COLOR = ChatColor.WHITE;
 	private static final ImmutableMap<Material, Integer> CLAIM_ITEMS = ImmutableMap.of(Material.BEDROCK, 3);
 	private static final ImmutableMap<Material, Integer> FORSAKE_ITEMS = ImmutableMap.of(Material.BEDROCK, 10);
-	public final static List<String> LORE = Arrays.asList();
+	public static final List<String> LORE = Arrays.asList();
 	private static final Set<Deity.Flag> FLAGS = Sets.newHashSet(Deity.Flag.MAJOR_DEITY, Deity.Flag.PLAYABLE, Deity.Flag.NO_BATTLE, Deity.Flag.NO_SHRINE);
 	private static final List<Ability> ABILITIES = Lists.newArrayList(new NoDamage(NAME), new AlwaysInvisible(NAME), new Swim(NAME), new Carry(NAME, false), new Discoball(NAME));
 

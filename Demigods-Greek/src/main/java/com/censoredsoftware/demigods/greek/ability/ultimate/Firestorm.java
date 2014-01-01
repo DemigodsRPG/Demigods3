@@ -18,29 +18,26 @@ import com.censoredsoftware.demigods.engine.data.Battle;
 import com.censoredsoftware.demigods.engine.data.DCharacter;
 import com.censoredsoftware.demigods.engine.data.DPlayer;
 import com.censoredsoftware.demigods.engine.data.Skill;
-import com.censoredsoftware.demigods.engine.mythos.Ability;
 import com.censoredsoftware.demigods.greek.ability.GreekAbility;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
 
 public class Firestorm extends GreekAbility
 {
-	private final static String name = "Firestorm", command = "firestorm";
-	private final static int cost = 5500, delay = 15, repeat = 0;
-	private final static List<String> details = Lists.newArrayList("Rain fireballs from the sky.");
-	private final static Skill.Type type = Skill.Type.ULTIMATE;
+	private static final String NAME = "Firestorm", COMMAND = "firestorm";
+	private static final int COST = 5500, DELAY = 300, REPEAT = 0;
+	private static final List<String> DETAILS = Lists.newArrayList("Rain fireballs from the sky.");
+	private static final Skill.Type TYPE = Skill.Type.ULTIMATE;
 
 	public Firestorm(String deity)
 	{
-		super(name, command, deity, cost, delay, repeat, details, type, null, new Predicate<Player>()
+		super(NAME, COMMAND, deity, COST, DELAY, REPEAT, DETAILS, TYPE, null, new Predicate<Player>()
 		{
 			@Override
 			public boolean apply(final Player player)
 			{
 				// Define variables
 				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
-
-				if(!Ability.Util.preProcessAbility(player, cost)) return false;
 
 				// Define variables
 				int ultimateSkillLevel = character.getMeta().getSkill(Skill.Type.ULTIMATE).getLevel();

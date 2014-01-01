@@ -17,21 +17,21 @@ import com.google.common.collect.Lists;
 
 public class Shove extends GreekAbility
 {
-	private final static String name = "Shove", command = "shove";
-	private final static int cost = 170, delay = 15, repeat = 0;
-	private final static List<String> details = Lists.newArrayList("Shove your target away from you.");
-	private final static Skill.Type type = Skill.Type.SUPPORT;
+	private static final String NAME = "Shove", COMMAND = "shove";
+	private static final int COST = 170, DELAY = 15, REPEAT = 0;
+	private static final List<String> DETAILS = Lists.newArrayList("Shove your target away from you.");
+	private static final Skill.Type TYPE = Skill.Type.SUPPORT;
 
 	public Shove(String deity)
 	{
-		super(name, command, deity, cost, delay, repeat, details, type, null, new Predicate<Player>()
+		super(NAME, COMMAND, deity, COST, DELAY, REPEAT, DETAILS, TYPE, null, new Predicate<Player>()
 		{
 			@Override
 			public boolean apply(Player player)
 			{
 				LivingEntity target = Ability.Util.autoTarget(player);
 
-				if(!Ability.Util.preProcessAbility(player, target, cost) || !Ability.Util.target(player, target.getLocation(), true)) return false;
+				if(!Ability.Util.target(player, target.getLocation(), true)) return false;
 
 				// Define variables
 				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();

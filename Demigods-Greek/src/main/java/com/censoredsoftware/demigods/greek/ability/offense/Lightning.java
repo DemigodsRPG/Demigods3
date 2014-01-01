@@ -21,14 +21,14 @@ import com.google.common.collect.Lists;
 
 public class Lightning extends GreekAbility
 {
-	private final static String name = "Lighting", command = "lightning";
-	private final static int cost = 140, delay = 40, repeat = 0;
-	private final static List<String> details = Lists.newArrayList("Strike lightning upon your enemies.");
-	private final static Skill.Type type = Skill.Type.OFFENSE;
+	private static final String NAME = "Lighting", COMMAND = "lightning";
+	private static final int COST = 140, DELAY = 2, REPEAT = 0;
+	private static final List<String> DETAILS = Lists.newArrayList("Strike lightning upon your enemies.");
+	private static final Skill.Type TYPE = Skill.Type.OFFENSE;
 
 	public Lightning(String deity)
 	{
-		super(name, command, deity, cost, delay, repeat, details, type, null, new Predicate<Player>()
+		super(NAME, COMMAND, deity, COST, DELAY, REPEAT, DETAILS, TYPE, null, new Predicate<Player>()
 		{
 			@Override
 			public boolean apply(Player player)
@@ -42,13 +42,11 @@ public class Lightning extends GreekAbility
 				{
 					target = entity.getLocation();
 					notify = true;
-					if(!Ability.Util.preProcessAbility(player, entity, cost)) return false;
 				}
 				else
 				{
 					target = Ability.Util.directTarget(player);
 					notify = false;
-					if(!Ability.Util.preProcessAbility(player, cost)) return false;
 				}
 
 				strikeLightning(player, target, notify);

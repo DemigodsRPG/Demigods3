@@ -19,14 +19,14 @@ import com.google.common.collect.Lists;
 
 public class Blaze extends GreekAbility
 {
-	private final static String name = "Blaze", command = "blaze";
-	private final static int cost = 400, delay = 15, repeat = 0;
-	private final static List<String> details = Lists.newArrayList("Ignite the ground at the target location.");
-	private final static Skill.Type type = Skill.Type.OFFENSE;
+	private static final String NAME = "Blaze", COMMAND = "blaze";
+	private static final int COST = 400, DELAY = 15, REPEAT = 0;
+	private static final List<String> DETAILS = Lists.newArrayList("Ignite the ground at the target location.");
+	private static final Skill.Type TYPE = Skill.Type.OFFENSE;
 
 	public Blaze(String deity)
 	{
-		super(name, command, deity, cost, delay, repeat, details, type, null, new Predicate<Player>()
+		super(NAME, COMMAND, deity, COST, DELAY, REPEAT, DETAILS, TYPE, null, new Predicate<Player>()
 		{
 
 			@Override
@@ -41,13 +41,12 @@ public class Blaze extends GreekAbility
 				{
 					target = Ability.Util.autoTarget(player).getLocation();
 					notify = true;
-					if(!Ability.Util.preProcessAbility(player, entity, cost) || entity.getEntityId() == player.getEntityId()) return false;
+					if(entity.getEntityId() == player.getEntityId()) return false;
 				}
 				else
 				{
 					target = Ability.Util.directTarget(player);
 					notify = false;
-					if(!Ability.Util.preProcessAbility(player, cost)) return false;
 				}
 				int power = character.getMeta().getSkill(Skill.Type.OFFENSE).getLevel();
 				int diameter = (int) Math.ceil(1.43 * Math.pow(power, 0.1527));

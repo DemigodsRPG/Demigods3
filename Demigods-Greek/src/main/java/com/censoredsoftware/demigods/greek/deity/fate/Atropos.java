@@ -21,16 +21,16 @@ import com.google.common.collect.Sets;
 
 public class Atropos extends GreekDeity
 {
-	public final static String NAME = "Atropos", SHORT_DESCRIPTION = ChatColor.GRAY + "The one who cuts the string.";
-	public final static Alliance ALLIANCE = GreekAlliance.FATE;
-	public final static String PERMISSION = ALLIANCE.getPermission() + "." + NAME.toLowerCase();
-	public final static int ACCURACY = 15, FAVOR_REGEN = 999, MAX_FAVOR = 20000, MAX_HEALTH = 2, FAVOR_BANK = 10000;
-	public final static ChatColor COLOR = ChatColor.DARK_RED;
-	public final static Map<Material, Integer> CLAIM_ITEMS = Maps.newHashMap(ImmutableMap.of(Material.BEDROCK, 3));
-	public final static Map<Material, Integer> FORSAKE_ITEMS = Maps.newHashMap(ImmutableMap.of(Material.BEDROCK, 10));
-	public final static List<String> LORE = Arrays.asList();
-	public final static Set<Deity.Flag> FLAGS = Sets.newHashSet(Deity.Flag.MAJOR_DEITY, Deity.Flag.PLAYABLE, Deity.Flag.NO_BATTLE, Deity.Flag.NO_SHRINE);
-	public final static List<Ability> ABILITIES = Lists.newArrayList(new NoDamage(NAME), new AlwaysInvisible(NAME), new Fireball(NAME), new Carry(NAME, false));
+	public static final String NAME = "Atropos", SHORT_DESCRIPTION = ChatColor.GRAY + "The one who cuts the string.";
+	public static final Alliance ALLIANCE = GreekAlliance.FATE;
+	public static final String PERMISSION = ALLIANCE.getPermission() + "." + NAME.toLowerCase();
+	public static final int ACCURACY = 15, FAVOR_REGEN = 999, MAX_FAVOR = 20000, MAX_HEALTH = 2, FAVOR_BANK = 10000;
+	public static final ChatColor COLOR = ChatColor.DARK_RED;
+	public static final Map<Material, Integer> CLAIM_ITEMS = Maps.newHashMap(ImmutableMap.of(Material.BEDROCK, 3));
+	public static final Map<Material, Integer> FORSAKE_ITEMS = Maps.newHashMap(ImmutableMap.of(Material.BEDROCK, 10));
+	public static final List<String> LORE = Arrays.asList();
+	public static final Set<Deity.Flag> FLAGS = Sets.newHashSet(Deity.Flag.MAJOR_DEITY, Deity.Flag.PLAYABLE, Deity.Flag.NO_BATTLE, Deity.Flag.NO_SHRINE);
+	public static final List<Ability> ABILITIES = Lists.newArrayList(new NoDamage(NAME), new AlwaysInvisible(NAME), new Fireball(NAME), new Carry(NAME, false));
 
 	// Mood Manager
 	private static EnumMap<Deity.Mood, Deity.MoodPack> moodPacks = Maps.newEnumMap(Deity.Mood.class);

@@ -3,7 +3,6 @@ package com.censoredsoftware.demigods.greek.ability.ultimate;
 import java.util.List;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.WeatherType;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -23,23 +22,20 @@ import com.google.common.collect.Lists;
 
 public class Storm extends GreekAbility
 {
-	private final static String name = "Storm", command = "storm";
-	private final static int cost = 3700, delay = 5000, repeat = 0;
-	private final static List<String> details = Lists.newArrayList("Strike pure fear into the hearts of your enemies.");
-	private final static Skill.Type type = Skill.Type.ULTIMATE;
+	private static final String NAME = "Storm", COMMAND = "storm";
+	private static final int COST = 3700, DELAY = 300, REPEAT = 0;
+	private static final List<String> DETAILS = Lists.newArrayList("Strike fear into the hearts of your enemies.");
+	private static final Skill.Type TYPE = Skill.Type.ULTIMATE;
 
 	public Storm(String deity)
 	{
-		super(name, command, deity, cost, delay, repeat, details, type, null, new Predicate<Player>()
+		super(NAME, COMMAND, deity, COST, DELAY, REPEAT, DETAILS, TYPE, null, new Predicate<Player>()
 		{
 			@Override
 			public boolean apply(final Player player)
 			{
 				// Define variables
 				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
-
-				// Can they do it?
-				if(!Ability.Util.preProcessAbility(player, cost)) return false;
 
 				// Define variables
 				final int ultimateSkillLevel = character.getMeta().getSkill(Skill.Type.ULTIMATE).getLevel();
@@ -105,10 +101,5 @@ public class Storm extends GreekAbility
 				}
 			}, ticks);
 		}
-	}
-
-	public static void strikeLightning(DCharacter character, Location location)
-	{
-
 	}
 }

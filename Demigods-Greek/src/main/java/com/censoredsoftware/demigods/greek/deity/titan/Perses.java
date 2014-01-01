@@ -21,16 +21,16 @@ import com.google.common.collect.Sets;
 
 public class Perses extends GreekDeity
 {
-	public final static String NAME = "Perses", SHORT_DESCRIPTION = ChatColor.GRAY + "The Titan of anger and destruction.";
-	public final static Alliance ALLIANCE = GreekAlliance.TITAN;
-	public final static String PERMISSION = ALLIANCE.getPermission() + "." + NAME.toLowerCase();
-	public final static int ACCURACU = 15, FAVOR_REGEN = 5, MAX_FAVOR = 20000, MAX_HEALTH = 30, FAVOR_BANK = 10000;
-	public final static ChatColor COLOR = ChatColor.GOLD;
-	public final static Map<Material, Integer> CLAIM_ITEMS = Maps.newHashMap(ImmutableMap.of(Material.FLINT, 1));
-	public final static Map<Material, Integer> FORSAKE_ITEMS = Maps.newHashMap(ImmutableMap.of(Material.FIREWORK, 4));
-	public final static List<String> LORE = Arrays.asList();
-	public final static Set<Deity.Flag> FLAGS = Sets.newHashSet(Deity.Flag.MAJOR_DEITY, Deity.Flag.PLAYABLE);
-	public final static List<Ability> ABILITIES = Lists.newArrayList(new Fireball(NAME), new Blaze(NAME), new Firestorm(NAME), new NoFire(NAME));
+	public static final String NAME = "Perses", SHORT_DESCRIPTION = ChatColor.GRAY + "The Titan of anger and destruction.";
+	public static final Alliance ALLIANCE = GreekAlliance.TITAN;
+	public static final String PERMISSION = ALLIANCE.getPermission() + "." + NAME.toLowerCase();
+	public static final int ACCURACU = 15, FAVOR_REGEN = 5, MAX_FAVOR = 20000, MAX_HEALTH = 30, FAVOR_BANK = 10000;
+	public static final ChatColor COLOR = ChatColor.GOLD;
+	public static final Map<Material, Integer> CLAIM_ITEMS = Maps.newHashMap(ImmutableMap.of(Material.FLINT, 1));
+	public static final Map<Material, Integer> FORSAKE_ITEMS = Maps.newHashMap(ImmutableMap.of(Material.FIREWORK, 4));
+	public static final List<String> LORE = Arrays.asList();
+	public static final Set<Deity.Flag> FLAGS = Sets.newHashSet(Deity.Flag.MAJOR_DEITY, Deity.Flag.PLAYABLE);
+	public static final List<Ability> ABILITIES = Lists.newArrayList(new Fireball(NAME), new Blaze(NAME), new Firestorm(NAME), new NoFire(NAME));
 
 	// Mood Manager
 	private static EnumMap<Mood, MoodPack> moodPacks = Maps.newEnumMap(Deity.Mood.class);

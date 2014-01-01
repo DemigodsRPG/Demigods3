@@ -1,14 +1,5 @@
 package com.censoredsoftware.demigods.classic;
 
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
-import com.censoredsoftware.censoredlib.util.Randoms;
-import com.censoredsoftware.demigods.engine.data.DCharacter;
-import com.censoredsoftware.demigods.engine.data.DPlayer;
-import com.censoredsoftware.demigods.engine.util.Messages;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
@@ -18,10 +9,19 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import com.censoredsoftware.censoredlib.util.Randoms;
+import com.censoredsoftware.demigods.engine.data.DCharacter;
+import com.censoredsoftware.demigods.engine.data.DPlayer;
+import com.censoredsoftware.demigods.engine.util.Messages;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
+
 public class ClassicLoader
 {
-	private final static Logger log = Logger.getLogger("Minecraft");
-	private final static String PATH = "plugins/Demigods/";
+	private static final Logger log = Logger.getLogger("Minecraft");
+	private static final String PATH = "plugins/Demigods/";
 	private static HashMap<String, HashMap<String, Object>> SAVEDDATA = Maps.newHashMap();
 
 	static

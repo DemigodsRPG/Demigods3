@@ -64,27 +64,9 @@ public interface Ability
 	{
 		public static final int TARGET_OFFSET = 5;
 
-		/**
-		 * Processes the ability by removing its cost from the <code>character</code>'s
-		 * current favor and then setting the players cooldown.
-		 * 
-		 * @param character the character to manipulate.
-		 * @param ability the ability whose details to use.
-		 */
-		public static void postProcessAbility(DCharacter character, Ability ability)
+		public static boolean preProcessAbility(Player player, Ability ability)
 		{
-			DCharacter.Util.setCoolDown(character, ability.getName(), System.currentTimeMillis() + ability.getDelay());
-			character.getMeta().subtractFavor(ability.getCost());
-		}
-
-		public static void activateCooldown(DCharacter character, Ability ability)
-		{
-			int cooldownMultiplier = (int) (ability.getDelay() * ((double) character.getMeta().getAscensions() / 100));
-			DCharacter.Util.setCoolDown(character, ability.getName(), System.currentTimeMillis() + cooldownMultiplier * 1000);
-		}
-
-		public static boolean preProcessAbility(Player player, int cost)
-		{
+			// Define variables
 			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
 			if(!Battle.Util.canTarget(character))
@@ -92,29 +74,33 @@ public interface Ability
 				player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
 				return false;
 			}
-			else if(character.getMeta().getFavor() < cost)
+			else if(character.getMeta().getFavor() < ability.getCost())
 			{
 				player.sendMessage(ChatColor.YELLOW + "You do not have enough favor.");
+				return false;
+			}
+			else if(!DCharacter.Util.isCooledDown(character, ability.getName()))
+			{
+				// player.sendMessage(ChatColor.YELLOW + "That ability has not cooled down."); TODO: Send this? We probably should, but in a not spammy way. Would be simple to do, but I'm too sleepy to care at the moment.
 				return false;
 			}
 			else return true;
 		}
 
 		/**
-		 * Returns true if the ability for <code>player</code>, called <code>name</code>,
-		 * with a cost of <code>cost</code>, that is Type <code>type</code>, that
-		 * is target the LivingEntity <code>target</code>, has passed all pre-process tests.
+		 * Returns true if the <code>target</code> can be attacked by the <code>player</code> with the defined <code>ability</code>.
 		 * 
 		 * @param player the Player doing the ability
 		 * @param target the LivingEntity being targeted
-		 * @param cost the cost (in favor) of the ability
+		 * @param ability the ability itself
 		 * @return true/false depending on if all pre-process tests have passed
 		 */
-		public static boolean preProcessAbility(Player player, LivingEntity target, int cost)
+		public static boolean preProcessAbility(Player player, LivingEntity target, Ability ability)
 		{
+			// Define variables
 			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
-			if(preProcessAbility(player, cost))
+			if(preProcessAbility(player, ability))
 			{
 				if(target == null)
 				{
@@ -141,13 +127,13 @@ public interface Ability
 			return false;
 		}
 
-		public static Set<LivingEntity> preProcessAbility(Player player, Collection<Entity> targets, int cost)
+		public static Set<LivingEntity> preProcessAbility(Player player, Collection<Entity> targets, Ability ability)
 		{
+			// Define variables
 			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
-
 			Set<LivingEntity> set = Sets.newHashSet();
 
-			if(preProcessAbility(player, cost))
+			if(preProcessAbility(player, ability))
 			{
 				for(Entity target : targets)
 				{
@@ -170,6 +156,19 @@ public interface Ability
 			}
 			if(set.isEmpty()) player.sendMessage(ChatColor.YELLOW + "No target found.");
 			return set;
+		}
+
+		/**
+		 * Processes the ability by removing its cost from the <code>character</code>'s
+		 * current favor and then setting the players cooldown.
+		 * 
+		 * @param character the character to manipulate.
+		 * @param ability the ability whose details to use.
+		 */
+		public static void postProcessAbility(DCharacter character, Ability ability)
+		{
+			if(ability.getDelay() > 0) DCharacter.Util.setCooldown(character, ability.getName(), ability.getDelay());
+			character.getMeta().subtractFavor(ability.getCost());
 		}
 
 		/**
@@ -340,7 +339,7 @@ public interface Ability
 		{
 			// Define character and ability
 			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
-			Ability ability = Ability.Util.getAbility(character.getDeity().getName(), command);
+			Ability ability = getAbilityByCommand(character.getDeity().getName(), command);
 
 			// Return if it isn't an ability
 			if(ability == null) return false;
@@ -429,7 +428,7 @@ public interface Ability
 		 * @param commandName the command name to look for.
 		 * @return the ability found
 		 */
-		public static Ability getAbility(final String deityName, final String commandName)
+		public static Ability getAbilityByCommand(final String deityName, final String commandName)
 		{
 			try
 			{
@@ -439,6 +438,34 @@ public interface Ability
 					public boolean apply(Ability ability)
 					{
 						return ability.getCommand() != null && ability.getCommand().equalsIgnoreCase(commandName) && ability.getDeity().equalsIgnoreCase(deityName);
+					}
+				});
+			}
+			catch(Exception ignored)
+			{
+				// ignored
+			}
+
+			return null;
+		}
+
+		/**
+		 * Returns the instance of an ability with a deity matching <code>deityName</code> and name matching <code>abilityName</code>.
+		 * 
+		 * @param deityName the deity to look for.
+		 * @param abilityName the ability name to look for.
+		 * @return the ability found
+		 */
+		public static Ability getAbilityByName(final String deityName, final String abilityName)
+		{
+			try
+			{
+				return Iterables.find(getLoadedAbilities(), new Predicate<Ability>()
+				{
+					@Override
+					public boolean apply(Ability ability)
+					{
+						return ability.getCommand() != null && ability.getName().equalsIgnoreCase(abilityName) && ability.getDeity().equalsIgnoreCase(deityName);
 					}
 				});
 			}
