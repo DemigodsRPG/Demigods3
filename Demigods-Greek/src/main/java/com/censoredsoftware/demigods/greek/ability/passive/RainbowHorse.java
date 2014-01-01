@@ -26,7 +26,7 @@ public class RainbowHorse extends GreekAbility.Passive
 				for(DPet horse : DPet.Util.findByType(EntityType.HORSE))
 				{
 					if(horse.getCurrentLocation() == null || Zones.inNoDemigodsZone(horse.getCurrentLocation())) return;
-					if(horse.getDeity().getName().equals("DrD1sco") && horse.getEntity() != null && !horse.getEntity().isDead()) ((Horse) horse.getEntity()).setColor(getRandomHorseColor());
+					if(horse.getDeity().getName().equals(deity) && horse.getEntity() != null && !horse.getEntity().isDead()) ((Horse) horse.getEntity()).setColor(getRandomHorseColor());
 				}
 			}
 

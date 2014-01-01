@@ -47,10 +47,10 @@ public class DevelopmentCommands extends WrappedCommand
 	@Override
 	public boolean processCommand(CommandSender sender, Command command, String[] args)
 	{
-		if(command.getName().equalsIgnoreCase("test1")) return test1(sender, args);
-		else if(command.getName().equalsIgnoreCase("test2")) return test2(sender, args);
-		else if(command.getName().equalsIgnoreCase("test3")) return test3(sender, args);
-		else if(command.getName().equalsIgnoreCase("obelisk")) return obelisk(sender, args);
+		if("test1".equalsIgnoreCase(command.getName())) return test1(sender, args);
+		if("test2".equalsIgnoreCase(command.getName())) return test2(sender, args);
+		if("test3".equalsIgnoreCase(command.getName())) return test3(sender, args);
+		if("obelisk".equalsIgnoreCase(command.getName())) return obelisk(sender, args);
 		return false;
 	}
 
@@ -177,7 +177,7 @@ public class DevelopmentCommands extends WrappedCommand
 				return true;
 			}
 
-			if(args[0].equalsIgnoreCase("add"))
+			if("add".equalsIgnoreCase(args[0]))
 			{
 				if(!obelisk.getSanctifiers().contains(workWith.getId()))
 				{
@@ -186,7 +186,7 @@ public class DevelopmentCommands extends WrappedCommand
 				}
 				else player.sendMessage(ChatColor.RED + "Already a member.");
 			}
-			else if(args[0].equalsIgnoreCase("remove"))
+			else if("remove".equalsIgnoreCase(args[0]))
 			{
 				if(obelisk.getSanctifiers().contains(workWith.getId()))
 				{
@@ -203,8 +203,8 @@ public class DevelopmentCommands extends WrappedCommand
 
 	private static DCharacter obeliskGetCharacter(String type, final String name)
 	{
-		if(type.equalsIgnoreCase("character")) return DCharacter.Util.getCharacterByName(name);
-		if(!type.equalsIgnoreCase("player")) return null;
+		if("character".equalsIgnoreCase(type)) return DCharacter.Util.getCharacterByName(name);
+		if(!"player".equalsIgnoreCase(type)) return null;
 		try
 		{
 			return Iterators.find(DataManager.players.values().iterator(), new Predicate<DPlayer>()

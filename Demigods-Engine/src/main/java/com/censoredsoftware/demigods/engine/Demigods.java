@@ -276,7 +276,7 @@ public class Demigods extends CensoredCentralizedClass
 				@Override
 				public boolean apply(DCharacter character)
 				{
-					return character.isActive() && character.getAlliance().equals(alliance);
+					return character.isActive() && alliance.equals(character.getAlliance());
 				}
 			}))
 				team.addPlayer(character.getOfflinePlayer());

@@ -1,17 +1,5 @@
 package com.censoredsoftware.demigods.engine.command;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-
-import org.apache.commons.lang.StringUtils;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import com.censoredsoftware.censoredlib.helper.WrappedCommand;
 import com.censoredsoftware.censoredlib.language.Symbol;
 import com.censoredsoftware.censoredlib.util.Maps2;
@@ -29,6 +17,17 @@ import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 public class GeneralCommands extends WrappedCommand
 {
@@ -46,13 +45,13 @@ public class GeneralCommands extends WrappedCommand
 	@Override
 	public boolean processCommand(CommandSender sender, Command command, String[] args)
 	{
-		if(command.getName().equalsIgnoreCase("check")) return check(sender);
-		else if(command.getName().equalsIgnoreCase("owner")) return owner(sender, args);
-		else if(command.getName().equalsIgnoreCase("alliance")) return alliance(sender, args);
-		else if(command.getName().equalsIgnoreCase("binds")) return binds(sender);
-		else if(command.getName().equalsIgnoreCase("leaderboard")) return leaderboard(sender);
-		else if(command.getName().equalsIgnoreCase("tributes")) return tributes(sender);
-		else if(command.getName().equalsIgnoreCase("names")) return names(sender);
+		if("check".equalsIgnoreCase(command.getName())) return check(sender);
+		if("owner".equalsIgnoreCase(command.getName())) return owner(sender, args);
+		if("alliance".equalsIgnoreCase(command.getName())) return alliance(sender, args);
+		if("binds".equalsIgnoreCase(command.getName())) return binds(sender);
+		if("leaderboard".equalsIgnoreCase(command.getName())) return leaderboard(sender);
+		if("tributes".equalsIgnoreCase(command.getName())) return tributes(sender);
+		if("names".equalsIgnoreCase(command.getName())) return names(sender);
 		return false;
 	}
 
@@ -234,7 +233,7 @@ public class GeneralCommands extends WrappedCommand
 		sender.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "Values are constantly changing based on how players");
 		sender.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "tribute, so check back often!");
 
-		if(player.getItemInHand() != null && !player.getItemInHand().getType().equals(Material.AIR))
+		if(!Material.AIR.equals(player.getItemInHand().getType()))
 		{
 			sender.sendMessage(" ");
 			sender.sendMessage(ChatColor.GRAY + "The " + (player.getItemInHand().getAmount() == 1 ? "item in your hand is" : "items in your hand are") + " worth " + ChatColor.GREEN + TributeManager.getValue(player.getItemInHand()) + ChatColor.GRAY + " in total.");

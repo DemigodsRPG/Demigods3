@@ -1,25 +1,5 @@
 package com.censoredsoftware.demigods.engine.conversation;
 
-import java.lang.reflect.Field;
-import java.util.*;
-
-import org.apache.commons.lang.StringUtils;
-import org.bukkit.*;
-import org.bukkit.conversations.*;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.ExperienceOrb;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitRunnable;
-
 import com.censoredsoftware.censoredlib.data.player.Notification;
 import com.censoredsoftware.censoredlib.helper.WrappedConversation;
 import com.censoredsoftware.censoredlib.language.Symbol;
@@ -39,6 +19,25 @@ import com.censoredsoftware.demigods.engine.util.Messages;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.*;
+import org.bukkit.conversations.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.ExperienceOrb;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import java.lang.reflect.Field;
+import java.util.*;
 
 @SuppressWarnings("unchecked")
 public class Prayer implements WrappedConversation
@@ -265,23 +264,23 @@ public class Prayer implements WrappedConversation
 			List<English> notifications = (List<English>) context.getSessionData("warp_notifications");
 
 			// Check validity
-			if(message.equalsIgnoreCase("menu")) return true;
-			else if(arg0.equalsIgnoreCase("new"))
+			if("menu".equalsIgnoreCase(message)) return true;
+			else if("new".equalsIgnoreCase(arg0))
 			{
 				if(StringUtils.isAlphanumeric(arg1) && !character.getMeta().getWarps().containsKey(arg1.toLowerCase())) return true;
 				notifications.add(English.NOTIFICATION_ERROR_CREATING_WARP);
 			}
-			else if(arg0.equalsIgnoreCase("warp"))
+			else if("warp".equalsIgnoreCase(arg0))
 			{
 				if((character.getMeta().getWarps().containsKey(arg1.toLowerCase()) || character.getMeta().getInvites().containsKey(arg1.toLowerCase()))) return true;
 				notifications.add(English.NOTIFICATION_ERROR_WARPING);
 			}
-			else if(arg0.equalsIgnoreCase("delete"))
+			else if("delete".equalsIgnoreCase(arg0))
 			{
 				if((character.getMeta().getWarps().containsKey(arg1.toLowerCase()) || character.getMeta().getInvites().containsKey(arg1.toLowerCase()))) return true;
 				notifications.add(English.NOTIFICATION_ERROR_DELETING_WARP);
 			}
-			else if(arg0.equalsIgnoreCase("invite"))
+			else if("invite".equalsIgnoreCase(arg0))
 			{
 				if((DCharacter.Util.charExists(arg1) || (DPlayer.Util.getPlayerFromName(arg1) != null && DPlayer.Util.getPlayerFromName(arg1).getCurrent() != null)) && arg2 != null && character.getMeta().getWarps().containsKey(arg2.toLowerCase())) return true;
 				notifications.add(English.NOTIFICATION_ERROR_INVITING);
@@ -311,12 +310,12 @@ public class Prayer implements WrappedConversation
 
 			Messages.clearRawChat(player);
 
-			if(message.equalsIgnoreCase("menu"))
+			if("menu".equalsIgnoreCase(message))
 			{
 				// THEY WANT THE MENU!? SOCK IT TO 'EM!
 				return new StartPrayer();
 			}
-			if(arg0.equalsIgnoreCase("new"))
+			if("new".equalsIgnoreCase(arg0))
 			{
 				// Save notification
 				notifications.add(English.NOTIFICATION_WARP_CREATED);
@@ -327,7 +326,7 @@ public class Prayer implements WrappedConversation
 				// Return to view warps
 				return new ViewWarps();
 			}
-			else if(arg0.equalsIgnoreCase("delete"))
+			else if("delete".equalsIgnoreCase(arg0))
 			{
 				// Save notification
 				notifications.add(English.NOTIFICATION_WARP_DELETED);
@@ -339,7 +338,7 @@ public class Prayer implements WrappedConversation
 				// Return to view warps
 				return new ViewWarps();
 			}
-			else if(arg0.equalsIgnoreCase("invite"))
+			else if("invite".equalsIgnoreCase(arg0))
 			{
 				// Save notification
 				notifications.add(English.NOTIFICATION_INVITE_SENT);
@@ -361,7 +360,7 @@ public class Prayer implements WrappedConversation
 				// Return to warps menu
 				return new ViewWarps();
 			}
-			else if(arg0.equalsIgnoreCase("warp"))
+			else if("warp".equalsIgnoreCase(arg0))
 			{
 				// Disable prayer
 				DPlayer.Util.togglePrayingSilent(player, false, true);
@@ -455,9 +454,9 @@ public class Prayer implements WrappedConversation
 
 			try
 			{
-				if(message.equalsIgnoreCase("menu")) return true;
+				if("menu".equalsIgnoreCase(message)) return true;
 
-				if(splitMsg[0].equalsIgnoreCase("assign") && splitMsg.length >= 3)
+				if("assign".equalsIgnoreCase(splitMsg[0]) && splitMsg.length >= 3)
 				{
 					ArrayList<String> input = new ArrayList<>(Arrays.asList(splitMsg));
 
@@ -502,12 +501,12 @@ public class Prayer implements WrappedConversation
 			context.setSessionData("skill_notifications", Lists.newArrayList());
 			List<English> notifications = (List<English>) context.getSessionData("skill_notifications");
 
-			if(message.equalsIgnoreCase("menu"))
+			if("menu".equalsIgnoreCase(message))
 			{
 				// THEY WANT THE MENU!? SOCK IT TO 'EM!
 				return new StartPrayer();
 			}
-			else if(splitMsg[0].equalsIgnoreCase("assign"))
+			else if("assign".equalsIgnoreCase(splitMsg[0]))
 			{
 				ArrayList<String> input = new ArrayList<>(Arrays.asList(splitMsg));
 
@@ -602,7 +601,7 @@ public class Prayer implements WrappedConversation
 		@Override
 		protected boolean isInputValid(ConversationContext context, String message)
 		{
-			return message.equalsIgnoreCase("clear") || message.equalsIgnoreCase("menu");
+			return "clear".equalsIgnoreCase(message) || "menu".equalsIgnoreCase(message);
 		}
 
 		@Override
@@ -611,12 +610,12 @@ public class Prayer implements WrappedConversation
 			// Define variables
 			DCharacter character = DPlayer.Util.getPlayer((Player) context.getForWhom()).getCurrent();
 
-			if(message.equalsIgnoreCase("menu"))
+			if("menu".equalsIgnoreCase(message))
 			{
 				// THEY WANT THE MENU!? SOCK IT TO 'EM!
 				return new StartPrayer();
 			}
-			else if(message.equalsIgnoreCase("clear"))
+			else if("clear".equalsIgnoreCase(message))
 			{
 				// Clear them
 				for(String string : character.getMeta().getNotifications())
@@ -677,7 +676,7 @@ public class Prayer implements WrappedConversation
 			String[] splitMsg = message.split(" ");
 			DPlayer player = DPlayer.Util.getPlayer((Player) context.getForWhom());
 			DCharacter character = DCharacter.Util.getCharacterByName(splitMsg[0]);
-			return message.equalsIgnoreCase("menu") || splitMsg.length == 2 && (DPlayer.Util.hasCharName((Player) context.getForWhom(), splitMsg[0]) && (splitMsg[1].equalsIgnoreCase("info") || (DPlayer.Util.hasCharName((Player) context.getForWhom(), splitMsg[0]) && splitMsg[1].equalsIgnoreCase("switch")) && (player.getCurrent() == null || !player.getCurrent().getName().equalsIgnoreCase(character.getName()))));
+			return "menu".equalsIgnoreCase(message) || splitMsg.length == 2 && (DPlayer.Util.hasCharName((Player) context.getForWhom(), splitMsg[0]) && ("info".equalsIgnoreCase(splitMsg[1]) || (DPlayer.Util.hasCharName((Player) context.getForWhom(), splitMsg[0]) && "switch".equalsIgnoreCase(splitMsg[1])) && (player.getCurrent() == null || !player.getCurrent().getName().equalsIgnoreCase(character.getName()))));
 		}
 
 		@Override
@@ -686,13 +685,13 @@ public class Prayer implements WrappedConversation
 			String arg0 = message.split(" ")[0];
 			String arg1 = message.split(" ").length == 2 ? message.split(" ")[1] : "";
 
-			if(message.equalsIgnoreCase("menu")) return new StartPrayer();
-			if(arg1.equalsIgnoreCase("info"))
+			if("menu".equalsIgnoreCase(message)) return new StartPrayer();
+			if("info".equalsIgnoreCase(arg1))
 			{
 				context.setSessionData("viewing_character", arg0);
 				return new DetailedInfo();
 			}
-			else if(arg1.equalsIgnoreCase("switch"))
+			else if("switch".equalsIgnoreCase(arg1))
 			{
 				DPlayer.Util.getPlayer((Player) context.getForWhom()).switchCharacter(DCharacter.Util.getCharacterByName(arg0));
 			}
@@ -740,14 +739,14 @@ public class Prayer implements WrappedConversation
 				DPlayer player = DPlayer.Util.getPlayer((Player) context.getForWhom());
 				DCharacter character = DCharacter.Util.getCharacterByName(context.getSessionData("viewing_character").toString());
 
-				return message.equalsIgnoreCase("back") || (message.equalsIgnoreCase("switch") && (player.getCurrent() == null || !player.getCurrent().getName().equalsIgnoreCase(character.getName())));
+				return "back".equalsIgnoreCase(message) || ("switch".equalsIgnoreCase(message) && (player.getCurrent() == null || !player.getCurrent().getName().equalsIgnoreCase(character.getName())));
 			}
 
 			@Override
 			protected Prompt acceptValidatedInput(ConversationContext context, String message)
 			{
-				if(message.equalsIgnoreCase("back")) return new ViewCharacters();
-				else if(message.equalsIgnoreCase("switch")) DPlayer.Util.getPlayer((Player) context.getForWhom()).switchCharacter(DCharacter.Util.getCharacterByName(context.getSessionData("viewing_character").toString()));
+				if("back".equalsIgnoreCase(message)) return new ViewCharacters();
+				if("switch".equalsIgnoreCase(message)) DPlayer.Util.getPlayer((Player) context.getForWhom()).switchCharacter(DCharacter.Util.getCharacterByName(context.getSessionData("viewing_character").toString()));
 				return null;
 			}
 		}
@@ -791,14 +790,14 @@ public class Prayer implements WrappedConversation
 		@Override
 		protected boolean isInputValid(ConversationContext context, String message)
 		{
-			return message.equalsIgnoreCase("y") || message.equalsIgnoreCase("n");
+			return "y".equalsIgnoreCase(message) || "n".equalsIgnoreCase(message);
 		}
 
 		@Override
 		protected Prompt acceptValidatedInput(ConversationContext context, String message)
 		{
-			if(message.equalsIgnoreCase("n")) return new StartPrayer();
-			else if(message.equalsIgnoreCase("y"))
+			if("n".equalsIgnoreCase(message)) return new StartPrayer();
+			else if("y".equalsIgnoreCase(message))
 			{
 				// Define variables
 				Player player = (Player) context.getForWhom();
@@ -868,7 +867,8 @@ public class Prayer implements WrappedConversation
 		@Override
 		protected boolean isInputValid(ConversationContext context, String message)
 		{
-			return message.contains("y") || message.contains("n");
+			char[] searchChars = { 'y', 'n' };
+			return StringUtils.containsAny(message, searchChars);
 		}
 
 		@Override
@@ -877,7 +877,7 @@ public class Prayer implements WrappedConversation
 			Player player = (Player) context.getForWhom();
 
 			// Open inventory
-			if(message.contains("y"))
+			if(StringUtils.contains(message, "y"))
 			{
 				Inventory inv = Bukkit.getServer().createInventory(player, 9, "Place Items Here");
 				player.openInventory(inv);
@@ -948,13 +948,14 @@ public class Prayer implements WrappedConversation
 		@Override
 		protected boolean isInputValid(ConversationContext context, String message)
 		{
-			return message.contains("y") || message.contains("n");
+			char[] searchChars = { 'y', 'n' };
+			return StringUtils.containsAny(message, searchChars);
 		}
 
 		@Override
 		protected ValidatingPrompt acceptValidatedInput(ConversationContext context, String message)
 		{
-			if(message.contains("y")) return new ChooseName();
+			if(StringUtils.contains(message, "y")) return new ChooseName();
 			return new StartPrayer();
 		}
 
@@ -1037,13 +1038,14 @@ public class Prayer implements WrappedConversation
 			@Override
 			protected boolean isInputValid(ConversationContext context, String message)
 			{
-				return message.contains("y") || message.contains("n");
+				char[] searchChars = { 'y', 'n' };
+				return StringUtils.containsAny(message, searchChars);
 			}
 
 			@Override
 			protected Prompt acceptValidatedInput(ConversationContext context, String message)
 			{
-				if(message.contains("y")) return new ChooseAlliance();
+				if(StringUtils.contains(message, "y")) return new ChooseAlliance();
 				else
 				{
 					context.setSessionData("chosen_name", null);
@@ -1106,13 +1108,14 @@ public class Prayer implements WrappedConversation
 			@Override
 			protected boolean isInputValid(ConversationContext context, String message)
 			{
-				return message.contains("y") || message.contains("n");
+				char[] searchChars = { 'y', 'n' };
+				return StringUtils.containsAny(message, searchChars);
 			}
 
 			@Override
 			protected Prompt acceptValidatedInput(ConversationContext context, String message)
 			{
-				if(message.contains("y")) return new ChooseDeity();
+				if(StringUtils.contains(message, "y")) return new ChooseDeity();
 				else
 				{
 					context.setSessionData("chosen_alliance", null);
@@ -1169,13 +1172,14 @@ public class Prayer implements WrappedConversation
 			@Override
 			protected boolean isInputValid(ConversationContext context, String message)
 			{
-				return message.contains("y") || message.contains("n");
+				char[] searchChars = { 'y', 'n' };
+				return StringUtils.containsAny(message, searchChars);
 			}
 
 			@Override
 			protected Prompt acceptValidatedInput(ConversationContext context, String message)
 			{
-				if(message.contains("y"))
+				if(StringUtils.contains(message, "y"))
 				{
 					// Define variables
 					Player player = (Player) context.getForWhom();
@@ -1248,7 +1252,8 @@ public class Prayer implements WrappedConversation
 		@Override
 		protected boolean isInputValid(ConversationContext context, String message)
 		{
-			return message.contains("y") || message.contains("n");
+			char[] searchChars = { 'y', 'n' };
+			return StringUtils.containsAny(message, searchChars);
 		}
 
 		@Override
@@ -1256,11 +1261,14 @@ public class Prayer implements WrappedConversation
 		{
 			Player player = (Player) context.getForWhom();
 
-			// Open inventory
-			Inventory inv = Bukkit.getServer().createInventory(player, 9, "Place Your Tributes Here");
-			player.openInventory(inv);
+			if(StringUtils.contains(message, "y"))
+			{
+				// Open inventory
+				Inventory inv = Bukkit.getServer().createInventory(player, 9, "Place Your Tributes Here");
+				player.openInventory(inv);
+			}
 
-			return null;
+			return new StartPrayer();
 		}
 	}
 

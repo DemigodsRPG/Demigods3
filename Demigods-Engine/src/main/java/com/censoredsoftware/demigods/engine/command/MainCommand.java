@@ -1,18 +1,5 @@
 package com.censoredsoftware.demigods.engine.command;
 
-import java.util.Collection;
-import java.util.Map;
-
-import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.PluginManager;
-
 import com.censoredsoftware.censoredlib.helper.WrappedCommand;
 import com.censoredsoftware.censoredlib.language.Symbol;
 import com.censoredsoftware.censoredlib.util.Strings;
@@ -32,6 +19,18 @@ import com.censoredsoftware.demigods.engine.util.Messages;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.PluginManager;
+
+import java.util.Collection;
+import java.util.Map;
 
 public class MainCommand extends WrappedCommand
 {
@@ -50,9 +49,9 @@ public class MainCommand extends WrappedCommand
 	public boolean processCommand(CommandSender sender, Command command, String[] args)
 	{
 		// Commands able to be run by the console
-		if(command.getName().equals("demigods"))
+		if("demigods".equals(command.getName()))
 		{
-			if(args.length == 2 && args[0].equalsIgnoreCase("admin") && args[1].equalsIgnoreCase("reload"))
+			if(args.length == 2 && "admin".equalsIgnoreCase(args[0]) && "reload".equalsIgnoreCase(args[1]))
 			{
 				PluginManager pluginManager = DemigodsPlugin.plugin().getServer().getPluginManager();
 				pluginManager.disablePlugin(DemigodsPlugin.plugin());
@@ -69,7 +68,7 @@ public class MainCommand extends WrappedCommand
 		Player player = (Player) sender;
 
 		// Check args and pass onto appropriate method
-		if(args.length > 0 && args[0].equalsIgnoreCase("admin"))
+		if(args.length > 0 && "admin".equalsIgnoreCase(args[0]))
 		{
 			dg_admin(player, args);
 			return true;
@@ -83,13 +82,13 @@ public class MainCommand extends WrappedCommand
 		// Check Permissions
 		if(!player.hasPermission("demigods.basic")) return Messages.noPermission(player);
 
-		if(command.getName().equals("deity") && DPlayer.Util.getPlayer(player).getCurrent() != null && DPlayer.Util.getPlayer(player).getCurrent().isUsable())
+		if("deity".equals(command.getName()) && DPlayer.Util.getPlayer(player).getCurrent() != null && DPlayer.Util.getPlayer(player).getCurrent().isUsable())
 		{
 			Deity deity = DPlayer.Util.getPlayer(player).getCurrent().getDeity();
 			player.chat("/dg " + deity.getAlliance().getName().toLowerCase() + " " + deity.getName().toLowerCase());
 			return true;
 		}
-		else if(command.getName().equals("deity"))
+		else if("deity".equals(command.getName()))
 		{
 			player.sendMessage(ChatColor.RED + "This command requires you to have a character.");
 			return true;
@@ -115,7 +114,7 @@ public class MainCommand extends WrappedCommand
 		// Check Permissions
 		if(!player.hasPermission("demigods.basic")) return Messages.noPermission(player);
 
-		if(category.equalsIgnoreCase("info"))
+		if("info".equalsIgnoreCase(category))
 		{
 			if(option1 == null)
 			{
@@ -128,32 +127,37 @@ public class MainCommand extends WrappedCommand
 				player.sendMessage(ChatColor.GRAY + " /dg info skills");
 				player.sendMessage(ChatColor.GRAY + " /dg info demigods");
 			}
-			else if(option1.equalsIgnoreCase("characters"))
+			else if("characters".equalsIgnoreCase(option1))
 			{
+				// TODO
 				Messages.tagged(player, "Characters");
 				player.sendMessage(ChatColor.GRAY + " This is some info about Characters.");
 			}
-			else if(option1.equalsIgnoreCase("shrine"))
+			else if("shrine".equalsIgnoreCase(option1))
 			{
+				// TODO
 				Messages.tagged(player, "Shrines");
 				player.sendMessage(ChatColor.GRAY + " This is some info about Shrines.");
 			}
-			else if(option1.equalsIgnoreCase("player"))
+			else if("player".equalsIgnoreCase(option1))
 			{
+				// TODO
 				Messages.tagged(player, "Players");
 				player.sendMessage(ChatColor.GRAY + " This is some info about Players.");
 			}
-			else if(option1.equalsIgnoreCase("skills"))
+			else if("skills".equalsIgnoreCase(option1))
 			{
+				// TODO
 				Messages.tagged(player, "Skills");
 				player.sendMessage(ChatColor.GRAY + " This is some info about Skills.");
 			}
-			else if(option1.equalsIgnoreCase("pvp"))
+			else if("pvp".equalsIgnoreCase(option1))
 			{
+				// TODO
 				Messages.tagged(player, "PVP");
 				player.sendMessage(ChatColor.GRAY + " This is some info about PVP.");
 			}
-			else if(option1.equalsIgnoreCase("demigods"))
+			else if("demigods".equalsIgnoreCase(option1))
 			{
 				Messages.tagged(player, "About the Plugin");
 				player.sendMessage(ChatColor.WHITE + " Not to be confused with other RPG plugins that focus on skills and classes alone, " + ChatColor.GREEN + "Demigods" + ChatColor.WHITE + " adds culture and conflict that will keep players coming back even after they've maxed out their levels and found all of the diamonds in a 50km radius.");
@@ -174,7 +178,7 @@ public class MainCommand extends WrappedCommand
 		{
 			if(!player.hasPermission(alliance.getPermission())) continue;
 
-			if(category.equalsIgnoreCase(alliance.getName()))
+			if(alliance.getName().equalsIgnoreCase(category))
 			{
 				if(args.length < 2)
 				{
@@ -186,7 +190,7 @@ public class MainCommand extends WrappedCommand
 				{
 					for(final Deity deity : Alliance.Util.getLoadedMajorPlayableDeitiesInAllianceWithPerms(alliance, player))
 					{
-						if(option1 != null && option1.equalsIgnoreCase(deity.getName()))
+						if(deity.getName().equalsIgnoreCase(option1))
 						{
 							try
 							{
@@ -256,7 +260,7 @@ public class MainCommand extends WrappedCommand
 			Messages.tagged(sender, "Admin Directory");
 			sender.sendMessage(ChatColor.GRAY + " /dg admin wand");
 			sender.sendMessage(ChatColor.GRAY + " /dg admin debug");
-			for(AdminCommands command : AdminCommands.values())
+			for(AdminCommand command : AdminCommand.values())
 			{
 				sender.sendMessage(ChatColor.GRAY + " " + command.getCommand().getName());
 			}
@@ -265,13 +269,13 @@ public class MainCommand extends WrappedCommand
 		}
 
 		// Handle automatic commands
-		for(AdminCommands command : AdminCommands.values())
+		for(AdminCommand command : AdminCommand.values())
 		{
-			if(args[1].equalsIgnoreCase(command.getCommand().getRootCommand())) return command.getCommand().doCommand(sender, args);
+			if(command.getCommand().getParentCommand().equalsIgnoreCase(args[1])) return command.getCommand().process(sender, args);
 		}
 
 		// Handle manual commands
-		if(args[1].equalsIgnoreCase("wand"))
+		if("wand".equalsIgnoreCase(args[1]))
 		{
 			if(!Admins.wandEnabled(sender))
 			{
@@ -285,7 +289,7 @@ public class MainCommand extends WrappedCommand
 			}
 			return true;
 		}
-		else if(args[1].equalsIgnoreCase("debug"))
+		else if("debug".equalsIgnoreCase(args[1]))
 		{
 			if(!DataManager.hasKeyTemp(sender.getName(), "temp_admin_debug") || !Boolean.parseBoolean(DataManager.getValueTemp(sender.getName(), "temp_admin_debug").toString()))
 			{
@@ -298,7 +302,7 @@ public class MainCommand extends WrappedCommand
 				sender.sendMessage(ChatColor.RED + "You have disabled debugging.");
 			}
 		}
-		else if(args[1].equalsIgnoreCase("clear") && args[1].equalsIgnoreCase("data") && args[2].equalsIgnoreCase("yesdoitforsurepermanently"))
+		else if("clear".equalsIgnoreCase(args[1]) && args[2].equalsIgnoreCase("data") && args[3].equalsIgnoreCase("yesdoitforsurepermanently"))
 		{
 			sender.sendMessage(ChatColor.RED + English.ADMIN_CLEAR_DATA_STARTING.getLine());
 			DataManager.flushData();
@@ -309,7 +313,7 @@ public class MainCommand extends WrappedCommand
 		return true;
 	}
 
-	static class Check implements AdminCommand
+	static class Check implements SubCommand
 	{
 		@Override
 		public String getName()
@@ -318,13 +322,13 @@ public class MainCommand extends WrappedCommand
 		}
 
 		@Override
-		public String getRootCommand()
+		public String getParentCommand()
 		{
 			return "check";
 		}
 
 		@Override
-		public boolean doCommand(Player sender, String[] args)
+		public boolean process(Player sender, String[] args)
 		{
 			if(args.length < 4)
 			{
@@ -333,7 +337,7 @@ public class MainCommand extends WrappedCommand
 				return true;
 			}
 
-			if(args[2].equalsIgnoreCase("player"))
+			if("player".equalsIgnoreCase(args[2]))
 			{
 				// Define the player
 				DPlayer player = DPlayer.Util.getPlayer(Bukkit.getOfflinePlayer(args[3]));
@@ -359,7 +363,7 @@ public class MainCommand extends WrappedCommand
 					sender.sendMessage(ChatColor.RED + "No player found with that name.");
 				}
 			}
-			else if(args[2].equalsIgnoreCase("character"))
+			else if("character".equalsIgnoreCase(args[2]))
 			{
 				// Define the character
 				DCharacter character = DCharacter.Util.getCharacterByName(args[3]);
@@ -390,7 +394,7 @@ public class MainCommand extends WrappedCommand
 		}
 	}
 
-	static class Remove implements AdminCommand
+	static class Remove implements SubCommand
 	{
 		@Override
 		public String getName()
@@ -399,13 +403,13 @@ public class MainCommand extends WrappedCommand
 		}
 
 		@Override
-		public String getRootCommand()
+		public String getParentCommand()
 		{
 			return "remove";
 		}
 
 		@Override
-		public boolean doCommand(Player sender, String[] args)
+		public boolean process(Player sender, String[] args)
 		{
 			if(args.length < 4)
 			{
@@ -414,7 +418,7 @@ public class MainCommand extends WrappedCommand
 				return true;
 			}
 
-			if(args[2].equalsIgnoreCase("player"))
+			if("player".equalsIgnoreCase(args[2]))
 			{
 				// Define the player
 				DPlayer player = DPlayer.Util.getPlayer(Bukkit.getOfflinePlayer(args[3]));
@@ -433,7 +437,7 @@ public class MainCommand extends WrappedCommand
 					sender.sendMessage(ChatColor.RED + "No player found with that name.");
 				}
 			}
-			else if(args[2].equalsIgnoreCase("character"))
+			else if("character".equalsIgnoreCase(args[2]))
 			{
 				// Define the character
 				DCharacter character = DCharacter.Util.getCharacterByName(args[3]);
@@ -457,7 +461,7 @@ public class MainCommand extends WrappedCommand
 		}
 	}
 
-	static class Set implements AdminCommand
+	static class Set implements SubCommand
 	{
 		@Override
 		public String getName()
@@ -466,13 +470,13 @@ public class MainCommand extends WrappedCommand
 		}
 
 		@Override
-		public String getRootCommand()
+		public String getParentCommand()
 		{
 			return "set";
 		}
 
 		@Override
-		public boolean doCommand(Player sender, String[] args)
+		public boolean process(Player sender, String[] args)
 		{
 			if(args.length < 5)
 			{
@@ -489,7 +493,7 @@ public class MainCommand extends WrappedCommand
 			{
 				Player owner = character.getOfflinePlayer().getPlayer();
 
-				if(args[2].equalsIgnoreCase("fav"))
+				if("fav".equalsIgnoreCase(args[2]))
 				{
 					// Update the amount
 					character.getMeta().setFavor(amount);
@@ -497,7 +501,7 @@ public class MainCommand extends WrappedCommand
 					// Set what was updated
 					updatedValue = "favor";
 				}
-				else if(args[2].equalsIgnoreCase("maxfav"))
+				else if("maxfav".equalsIgnoreCase(args[2]))
 				{
 					// Update the amount
 					character.getMeta().setMaxFavor(amount);
@@ -505,7 +509,7 @@ public class MainCommand extends WrappedCommand
 					// Set what was updated
 					updatedValue = "max favor";
 				}
-				else if(args[2].equalsIgnoreCase("sp"))
+				else if("sp".equalsIgnoreCase(args[2]))
 				{
 					// Update the amount
 					character.getMeta().setSkillPoints(amount);
@@ -539,7 +543,7 @@ public class MainCommand extends WrappedCommand
 		}
 	}
 
-	static class Add implements AdminCommand
+	static class Add implements SubCommand
 	{
 		@Override
 		public String getName()
@@ -548,13 +552,13 @@ public class MainCommand extends WrappedCommand
 		}
 
 		@Override
-		public String getRootCommand()
+		public String getParentCommand()
 		{
 			return "add";
 		}
 
 		@Override
-		public boolean doCommand(Player sender, String[] args)
+		public boolean process(Player sender, String[] args)
 		{
 			if(args.length < 5)
 			{
@@ -571,7 +575,7 @@ public class MainCommand extends WrappedCommand
 			{
 				Player owner = character.getOfflinePlayer().getPlayer();
 
-				if(args[2].equalsIgnoreCase("fav"))
+				if("fav".equalsIgnoreCase(args[2]))
 				{
 					// Update the amount
 					character.getMeta().addFavor(amount);
@@ -579,7 +583,7 @@ public class MainCommand extends WrappedCommand
 					// Set what was updated
 					updatedValue = "favor";
 				}
-				else if(args[2].equalsIgnoreCase("maxfav"))
+				else if("maxfav".equalsIgnoreCase(args[2]))
 				{
 					// Update the amount
 					character.getMeta().addMaxFavor(amount);
@@ -587,7 +591,7 @@ public class MainCommand extends WrappedCommand
 					// Set what was updated
 					updatedValue = "max favor";
 				}
-				else if(args[2].equalsIgnoreCase("sp"))
+				else if("sp".equalsIgnoreCase(args[2]))
 				{
 					// Update the amount
 					character.getMeta().addSkillPoints(amount);
@@ -620,7 +624,7 @@ public class MainCommand extends WrappedCommand
 		}
 	}
 
-	static class Sub implements AdminCommand
+	static class Sub implements SubCommand
 	{
 		@Override
 		public String getName()
@@ -629,13 +633,13 @@ public class MainCommand extends WrappedCommand
 		}
 
 		@Override
-		public String getRootCommand()
+		public String getParentCommand()
 		{
 			return "sub";
 		}
 
 		@Override
-		public boolean doCommand(Player sender, String[] args)
+		public boolean process(Player sender, String[] args)
 		{
 			if(args.length < 5)
 			{
@@ -652,7 +656,7 @@ public class MainCommand extends WrappedCommand
 			{
 				Player owner = character.getOfflinePlayer().getPlayer();
 
-				if(args[2].equalsIgnoreCase("fav"))
+				if("fav".equalsIgnoreCase(args[2]))
 				{
 					// Update the amount
 					character.getMeta().subtractFavor(amount);
@@ -660,7 +664,7 @@ public class MainCommand extends WrappedCommand
 					// Set what was updated
 					updatedValue = "favor";
 				}
-				else if(args[2].equalsIgnoreCase("maxfav"))
+				else if("maxfav".equalsIgnoreCase(args[2]))
 				{
 					// Update the amount
 					character.getMeta().subtractMaxFavor(amount);
@@ -668,7 +672,7 @@ public class MainCommand extends WrappedCommand
 					// Set what was updated
 					updatedValue = "max favor";
 				}
-				else if(args[2].equalsIgnoreCase("sp"))
+				else if("sp".equalsIgnoreCase(args[2]))
 				{
 					// Update the amount
 					character.getMeta().subtractSkillPoints(amount);
@@ -701,29 +705,29 @@ public class MainCommand extends WrappedCommand
 		}
 	}
 
-	public enum AdminCommands
+	public enum AdminCommand
 	{
 		CHECK(new Check()), REMOVE(new Remove()), SET(new Set()), ADD(new Add()), SUBTRACT(new Sub());
 
-		private AdminCommand command;
+		private SubCommand command;
 
-		private AdminCommands(AdminCommand command)
+		private AdminCommand(SubCommand command)
 		{
 			this.command = command;
 		}
 
-		public AdminCommand getCommand()
+		public SubCommand getCommand()
 		{
 			return this.command;
 		}
 	}
 
-	interface AdminCommand
+	interface SubCommand
 	{
 		public String getName();
 
-		public String getRootCommand();
+		public String getParentCommand();
 
-		public boolean doCommand(Player sender, String[] args);
+		public boolean process(Player sender, String[] args);
 	}
 }
