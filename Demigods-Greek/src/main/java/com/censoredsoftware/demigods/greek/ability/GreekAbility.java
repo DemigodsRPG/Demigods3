@@ -9,7 +9,7 @@ import org.bukkit.material.MaterialData;
 
 import java.util.List;
 
-public abstract class GreekAbility implements Ability
+public class GreekAbility implements Ability
 {
 	private final String name, command, deity;
 	private final int cost, delay, repeat;
@@ -114,7 +114,7 @@ public abstract class GreekAbility implements Ability
 		return runnable;
 	}
 
-	public static abstract class Passive implements Ability
+	public static class Passive implements Ability
 	{
 		private final String name, deity;
 		private final int repeat;

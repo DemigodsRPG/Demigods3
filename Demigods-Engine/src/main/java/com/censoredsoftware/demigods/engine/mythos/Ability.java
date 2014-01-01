@@ -1,10 +1,15 @@
 package com.censoredsoftware.demigods.engine.mythos;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
-
+import com.censoredsoftware.censoredlib.util.Strings;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.data.*;
+import com.censoredsoftware.demigods.engine.language.English;
+import com.censoredsoftware.demigods.engine.util.Configs;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -21,16 +26,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
 import org.bukkit.util.BlockIterator;
 
-import com.censoredsoftware.censoredlib.util.Strings;
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.data.*;
-import com.censoredsoftware.demigods.engine.language.English;
-import com.censoredsoftware.demigods.engine.util.Configs;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
+import java.util.Collection;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 public interface Ability
 {
@@ -81,7 +80,7 @@ public interface Ability
 			}
 			else if(!DCharacter.Util.isCooledDown(character, ability.getName()))
 			{
-				// player.sendMessage(ChatColor.YELLOW + "That ability has not cooled down."); TODO: Send this? We probably should, but in a not spammy way. Would be simple to do, but I'm too sleepy to care at the moment.
+				// player.sendMessage(ChatColor.YELLOW + "That ability has not cooled down."); FIXME Send this in a not spammy way.
 				return false;
 			}
 			else return true;
@@ -362,7 +361,7 @@ public interface Ability
 					player.sendMessage(ChatColor.RED + English.ERROR_MATERIAL_BOUND.getLine());
 					return true;
 				}
-				else if(ability.hasWeapon() && !itemInHand.getType().equals(ability.getWeapon()))
+				else if(ability.hasWeapon() && !itemInHand.getData().equals(ability.getWeapon()))
 				{
 					// Weapon required
 					player.sendMessage(ChatColor.RED + English.ERROR_BIND_WEAPON_REQUIRED.getLine().replace("{weapon}", Strings.beautify(ability.getWeapon().getItemType().name()).toLowerCase()).replace("{ability}", abilityName));
