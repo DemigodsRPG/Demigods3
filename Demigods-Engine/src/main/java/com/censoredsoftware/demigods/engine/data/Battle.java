@@ -1,19 +1,9 @@
 package com.censoredsoftware.demigods.engine.data;
 
-import com.censoredsoftware.censoredlib.exception.SpigotNotFoundException;
-import com.censoredsoftware.censoredlib.language.Symbol;
-import com.censoredsoftware.censoredlib.util.Randoms;
-import com.censoredsoftware.censoredlib.util.Vehicles;
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.DemigodsPlugin;
-import com.censoredsoftware.demigods.engine.mythos.Alliance;
-import com.censoredsoftware.demigods.engine.mythos.Deity;
-import com.censoredsoftware.demigods.engine.util.Configs;
-import com.censoredsoftware.demigods.engine.util.Messages;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
-import com.google.common.collect.*;
+import java.util.*;
+
+import javax.annotation.Nullable;
+
 import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
@@ -29,8 +19,21 @@ import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.util.Vector;
 
-import javax.annotation.Nullable;
-import java.util.*;
+import com.censoredsoftware.censoredlib.exception.SpigotNotFoundException;
+import com.censoredsoftware.censoredlib.language.Symbol;
+import com.censoredsoftware.censoredlib.util.Randoms;
+import com.censoredsoftware.censoredlib.util.Vehicles;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.DemigodsPlugin;
+import com.censoredsoftware.demigods.engine.event.BattleDeathEvent;
+import com.censoredsoftware.demigods.engine.mythos.Alliance;
+import com.censoredsoftware.demigods.engine.mythos.Deity;
+import com.censoredsoftware.demigods.engine.util.Configs;
+import com.censoredsoftware.demigods.engine.util.Messages;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.google.common.base.Function;
+import com.google.common.base.Predicate;
+import com.google.common.collect.*;
 
 public class Battle implements ConfigurationSerializable
 {
@@ -128,11 +131,10 @@ public class Battle implements ConfigurationSerializable
 		return this.id;
 	}
 
-	public double getRange()
+	public double getRadius()
 	{
-		int base = Configs.getSettingInt("battles.min_range");
-		int per = 5;
-		if(involvedPlayers.size() > 2) return base + (per * (involvedPlayers.size() - 2));
+		int base = Configs.getSettingInt("battles.min_radius");
+		if(involvedPlayers.size() > 2) return base * Math.log10(10 + Math.ceil(Math.pow(involvedPlayers.size(), 1.5)));
 		return base;
 	}
 
@@ -532,7 +534,7 @@ public class Battle implements ConfigurationSerializable
 					@Override
 					public boolean apply(Battle battle)
 					{
-						return battle.getStartLocation().distance(location) <= battle.getRange();
+						return battle.getStartLocation().distance(location) <= battle.getRadius();
 					}
 				});
 			}
@@ -590,7 +592,7 @@ public class Battle implements ConfigurationSerializable
 					public boolean apply(Battle battle)
 					{
 						double distance = battle.getStartLocation().distance(location);
-						return distance > battle.getRange() && distance <= Configs.getSettingInt("battles.merge_range");
+						return distance > battle.getRadius() && distance <= Configs.getSettingInt("battles.merge_radius");
 					}
 				});
 			}
@@ -604,7 +606,7 @@ public class Battle implements ConfigurationSerializable
 		public static Collection<Location> battleBorder(final Battle battle)
 		{
 			if(!Demigods.Util.isRunningSpigot()) throw new SpigotNotFoundException();
-			return Collections2.transform(CLocationManager.getCirclePoints(battle.getStartLocation(), battle.getRange(), 120), new Function<Location, Location>()
+			return Collections2.transform(CLocationManager.getCirclePoints(battle.getStartLocation(), battle.getRadius(), 120), new Function<Location, Location>()
 			{
 				@Override
 				public Location apply(Location point)
@@ -649,7 +651,7 @@ public class Battle implements ConfigurationSerializable
 
 		public static List<Location> getSafeRespawnPoints(final Battle battle)
 		{
-			return Lists.newArrayList(Collections2.filter(Collections2.transform(CLocationManager.getCirclePoints(battle.getStartLocation(), battle.getRange() - 1.5, 100), new Function<Location, Location>()
+			return Lists.newArrayList(Collections2.filter(Collections2.transform(CLocationManager.getCirclePoints(battle.getStartLocation(), battle.getRadius() - 1.5, 100), new Function<Location, Location>()
 			{
 				@Override
 				public Location apply(Location point)
@@ -742,7 +744,7 @@ public class Battle implements ConfigurationSerializable
 		{
 			for(Battle battle : Battle.Util.getAllActive())
 				for(Location point : Battle.Util.battleBorder(battle))
-					point.getWorld().playEffect(point, Effect.MOBSPAWNER_FLAMES, 0, (int) (battle.getRange() * 2.5));
+					point.getWorld().playEffect(point, Effect.MOBSPAWNER_FLAMES, 0, (int) (battle.getRadius() * 2));
 		}
 
 		/**
@@ -787,7 +789,7 @@ public class Battle implements ConfigurationSerializable
 			// Define variables
 			Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
 
-			// Define objective
+			// Define sidebar objective
 			Objective info = scoreboard.registerNewObjective("battle_info", "dummy");
 			info.setDisplaySlot(DisplaySlot.SIDEBAR);
 			info.setDisplayName(ChatColor.AQUA + "Current Battle Stats");

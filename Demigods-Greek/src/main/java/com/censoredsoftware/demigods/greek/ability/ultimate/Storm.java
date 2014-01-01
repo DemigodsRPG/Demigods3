@@ -1,5 +1,16 @@
 package com.censoredsoftware.demigods.greek.ability.ultimate;
 
+import java.util.List;
+
+import org.bukkit.Bukkit;
+import org.bukkit.WeatherType;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import com.censoredsoftware.demigods.engine.DemigodsPlugin;
 import com.censoredsoftware.demigods.engine.data.Battle;
 import com.censoredsoftware.demigods.engine.data.DCharacter;
 import com.censoredsoftware.demigods.engine.data.DPlayer;
@@ -8,24 +19,12 @@ import com.censoredsoftware.demigods.engine.util.Abilities;
 import com.censoredsoftware.demigods.greek.ability.GreekAbility;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.util.Vector;
-
-import java.util.List;
-import java.util.Set;
 
 public class Storm extends GreekAbility
 {
 	private final static String name = "Storm", command = "storm";
-	private final static int cost = 3700, delay = 600 * 20, repeat = 0;
-	private final static List<String> details = Lists.newArrayList("Send your enemies flying as lightning fills the heavens.");
+	private final static int cost = 3700, delay = 5000, repeat = 0;
+	private final static List<String> details = Lists.newArrayList("Strike pure fear into the hearts of your enemies.");
 	private final static Skill.Type type = Skill.Type.ULTIMATE;
 
 	public Storm(String deity)
@@ -33,38 +32,47 @@ public class Storm extends GreekAbility
 		super(name, command, deity, cost, delay, repeat, details, type, null, new Predicate<Player>()
 		{
 			@Override
-			public boolean apply(Player player)
+			public boolean apply(final Player player)
 			{
 				// Define variables
 				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
-				Set<Entity> entitySet = Sets.newHashSet();
-				Vector playerLocation = player.getLocation().toVector();
 
 				if(!Abilities.preProcessAbility(player, cost)) return false;
 
-				for(Entity anEntity : player.getWorld().getEntities())
-					if(anEntity.getLocation().toVector().isInSphere(playerLocation, 50.0)) entitySet.add(anEntity);
+				// Define variables
+				final int ultimateSkillLevel = character.getMeta().getSkill(Skill.Type.ULTIMATE).getLevel();
+				final int damage = (int) Math.ceil(8 * (int) Math.pow(ultimateSkillLevel, 0.5));
+				final int radius = (int) Math.log10(10 * ultimateSkillLevel) * 25;
 
-				for(Entity entity : entitySet)
+				// Make it stormy for the caster
+                setWeather(player, 100);
+
+				// Strike targets
+				for(final Entity entity : player.getNearbyEntities(radius, radius, radius))
 				{
-					if(entity instanceof Player)
+					// Validate them first
+					if(!(entity instanceof LivingEntity)) continue;
+					if((entity instanceof Player))
 					{
-						Player otherPlayer = (Player) entity;
-						DCharacter otherChar = DPlayer.Util.getPlayer(otherPlayer).getCurrent();
-						if(otherPlayer.equals(player)) continue;
-						if(otherChar != null && !DCharacter.Util.areAllied(character, otherChar) && !otherPlayer.equals(player))
-						{
-							strikeLightning(player, otherPlayer);
-							strikeLightning(player, otherPlayer);
-							continue;
+						DCharacter opponent = DPlayer.Util.getPlayer((Player) entity).getCurrent();
+						if(opponent != null && DCharacter.Util.areAllied(character, opponent)) continue;
+					}
+					if(Battle.Util.canParticipate(entity) && !Battle.Util.canTarget(Battle.Util.defineParticipant(entity))) continue;
+
+					// Make it stormy for players
+					if(entity instanceof Player) setWeather((Player) entity, 100);
+
+                    // Strike them with a small delay
+					Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.plugin(), new BukkitRunnable()
+					{
+						@Override
+						public void run()
+             {
+							player.getWorld().strikeLightningEffect(entity.getLocation());
+							player.getWorld().strikeLightningEffect(entity.getLocation());
+							Abilities.dealDamage(player, (LivingEntity) entity, damage, EntityDamageEvent.DamageCause.LIGHTNING);
 						}
-					}
-					if(entity instanceof LivingEntity)
-					{
-						LivingEntity livingEntity = (LivingEntity) entity;
-						strikeLightning(player, livingEntity);
-						strikeLightning(player, livingEntity);
-					}
+					}, 30);
 				}
 
 				return true;
@@ -72,35 +80,26 @@ public class Storm extends GreekAbility
 		}, null, null);
 	}
 
-	public static boolean strikeLightning(Player player, LivingEntity target)
+	public static void setWeather(final Player player, long ticks)
 	{
-		return Battle.Util.canTarget(target) && strikeLightning(player, target.getLocation(), true);
-	}
-
-	public static boolean strikeLightning(Player player, Location target, boolean notify)
-	{
-		// Set variables
-		DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
-
-		if(!player.getWorld().equals(target.getWorld())) return false;
-		Location toHit = Abilities.adjustedAimLocation(character, target);
-
-		player.getWorld().strikeLightningEffect(toHit);
-
-		for(Entity entity : toHit.getBlock().getChunk().getEntities())
+		// Handle weather effect
+		if(!player.getPlayerWeather().equals(WeatherType.DOWNFALL))
 		{
-			if(entity instanceof LivingEntity)
+			// Save current weather
+			final WeatherType currentWeather = player.getPlayerWeather();
+
+			// Set the weather
+            player.setPlayerWeather(WeatherType.DOWNFALL);
+
+            // Create the runnable to switch back
+			Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.plugin(), new BukkitRunnable()
 			{
-				if(!Battle.Util.canTarget(entity)) continue;
-				LivingEntity livingEntity = (LivingEntity) entity;
-				if(livingEntity.equals(player)) continue;
-				if((toHit.getBlock().getType().equals(Material.WATER) || toHit.getBlock().getType().equals(Material.STATIONARY_WATER)) && livingEntity.getLocation().distance(toHit) < 8) Abilities.dealDamage(player, livingEntity, character.getMeta().getAscensions() * 6, EntityDamageEvent.DamageCause.LIGHTNING);
-				else if(livingEntity.getLocation().distance(toHit) < 2) Abilities.dealDamage(player, livingEntity, character.getMeta().getAscensions() * 4, EntityDamageEvent.DamageCause.LIGHTNING);
-			}
+				@Override
+				public void run()
+				{
+					player.setPlayerWeather(currentWeather);
+				}
+			}, 100);
 		}
-
-		if(!Abilities.isHit(target, toHit) && notify) player.sendMessage(ChatColor.RED + "Missed...");
-
-		return true;
 	}
 }

@@ -1,12 +1,7 @@
 package com.censoredsoftware.demigods.engine.listener;
 
-import com.censoredsoftware.demigods.engine.base.DemigodsCommand;
-import com.censoredsoftware.demigods.engine.data.DPlayer;
-import com.censoredsoftware.demigods.engine.util.Abilities;
-import com.censoredsoftware.demigods.engine.util.Messages;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Sets;
+import java.util.Set;
+
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,7 +9,13 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
-import java.util.Set;
+import com.censoredsoftware.demigods.engine.base.DemigodsCommand;
+import com.censoredsoftware.demigods.engine.data.DPlayer;
+import com.censoredsoftware.demigods.engine.util.Abilities;
+import com.censoredsoftware.demigods.engine.util.Messages;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
 
 public class ChatListener implements Listener
 {
@@ -59,7 +60,7 @@ public class ChatListener implements Listener
 		// Process the command
 		try
 		{
-			if(Abilities.invokeAbilityCommand(player, args[0]))
+			if(Abilities.bindAbility(player, args[0]))
 			{
 				Messages.info(event.getPlayer().getName() + " used the command: /" + message);
 				event.setCancelled(true);

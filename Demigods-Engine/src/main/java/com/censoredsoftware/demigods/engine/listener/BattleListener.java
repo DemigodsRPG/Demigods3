@@ -1,8 +1,5 @@
 package com.censoredsoftware.demigods.engine.listener;
 
-import com.censoredsoftware.demigods.engine.data.*;
-import com.censoredsoftware.demigods.engine.util.Configs;
-import com.censoredsoftware.demigods.engine.util.Zones;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.*;
@@ -12,6 +9,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityTeleportEvent;
+
+import com.censoredsoftware.demigods.engine.data.*;
+import com.censoredsoftware.demigods.engine.util.Configs;
+import com.censoredsoftware.demigods.engine.util.Zones;
 
 public class BattleListener implements Listener
 {
@@ -163,7 +164,7 @@ public class BattleListener implements Listener
 		if(Battle.Util.isInBattle(participant))
 		{
 			Battle battle = Battle.Util.getBattle(participant);
-			if(!event.getTo().getWorld().equals(battle.getStartLocation().getWorld()) || CLocationManager.distanceFlat(event.getTo(), battle.getStartLocation()) > battle.getRange()) event.setCancelled(true);
+			if(!event.getTo().getWorld().equals(battle.getStartLocation().getWorld()) || CLocationManager.distanceFlat(event.getTo(), battle.getStartLocation()) > battle.getRadius()) event.setCancelled(true);
 		}
 	}
 }
