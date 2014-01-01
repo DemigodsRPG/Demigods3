@@ -23,7 +23,7 @@ public class GreekAbility implements Ability
 	public GreekAbility(String name, String command, String deity, int cost, int delay, int repeat, List<String> details, Skill.Type type, MaterialData weapon, Predicate<Player> action, Listener listener, Runnable runnable)
 	{
 		this.name = name;
-		this.command = command;;
+		this.command = command;
 		this.deity = deity;
 		this.cost = cost;
 		this.delay = delay;
