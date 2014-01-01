@@ -15,29 +15,27 @@ import com.censoredsoftware.demigods.engine.data.Battle;
 import com.censoredsoftware.demigods.engine.data.DCharacter;
 import com.censoredsoftware.demigods.engine.data.DPlayer;
 import com.censoredsoftware.demigods.engine.data.Skill;
-import com.censoredsoftware.demigods.engine.util.Abilities;
+import com.censoredsoftware.demigods.engine.mythos.Ability;
 import com.censoredsoftware.demigods.greek.ability.GreekAbility;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
 
 public class Storm extends GreekAbility
 {
-	private final static String name = "Storm", command = "storm";
-	private final static int cost = 3700, delay = 5000, repeat = 0;
-	private final static List<String> details = Lists.newArrayList("Strike pure fear into the hearts of your enemies.");
-	private final static Skill.Type type = Skill.Type.ULTIMATE;
+	private static final String NAME = "Storm", COMMAND = "storm";
+	private static final int COST = 3700, DELAY = 300, REPEAT = 0;
+	private static final List<String> DETAILS = Lists.newArrayList("Strike fear into the hearts of your enemies.");
+	private static final Skill.Type TYPE = Skill.Type.ULTIMATE;
 
 	public Storm(String deity)
 	{
-		super(name, command, deity, cost, delay, repeat, details, type, null, new Predicate<Player>()
+		super(NAME, COMMAND, deity, COST, DELAY, REPEAT, DETAILS, TYPE, null, new Predicate<Player>()
 		{
 			@Override
 			public boolean apply(final Player player)
 			{
 				// Define variables
 				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
-
-				if(!Abilities.preProcessAbility(player, cost)) return false;
 
 				// Define variables
 				final int ultimateSkillLevel = character.getMeta().getSkill(Skill.Type.ULTIMATE).getLevel();
@@ -71,7 +69,7 @@ public class Storm extends GreekAbility
 							for(int i = 0; i <= 3; i++)
 							{
 								player.getWorld().strikeLightningEffect(entity.getLocation());
-								Abilities.dealDamage(player, (LivingEntity) entity, damage, EntityDamageEvent.DamageCause.LIGHTNING);
+								Ability.Util.dealDamage(player, (LivingEntity) entity, damage, EntityDamageEvent.DamageCause.LIGHTNING);
 							}
 						}
 					}, 15);
@@ -85,7 +83,7 @@ public class Storm extends GreekAbility
 	public static void setWeather(final Player player, long ticks)
 	{
 		// Handle weather effect
-		if(!player.getPlayerWeather().equals(WeatherType.DOWNFALL))
+		if(player.getPlayerWeather() != null && !player.getPlayerWeather().equals(WeatherType.DOWNFALL))
 		{
 			// Save current weather
 			final WeatherType currentWeather = player.getPlayerWeather();

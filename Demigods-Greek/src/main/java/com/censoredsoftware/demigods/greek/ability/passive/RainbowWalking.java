@@ -1,24 +1,25 @@
 package com.censoredsoftware.demigods.greek.ability.passive;
 
+import java.util.List;
+
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+
 import com.censoredsoftware.demigods.engine.data.DCharacter;
 import com.censoredsoftware.demigods.engine.util.Zones;
 import com.censoredsoftware.demigods.greek.ability.GreekAbility;
 import com.censoredsoftware.demigods.greek.ability.ultimate.Discoball;
 import com.google.common.collect.Lists;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
-
-import java.util.List;
 
 public class RainbowWalking extends GreekAbility.Passive
 {
-	private final static String name = "Rainbow Walking";
-	private final static int repeat = 5;
-	private final static List<String> details = Lists.newArrayList("Spread the disco while sneaking.");
+	private static final String NAME = "Rainbow Walking";
+	private static final int REPEAT = 5;
+	private static final List<String> DETAILS = Lists.newArrayList("Spread the disco while sneaking.");
 
 	public RainbowWalking(final String deity)
 	{
-		super(name, deity, repeat, details, null, new Runnable()
+		super(NAME, deity, REPEAT, DETAILS, null, new Runnable()
 		{
 			@Override
 			public void run()

@@ -1,31 +1,32 @@
 package com.censoredsoftware.demigods.greek.ability.passive;
 
-import com.censoredsoftware.demigods.engine.data.DCharacter;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.censoredsoftware.demigods.greek.ability.GreekAbility;
-import com.google.common.collect.Lists;
+import java.util.List;
+
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.List;
+import com.censoredsoftware.demigods.engine.data.DCharacter;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.censoredsoftware.demigods.greek.ability.GreekAbility;
+import com.google.common.collect.Lists;
 
 public class NoFire extends GreekAbility.Passive
 {
-	private final static String name = "No Fire Damage";
-	private final static int repeat = 0;
-	private final static List<String> details = Lists.newArrayList("Take no corruption from fire.");
+	private static final String NAME = "No Fire Damage";
+	private static final int REPEAT = 0;
+	private static final List<String> DETAILS = Lists.newArrayList("Take no corruption from fire.");
 
 	public NoFire(final String deity)
 	{
-		super(name, deity, repeat, details, null, new Runnable()
+		super(NAME, deity, REPEAT, DETAILS, null, new Runnable()
 		{
 			@Override
 			public void run()
 			{
-				for(DCharacter character : DCharacter.Util.getOnlineCharactersWithAbility(name))
+				for(DCharacter character : DCharacter.Util.getOnlineCharactersWithAbility(NAME))
 				{
 					if(Zones.inNoDemigodsZone(character.getOfflinePlayer().getPlayer().getLocation())) continue;
 					Player player = character.getOfflinePlayer().getPlayer();

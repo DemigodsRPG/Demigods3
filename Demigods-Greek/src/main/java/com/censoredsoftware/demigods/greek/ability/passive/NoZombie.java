@@ -1,11 +1,7 @@
 package com.censoredsoftware.demigods.greek.ability.passive;
 
-import com.censoredsoftware.demigods.engine.data.DCharacter;
-import com.censoredsoftware.demigods.engine.data.DPlayer;
-import com.censoredsoftware.demigods.engine.mythos.Deity;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.censoredsoftware.demigods.greek.ability.GreekAbility;
-import com.google.common.collect.Lists;
+import java.util.List;
+
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
@@ -15,17 +11,22 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 
-import java.util.List;
+import com.censoredsoftware.demigods.engine.data.DCharacter;
+import com.censoredsoftware.demigods.engine.data.DPlayer;
+import com.censoredsoftware.demigods.engine.mythos.Deity;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.censoredsoftware.demigods.greek.ability.GreekAbility;
+import com.google.common.collect.Lists;
 
 public class NoZombie extends GreekAbility.Passive
 {
-	private final static String name = "No Zombie Damage";
-	private final static int repeat = 0;
-	private final static List<String> details = Lists.newArrayList("You cannot be damaged by zombies.");
+	private static final String NAME = "No Zombie Damage";
+	private static final int REPEAT = 0;
+	private static final List<String> DETAILS = Lists.newArrayList("You cannot be damaged by zombies.");
 
 	public NoZombie(final String deity)
 	{
-		super(name, deity, repeat, details, new Listener()
+		super(NAME, deity, REPEAT, DETAILS, new Listener()
 		{
 			@EventHandler(priority = EventPriority.HIGHEST)
 			public void onEntityDamange(EntityDamageByEntityEvent damageEvent)

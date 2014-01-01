@@ -941,7 +941,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			});
 		}
 
-		public boolean checkBound(String abilityName, MaterialData material) // TODO Check for data not just the name
+		public boolean checkBound(String abilityName, MaterialData material)
 		{
 			return getBinds().containsKey(abilityName) && binds.get(abilityName).equals(material.getItemType().name());
 		}
@@ -1277,24 +1277,20 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			return getCharacterByName(name) != null;
 		}
 
-		public static boolean isCooledDown(DCharacter player, String ability, boolean sendMsg)
+		public static boolean isCooledDown(DCharacter character, String abilityName)
 		{
-			if(DataManager.hasKeyTemp(player.getName(), ability + "_cooldown") && Long.parseLong(DataManager.getValueTemp(player.getName(), ability + "_cooldown").toString()) > System.currentTimeMillis())
-			{
-				if(sendMsg) player.getOfflinePlayer().getPlayer().sendMessage(ChatColor.RED + ability + " has not cooled down!");
-				return false;
-			}
-			else return true;
+			return !DataManager.hasTimed(character.getName(), abilityName + "_cooldown");
+			// return !DataManager.hasKeyTemp(character.getName(), abilityName + "_cooldown") || getCooldown(character, abilityName) < System.currentTimeMillis();
 		}
 
-		public static void setCoolDown(DCharacter player, String ability, long cooldown)
+		public static void setCooldown(DCharacter character, String abilityName, int cooldown)
 		{
-			DataManager.saveTemp(player.getName(), ability + "_cooldown", cooldown);
+			DataManager.saveTimed(character.getName(), abilityName + "_cooldown", true, cooldown);
 		}
 
-		public static long getCoolDown(DCharacter player, String ability)
+		public static long getCooldown(DCharacter character, String abilityName)
 		{
-			return Long.parseLong(DataManager.getValueTemp(player.getName(), ability + "_cooldown").toString());
+			return DataManager.getTimedExpiration(character.getName(), abilityName + "_cooldown");
 		}
 
 		public static Set<DCharacter> getAllActive()

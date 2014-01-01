@@ -1,9 +1,7 @@
 package com.censoredsoftware.demigods.greek.ability.passive;
 
-import com.censoredsoftware.demigods.engine.mythos.Deity;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.censoredsoftware.demigods.greek.ability.GreekAbility;
-import com.google.common.collect.Lists;
+import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,17 +10,20 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.util.Vector;
 
-import java.util.List;
+import com.censoredsoftware.demigods.engine.mythos.Deity;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.censoredsoftware.demigods.greek.ability.GreekAbility;
+import com.google.common.collect.Lists;
 
 public class Swim extends GreekAbility.Passive
 {
-	private final static String name = "Swim";
-	private final static int repeat = 20;
-	private final static List<String> details = Lists.newArrayList("Crouch while in water to swim quickly.");
+	private static final String NAME = "Swim";
+	private static final int REPEAT = 20;
+	private static final List<String> DETAILS = Lists.newArrayList("Crouch while in water to swim quickly.");
 
 	public Swim(final String deity)
 	{
-		super(name, deity, repeat, details, new Listener()
+		super(NAME, deity, REPEAT, DETAILS, new Listener()
 		{
 			@EventHandler(priority = EventPriority.HIGHEST)
 			private void onPlayerMoveEvent(PlayerMoveEvent event)

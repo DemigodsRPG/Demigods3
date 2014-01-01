@@ -1,11 +1,7 @@
 package com.censoredsoftware.demigods.greek.ability.passive;
 
-import com.censoredsoftware.demigods.engine.data.DCharacter;
-import com.censoredsoftware.demigods.engine.data.DPlayer;
-import com.censoredsoftware.demigods.engine.mythos.Deity;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.censoredsoftware.demigods.greek.ability.GreekAbility;
-import com.google.common.collect.Lists;
+import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,17 +10,22 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 
-import java.util.List;
+import com.censoredsoftware.demigods.engine.data.DCharacter;
+import com.censoredsoftware.demigods.engine.data.DPlayer;
+import com.censoredsoftware.demigods.engine.mythos.Deity;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.censoredsoftware.demigods.greek.ability.GreekAbility;
+import com.google.common.collect.Lists;
 
 public class Carry extends GreekAbility.Passive
 {
-	private final static String name = "Carry";
-	private final static int repeat = 20;
-	private final static List<String> details = Lists.newArrayList("Hold a leash to carry others on your shoulders.");
+	private static final String NAME = "Carry";
+	private static final int REPEAT = 20;
+	private static final List<String> DETAILS = Lists.newArrayList("Hold a leash to carry others on your shoulders.");
 
 	public Carry(final String deity, final boolean needsLead)
 	{
-		super(name, deity, repeat, details, new Listener()
+		super(NAME, deity, REPEAT, DETAILS, new Listener()
 		{
 			@EventHandler(priority = EventPriority.MONITOR)
 			private void onPlayerInteractEntityEvent(PlayerInteractEntityEvent event)

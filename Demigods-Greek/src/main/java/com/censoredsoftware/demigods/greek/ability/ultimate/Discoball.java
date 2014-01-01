@@ -1,17 +1,8 @@
 package com.censoredsoftware.demigods.greek.ability.ultimate;
 
-import com.censoredsoftware.censoredlib.util.Randoms;
-import com.censoredsoftware.censoredlib.util.Spigots;
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.DemigodsPlugin;
-import com.censoredsoftware.demigods.engine.data.CLocationManager;
-import com.censoredsoftware.demigods.engine.data.Skill;
-import com.censoredsoftware.demigods.engine.util.Abilities;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.censoredsoftware.demigods.greek.ability.GreekAbility;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
+import java.util.List;
+import java.util.Set;
+
 import org.bukkit.*;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.EntityType;
@@ -23,27 +14,33 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.List;
-import java.util.Set;
+import com.censoredsoftware.censoredlib.util.Randoms;
+import com.censoredsoftware.censoredlib.util.Spigots;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.DemigodsPlugin;
+import com.censoredsoftware.demigods.engine.data.CLocationManager;
+import com.censoredsoftware.demigods.engine.data.Skill;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.censoredsoftware.demigods.greek.ability.GreekAbility;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 public class Discoball extends GreekAbility
 {
+	private static final String NAME = "Discoball of Doom", COMMAND = "discoball";
+	private static final int COST = 30, DELAY = 30, REPEAT = 4;
+	private static final List<String> DETAILS = Lists.newArrayList("Spread the music while causing destruction.");
+	private static final Skill.Type TYPE = Skill.Type.ULTIMATE;
 	private static Set<FallingBlock> discoBalls = Sets.newHashSet();
-
-	private final static String name = "Discoball of Doom", command = "discoball";
-	private final static int cost = 30, delay = 30, repeat = 4;
-	private final static List<String> details = Lists.newArrayList("Spread the music while causing destruction.");
-	private final static Skill.Type type = Skill.Type.ULTIMATE;
 
 	public Discoball(String deity)
 	{
-		super(name, command, deity, cost, delay, repeat, details, type, null, new Predicate<Player>()
+		super(NAME, COMMAND, deity, COST, DELAY, REPEAT, DETAILS, TYPE, null, new Predicate<Player>()
 		{
-			@Override
+	@Override
 			public boolean apply(final Player player)
 			{
-				if(!Abilities.preProcessAbility(player, cost)) return false;
-
 				balls(player);
 
 				player.sendMessage(ChatColor.YELLOW + "Dance!");

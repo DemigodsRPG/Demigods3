@@ -1,24 +1,25 @@
 package com.censoredsoftware.demigods.greek.ability.passive;
 
+import java.util.List;
+
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Horse;
+
 import com.censoredsoftware.censoredlib.util.Randoms;
 import com.censoredsoftware.demigods.engine.data.DPet;
 import com.censoredsoftware.demigods.engine.util.Zones;
 import com.censoredsoftware.demigods.greek.ability.GreekAbility;
 import com.google.common.collect.Lists;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Horse;
-
-import java.util.List;
 
 public class RainbowHorse extends GreekAbility.Passive
 {
-	private final static String name = "Horse of a Different Color";
-	private final static int repeat = 100;
-	private final static List<String> details = Lists.newArrayList("All of you horse are belong to us.");
+	private static final String NAME = "Horse of a Different Color";
+	private static final int REPEAT = 100;
+	private static final List<String> DETAILS = Lists.newArrayList("All of you horse are belong to us.");
 
 	public RainbowHorse(final String deity)
 	{
-		super(name, deity, repeat, details, null, new Runnable()
+		super(NAME, deity, REPEAT, DETAILS, null, new Runnable()
 		{
 			@Override
 			public void run()

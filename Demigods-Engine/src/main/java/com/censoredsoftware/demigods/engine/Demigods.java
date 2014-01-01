@@ -1,28 +1,10 @@
 package com.censoredsoftware.demigods.engine;
 
-import com.censoredsoftware.censoredlib.helper.CensoredCentralizedClass;
-import com.censoredsoftware.censoredlib.helper.QuitReasonHandler;
-import com.censoredsoftware.censoredlib.helper.WrappedConversation;
-import com.censoredsoftware.demigods.engine.base.DemigodsConversation;
-import com.censoredsoftware.demigods.engine.base.DemigodsListener;
-import com.censoredsoftware.demigods.engine.base.DemigodsPermission;
-import com.censoredsoftware.demigods.engine.data.DCharacter;
-import com.censoredsoftware.demigods.engine.data.DPlayer;
-import com.censoredsoftware.demigods.engine.data.DataManager;
-import com.censoredsoftware.demigods.engine.data.Skill;
-import com.censoredsoftware.demigods.engine.listener.ChatListener;
-import com.censoredsoftware.demigods.engine.listener.SpigotFeatures;
-import com.censoredsoftware.demigods.engine.mythos.*;
-import com.censoredsoftware.demigods.engine.util.Abilities;
-import com.censoredsoftware.demigods.engine.util.Configs;
-import com.censoredsoftware.demigods.engine.util.Messages;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.censoredsoftware.shaded.org.mcstats.MetricsLite;
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Sets;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.conversations.ConversationFactory;
@@ -37,10 +19,28 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import com.censoredsoftware.censoredlib.helper.CensoredCentralizedClass;
+import com.censoredsoftware.censoredlib.helper.QuitReasonHandler;
+import com.censoredsoftware.censoredlib.helper.WrappedConversation;
+import com.censoredsoftware.demigods.engine.base.DemigodsConversation;
+import com.censoredsoftware.demigods.engine.base.DemigodsListener;
+import com.censoredsoftware.demigods.engine.base.DemigodsPermission;
+import com.censoredsoftware.demigods.engine.data.DCharacter;
+import com.censoredsoftware.demigods.engine.data.DPlayer;
+import com.censoredsoftware.demigods.engine.data.DataManager;
+import com.censoredsoftware.demigods.engine.data.Skill;
+import com.censoredsoftware.demigods.engine.listener.ChatListener;
+import com.censoredsoftware.demigods.engine.listener.SpigotFeatures;
+import com.censoredsoftware.demigods.engine.mythos.*;
+import com.censoredsoftware.demigods.engine.util.Configs;
+import com.censoredsoftware.demigods.engine.util.Messages;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.censoredsoftware.shaded.org.mcstats.MetricsLite;
+import com.google.common.base.Function;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Sets;
 
 public class Demigods extends CensoredCentralizedClass
 {
@@ -215,7 +215,7 @@ public class Demigods extends CensoredCentralizedClass
 			register.registerEvents(listener, DemigodsPlugin.plugin());
 
 		// Abilities
-		for(Ability ability : Abilities.getLoadedAbilities())
+		for(Ability ability : Ability.Util.getLoadedAbilities())
 			if(ability.getListener() != null) register.registerEvents(ability.getListener(), DemigodsPlugin.plugin());
 
 		// Structures
