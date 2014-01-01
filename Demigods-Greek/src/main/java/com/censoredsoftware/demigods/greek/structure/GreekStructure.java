@@ -136,14 +136,14 @@ public class GreekStructure implements Structure
 		});
 	}
 
-	public StructureData createNew(Location reference, boolean generate)
+	public StructureData createNew(boolean generate, Location... reference)
 	{
-		Design design = getDesign.apply(reference);
+		Design design = getDesign.apply(reference[0]);
 		StructureData save = createNew.apply(design);
 
 		// All structures need these
 		save.generateId();
-		save.setReferenceLocation(reference);
+		save.setReferenceLocation(reference[0]);
 		save.setType(getName());
 		save.setDesign(design.getName());
 		save.addFlags(getFlags());

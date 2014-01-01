@@ -141,7 +141,7 @@ public class Shrine extends GreekStructure
 					{
 						// Shrine created!
 						Admins.sendDebug(ChatColor.RED + "Shrine created by " + character.getName() + " (" + character.getDeity() + ") at: " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ());
-						StructureData save = inst().createNew(location, true);
+						StructureData save = inst().createNew(true, location);
 						save.setOwner(character.getId());
 						inst().birth(save, character);
 

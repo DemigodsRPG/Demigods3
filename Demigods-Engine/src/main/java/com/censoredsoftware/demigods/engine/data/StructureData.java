@@ -21,7 +21,7 @@ public class StructureData implements ConfigurationSerializable
 {
 	private UUID id;
 	private String type;
-	private UUID referenceLocation;
+	private UUID referenceLocation, optionalLocation;
 	private List<String> flags;
 	private String region;
 	private String design;
@@ -38,6 +38,7 @@ public class StructureData implements ConfigurationSerializable
 		this.id = id;
 		type = conf.getString("type");
 		referenceLocation = UUID.fromString(conf.getString("referenceLocation"));
+		if(conf.isSet("optionalLocation")) optionalLocation = UUID.fromString(conf.getString("optionalLocation"));
 		flags = conf.getStringList("flags");
 		region = conf.getString("region");
 		design = conf.getString("design");
@@ -104,6 +105,7 @@ public class StructureData implements ConfigurationSerializable
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("type", type);
 		map.put("referenceLocation", referenceLocation.toString());
+		if(optionalLocation != null) map.put("optionalLocation", optionalLocation.toString());
 		map.put("flags", flags);
 		map.put("region", region);
 		map.put("design", design);
@@ -162,6 +164,12 @@ public class StructureData implements ConfigurationSerializable
 		CLocation dLocation = CLocationManager.create(reference);
 		this.referenceLocation = dLocation.getId();
 		setRegion(dLocation.getRegion());
+	}
+
+	public void setOptionalLocation(Location optional)
+	{
+		CLocation dLocation = CLocationManager.create(optional);
+		this.optionalLocation = dLocation.getId();
 	}
 
 	public void setOwner(UUID id)
@@ -228,6 +236,11 @@ public class StructureData implements ConfigurationSerializable
 	public Location getReferenceLocation()
 	{
 		return CLocationManager.load(referenceLocation).toLocation();
+	}
+
+	public Location getOptionalLocation()
+	{
+		return CLocationManager.load(optionalLocation).toLocation();
 	}
 
 	public Set<Location> getClickableBlocks()

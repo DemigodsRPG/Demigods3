@@ -45,7 +45,7 @@ public interface Structure
 
 	boolean isAllowed(CommandSender sender);
 
-	StructureData createNew(Location reference, boolean generate);
+	StructureData createNew(boolean generate, Location... reference);
 
 	public interface Design
 	{

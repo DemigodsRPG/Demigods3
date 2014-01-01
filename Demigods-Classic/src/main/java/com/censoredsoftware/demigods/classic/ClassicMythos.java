@@ -59,13 +59,13 @@ public class ClassicMythos extends MythosPlugin
 	@Override
 	public Boolean isPrimary()
 	{
-		return null;
+		return true;
 	}
 
 	@Override
 	public Boolean allowSecondary()
 	{
-		return null;
+		return true;
 	}
 
 	@Override
@@ -77,13 +77,13 @@ public class ClassicMythos extends MythosPlugin
 	@Override
 	public Boolean useBaseGame()
 	{
-		return null;
+		return false;
 	}
 
 	@Override
 	public ImmutableCollection<DivineItem> getDivineItems()
 	{
-		return null;
+		return ImmutableSet.of();
 	}
 
 	@Override
