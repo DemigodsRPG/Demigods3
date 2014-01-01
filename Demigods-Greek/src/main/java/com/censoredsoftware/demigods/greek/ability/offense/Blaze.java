@@ -1,13 +1,5 @@
 package com.censoredsoftware.demigods.greek.ability.offense;
 
-import java.util.List;
-
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-
 import com.censoredsoftware.demigods.engine.data.DCharacter;
 import com.censoredsoftware.demigods.engine.data.DPlayer;
 import com.censoredsoftware.demigods.engine.data.Skill;
@@ -16,6 +8,13 @@ import com.censoredsoftware.demigods.engine.util.Zones;
 import com.censoredsoftware.demigods.greek.ability.GreekAbility;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+
+import java.util.List;
 
 public class Blaze extends GreekAbility
 {
@@ -28,7 +27,6 @@ public class Blaze extends GreekAbility
 	{
 		super(NAME, COMMAND, deity, COST, DELAY, REPEAT, DETAILS, TYPE, null, new Predicate<Player>()
 		{
-
 			@Override
 			public boolean apply(Player player)
 			{
