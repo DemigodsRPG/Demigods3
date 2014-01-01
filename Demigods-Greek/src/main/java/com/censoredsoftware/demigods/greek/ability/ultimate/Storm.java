@@ -45,7 +45,7 @@ public class Storm extends GreekAbility
 				final int radius = (int) Math.log10(10 * ultimateSkillLevel) * 25;
 
 				// Make it stormy for the caster
-                setWeather(player, 100);
+				setWeather(player, 100);
 
 				// Strike targets
 				for(final Entity entity : player.getNearbyEntities(radius, radius, radius))
@@ -62,17 +62,19 @@ public class Storm extends GreekAbility
 					// Make it stormy for players
 					if(entity instanceof Player) setWeather((Player) entity, 100);
 
-                    // Strike them with a small delay
+					// Strike them with a small delay
 					Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.plugin(), new BukkitRunnable()
 					{
 						@Override
 						public void run()
-             {
-							player.getWorld().strikeLightningEffect(entity.getLocation());
-							player.getWorld().strikeLightningEffect(entity.getLocation());
-							Abilities.dealDamage(player, (LivingEntity) entity, damage, EntityDamageEvent.DamageCause.LIGHTNING);
+						{
+							for(int i = 0; i <= 3; i++)
+							{
+								player.getWorld().strikeLightningEffect(entity.getLocation());
+								Abilities.dealDamage(player, (LivingEntity) entity, damage, EntityDamageEvent.DamageCause.LIGHTNING);
+							}
 						}
-					}, 30);
+					}, 15);
 				}
 
 				return true;
@@ -89,9 +91,9 @@ public class Storm extends GreekAbility
 			final WeatherType currentWeather = player.getPlayerWeather();
 
 			// Set the weather
-            player.setPlayerWeather(WeatherType.DOWNFALL);
+			player.setPlayerWeather(WeatherType.DOWNFALL);
 
-            // Create the runnable to switch back
+			// Create the runnable to switch back
 			Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.plugin(), new BukkitRunnable()
 			{
 				@Override
@@ -99,7 +101,7 @@ public class Storm extends GreekAbility
 				{
 					player.setPlayerWeather(currentWeather);
 				}
-			}, 100);
+			}, ticks);
 		}
 	}
 }
