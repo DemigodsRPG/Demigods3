@@ -12,7 +12,7 @@
     <artifactId>Demigods-Classic</artifactId>
     <version>2.5.0</version>
 
-    <name>Demigods Classic</name>
+    <name>Demigods: Classic Mythos</name>
     <description>Demigods Classic for Bukkit/Spigot Minecraft Servers.</description>
 
     <dependencies>

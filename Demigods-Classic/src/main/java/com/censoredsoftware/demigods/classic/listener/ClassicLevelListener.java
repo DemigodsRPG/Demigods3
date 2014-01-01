@@ -1,4 +1,4 @@
-package com.censoredsoftware.demigods.legacy.listener;
+package com.censoredsoftware.demigods.classic.listener;
 
 import com.censoredsoftware.demigods.engine.data.DCharacter;
 import com.censoredsoftware.demigods.engine.data.DPlayer;
@@ -12,7 +12,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 
-public class LegacyLevelListener implements Listener
+public class ClassicLevelListener implements Listener
 {
 	private static final double MULTIPLIER = 1.0;
 	private static final int LOSSLIMIT = 15000;

@@ -1,9 +1,9 @@
-package com.censoredsoftware.demigods.legacy;
+package com.censoredsoftware.demigods.classic;
 
 import com.censoredsoftware.censoredlib.trigger.Trigger;
+import com.censoredsoftware.demigods.classic.listener.ClassicListener;
 import com.censoredsoftware.demigods.engine.mythos.*;
 import com.censoredsoftware.demigods.engine.util.Messages;
-import com.censoredsoftware.demigods.legacy.listener.LegacyListener;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableCollection;
@@ -14,7 +14,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.ServicePriority;
 
-public class DemigodsLegacyPlugin extends MythosPlugin
+public class ClassicMythos extends MythosPlugin
 {
 	/**
 	 * The Bukkit enable method.
@@ -24,7 +24,7 @@ public class DemigodsLegacyPlugin extends MythosPlugin
 	{
 		getServer().getServicesManager().register(Mythos.class, this, this, ServicePriority.Highest);
 
-		LegacyLoader.convertLegacyData();
+		ClassicLoader.convertLegacyData();
 
 		Messages.info("Successfully enabled.");
 	}
@@ -150,10 +150,10 @@ public class DemigodsLegacyPlugin extends MythosPlugin
 	@Override
 	public ImmutableCollection<Listener> getListeners()
 	{
-		return ImmutableSet.copyOf(Collections2.transform(Sets.newHashSet(LegacyListener.values()), new Function<LegacyListener, Listener>()
+		return ImmutableSet.copyOf(Collections2.transform(Sets.newHashSet(ClassicListener.values()), new Function<ClassicListener, Listener>()
 		{
 			@Override
-			public Listener apply(LegacyListener listedListener)
+			public Listener apply(ClassicListener listedListener)
 			{
 				return listedListener.getListener();
 			}
