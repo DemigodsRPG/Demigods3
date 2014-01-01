@@ -1,4 +1,4 @@
-package com.censoredsoftware.demigods.engine.data;
+package com.censoredsoftware.demigods.engine.event;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -12,6 +12,7 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
+import com.censoredsoftware.demigods.engine.data.DCharacter;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;

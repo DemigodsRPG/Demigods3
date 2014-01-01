@@ -1,18 +1,7 @@
 package com.censoredsoftware.demigods.engine.util;
 
-import com.censoredsoftware.censoredlib.util.Strings;
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.data.Battle;
-import com.censoredsoftware.demigods.engine.data.DCharacter;
-import com.censoredsoftware.demigods.engine.data.DPet;
-import com.censoredsoftware.demigods.engine.data.DPlayer;
-import com.censoredsoftware.demigods.engine.language.English;
-import com.censoredsoftware.demigods.engine.mythos.Ability;
-import com.censoredsoftware.demigods.engine.mythos.Deity;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
+import java.util.*;
+
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -27,7 +16,19 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockIterator;
 
-import java.util.*;
+import com.censoredsoftware.censoredlib.util.Strings;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.data.Battle;
+import com.censoredsoftware.demigods.engine.data.DCharacter;
+import com.censoredsoftware.demigods.engine.data.DPet;
+import com.censoredsoftware.demigods.engine.data.DPlayer;
+import com.censoredsoftware.demigods.engine.language.English;
+import com.censoredsoftware.demigods.engine.mythos.Ability;
+import com.censoredsoftware.demigods.engine.mythos.Deity;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 public class Abilities
 {
@@ -313,62 +314,58 @@ public class Abilities
 		return list;
 	}
 
-	public static boolean invokeAbilityCommand(Player player, String command)
+	public static boolean bindAbility(Player player, String command)
 	{
+		// Define character and ability
 		DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
-		for(final Ability ability : character.getDeity().getAbilities())
+		Ability ability = Ability.Util.getAbility(character.getDeity().getName(), command);
+
+		// Return if it isn't an ability
+		if(ability == null) return false;
+
+		// Handle enabling the command
+		String abilityName = ability.getName();
+		ItemStack itemInHand = player.getItemInHand();
+
+		if(!character.getMeta().isBound(ability))
 		{
-			if(ability.getCommand() != null && ability.getCommand().equalsIgnoreCase(command))
+			if(itemInHand == null || itemInHand.getType().equals(Material.AIR))
 			{
-				// Ensure that the deity can be used, permission allows it, etc
-				if(!Deity.Util.canUseDeity(character, ability.getDeity())) return true;
-
-				// Handle enabling the command
-				String abilityName = ability.getName();
-				ItemStack itemInHand = player.getItemInHand();
-
-				if(!character.getMeta().isBound(ability))
-				{
-					if(itemInHand == null || itemInHand.getType().equals(Material.AIR))
-					{
-						// Slot must not be empty
-						player.sendMessage(ChatColor.RED + English.ERROR_EMPTY_SLOT.getLine());
-						return true;
-					}
-					else if(character.getMeta().isBound(itemInHand.getType()))
-					{
-						// Material already bound
-						player.sendMessage(ChatColor.RED + English.ERROR_MATERIAL_BOUND.getLine());
-						return true;
-					}
-					else if(ability.hasWeapon() && !itemInHand.getType().equals(ability.getWeapon()))
-					{
-						// Weapon required
-						player.sendMessage(ChatColor.RED + English.ERROR_BIND_WEAPON_REQUIRED.getLine().replace("{weapon}", Strings.beautify(ability.getWeapon().getItemType().name()).toLowerCase()).replace("{ability}", abilityName));
-						return true;
-					}
-
-					// Save the bind
-					character.getMeta().setBind(ability, itemInHand.getType());
-
-					// Let them know
-					player.sendMessage(ChatColor.GREEN + English.SUCCESS_ABILITY_BOUND.getLine().replace("{ability}", StringUtils.capitalize(abilityName)).replace("{material}", (Strings.beginsWithVowel(itemInHand.getType().name()) ? "an " : "a ") + Strings.beautify(itemInHand.getType().name()).toLowerCase()));
-
-					return true;
-				}
-				else
-				{
-					// Remove the bind
-					character.getMeta().removeBind(ability);
-
-					// Let them know
-					player.sendMessage(ChatColor.GREEN + English.SUCCESS_ABILITY_UNBOUND.getLine().replace("{ability}", StringUtils.capitalize(abilityName)));
-
-					return true;
-				}
+				// Slot must not be empty
+				player.sendMessage(ChatColor.RED + English.ERROR_EMPTY_SLOT.getLine());
+				return true;
 			}
+			else if(character.getMeta().isBound(itemInHand.getType()))
+			{
+				// Material already bound
+				player.sendMessage(ChatColor.RED + English.ERROR_MATERIAL_BOUND.getLine());
+				return true;
+			}
+			else if(ability.hasWeapon() && !itemInHand.getType().equals(ability.getWeapon()))
+			{
+				// Weapon required
+				player.sendMessage(ChatColor.RED + English.ERROR_BIND_WEAPON_REQUIRED.getLine().replace("{weapon}", Strings.beautify(ability.getWeapon().getItemType().name()).toLowerCase()).replace("{ability}", abilityName));
+				return true;
+			}
+
+			// Save the bind
+			character.getMeta().setBind(ability, itemInHand.getType());
+
+            // Let them know
+			player.sendMessage(ChatColor.GREEN + English.SUCCESS_ABILITY_BOUND.getLine().replace("{ability}", StringUtils.capitalize(abilityName)).replace("{material}", (Strings.beginsWithVowel(itemInHand.getType().name()) ? "an " : "a ") + Strings.beautify(itemInHand.getType().name()).toLowerCase()));
+
+			return true;
 		}
-		return false;
+		else
+		{
+			// Remove the bind
+			character.getMeta().removeBind(ability);
+
+			// Let them know
+			player.sendMessage(ChatColor.GREEN + English.SUCCESS_ABILITY_UNBOUND.getLine().replace("{ability}", StringUtils.capitalize(abilityName)));
+
+			return true;
+		}
 	}
 
 	public static void dealDamage(LivingEntity source, LivingEntity target, double amount, EntityDamageEvent.DamageCause cause)

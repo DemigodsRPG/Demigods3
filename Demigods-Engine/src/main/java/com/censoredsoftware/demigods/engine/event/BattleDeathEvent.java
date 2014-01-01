@@ -1,10 +1,15 @@
-package com.censoredsoftware.demigods.engine.data;
+package com.censoredsoftware.demigods.engine.event;
 
 import java.util.UUID;
 
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+
+import com.censoredsoftware.demigods.engine.data.Battle;
+import com.censoredsoftware.demigods.engine.data.DCharacter;
+import com.censoredsoftware.demigods.engine.data.DataManager;
+import com.censoredsoftware.demigods.engine.data.Participant;
 
 public class BattleDeathEvent extends Event implements Cancellable
 {

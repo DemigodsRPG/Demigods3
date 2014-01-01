@@ -1,11 +1,5 @@
 package com.censoredsoftware.demigods.engine.listener;
 
-import com.censoredsoftware.censoredlib.util.Vehicles;
-import com.censoredsoftware.demigods.engine.data.*;
-import com.censoredsoftware.demigods.engine.mythos.Structure;
-import com.censoredsoftware.demigods.engine.util.Configs;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -15,6 +9,13 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.vehicle.VehicleMoveEvent;
+
+import com.censoredsoftware.censoredlib.util.Vehicles;
+import com.censoredsoftware.demigods.engine.data.*;
+import com.censoredsoftware.demigods.engine.mythos.Structure;
+import com.censoredsoftware.demigods.engine.util.Configs;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 
 public class MoveListener implements Listener
 {
@@ -39,8 +40,8 @@ public class MoveListener implements Listener
 		if(Battle.Util.isInBattle(participant))
 		{
 			Battle battle = Battle.Util.getBattle(participant);
-			boolean toBool = CLocationManager.distanceFlat(to, battle.getStartLocation()) > battle.getRange();
-			boolean fromBool = CLocationManager.distanceFlat(from, battle.getStartLocation()) > battle.getRange();
+			boolean toBool = CLocationManager.distanceFlat(to, battle.getStartLocation()) > battle.getRadius();
+			boolean fromBool = CLocationManager.distanceFlat(from, battle.getStartLocation()) > battle.getRadius();
 			if(toBool && !fromBool) DataManager.saveTemp((participant.getEntity().getPassenger() == null ? participant.getId().toString() : participant.getRelatedCharacter().getId().toString()), "battle_safe_location", from);
 			if(toBool)
 			{
