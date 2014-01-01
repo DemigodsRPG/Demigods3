@@ -1,18 +1,19 @@
 package com.censoredsoftware.demigods.greek.ability.support;
 
-import com.censoredsoftware.demigods.engine.data.DCharacter;
-import com.censoredsoftware.demigods.engine.data.DPlayer;
-import com.censoredsoftware.demigods.engine.data.Skill;
-import com.censoredsoftware.demigods.engine.util.Abilities;
-import com.censoredsoftware.demigods.greek.ability.GreekAbility;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Lists;
+import java.util.List;
+
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.util.Vector;
 
-import java.util.List;
+import com.censoredsoftware.demigods.engine.data.DCharacter;
+import com.censoredsoftware.demigods.engine.data.DPlayer;
+import com.censoredsoftware.demigods.engine.data.Skill;
+import com.censoredsoftware.demigods.engine.mythos.Ability;
+import com.censoredsoftware.demigods.greek.ability.GreekAbility;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Lists;
 
 public class Shove extends GreekAbility
 {
@@ -28,9 +29,9 @@ public class Shove extends GreekAbility
 			@Override
 			public boolean apply(Player player)
 			{
-				LivingEntity target = Abilities.autoTarget(player);
+				LivingEntity target = Ability.Util.autoTarget(player);
 
-				if(!Abilities.preProcessAbility(player, target, cost) || !Abilities.target(player, target.getLocation(), true)) return false;
+				if(!Ability.Util.preProcessAbility(player, target, cost) || !Ability.Util.target(player, target.getLocation(), true)) return false;
 
 				// Define variables
 				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
@@ -41,7 +42,7 @@ public class Shove extends GreekAbility
 				Vector victor = target.getLocation().toVector().subtract(vector);
 				victor.multiply(multiply);
 				target.setVelocity(victor);
-				Abilities.dealDamage(player, target, 0, EntityDamageEvent.DamageCause.FALL);
+				Ability.Util.dealDamage(player, target, 0, EntityDamageEvent.DamageCause.FALL);
 
 				return true;
 			}

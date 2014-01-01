@@ -1,15 +1,8 @@
 package com.censoredsoftware.demigods.greek.ability.ultimate;
 
-import com.censoredsoftware.censoredlib.util.Spigots;
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.data.DCharacter;
-import com.censoredsoftware.demigods.engine.data.DPlayer;
-import com.censoredsoftware.demigods.engine.data.Skill;
-import com.censoredsoftware.demigods.engine.util.Abilities;
-import com.censoredsoftware.demigods.greek.ability.GreekAbility;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
+import java.util.List;
+import java.util.Set;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
@@ -20,8 +13,16 @@ import org.bukkit.entity.Zombie;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.List;
-import java.util.Set;
+import com.censoredsoftware.censoredlib.util.Spigots;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.data.DCharacter;
+import com.censoredsoftware.demigods.engine.data.DPlayer;
+import com.censoredsoftware.demigods.engine.data.Skill;
+import com.censoredsoftware.demigods.engine.mythos.Ability;
+import com.censoredsoftware.demigods.greek.ability.GreekAbility;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 public class Swarm extends GreekAbility
 {
@@ -39,7 +40,7 @@ public class Swarm extends GreekAbility
 			{
 				// Define variables
 				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
-				Set<LivingEntity> targets = Abilities.preProcessAbility(player, player.getNearbyEntities(50, 50, 50), cost);
+				Set<LivingEntity> targets = Ability.Util.preProcessAbility(player, player.getNearbyEntities(50, 50, 50), cost);
 
 				if(targets == null || targets.isEmpty()) return false;
 

@@ -3,6 +3,7 @@ package com.censoredsoftware.demigods.greek.ability.ultimate;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.WeatherType;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -15,7 +16,7 @@ import com.censoredsoftware.demigods.engine.data.Battle;
 import com.censoredsoftware.demigods.engine.data.DCharacter;
 import com.censoredsoftware.demigods.engine.data.DPlayer;
 import com.censoredsoftware.demigods.engine.data.Skill;
-import com.censoredsoftware.demigods.engine.util.Abilities;
+import com.censoredsoftware.demigods.engine.mythos.Ability;
 import com.censoredsoftware.demigods.greek.ability.GreekAbility;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
@@ -37,7 +38,8 @@ public class Storm extends GreekAbility
 				// Define variables
 				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
-				if(!Abilities.preProcessAbility(player, cost)) return false;
+				// Can they do it?
+				if(!Ability.Util.preProcessAbility(player, cost)) return false;
 
 				// Define variables
 				final int ultimateSkillLevel = character.getMeta().getSkill(Skill.Type.ULTIMATE).getLevel();
@@ -71,7 +73,7 @@ public class Storm extends GreekAbility
 							for(int i = 0; i <= 3; i++)
 							{
 								player.getWorld().strikeLightningEffect(entity.getLocation());
-								Abilities.dealDamage(player, (LivingEntity) entity, damage, EntityDamageEvent.DamageCause.LIGHTNING);
+								Ability.Util.dealDamage(player, (LivingEntity) entity, damage, EntityDamageEvent.DamageCause.LIGHTNING);
 							}
 						}
 					}, 15);
@@ -85,7 +87,7 @@ public class Storm extends GreekAbility
 	public static void setWeather(final Player player, long ticks)
 	{
 		// Handle weather effect
-		if(!player.getPlayerWeather().equals(WeatherType.DOWNFALL))
+		if(player.getPlayerWeather() != null && !player.getPlayerWeather().equals(WeatherType.DOWNFALL))
 		{
 			// Save current weather
 			final WeatherType currentWeather = player.getPlayerWeather();
@@ -103,5 +105,10 @@ public class Storm extends GreekAbility
 				}
 			}, ticks);
 		}
+	}
+
+	public static void strikeLightning(DCharacter character, Location location)
+	{
+
 	}
 }

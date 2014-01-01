@@ -1,19 +1,20 @@
 package com.censoredsoftware.demigods.greek.ability.offense;
 
-import com.censoredsoftware.demigods.engine.data.DCharacter;
-import com.censoredsoftware.demigods.engine.data.DPlayer;
-import com.censoredsoftware.demigods.engine.data.Skill;
-import com.censoredsoftware.demigods.engine.util.Abilities;
-import com.censoredsoftware.demigods.greek.ability.GreekAbility;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Lists;
+import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.material.MaterialData;
 
-import java.util.List;
+import com.censoredsoftware.demigods.engine.data.DCharacter;
+import com.censoredsoftware.demigods.engine.data.DPlayer;
+import com.censoredsoftware.demigods.engine.data.Skill;
+import com.censoredsoftware.demigods.engine.mythos.Ability;
+import com.censoredsoftware.demigods.greek.ability.GreekAbility;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Lists;
 
 public class Reel extends GreekAbility
 {
@@ -34,13 +35,13 @@ public class Reel extends GreekAbility
 				// Set variables
 				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 				int damage = (int) Math.ceil(0.37286 * Math.pow(character.getMeta().getAscensions() * 100, 0.371238)); // TODO
-				LivingEntity target = Abilities.autoTarget(player);
+				LivingEntity target = Ability.Util.autoTarget(player);
 
-				if(!Abilities.preProcessAbility(player, target, cost)) return false;
+				if(!Ability.Util.preProcessAbility(player, target, cost)) return false;
 
-				if(!Abilities.target(player, target.getLocation(), true)) return false;
+				if(!Ability.Util.target(player, target.getLocation(), true)) return false;
 
-				Abilities.dealDamage(player, target, damage, EntityDamageEvent.DamageCause.CUSTOM);
+				Ability.Util.dealDamage(player, target, damage, EntityDamageEvent.DamageCause.CUSTOM);
 
 				if(target.getLocation().getBlock().getType() == Material.AIR)
 				{

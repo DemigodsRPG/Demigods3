@@ -12,7 +12,6 @@ import com.censoredsoftware.demigods.engine.data.DCharacter;
 import com.censoredsoftware.demigods.engine.data.DPlayer;
 import com.censoredsoftware.demigods.engine.data.Skill;
 import com.censoredsoftware.demigods.engine.mythos.Ability;
-import com.censoredsoftware.demigods.engine.util.Abilities;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
 
@@ -99,13 +98,13 @@ public class TemplateAbility implements Ability
 			{
 				// Define variables
 				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
-				LivingEntity target = Abilities.autoTarget(player);
+				LivingEntity target = Ability.Util.autoTarget(player);
 
-				if(!Abilities.preProcessAbility(player, target, COST)) return false;
+				if(!Ability.Util.preProcessAbility(player, target, COST)) return false;
 				DCharacter.Util.setCoolDown(character, NAME, System.currentTimeMillis() + DELAY);
 				character.getMeta().subtractFavor(COST);
 
-				if(!Abilities.target(player, target.getLocation(), true)) return false;
+				if(!Ability.Util.target(player, target.getLocation(), true)) return false;
 
 				if(target instanceof Player)
 				{

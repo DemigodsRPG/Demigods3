@@ -1,17 +1,8 @@
 package com.censoredsoftware.demigods.greek.ability.ultimate;
 
-import com.censoredsoftware.censoredlib.util.Randoms;
-import com.censoredsoftware.censoredlib.util.Spigots;
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.DemigodsPlugin;
-import com.censoredsoftware.demigods.engine.data.CLocationManager;
-import com.censoredsoftware.demigods.engine.data.Skill;
-import com.censoredsoftware.demigods.engine.util.Abilities;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.censoredsoftware.demigods.greek.ability.GreekAbility;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
+import java.util.List;
+import java.util.Set;
+
 import org.bukkit.*;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.EntityType;
@@ -23,8 +14,18 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.List;
-import java.util.Set;
+import com.censoredsoftware.censoredlib.util.Randoms;
+import com.censoredsoftware.censoredlib.util.Spigots;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.DemigodsPlugin;
+import com.censoredsoftware.demigods.engine.data.CLocationManager;
+import com.censoredsoftware.demigods.engine.data.Skill;
+import com.censoredsoftware.demigods.engine.mythos.Ability;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.censoredsoftware.demigods.greek.ability.GreekAbility;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 public class Discoball extends GreekAbility
 {
@@ -42,7 +43,7 @@ public class Discoball extends GreekAbility
 			@Override
 			public boolean apply(final Player player)
 			{
-				if(!Abilities.preProcessAbility(player, cost)) return false;
+				if(!Ability.Util.preProcessAbility(player, cost)) return false;
 
 				balls(player);
 

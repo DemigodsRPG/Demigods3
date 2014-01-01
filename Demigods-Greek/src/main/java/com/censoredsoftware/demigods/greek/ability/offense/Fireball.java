@@ -1,17 +1,18 @@
 package com.censoredsoftware.demigods.greek.ability.offense;
 
-import com.censoredsoftware.demigods.engine.data.Skill;
-import com.censoredsoftware.demigods.engine.util.Abilities;
-import com.censoredsoftware.demigods.greek.ability.GreekAbility;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Lists;
+import java.util.List;
+
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-import java.util.List;
+import com.censoredsoftware.demigods.engine.data.Skill;
+import com.censoredsoftware.demigods.engine.mythos.Ability;
+import com.censoredsoftware.demigods.greek.ability.GreekAbility;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Lists;
 
 public class Fireball extends GreekAbility
 {
@@ -29,23 +30,23 @@ public class Fireball extends GreekAbility
 			{
 				// Define variables
 				Location target;
-				LivingEntity entity = Abilities.autoTarget(player);
+				LivingEntity entity = Ability.Util.autoTarget(player);
 				boolean notify;
 
 				if(entity != null)
 				{
-					target = Abilities.autoTarget(player).getLocation();
+					target = Ability.Util.autoTarget(player).getLocation();
 					notify = true;
-					if(!Abilities.preProcessAbility(player, entity, Fireball.cost) || entity.getEntityId() == player.getEntityId()) return false;
+					if(!Ability.Util.preProcessAbility(player, entity, Fireball.cost) || entity.getEntityId() == player.getEntityId()) return false;
 				}
 				else
 				{
-					target = Abilities.directTarget(player);
+					target = Ability.Util.directTarget(player);
 					notify = false;
-					if(!Abilities.preProcessAbility(player, Fireball.cost)) return false;
+					if(!Ability.Util.preProcessAbility(player, Fireball.cost)) return false;
 				}
 
-				if(!Abilities.target(player, target, notify)) return false;
+				if(!Ability.Util.target(player, target, notify)) return false;
 
 				shootFireball(player.getEyeLocation(), target, player);
 

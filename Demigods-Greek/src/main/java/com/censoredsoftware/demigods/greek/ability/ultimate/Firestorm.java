@@ -18,7 +18,7 @@ import com.censoredsoftware.demigods.engine.data.Battle;
 import com.censoredsoftware.demigods.engine.data.DCharacter;
 import com.censoredsoftware.demigods.engine.data.DPlayer;
 import com.censoredsoftware.demigods.engine.data.Skill;
-import com.censoredsoftware.demigods.engine.util.Abilities;
+import com.censoredsoftware.demigods.engine.mythos.Ability;
 import com.censoredsoftware.demigods.greek.ability.GreekAbility;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
@@ -40,7 +40,7 @@ public class Firestorm extends GreekAbility
 				// Define variables
 				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
-				if(!Abilities.preProcessAbility(player, cost)) return false;
+				if(!Ability.Util.preProcessAbility(player, cost)) return false;
 
 				// Define variables
 				int ultimateSkillLevel = character.getMeta().getSkill(Skill.Type.ULTIMATE).getLevel();

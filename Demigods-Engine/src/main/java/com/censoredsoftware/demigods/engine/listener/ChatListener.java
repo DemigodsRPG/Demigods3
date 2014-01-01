@@ -11,7 +11,7 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 import com.censoredsoftware.demigods.engine.base.DemigodsCommand;
 import com.censoredsoftware.demigods.engine.data.DPlayer;
-import com.censoredsoftware.demigods.engine.util.Abilities;
+import com.censoredsoftware.demigods.engine.mythos.Ability;
 import com.censoredsoftware.demigods.engine.util.Messages;
 import com.censoredsoftware.demigods.engine.util.Zones;
 import com.google.common.collect.ImmutableSet;
@@ -60,7 +60,7 @@ public class ChatListener implements Listener
 		// Process the command
 		try
 		{
-			if(Abilities.bindAbility(player, args[0]))
+			if(Ability.Util.bindAbility(player, args[0]))
 			{
 				Messages.info(event.getPlayer().getName() + " used the command: /" + message);
 				event.setCancelled(true);
