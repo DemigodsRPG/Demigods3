@@ -433,7 +433,7 @@ public class Data
 		return ServerDataManager.find(key, subKey).getData();
 	}
 
-	public static abstract class DemigodsFile<ID, DATA extends ConfigurationSerializable> extends ConfigFile<ID, DATA>
+	public abstract static class DemigodsFile<ID, DATA extends ConfigurationSerializable> extends ConfigFile<ID, DATA>
 	{
 		private final String saveFile;
 		private ConcurrentMap<ID, DATA> dataStore = Maps.newConcurrentMap();
