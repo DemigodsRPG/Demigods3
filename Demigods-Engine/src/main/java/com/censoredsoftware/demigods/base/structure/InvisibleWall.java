@@ -1,10 +1,4 @@
-package com.censoredsoftware.demigods.exclusive.structure;
-
-import java.util.Set;
-
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
+package com.censoredsoftware.demigods.base.structure;
 
 import com.censoredsoftware.censoredlib.schematic.Schematic;
 import com.censoredsoftware.censoredlib.schematic.Selection;
@@ -14,6 +8,12 @@ import com.censoredsoftware.demigods.engine.data.StructureData;
 import com.censoredsoftware.demigods.engine.mythos.Structure;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Sets;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
+
+import java.util.Set;
 
 public class InvisibleWall implements Structure, Structure.Design
 {
@@ -32,11 +32,10 @@ public class InvisibleWall implements Structure, Structure.Design
 	@Override
 	public Schematic getSchematic(StructureData data)
 	{
-
 		Schematic theWall = new Schematic("Invisible Wall", "Generated", 16);
 		Location required = data.getReferenceLocation();
 		Location optional = data.getOptionalLocation();
-		theWall.add(new Selection(0, 0, 0, optional.getBlockX() - data.getReferenceLocation().getBlockX(), optional.getBlockY() - required.getBlockY(), optional.getBlockZ() - required.getBlockZ()));
+		theWall.add(new Selection(0, 0, 0, optional.getBlockX() - data.getReferenceLocation().getBlockX(), optional.getBlockY() - required.getBlockY(), optional.getBlockZ() - required.getBlockZ(), Material.WOOD));
 		return theWall;
 	}
 
@@ -125,6 +124,7 @@ public class InvisibleWall implements Structure, Structure.Design
 		save.setType(getName());
 		save.setReferenceLocation(reference[0]);
 		save.setOptionalLocation(reference[1]);
+		save.generate();
 		return null;
 	}
 }

@@ -1,9 +1,19 @@
 package com.censoredsoftware.demigods.engine.conversation;
 
-import java.lang.reflect.Field;
-import java.util.List;
-import java.util.Map;
-
+import com.censoredsoftware.censoredlib.helper.WrappedConversation;
+import com.censoredsoftware.censoredlib.util.Titles;
+import com.censoredsoftware.demigods.base.DemigodsConversation;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.data.DPlayer;
+import com.censoredsoftware.demigods.engine.data.Data;
+import com.censoredsoftware.demigods.engine.data.StructureData;
+import com.censoredsoftware.demigods.engine.language.English;
+import com.censoredsoftware.demigods.engine.util.Admins;
+import com.censoredsoftware.demigods.engine.util.Configs;
+import com.censoredsoftware.demigods.engine.util.Messages;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -18,19 +28,9 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-import com.censoredsoftware.censoredlib.helper.WrappedConversation;
-import com.censoredsoftware.censoredlib.util.Titles;
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.base.DemigodsConversation;
-import com.censoredsoftware.demigods.engine.data.DPlayer;
-import com.censoredsoftware.demigods.engine.data.Data;
-import com.censoredsoftware.demigods.engine.language.English;
-import com.censoredsoftware.demigods.engine.util.Admins;
-import com.censoredsoftware.demigods.engine.util.Configs;
-import com.censoredsoftware.demigods.engine.util.Messages;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.Map;
 
 @SuppressWarnings("unchecked")
 public class Administration implements WrappedConversation
@@ -361,6 +361,12 @@ public class Administration implements WrappedConversation
 			else if("1".equalsIgnoreCase(message))
 			{
 				// FIXME: This is where a wall would be generated, however I'm sleepy and am confused on how to access the InvisibleWall to even make a new one... So it's like 99% done.
+				Location loc1 = (Location) context.getSessionData("structurewand_loc1");
+				Location loc2 = (Location) context.getSessionData("structurewand_loc2");
+
+				StructureData save = Demigods.mythos().getStructure("Invisible Wall").createNew(false, loc1, loc2);
+				save.setPermission("lol"); // TODO Testing.
+				save.setAscensions(100000); // TODO Testing.
 
 				// Save success notification
 				saveNotification(context, StructureWand.DATA_NAME, English.ADMINISTRATION_STRUCTURE_GENERATED.getLine());

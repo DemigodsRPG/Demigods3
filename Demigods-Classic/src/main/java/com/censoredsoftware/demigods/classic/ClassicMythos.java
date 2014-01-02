@@ -1,5 +1,6 @@
 package com.censoredsoftware.demigods.classic;
 
+import com.censoredsoftware.censoredlib.helper.WrappedCommand;
 import com.censoredsoftware.censoredlib.trigger.Trigger;
 import com.censoredsoftware.demigods.classic.listener.ClassicListener;
 import com.censoredsoftware.demigods.engine.mythos.*;
@@ -163,6 +164,12 @@ public class ClassicMythos extends MythosPlugin
 	// Default Greek Permissions
 	@Override
 	public ImmutableCollection<Permission> getPermissions()
+	{
+		return ImmutableSet.of();
+	}
+
+	@Override
+	public ImmutableCollection<WrappedCommand> getCommands()
 	{
 		return ImmutableSet.of();
 	}

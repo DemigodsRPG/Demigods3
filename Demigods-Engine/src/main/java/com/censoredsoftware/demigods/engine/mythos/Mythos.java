@@ -1,5 +1,6 @@
 package com.censoredsoftware.demigods.engine.mythos;
 
+import com.censoredsoftware.censoredlib.helper.WrappedCommand;
 import com.censoredsoftware.censoredlib.trigger.Trigger;
 import com.censoredsoftware.censoredlib.util.Items;
 import com.google.common.base.Predicate;
@@ -52,6 +53,8 @@ public interface Mythos
 	ImmutableCollection<Listener> getListeners();
 
 	ImmutableCollection<Permission> getPermissions();
+
+	ImmutableCollection<WrappedCommand> getCommands();
 
 	ImmutableCollection<Trigger> getTriggers();
 

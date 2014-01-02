@@ -1,6 +1,8 @@
 package com.censoredsoftware.demigods.engine.mythos;
 
+import com.censoredsoftware.censoredlib.helper.WrappedCommand;
 import com.censoredsoftware.censoredlib.trigger.Trigger;
+import com.censoredsoftware.demigods.base.DemigodsMythos;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
@@ -22,12 +24,14 @@ public class MythosSet implements Mythos
 	private final ImmutableSet<Structure> STRUCTURES;
 	private final ImmutableSet<Listener> LISTENERS;
 	private final ImmutableSet<Permission> PERMISSIONS;
+	private final ImmutableSet<WrappedCommand> COMMANDS;
 	private final ImmutableSet<Trigger> TRIGGERS;
 
 	public MythosSet(Mythos primaryMythos, Set<Mythos> mythosSet)
 	{
 		PRIMARY = primaryMythos;
 		mythosSet.add(PRIMARY);
+		if(useBaseGame()) mythosSet.add(new DemigodsMythos());
 		SET = ImmutableSet.copyOf(Collections2.transform(mythosSet, new Function<Mythos, Mythos>()
 		{
 			@Override
@@ -46,6 +50,7 @@ public class MythosSet implements Mythos
 		Set<Structure> structure = Sets.newHashSet();
 		Set<Listener> listener = Sets.newHashSet();
 		Set<Permission> permission = Sets.newHashSet();
+		Set<WrappedCommand> command = Sets.newHashSet();
 		Set<Trigger> trigger = Sets.newHashSet();
 
 		for(Mythos mythos : SET)
@@ -58,6 +63,7 @@ public class MythosSet implements Mythos
 			structure.addAll(mythos.getStructures());
 			listener.addAll(mythos.getListeners());
 			permission.addAll(mythos.getPermissions());
+			command.addAll(mythos.getCommands());
 			trigger.addAll(mythos.getTriggers());
 		}
 
@@ -76,6 +82,7 @@ public class MythosSet implements Mythos
 		STRUCTURES = ImmutableSet.copyOf(structure);
 		LISTENERS = ImmutableSet.copyOf(listener);
 		PERMISSIONS = ImmutableSet.copyOf(permission);
+		COMMANDS = ImmutableSet.copyOf(command);
 		TRIGGERS = ImmutableSet.copyOf(trigger);
 	}
 
@@ -197,6 +204,12 @@ public class MythosSet implements Mythos
 	public ImmutableCollection<Permission> getPermissions()
 	{
 		return PERMISSIONS;
+	}
+
+	@Override
+	public ImmutableCollection<WrappedCommand> getCommands()
+	{
+		return COMMANDS;
 	}
 
 	@Override

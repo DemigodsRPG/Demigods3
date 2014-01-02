@@ -1,4 +1,4 @@
-package com.censoredsoftware.demigods.exclusive;
+package com.censoredsoftware.demigods.base;
 
 import com.censoredsoftware.censoredlib.helper.WrappedCommand;
 import com.censoredsoftware.censoredlib.trigger.Trigger;
@@ -9,34 +9,18 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.Permission;
 
-public class ExclusiveMythos extends MythosPlugin
+public class DemigodsMythos implements Mythos
 {
-	/**
-	 * The Bukkit enable method.
-	 */
-	@Override
-	public void onEnable()
-	{
-		Exclusive.init();
-	}
-
-	/**
-	 * The Bukkit disable method.
-	 */
-	@Override
-	public void onDisable()
-	{}
-
 	@Override
 	public String getTitle()
 	{
-		return "Exclusive";
+		return "Demigods";
 	}
 
 	@Override
 	public String getTagline()
 	{
-		return "Exclusive enhancements for the official Demigods RPG server.";
+		return "The base game for Demigods.";
 	}
 
 	@Override
@@ -72,7 +56,7 @@ public class ExclusiveMythos extends MythosPlugin
 	@Override
 	public ImmutableCollection<DivineItem> getDivineItems()
 	{
-		return ImmutableSet.of();
+		return ImmutableSet.of(); // TODO (Documentation books, admin wands, etc).
 	}
 
 	@Override
@@ -96,6 +80,7 @@ public class ExclusiveMythos extends MythosPlugin
 	@Override
 	public ImmutableCollection<Alliance> getAlliances()
 	{
+		// There are no default Alliances.
 		return ImmutableSet.of();
 	}
 
@@ -108,6 +93,7 @@ public class ExclusiveMythos extends MythosPlugin
 	@Override
 	public ImmutableCollection<Deity> getDeities()
 	{
+		// There are no default Deities.
 		return ImmutableSet.of();
 	}
 
@@ -120,7 +106,7 @@ public class ExclusiveMythos extends MythosPlugin
 	@Override
 	public ImmutableCollection<Structure> getStructures()
 	{
-		return ImmutableSet.of();
+		return DemigodsStructure.structures();
 	}
 
 	@Override
@@ -136,23 +122,23 @@ public class ExclusiveMythos extends MythosPlugin
 
 	public ImmutableCollection<Listener> getListeners()
 	{
-		return Exclusive.inst().LISTENERS;
+		return DemigodsListener.listeners();
 	}
 
 	public ImmutableCollection<Permission> getPermissions()
 	{
-		return ImmutableSet.of();
+		return DemigodsPermission.permissions();
 	}
 
 	@Override
 	public ImmutableCollection<WrappedCommand> getCommands()
 	{
-		return ImmutableSet.of();
+		return DemigodsCommand.commands();
 	}
 
 	public ImmutableCollection<Trigger> getTriggers()
 	{
-		return ImmutableSet.of();
+		return ImmutableSet.of(); // TODO
 	}
 
 	@Override

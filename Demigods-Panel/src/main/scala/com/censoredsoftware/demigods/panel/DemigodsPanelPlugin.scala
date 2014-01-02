@@ -9,6 +9,7 @@ import org.bukkit.Bukkit
 import org.bukkit.plugin.ServicePriority
 import org.bukkit.inventory.ItemStack
 import DivineItem.Flag
+import com.censoredsoftware.censoredlib.helper.WrappedCommand
 
 class DemigodsPanelPlugin extends MythosPlugin
 {
@@ -59,6 +60,8 @@ class DemigodsPanelPlugin extends MythosPlugin
   override def getListeners: ImmutableCollection[Listener] = ImmutableSet.of()
 
   override def getPermissions: ImmutableCollection[Permission] = ImmutableSet.of()
+
+  override def getCommands: ImmutableCollection[WrappedCommand] = ImmutableSet.of()
 
   override def getTriggers: ImmutableCollection[Trigger] = ImmutableSet.of()
 

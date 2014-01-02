@@ -1,5 +1,6 @@
 package com.censoredsoftware.demigods.greek;
 
+import com.censoredsoftware.censoredlib.helper.WrappedCommand;
 import com.censoredsoftware.censoredlib.trigger.Trigger;
 import com.censoredsoftware.demigods.engine.mythos.*;
 import com.censoredsoftware.demigods.greek.deity.GreekAlliance;
@@ -160,6 +161,12 @@ public class GreekMythos extends MythosPlugin
 	}
 
 	public ImmutableCollection<Permission> getPermissions()
+	{
+		return ImmutableSet.of();
+	}
+
+	@Override
+	public ImmutableCollection<WrappedCommand> getCommands()
 	{
 		return ImmutableSet.of();
 	}

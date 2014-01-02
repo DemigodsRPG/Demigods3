@@ -1,5 +1,9 @@
-package com.censoredsoftware.demigods.engine.base;
+package com.censoredsoftware.demigods.base;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 
@@ -26,5 +30,17 @@ public enum DemigodsPermission
 	public Permission getPermission()
 	{
 		return permission;
+	}
+
+	public static ImmutableSet<Permission> permissions()
+	{
+		return ImmutableSet.copyOf(Collections2.transform(Sets.newHashSet(values()), new Function<DemigodsPermission, Permission>()
+		{
+			@Override
+			public Permission apply(DemigodsPermission dPermission)
+			{
+				return dPermission.getPermission();
+			}
+		}));
 	}
 }

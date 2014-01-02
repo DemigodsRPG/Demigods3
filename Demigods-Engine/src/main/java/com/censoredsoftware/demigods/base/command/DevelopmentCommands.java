@@ -1,4 +1,4 @@
-package com.censoredsoftware.demigods.engine.command;
+package com.censoredsoftware.demigods.base.command;
 
 import com.censoredsoftware.censoredlib.helper.WrappedCommand;
 import com.censoredsoftware.censoredlib.schematic.Schematic;
@@ -39,7 +39,7 @@ public class DevelopmentCommands extends WrappedCommand
 	}
 
 	@Override
-	public Set<String> getCommands()
+	public Set<String> getCommandNames()
 	{
 		return Sets.newHashSet("obelisk", "test1", "test2", "test3");
 	}

@@ -1,16 +1,4 @@
-package com.censoredsoftware.demigods.engine.command;
-
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-
-import org.apache.commons.lang.StringUtils;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
+package com.censoredsoftware.demigods.base.command;
 
 import com.censoredsoftware.censoredlib.helper.WrappedCommand;
 import com.censoredsoftware.censoredlib.language.Symbol;
@@ -26,6 +14,17 @@ import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 public class GeneralCommands extends WrappedCommand
 {
@@ -35,7 +34,7 @@ public class GeneralCommands extends WrappedCommand
 	}
 
 	@Override
-	public Set<String> getCommands()
+	public Set<String> getCommandNames()
 	{
 		return Sets.newHashSet("check", "owner", "binds", "leaderboard", "alliance", "tributes", "names", "skills");
 	}
@@ -74,7 +73,7 @@ public class GeneralCommands extends WrappedCommand
 
 		// FIXME: This will only work for actual players. Console will always give an error.
 
-        return false;
+		return false;
 	}
 
 	private boolean check(Player player, DCharacter character)
@@ -114,7 +113,7 @@ public class GeneralCommands extends WrappedCommand
 
 		// Send skill info
 		player.sendMessage(" ");
-  for(Skill skill : character.getMeta().getLevelableSkills())
+		for(Skill skill : character.getMeta().getLevelableSkills())
 		{
 			player.sendMessage(ChatColor.GRAY + "  " + Symbol.RIGHTWARD_ARROW_HOLLOW + (skill.hasMetCap() ? ChatColor.GRAY + "" + ChatColor.ITALIC : ChatColor.AQUA) + " " + skill.getType().getName() + ChatColor.RESET + ChatColor.GRAY + " (Level " + ChatColor.GREEN + skill.getLevel() + ChatColor.GRAY + ") " + (skill.hasMetCap() ? ChatColor.GOLD + "(Level Cap Met)" : ChatColor.GRAY + "(" + ChatColor.YELLOW + skill.getRequiredPoints() + ChatColor.GRAY + " skill points from level " + ChatColor.YELLOW + (skill.getLevel() + 1) + ChatColor.GRAY + ")"));
 		}
@@ -133,7 +132,7 @@ public class GeneralCommands extends WrappedCommand
 			return true;
 		}
 
-        // Find the character
+		// Find the character
 		DCharacter checked = DCharacter.Util.getCharacterByName(args[0]);
 
 		// Send the message
@@ -142,7 +141,7 @@ public class GeneralCommands extends WrappedCommand
 			sender.sendMessage(ChatColor.RED + "That character doesn't exist.");
 		}
 		else
-       {
+		{
 			sender.sendMessage(checked.getDeity().getColor() + checked.getName() + ChatColor.YELLOW + " belongs to " + checked.getOfflinePlayer().getName() + ".");
 		}
 
@@ -179,7 +178,7 @@ public class GeneralCommands extends WrappedCommand
 
 			// Get the binds and display info
 			for(Map.Entry<String, Object> entry : character.getMeta().getBinds().entrySet())
-	{
+			{
 				player.sendMessage(ChatColor.GRAY + "  " + Symbol.RIGHTWARD_ARROW_HOLLOW + ChatColor.YELLOW + " " + StringUtils.capitalize(entry.getKey().toLowerCase()) + ChatColor.GRAY + " is bound to " + (Strings.beginsWithVowel(entry.getValue().toString()) ? "an " : "a ") + ChatColor.ITALIC + Strings.beautify(entry.getValue().toString()).toLowerCase() + ChatColor.GRAY + ". " + (DCharacter.Util.isCooledDown(character, entry.getKey()) ? "(" + ChatColor.GREEN + "ready" + ChatColor.GRAY + ")" : "(" + ChatColor.AQUA + "cooling down... " + Times.getTimeTagged(DCharacter.Util.getCooldown(character, entry.getKey()), true) + ChatColor.GRAY + ")"));
 			}
 

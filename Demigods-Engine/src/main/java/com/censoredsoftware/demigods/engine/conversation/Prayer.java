@@ -1,8 +1,24 @@
 package com.censoredsoftware.demigods.engine.conversation;
 
-import java.lang.reflect.Field;
-import java.util.*;
-
+import com.censoredsoftware.censoredlib.data.player.Notification;
+import com.censoredsoftware.censoredlib.helper.WrappedConversation;
+import com.censoredsoftware.censoredlib.language.Symbol;
+import com.censoredsoftware.censoredlib.util.Strings;
+import com.censoredsoftware.censoredlib.util.Times;
+import com.censoredsoftware.censoredlib.util.Titles;
+import com.censoredsoftware.demigods.base.DemigodsConversation;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.DemigodsPlugin;
+import com.censoredsoftware.demigods.engine.data.*;
+import com.censoredsoftware.demigods.engine.language.English;
+import com.censoredsoftware.demigods.engine.mythos.Alliance;
+import com.censoredsoftware.demigods.engine.mythos.Deity;
+import com.censoredsoftware.demigods.engine.mythos.Structure;
+import com.censoredsoftware.demigods.engine.util.Configs;
+import com.censoredsoftware.demigods.engine.util.Messages;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
 import org.bukkit.conversations.*;
@@ -20,25 +36,8 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.censoredsoftware.censoredlib.data.player.Notification;
-import com.censoredsoftware.censoredlib.helper.WrappedConversation;
-import com.censoredsoftware.censoredlib.language.Symbol;
-import com.censoredsoftware.censoredlib.util.Strings;
-import com.censoredsoftware.censoredlib.util.Times;
-import com.censoredsoftware.censoredlib.util.Titles;
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.DemigodsPlugin;
-import com.censoredsoftware.demigods.engine.base.DemigodsConversation;
-import com.censoredsoftware.demigods.engine.data.*;
-import com.censoredsoftware.demigods.engine.language.English;
-import com.censoredsoftware.demigods.engine.mythos.Alliance;
-import com.censoredsoftware.demigods.engine.mythos.Deity;
-import com.censoredsoftware.demigods.engine.mythos.Structure;
-import com.censoredsoftware.demigods.engine.util.Configs;
-import com.censoredsoftware.demigods.engine.util.Messages;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
+import java.lang.reflect.Field;
+import java.util.*;
 
 @SuppressWarnings("unchecked")
 public class Prayer implements WrappedConversation

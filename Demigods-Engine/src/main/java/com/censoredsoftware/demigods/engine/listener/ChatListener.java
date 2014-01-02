@@ -1,7 +1,13 @@
 package com.censoredsoftware.demigods.engine.listener;
 
-import java.util.Set;
-
+import com.censoredsoftware.censoredlib.helper.WrappedCommand;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.data.DPlayer;
+import com.censoredsoftware.demigods.engine.mythos.Ability;
+import com.censoredsoftware.demigods.engine.util.Messages;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -9,13 +15,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
-import com.censoredsoftware.demigods.engine.base.DemigodsCommand;
-import com.censoredsoftware.demigods.engine.data.DPlayer;
-import com.censoredsoftware.demigods.engine.mythos.Ability;
-import com.censoredsoftware.demigods.engine.util.Messages;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Sets;
+import java.util.Set;
 
 public class ChatListener implements Listener
 {
@@ -24,15 +24,11 @@ public class ChatListener implements Listener
 	public static void init()
 	{
 		Set<String> commands = Sets.newHashSet();
-		for(DemigodsCommand command : DemigodsCommand.values())
-			commands.addAll(command.getCommand().getCommands());
-		commands.add("demigod");
-		commands.add("dg");
-		commands.add("c");
-		commands.add("o");
-		commands.add("l");
-		commands.add("a");
-		commands.add("n");
+		for(WrappedCommand command : Demigods.mythos().getCommands())
+		{
+			commands.addAll(command.getCommandNames());
+			commands.addAll(command.getAliases());
+		}
 		COMMANDS = ImmutableSet.copyOf(commands);
 	}
 

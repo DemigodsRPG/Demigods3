@@ -1,17 +1,4 @@
-package com.censoredsoftware.demigods.engine.command;
-
-import java.util.Collection;
-import java.util.Map;
-
-import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.PluginManager;
+package com.censoredsoftware.demigods.base.command;
 
 import com.censoredsoftware.censoredlib.helper.WrappedCommand;
 import com.censoredsoftware.censoredlib.language.Symbol;
@@ -32,6 +19,18 @@ import com.censoredsoftware.demigods.engine.util.Messages;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.PluginManager;
+
+import java.util.Collection;
+import java.util.Map;
 
 public class MainCommand extends WrappedCommand
 {
@@ -41,7 +40,7 @@ public class MainCommand extends WrappedCommand
 	}
 
 	@Override
-	public java.util.Set<String> getCommands()
+	public java.util.Set<String> getCommandNames()
 	{
 		return Sets.newHashSet("demigods", "deity");
 	}

@@ -1,30 +1,9 @@
 package com.censoredsoftware.demigods.engine;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.conversations.ConversationFactory;
-import org.bukkit.event.HandlerList;
-import org.bukkit.event.Listener;
-import org.bukkit.permissions.Permission;
-import org.bukkit.permissions.PermissionDefault;
-import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.RegisteredServiceProvider;
-import org.bukkit.plugin.ServicesManager;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.ScoreboardManager;
-import org.bukkit.scoreboard.Team;
-
 import com.censoredsoftware.censoredlib.helper.CensoredCentralizedClass;
 import com.censoredsoftware.censoredlib.helper.QuitReasonHandler;
 import com.censoredsoftware.censoredlib.helper.WrappedConversation;
-import com.censoredsoftware.demigods.engine.base.DemigodsConversation;
-import com.censoredsoftware.demigods.engine.base.DemigodsListener;
-import com.censoredsoftware.demigods.engine.base.DemigodsPermission;
+import com.censoredsoftware.demigods.base.DemigodsConversation;
 import com.censoredsoftware.demigods.engine.data.DCharacter;
 import com.censoredsoftware.demigods.engine.data.DPlayer;
 import com.censoredsoftware.demigods.engine.data.Data;
@@ -41,6 +20,21 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.conversations.ConversationFactory;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
+import org.bukkit.permissions.Permission;
+import org.bukkit.permissions.PermissionDefault;
+import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.plugin.ServicesManager;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.ScoreboardManager;
+import org.bukkit.scoreboard.Team;
+
+import java.util.*;
 
 public class Demigods extends CensoredCentralizedClass
 {
@@ -189,7 +183,7 @@ public class Demigods extends CensoredCentralizedClass
 			if(reiningMythos != null)
 			{
 				workingSet.remove(reiningMythos);
-				if(reiningMythos.allowSecondary() && !workingSet.isEmpty()) reiningMythos = new MythosSet(reiningMythos, workingSet);
+				if(reiningMythos.useBaseGame() || reiningMythos.allowSecondary() && !workingSet.isEmpty()) reiningMythos = new MythosSet(reiningMythos, reiningMythos.allowSecondary() ? workingSet : new HashSet<Mythos>());
 				reiningMythos.lock();
 				return reiningMythos;
 			}
@@ -205,10 +199,6 @@ public class Demigods extends CensoredCentralizedClass
 	protected void loadListeners()
 	{
 		PluginManager register = Bukkit.getServer().getPluginManager();
-
-		// Base Game
-		if(mythos().useBaseGame()) for(DemigodsListener baseGameListener : DemigodsListener.values())
-			register.registerEvents(baseGameListener.getListener(), DemigodsPlugin.plugin());
 
 		// Mythos
 		for(Listener listener : mythos().getListeners())
@@ -302,23 +292,6 @@ public class Demigods extends CensoredCentralizedClass
 	protected void loadPermissions(final boolean load)
 	{
 		final PluginManager register = Bukkit.getServer().getPluginManager();
-
-		// Default
-		for(DemigodsPermission demigodsPermission : DemigodsPermission.values())
-		{
-			Permission permission = demigodsPermission.getPermission();
-			// catch errors to avoid any possible buggy permissions
-			try
-			{
-				for(Map.Entry<String, Boolean> entry : permission.getChildren().entrySet())
-					registerPermission(register, new Permission(entry.getKey(), entry.getValue() ? PermissionDefault.TRUE : PermissionDefault.FALSE), load);
-				registerPermission(register, permission, load);
-			}
-			catch(Exception ignored)
-			{
-				// ignored
-			}
-		}
 
 		// Mythos
 		for(Permission permission : mythos().getPermissions())
