@@ -4,7 +4,6 @@ import com.censoredsoftware.censoredlib.helper.ConfigFile2;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.data.DCharacter;
 import com.censoredsoftware.demigods.engine.data.DPlayer;
-import com.google.common.collect.ImmutableSet;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -58,22 +57,17 @@ public interface Deity
 
 	ConfigFile2 getConfig();
 
-	public enum Flag
+	enum Flag
 	{
 		PLAYABLE, NON_PLAYABLE, MAJOR_DEITY, MINOR_DEITY, NEUTRAL, DIFFICULT, ALTERNATE_ASCENSION_LEVELING, NO_SHRINE, NO_OBELISK, NO_BATTLE
 	}
 
-	public enum Mood
+	enum Mood
 	{
 		ECSTATIC, PLEASED, INTERESTED, CALM /* (the default) */, SAD, DEFEATED, ANGRY, ENRAGED, CONFUSED
 	}
 
-	public interface Pantheon
-	{
-		public ImmutableSet<? extends Deity> deities();
-	}
-
-	public interface MoodPack
+	interface MoodPack
 	{
 		MaterialData getMaterialData();
 
@@ -92,14 +86,14 @@ public interface Deity
 		int getFavorRegen();
 	}
 
-	public interface MoodManager
+	interface MoodManager
 	{
 		void set(Mood mood, MoodPack moodPack);
 
 		MoodPack get(Mood mood);
 	}
 
-	public static class Util
+	class Util
 	{
 		public static boolean canUseDeity(DCharacter character, String deity)
 		{
