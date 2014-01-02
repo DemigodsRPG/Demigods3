@@ -24,7 +24,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -184,12 +183,12 @@ public class Altar extends GreekStructure
 		}
 	};
 	private static final int radius = Configs.getSettingInt("zones.altar_radius");
-	private static final Predicate<CommandSender> allow = new Predicate<CommandSender>()
+	private static final Predicate<Player> allow = new Predicate<Player>()
 	{
 		@Override
-		public boolean apply(CommandSender commandSender)
+		public boolean apply(Player player)
 		{
-			return true; // commandSender.hasPermission("demigods.greek.altar");
+			return true;
 		}
 	};
 	private static final float sanctity = -1F, sanctityRegen = 1F;
@@ -427,7 +426,7 @@ public class Altar extends GreekStructure
 		}
 
 		@Override
-		public Schematic getSchematic()
+		public Schematic getSchematic(StructureData unused)
 		{
 			return schematic;
 		}

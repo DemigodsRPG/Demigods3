@@ -19,7 +19,6 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import org.bukkit.*;
 import org.bukkit.block.Block;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -212,12 +211,12 @@ public class Obelisk extends GreekStructure
 		}
 	};
 	private static final int radius = Configs.getSettingInt("zones.obelisk_radius");
-	private static final Predicate<CommandSender> allow = new Predicate<CommandSender>()
+	private static final Predicate<Player> allow = new Predicate<Player>()
 	{
 		@Override
-		public boolean apply(CommandSender commandSender)
+		public boolean apply(Player player)
 		{
-			return true; // commandSender.hasPermission("demigods.greek.obelisk");
+			return true;
 		}
 	};
 	private static final float sanctity = /* 850F */150F, sanctityRegen = 1F;
@@ -314,11 +313,11 @@ public class Obelisk extends GreekStructure
 		@Override
 		public Set<Location> getClickableBlocks(Location reference)
 		{
-			return getSchematic().getLocations(reference);
+			return getSchematic(null).getLocations(reference);
 		}
 
 		@Override
-		public Schematic getSchematic()
+		public Schematic getSchematic(StructureData unused)
 		{
 			return schematic;
 		}

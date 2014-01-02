@@ -10,7 +10,7 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
 import org.bukkit.Location;
-import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
 import javax.annotation.Nullable;
@@ -43,7 +43,7 @@ public interface Structure
 
 	int getRadius();
 
-	boolean isAllowed(CommandSender sender);
+	boolean isAllowed(@Nullable StructureData data, Player sender);
 
 	StructureData createNew(boolean generate, Location... reference);
 
@@ -53,7 +53,7 @@ public interface Structure
 
 		Set<Location> getClickableBlocks(Location reference);
 
-		Schematic getSchematic();
+		Schematic getSchematic(@Nullable StructureData data);
 	}
 
 	public interface InteractFunction<T>

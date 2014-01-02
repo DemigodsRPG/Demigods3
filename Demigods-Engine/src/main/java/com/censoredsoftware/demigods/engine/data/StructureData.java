@@ -29,6 +29,8 @@ public class StructureData implements ConfigurationSerializable
 	private Boolean active;
 	private UUID owner;
 	private Map<String, Long> corruptors, sanctifiers;
+	private String permission;
+	private Integer ascensions;
 
 	public StructureData()
 	{}
@@ -42,7 +44,6 @@ public class StructureData implements ConfigurationSerializable
 		flags = conf.getStringList("flags");
 		region = conf.getString("region");
 		design = conf.getString("design");
-
 		if(conf.contains("corruption"))
 		{
 			try
@@ -61,6 +62,8 @@ public class StructureData implements ConfigurationSerializable
 			catch(Exception ignored)
 			{}
 		}
+		if(conf.isString("permission")) permission = conf.getString("permission");
+		if(conf.isInt("ascensions")) ascensions = conf.getInt("ascensions");
 		if(conf.getString("active") != null) active = conf.getBoolean("active");
 		if(conf.getString("owner") != null) owner = UUID.fromString(conf.getString("owner"));
 		if(conf.isConfigurationSection("corruptors"))
@@ -114,6 +117,8 @@ public class StructureData implements ConfigurationSerializable
 		if(owner != null) map.put("owner", owner.toString());
 		if(corruptors != null && !corruptors.isEmpty()) map.put("corruptors", corruptors);
 		if(sanctifiers != null && !sanctifiers.isEmpty()) map.put("sanctifiers", sanctifiers);
+		if(permission != null) map.put("permission", permission);
+		if(ascensions != null) map.put("ascensions", ascensions);
 		return map;
 	}
 
@@ -233,6 +238,16 @@ public class StructureData implements ConfigurationSerializable
 		this.active = bool;
 	}
 
+	public void setPermission(String permission)
+	{
+		this.permission = permission;
+	}
+
+	public void setAscensions(int ascensions)
+	{
+		this.ascensions = ascensions;
+	}
+
 	public Location getReferenceLocation()
 	{
 		return CLocationManager.load(referenceLocation).toLocation();
@@ -240,7 +255,18 @@ public class StructureData implements ConfigurationSerializable
 
 	public Location getOptionalLocation()
 	{
+		if(optionalLocation == null) return null;
 		return CLocationManager.load(optionalLocation).toLocation();
+	}
+
+	public String getPermission()
+	{
+		return permission;
+	}
+
+	public Integer getAscensions()
+	{
+		return ascensions;
 	}
 
 	public Set<Location> getClickableBlocks()
@@ -250,7 +276,7 @@ public class StructureData implements ConfigurationSerializable
 
 	public Set<Location> getLocations()
 	{
-		return getType().getDesign(design).getSchematic().getLocations(getReferenceLocation());
+		return getType().getDesign(design).getSchematic(this).getLocations(getReferenceLocation());
 	}
 
 	public Structure getType()
@@ -350,7 +376,7 @@ public class StructureData implements ConfigurationSerializable
 
 	public void generate()
 	{
-		getType().getDesign(design).getSchematic().generate(getReferenceLocation());
+		getType().getDesign(design).getSchematic(this).generate(getReferenceLocation());
 	}
 
 	public void save()

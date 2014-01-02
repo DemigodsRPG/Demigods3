@@ -10,7 +10,7 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
 import org.bukkit.Location;
-import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
 import java.util.Collection;
@@ -27,10 +27,10 @@ public class GreekStructure implements Structure
 	private Set<Structure.Flag> flags;
 	private Listener listener;
 	private int radius;
-	private Predicate<CommandSender> allowed;
+	private Predicate<Player> allowed;
 	private float sanctity, sanctityRegen;
 
-	public GreekStructure(String name, Design[] designs, Function<Location, Design> getDesign, Function<Design, StructureData> createNew, InteractFunction<Boolean> sanctify, InteractFunction<Boolean> corrupt, InteractFunction<Boolean> birth, InteractFunction<Boolean> kill, Set<Structure.Flag> flags, Listener listener, int radius, Predicate<CommandSender> allowed, float sanctity, float sanctityRegen)
+	public GreekStructure(String name, Design[] designs, Function<Location, Design> getDesign, Function<Design, StructureData> createNew, InteractFunction<Boolean> sanctify, InteractFunction<Boolean> corrupt, InteractFunction<Boolean> birth, InteractFunction<Boolean> kill, Set<Structure.Flag> flags, Listener listener, int radius, Predicate<Player> allowed, float sanctity, float sanctityRegen)
 	{
 		this.name = name;
 		this.designs = designs.clone();
@@ -89,9 +89,9 @@ public class GreekStructure implements Structure
 	}
 
 	@Override
-	public boolean isAllowed(CommandSender sender)
+	public boolean isAllowed(StructureData unused, Player player)
 	{
-		return allowed.apply(sender);
+		return allowed.apply(player);
 	}
 
 	public boolean sanctify(StructureData data, DCharacter dCharacter)
