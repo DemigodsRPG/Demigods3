@@ -406,7 +406,7 @@ public class Prayer implements WrappedConversation
 
 			for(Skill skill : character.getMeta().getLevelableSkills())
 			{
-				player.sendRawMessage(ChatColor.GRAY + " " + Symbol.RIGHTWARD_ARROW + (skill.hasMetCap() ? ChatColor.GRAY + "" + ChatColor.ITALIC : ChatColor.AQUA) + " " + skill.getType().getName() + ChatColor.RESET + "" + ChatColor.GRAY + " (Level " + ChatColor.GREEN + skill.getLevel() + ChatColor.GRAY + ")" + (skill.hasMetCap() ? ChatColor.GOLD + "(Level Cap Met)" : ChatColor.GRAY + "(" + ChatColor.YELLOW + skill.getRequiredPoints() + ChatColor.GRAY + " skill points from level " + ChatColor.YELLOW + (skill.getLevel() + 1) + ChatColor.GRAY + ")"));
+				player.sendRawMessage(ChatColor.GRAY + " " + Symbol.RIGHTWARD_ARROW + (skill.hasMetCap() ? ChatColor.GRAY + "" + ChatColor.ITALIC : ChatColor.AQUA) + " " + skill.getType().getName() + ChatColor.RESET + ChatColor.GRAY + " (Level " + ChatColor.GREEN + skill.getLevel() + ChatColor.GRAY + ") " + (skill.hasMetCap() ? ChatColor.GOLD + "(Level Cap Met)" : ChatColor.GRAY + "(" + ChatColor.YELLOW + skill.getRequiredPoints() + ChatColor.GRAY + " skill points from level " + ChatColor.YELLOW + (skill.getLevel() + 1) + ChatColor.GRAY + ")"));
 			}
 
 			player.sendRawMessage(" ");
@@ -468,9 +468,9 @@ public class Prayer implements WrappedConversation
 					{
 						return true;
 					}
-					else if(skill.hasMetCap())
+					else if(skill != null ? skill.hasMetCap() : false)
 					{
-						notifications.add(English.NOTIFICATION_ERROR_SKILL_MAX_LEVEL);
+	notifications.add(English.NOTIFICATION_ERROR_SKILL_MAX_LEVEL);
 						return false;
 					}
 					else
@@ -487,6 +487,8 @@ public class Prayer implements WrappedConversation
 			}
 			catch(Exception errored)
 			{
+				// ignored
+				errored.printStackTrace();
 				notifications.add(English.NOTIFICATION_ERROR_MISC);
 				return false;
 			}
