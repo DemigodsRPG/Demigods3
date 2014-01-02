@@ -42,7 +42,7 @@ public class AbilityListener implements Listener
 			// Check for weapons
 			if(ability.hasWeapon() && !player.getItemInHand().getData().equals(ability.getWeapon())) continue;
 
-			// Process the cost and cooldown
+			// Process the ability
 			if(ability.getActionPredicate().apply(player)) Ability.Util.postProcessAbility(character, ability);
 		}
 	}

@@ -1,5 +1,25 @@
 package com.censoredsoftware.demigods.engine.conversation;
 
+import java.lang.reflect.Field;
+import java.util.*;
+
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.*;
+import org.bukkit.conversations.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.ExperienceOrb;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
+
 import com.censoredsoftware.censoredlib.data.player.Notification;
 import com.censoredsoftware.censoredlib.helper.WrappedConversation;
 import com.censoredsoftware.censoredlib.language.Symbol;
@@ -19,25 +39,6 @@ import com.censoredsoftware.demigods.engine.util.Messages;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import org.apache.commons.lang.StringUtils;
-import org.bukkit.*;
-import org.bukkit.conversations.*;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.ExperienceOrb;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitRunnable;
-
-import java.lang.reflect.Field;
-import java.util.*;
 
 @SuppressWarnings("unchecked")
 public class Prayer implements WrappedConversation
@@ -403,9 +404,9 @@ public class Prayer implements WrappedConversation
 			player.sendRawMessage("  " + English.DIRECTIONS_MAIN_MENU_PRAYER);
 			player.sendRawMessage(" ");
 
-			for(Skill skill : character.getMeta().getSkills())
+			for(Skill skill : character.getMeta().getLevelableSkills())
 			{
-				if(skill.getType().isLevelable()) player.sendRawMessage(ChatColor.GRAY + "    " + Symbol.RIGHTWARD_ARROW + " " + (skill.hasMetCap() ? ChatColor.GRAY + "" + ChatColor.ITALIC : ChatColor.AQUA) + skill.getType().getName() + ChatColor.RESET + ChatColor.GRAY + " (" + (skill.hasMetCap() ? ChatColor.GREEN + "Max Level [" + skill.getLevel() + "]" : "Level " + ChatColor.GREEN + skill.getLevel() + ChatColor.GRAY + ") (" + ChatColor.YELLOW + skill.getRequiredPoints() + ChatColor.GRAY + " skill points from level " + ChatColor.YELLOW + (skill.getLevel() + 1)) + ChatColor.GRAY + ")");
+				player.sendRawMessage(ChatColor.GRAY + " " + Symbol.RIGHTWARD_ARROW + (skill.hasMetCap() ? ChatColor.GRAY + "" + ChatColor.ITALIC : ChatColor.AQUA) + " " + skill.getType().getName() + ChatColor.RESET + "" + ChatColor.GRAY + " (Level " + ChatColor.GREEN + skill.getLevel() + ChatColor.GRAY + ")" + (skill.hasMetCap() ? ChatColor.GOLD + "(Level Cap Met)" : ChatColor.GRAY + "(" + ChatColor.YELLOW + skill.getRequiredPoints() + ChatColor.GRAY + " skill points from level " + ChatColor.YELLOW + (skill.getLevel() + 1) + ChatColor.GRAY + ")"));
 			}
 
 			player.sendRawMessage(" ");
@@ -461,10 +462,16 @@ public class Prayer implements WrappedConversation
 					input.remove(0);
 
 					Skill.Type skillType = Skill.Type.valueOf(StringUtils.join(input, "_").toUpperCase());
+					Skill skill = DPlayer.Util.getPlayer((Player) context.getForWhom()).getCurrent().getMeta().getSkill(skillType);
 
-					if(DPlayer.Util.getPlayer((Player) context.getForWhom()).getCurrent().getMeta().getSkill(skillType) != null && skillType.isLevelable())
+					if(skill != null && skillType.isLevelable() && !skill.hasMetCap())
 					{
 						return true;
+					}
+					else if(skill.hasMetCap())
+					{
+						notifications.add(English.NOTIFICATION_ERROR_SKILL_MAX_LEVEL);
+						return false;
 					}
 					else
 					{

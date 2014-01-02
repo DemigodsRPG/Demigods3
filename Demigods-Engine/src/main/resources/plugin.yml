@@ -13,6 +13,7 @@ commands:
         permission: demigods.basic
     deity:
         usage: /deity
+        aliases: [d]
         permission: demigods.basic
 # General Commands
     check:
@@ -41,6 +42,11 @@ commands:
         permission: demigods.basic
     binds:
         usage: /binds
+        aliases: [b]
+        permission: demigods.basic
+    skills:
+        usage: /skills
+        aliases: [s]
         permission: demigods.basic
 # Development Commands
     obelisk:

@@ -1,22 +1,10 @@
 package com.censoredsoftware.demigods.engine.command;
 
-import com.censoredsoftware.censoredlib.helper.WrappedCommand;
-import com.censoredsoftware.censoredlib.language.Symbol;
-import com.censoredsoftware.censoredlib.util.Maps2;
-import com.censoredsoftware.censoredlib.util.Strings;
-import com.censoredsoftware.censoredlib.util.Times;
-import com.censoredsoftware.demigods.engine.DemigodsPlugin;
-import com.censoredsoftware.demigods.engine.data.Battle;
-import com.censoredsoftware.demigods.engine.data.DCharacter;
-import com.censoredsoftware.demigods.engine.data.DPlayer;
-import com.censoredsoftware.demigods.engine.data.TributeManager;
-import com.censoredsoftware.demigods.engine.language.English;
-import com.censoredsoftware.demigods.engine.mythos.Alliance;
-import com.censoredsoftware.demigods.engine.util.Messages;
-import com.google.common.base.Joiner;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -24,10 +12,20 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import com.censoredsoftware.censoredlib.helper.WrappedCommand;
+import com.censoredsoftware.censoredlib.language.Symbol;
+import com.censoredsoftware.censoredlib.util.Maps2;
+import com.censoredsoftware.censoredlib.util.Strings;
+import com.censoredsoftware.censoredlib.util.Times;
+import com.censoredsoftware.demigods.engine.DemigodsPlugin;
+import com.censoredsoftware.demigods.engine.data.*;
+import com.censoredsoftware.demigods.engine.language.English;
+import com.censoredsoftware.demigods.engine.mythos.Alliance;
+import com.censoredsoftware.demigods.engine.util.Messages;
+import com.google.common.base.Joiner;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 
 public class GeneralCommands extends WrappedCommand
 {
@@ -39,39 +37,54 @@ public class GeneralCommands extends WrappedCommand
 	@Override
 	public Set<String> getCommands()
 	{
-		return Sets.newHashSet("check", "owner", "binds", "leaderboard", "alliance", "values", "names");
+		return Sets.newHashSet("check", "owner", "binds", "leaderboard", "alliance", "tributes", "names", "skills");
 	}
 
 	@Override
 	public boolean processCommand(CommandSender sender, Command command, String[] args)
 	{
-		if("check".equalsIgnoreCase(command.getName())) return check(sender);
-		if("owner".equalsIgnoreCase(command.getName())) return owner(sender, args);
-		if("alliance".equalsIgnoreCase(command.getName())) return alliance(sender, args);
-		if("binds".equalsIgnoreCase(command.getName())) return binds(sender);
-		if("leaderboard".equalsIgnoreCase(command.getName())) return leaderboard(sender);
-		if("tributes".equalsIgnoreCase(command.getName())) return tributes(sender);
-		return "names".equalsIgnoreCase(command.getName()) && names(sender);
-	}
+		// Check permission
+		if(!sender.hasPermission("demigods.basic")) return Messages.noPermission(sender);
 
-	private boolean check(CommandSender sender)
-	{
+		// Define player and (try to define) character
 		Player player = (Player) sender;
 		DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
+		// Basic commands
+		if("owner".equalsIgnoreCase(command.getName())) return owner(sender, args);
+		if("leaderboard".equalsIgnoreCase(command.getName())) return leaderboard(sender);
+		if("tributes".equalsIgnoreCase(command.getName())) return tributes(sender);
+		if("names".equalsIgnoreCase(command.getName())) return names(sender);
+
+		// Character/Deity specific commands
 		if(character == null)
 		{
-			player.sendMessage(ChatColor.RED + "You are nothing but a mortal. You have no worthy statistics.");
+			// They have no character, reject them
+			player.sendMessage(ChatColor.RED + "You cannot use that commands, mortal.");
 			return true;
 		}
+		else
+		{
+			// Accepted
+			if("check".equalsIgnoreCase(command.getName())) return check(player, character);
+			if("alliance".equalsIgnoreCase(command.getName())) return alliance(player, character, args);
+			if("binds".equalsIgnoreCase(command.getName())) return binds(player, character);
+			if("skills".equalsIgnoreCase(command.getName())) return skills(player, character);
+		}
 
+		// FIXME: This will only work for actual players. Console will always give an error.
+
+        return false;
+	}
+
+	private boolean check(Player player, DCharacter character)
+	{
 		// Define variables
 		int kills = character.getKillCount();
 		int deaths = character.getDeathCount();
 		String charName = character.getName();
 		String deity = character.getDeity().getName();
 		Alliance alliance = character.getAlliance();
-
 		int favor = character.getMeta().getFavor();
 		int maxFavor = character.getMeta().getMaxFavor();
 		int ascensions = character.getMeta().getAscensions();
@@ -79,51 +92,62 @@ public class GeneralCommands extends WrappedCommand
 		ChatColor deityColor = character.getDeity().getColor();
 		ChatColor favorColor = Strings.getColor(character.getMeta().getFavor(), character.getMeta().getMaxFavor());
 
-		// Set player status
-		String status = ChatColor.YELLOW + "Ready.";
-		if(!character.canPvp()) status = ChatColor.DARK_AQUA + "Safe.";
-		else if(Battle.Util.isInBattle(character)) status = ChatColor.GOLD + "In battle.";
+		// Send the user their info
+		Messages.tagged(player, "Player Check");
+		player.sendMessage(ChatColor.GRAY + " " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.RESET + "Character: " + deityColor + charName);
+		player.sendMessage(ChatColor.GRAY + " " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.RESET + "Deity: " + deityColor + deity + ChatColor.WHITE + " of the " + ChatColor.GOLD + alliance.getName() + "s");
+		player.sendMessage(ChatColor.GRAY + " " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.RESET + "Favor: " + favorColor + favor + ChatColor.GRAY + " (of " + ChatColor.GREEN + maxFavor + ChatColor.GRAY + ")");
+		player.sendMessage(ChatColor.GRAY + " " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.RESET + "Ascensions: " + ChatColor.GREEN + ascensions);
+		player.sendMessage(ChatColor.GRAY + " " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.RESET + "Available Skill Points: " + ChatColor.GREEN + skillPoints);
+		player.sendMessage(ChatColor.GRAY + " " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.RESET + "Kills: " + ChatColor.GREEN + kills + ChatColor.WHITE + " / Deaths: " + ChatColor.RED + deaths + ChatColor.GRAY + " (Ratio: " + (deaths == 0 ? kills : (Math.round(kills / deaths * 100.0) / 100.0)) + ")");
+		player.sendMessage(ChatColor.GRAY + " " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.RESET + "Status: " + (character.canPvp() ? (Battle.Util.isInBattle(character) ? ChatColor.RED + "Battling" : ChatColor.YELLOW + "Ready") : ChatColor.GREEN + "Safe"));
+		player.sendMessage(" ");
 
-		// Send the user their info via chat
-		Messages.tagged(sender, "Player Check");
+		return true;
+	}
 
-		sender.sendMessage(ChatColor.GRAY + " " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.RESET + "Character: " + deityColor + charName);
-		sender.sendMessage(ChatColor.GRAY + " " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.RESET + "Deity: " + deityColor + deity + ChatColor.WHITE + " of the " + ChatColor.GOLD + alliance.getName() + "s");
-		sender.sendMessage(ChatColor.GRAY + " " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.RESET + "Favor: " + favorColor + favor + ChatColor.GRAY + " (of " + ChatColor.GREEN + maxFavor + ChatColor.GRAY + ")");
-		sender.sendMessage(ChatColor.GRAY + " " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.RESET + "Ascensions: " + ChatColor.GREEN + ascensions);
-		sender.sendMessage(ChatColor.GRAY + " " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.RESET + "Available Skill Points: " + ChatColor.GREEN + skillPoints);
-		sender.sendMessage(ChatColor.GRAY + " " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.RESET + "Kills: " + ChatColor.GREEN + kills + ChatColor.WHITE + " / Deaths: " + ChatColor.RED + deaths + ChatColor.GRAY + " (Ratio: " + (deaths == 0 ? kills : (Math.round(kills / deaths * 100.0) / 100.0)) + ")");
-		sender.sendMessage(ChatColor.GRAY + " " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.RESET + "Status: " + status);
+	private boolean skills(Player player, DCharacter character)
+	{
+		// Tag it
+		Messages.tagged(player, "Skills");
+
+		// Send skill info
+        for(Skill skill : character.getMeta().getLevelableSkills())
+		{
+			player.sendMessage(ChatColor.GRAY + " " + Symbol.RIGHTWARD_ARROW + (skill.hasMetCap() ? ChatColor.GRAY + "" + ChatColor.ITALIC : ChatColor.AQUA) + " " + skill.getType().getName() + ChatColor.RESET + "" + ChatColor.GRAY + " (Level " + ChatColor.GREEN + skill.getLevel() + ChatColor.GRAY + ")" + (skill.hasMetCap() ? ChatColor.GOLD + "(Level Cap Met)" : ChatColor.GRAY + "(" + ChatColor.YELLOW + skill.getRequiredPoints() + ChatColor.GRAY + " skill points from level " + ChatColor.YELLOW + (skill.getLevel() + 1) + ChatColor.GRAY + ")"));
+		}
 
 		return true;
 	}
 
 	private boolean owner(CommandSender sender, String[] args)
 	{
-		// Check permissions
-		if(!sender.hasPermission("demigods.basic")) return Messages.noPermission(sender);
-
-		Player player = (Player) sender;
+		// Enough arguments?
 		if(args.length < 1)
 		{
-			player.sendMessage(ChatColor.RED + "You must select a character.");
-			player.sendMessage(ChatColor.RED + "/owner <character>");
+			sender.sendMessage(ChatColor.RED + "You must select a character.");
+			sender.sendMessage(ChatColor.RED + "/owner <character>");
 			return true;
 		}
-		DCharacter charToCheck = DCharacter.Util.getCharacterByName(args[0]);
-		if(charToCheck == null) player.sendMessage(ChatColor.RED + "That character doesn't exist.");
-		else player.sendMessage(charToCheck.getDeity().getColor() + charToCheck.getName() + ChatColor.YELLOW + " belongs to " + charToCheck.getOfflinePlayer().getName() + ".");
+
+        // Find the character
+		DCharacter checked = DCharacter.Util.getCharacterByName(args[0]);
+
+		// Send the message
+		if(checked == null)
+		{
+			sender.sendMessage(ChatColor.RED + "That character doesn't exist.");
+		}
+		else
+       {
+			sender.sendMessage(checked.getDeity().getColor() + checked.getName() + ChatColor.YELLOW + " belongs to " + checked.getOfflinePlayer().getName() + ".");
+		}
+
 		return true;
 	}
 
-	private boolean alliance(CommandSender sender, String[] args)
+	private boolean alliance(Player player, DCharacter character, String[] args)
 	{
-		// Check permissions
-		if(!sender.hasPermission("demigods.basic")) return Messages.noPermission(sender);
-
-		Player player = (Player) sender;
-
-		DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 		if(character == null)
 		{
 			player.sendMessage(English.DISABLED_MORTAL.getLine());
@@ -135,27 +159,24 @@ public class GeneralCommands extends WrappedCommand
 			character.chatWithAlliance("...");
 			return true;
 		}
-		else character.chatWithAlliance(Joiner.on(" ").join(args));
+		else
+		{
+			character.chatWithAlliance(Joiner.on(" ").join(args));
+		}
+
 		return true;
 	}
 
-	private boolean binds(CommandSender sender)
+	private boolean binds(Player player, DCharacter character)
 	{
-		// Check permissions
-		if(!sender.hasPermission("demigods.basic")) return Messages.noPermission(sender);
-
-		// Define variables
-		Player player = (Player) sender;
-		DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
-
-		if(character != null && !character.getMeta().getBinds().isEmpty())
+		if(!character.getMeta().getBinds().isEmpty())
 		{
 			Messages.tagged(player, "Currently Bound Abilities");
 			player.sendMessage(" ");
 
 			// Get the binds and display info
 			for(Map.Entry<String, Object> entry : character.getMeta().getBinds().entrySet())
-			{
+	{
 				player.sendMessage(ChatColor.GRAY + "  " + Symbol.RIGHTWARD_ARROW_HOLLOW + ChatColor.YELLOW + " " + StringUtils.capitalize(entry.getKey().toLowerCase()) + ChatColor.GRAY + " is bound to " + (Strings.beginsWithVowel(entry.getValue().toString()) ? "an " : "a ") + ChatColor.ITALIC + Strings.beautify(entry.getValue().toString()).toLowerCase() + ChatColor.GRAY + ". " + (DCharacter.Util.isCooledDown(character, entry.getKey()) ? "(" + ChatColor.GREEN + "ready" + ChatColor.GRAY + ")" : "(" + ChatColor.AQUA + "cooling down... " + Times.getTimeTagged(DCharacter.Util.getCooldown(character, entry.getKey()), true) + ChatColor.GRAY + ")"));
 			}
 

@@ -17,7 +17,7 @@ import com.google.common.collect.Lists;
 public class Fireball extends GreekAbility
 {
 	private static final String NAME = "Fireball", COMMAND = "fireball";
-	private static final int COST = 100, DELAY = 2, REPEAT = 0;
+	private static final int COST = 120, DELAY = 2, REPEAT = 0;
 	private static final List<String> DETAILS = Lists.newArrayList("Send a fireball flying at your enemy.");
 	private static final Skill.Type TYPE = Skill.Type.OFFENSE;
 
