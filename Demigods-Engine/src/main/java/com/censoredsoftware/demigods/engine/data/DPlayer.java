@@ -1,10 +1,24 @@
 package com.censoredsoftware.demigods.engine.data;
 
+import java.util.*;
+
+import org.bukkit.*;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.conversations.Conversation;
+import org.bukkit.conversations.ConversationContext;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.scheduler.BukkitRunnable;
+
 import com.censoredsoftware.censoredlib.data.location.Region;
 import com.censoredsoftware.censoredlib.exception.MojangIdNotFoundException;
 import com.censoredsoftware.censoredlib.helper.MojangIdGrabber;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.DemigodsPlugin;
+import com.censoredsoftware.demigods.engine.conversation.Administration;
 import com.censoredsoftware.demigods.engine.conversation.Prayer;
 import com.censoredsoftware.demigods.engine.language.English;
 import com.censoredsoftware.demigods.engine.listener.ChatRecorder;
@@ -16,21 +30,6 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.conversations.Conversation;
-import org.bukkit.conversations.ConversationContext;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.scheduler.BukkitRunnable;
-
-import java.util.*;
 
 public class DPlayer implements ConfigurationSerializable
 {
@@ -707,8 +706,8 @@ public class DPlayer implements ConfigurationSerializable
 			if(option)
 			{
 				// Create the conversation and save it
-				Conversation prayer = Prayer.startPrayer(player);
-				Data.saveTemp(player.getName(), "prayer_conversation", prayer);
+				Conversation conversation = Prayer.startPrayer(player);
+				Data.saveTemp(player.getName(), "prayer_conversation", conversation);
 				Data.saveTemp(player.getName(), "prayer_location", player.getLocation());
 				player.setSneaking(true);
 
@@ -720,15 +719,114 @@ public class DPlayer implements ConfigurationSerializable
 				// Save context and abandon the conversation
 				if(Data.hasKeyTemp(player.getName(), "prayer_conversation"))
 				{
-					Conversation prayer = (Conversation) Data.getValueTemp(player.getName(), "prayer_conversation");
-					Data.saveTemp(player.getName(), "prayer_context", prayer.getContext());
-					prayer.abandon();
+					Conversation conversation = (Conversation) Data.getValueTemp(player.getName(), "prayer_conversation");
+					Data.saveTemp(player.getName(), "prayer_context", conversation.getContext());
+					conversation.abandon();
 				}
 
 				// Remove the data
 				Data.removeTemp(player.getName(), "prayer_conversation");
 				Data.removeTemp(player.getName(), "prayer_location");
 				player.setSneaking(false);
+
+				// Handle recorded chat
+				DPlayer.Util.getPlayer(player).stopRecording(recordChat);
+			}
+		}
+
+		/**
+		 * Returns true if the <code>player</code> is currently praying.
+		 * 
+		 * @param player the player to check.
+		 * @return boolean
+		 */
+		public static boolean isAdministrating(Player player)
+		{
+			try
+			{
+				return Data.hasKeyTemp(player.getName(), "administration_conversation");
+			}
+			catch(Exception ignored)
+			{}
+			return false;
+		}
+
+		/**
+		 * Removes all temp data related to administration for the <code>player</code>.
+		 * 
+		 * @param player the player to clean.
+		 */
+		public static void clearAdministrationSession(OfflinePlayer player)
+		{
+			Data.removeTemp(player.getName(), "administration_conversation");
+			Data.removeTemp(player.getName(), "administration_context");
+		}
+
+		/**
+		 * Saves the context for the <code>player</code>'s administration conversation.
+		 * 
+		 * @param player the player to save for.
+		 * @param context the context to save.
+		 * @return ConversationContext
+		 */
+		public static void saveAdministrationContext(Player player, ConversationContext context)
+		{
+			Data.saveTemp(player.getName(), "administration_context", context);
+		}
+
+		/**
+		 * Returns the context for the <code>player</code>'s administration conversation.
+		 * 
+		 * @param player the player whose context to return.
+		 * @return ConversationContext
+		 */
+		public static ConversationContext getAdministrationContext(Player player)
+		{
+			if(!isAdministrating(player)) return null;
+			return (ConversationContext) Data.getValueTemp(player.getName(), "administration_context");
+		}
+
+		/**
+		 * Changes administration status for <code>player</code> to <code>option</code>.
+		 * 
+		 * @param player the player the manipulate.
+		 * @param option the boolean to set to.
+		 * @param recordChat whether or not the chat should be recorded.
+		 */
+		public static void toggleAdministration(Player player, boolean option, boolean recordChat)
+		{
+			if(option)
+			{
+				// Create the conversation and save it
+				Conversation conversation = Administration.startAdministration(player);
+				Data.saveTemp(player.getName(), "administration_conversation", conversation);
+
+				player.setPlayerWeather(WeatherType.CLEAR);
+				player.setPlayerTime(100, false);
+
+				// Record chat if enabled
+				if(recordChat) DPlayer.Util.getPlayer(player).startRecording();
+			}
+			else
+			{
+				// Save context and abandon the conversation
+				if(Data.hasKeyTemp(player.getName(), "administration_conversation"))
+				{
+					Conversation conversation = (Conversation) Data.getValueTemp(player.getName(), "administration_conversation");
+					Data.saveTemp(player.getName(), "administration_context", conversation.getContext());
+					conversation.abandon();
+				}
+
+				// Remove the data
+				Data.removeTemp(player.getName(), "administration_conversation");
+
+				// Reset weather and time
+				player.resetPlayerWeather();
+				player.resetPlayerTime();
+
+				// Message them
+				Messages.clearRawChat(player);
+				player.sendMessage(English.ADMINISTRATION_ENDED.getLine());
 
 				// Handle recorded chat
 				DPlayer.Util.getPlayer(player).stopRecording(recordChat);

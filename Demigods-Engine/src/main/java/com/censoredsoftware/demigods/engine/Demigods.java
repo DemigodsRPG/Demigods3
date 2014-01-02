@@ -1,5 +1,24 @@
 package com.censoredsoftware.demigods.engine;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.conversations.ConversationFactory;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
+import org.bukkit.permissions.Permission;
+import org.bukkit.permissions.PermissionDefault;
+import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.plugin.ServicesManager;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.ScoreboardManager;
+import org.bukkit.scoreboard.Team;
+
 import com.censoredsoftware.censoredlib.helper.CensoredCentralizedClass;
 import com.censoredsoftware.censoredlib.helper.QuitReasonHandler;
 import com.censoredsoftware.censoredlib.helper.WrappedConversation;
@@ -22,24 +41,6 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.conversations.ConversationFactory;
-import org.bukkit.event.HandlerList;
-import org.bukkit.event.Listener;
-import org.bukkit.permissions.Permission;
-import org.bukkit.permissions.PermissionDefault;
-import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.RegisteredServiceProvider;
-import org.bukkit.plugin.ServicesManager;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.ScoreboardManager;
-import org.bukkit.scoreboard.Team;
-
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
 public class Demigods extends CensoredCentralizedClass
 {
@@ -367,7 +368,11 @@ public class Demigods extends CensoredCentralizedClass
 			{
 				// Toggle prayer off and clear the session
 				DPlayer.Util.togglePrayingSilent(character.getOfflinePlayer().getPlayer(), false, false);
-				DPlayer.Util.clearPrayerSession(character.getOfflinePlayer().getPlayer());
+				DPlayer.Util.clearPrayerSession(character.getOfflinePlayer());
+
+				// Toggle administration off and clear its session
+				DPlayer.Util.toggleAdministration(character.getOfflinePlayer().getPlayer(), false, false);
+				DPlayer.Util.clearAdministrationSession(character.getOfflinePlayer());
 			}
 		}
 

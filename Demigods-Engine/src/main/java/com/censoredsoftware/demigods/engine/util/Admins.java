@@ -1,12 +1,13 @@
 package com.censoredsoftware.demigods.engine.util;
 
-import com.censoredsoftware.demigods.engine.data.Data;
+import java.util.ArrayList;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
+import com.censoredsoftware.demigods.engine.data.Data;
 
 public class Admins
 {
@@ -30,6 +31,82 @@ public class Admins
 	public static boolean useWand(OfflinePlayer player)
 	{
 		return wandEnabled(player) && player.getPlayer().getItemInHand().getTypeId() == Configs.getSettingInt("admin.wand_tool");
+	}
+
+	/**
+	 * Toggles the admin wand for the <code>player</code> to <code>option</code>.
+	 * 
+	 * @param player the player to toggle for.
+	 * @param option the option to toggle to.
+	 */
+	public static void toggleWand(OfflinePlayer player, boolean option)
+	{
+		if(option)
+		{
+			Data.saveTemp(player.getName(), "temp_admin_wand", true);
+		}
+		else
+		{
+			Data.removeTemp(player.getName(), "temp_admin_wand");
+		}
+	}
+
+	/**
+	 * Returns true if the <code>player</code> is an admin and has their structure wand enabled.
+	 * 
+	 * @param player the player to check.
+	 * @return boolean
+	 */
+	public static boolean structureWandEnabled(OfflinePlayer player)
+	{
+		return player.getPlayer().hasPermission("demigods.admin") && Data.hasKeyTemp(player.getName(), "temp_admin_structurewand") && Boolean.parseBoolean(Data.getValueTemp(player.getName(), "temp_admin_structurewand").toString());
+	}
+
+	/**
+	 * Returns true if the <code>player</code>'s structure wand is enabled and in their hand.
+	 * 
+	 * @param player the player to check.
+	 * @return boolean
+	 */
+	public static boolean useStructureWand(OfflinePlayer player)
+	{
+		return structureWandEnabled(player) && player.getPlayer().getItemInHand().getTypeId() == Configs.getSettingInt("admin.structure_wand_tool");
+	}
+
+	/**
+	 * Toggles the structure wand for the <code>player</code> to <code>option</code>.
+	 * 
+	 * @param player the player to toggle for.
+	 * @param option the option to toggle to.
+	 */
+	public static void toggleStructureWand(OfflinePlayer player, boolean option)
+	{
+		if(option)
+		{
+			Data.saveTemp(player.getName(), "temp_admin_structurewand", true);
+		}
+		else
+		{
+			Data.removeTemp(player.getName(), "temp_admin_structurewand");
+		}
+	}
+
+	/**
+	 * Toggles the debugging for the <code>player</code> to <code>option</code>.
+	 * 
+	 * @param player the player to toggle for.
+	 * @param option the option to toggle to.
+	 */
+	public static void togglePlayerDebug(OfflinePlayer player, boolean option)
+	{
+		if(option)
+		{
+			Data.saveTemp(player.getName(), "temp_admin_debug", true);
+		}
+		else
+		{
+			Data.removeTemp(player.getName(), "temp_admin_debug");
+		}
 	}
 
 	/**

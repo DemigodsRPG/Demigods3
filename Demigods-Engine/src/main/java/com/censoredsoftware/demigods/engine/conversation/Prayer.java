@@ -1,5 +1,25 @@
 package com.censoredsoftware.demigods.engine.conversation;
 
+import java.lang.reflect.Field;
+import java.util.*;
+
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.*;
+import org.bukkit.conversations.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.ExperienceOrb;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
+
 import com.censoredsoftware.censoredlib.data.player.Notification;
 import com.censoredsoftware.censoredlib.helper.WrappedConversation;
 import com.censoredsoftware.censoredlib.language.Symbol;
@@ -19,29 +39,12 @@ import com.censoredsoftware.demigods.engine.util.Messages;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import org.apache.commons.lang.StringUtils;
-import org.bukkit.*;
-import org.bukkit.conversations.*;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.ExperienceOrb;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitRunnable;
-
-import java.lang.reflect.Field;
-import java.util.*;
 
 @SuppressWarnings("unchecked")
 public class Prayer implements WrappedConversation
 {
+	// Define constants
+	private static final String CONTEXT_NAME = "prayer_context";
 
 	@Override
 	public org.bukkit.event.Listener getUniqueListener()
@@ -89,37 +92,40 @@ public class Prayer implements WrappedConversation
 		return startPrayer(player);
 	}
 
-	public static Conversation startPrayer(Player player)
+	public static Map<Object, Object> grabRawContext(Player player)
 	{
+		Map<Object, Object> context = Maps.newHashMap();
+
 		try
 		{
-			Map<Object, Object> conversationContext = Maps.newHashMap();
-
 			if(!Demigods.Util.isRunningSpigot())
 			{
 				// Compatibility with vanilla Bukkit
 				Field sessionDataField = ConversationContext.class.getDeclaredField("sessionData");
 				sessionDataField.setAccessible(true);
-				if(Data.hasKeyTemp(player.getName(), "prayer_context")) conversationContext = (Map<Object, Object>) sessionDataField.get(Data.getValueTemp(player.getName(), "prayer_context"));
+				if(Data.hasKeyTemp(player.getName(), CONTEXT_NAME)) context = (Map<Object, Object>) sessionDataField.get(Data.getValueTemp(player.getName(), CONTEXT_NAME));
 			}
 			else
 			{
 				// Grab the context Map
-				if(Data.hasKeyTemp(player.getName(), "prayer_context")) conversationContext.putAll(((ConversationContext) Data.getValueTemp(player.getName(), "prayer_context")).getAllSessionData());
+				if(Data.hasKeyTemp(player.getName(), CONTEXT_NAME)) context.putAll(((ConversationContext) Data.getValueTemp(player.getName(), CONTEXT_NAME)).getAllSessionData());
 			}
-
-			// Build the CONVERSATION_FACTORY and begin
-			Conversation prayerConversation = Demigods.CONVERSATION_FACTORY.withEscapeSequence("/exit").withLocalEcho(false).withInitialSessionData(conversationContext).withFirstPrompt(new StartPrayer()).buildConversation(player);
-			prayerConversation.begin();
-
-			return prayerConversation;
 		}
 		catch(IllegalAccessException | NoSuchFieldException ignored)
 		{
 			// ignored
 		}
 
-		return null;
+		return context;
+	}
+
+	public static Conversation startPrayer(Player player)
+	{
+		// Build the conversation and begin
+		Conversation conversation = Demigods.CONVERSATION_FACTORY.withEscapeSequence("/exit").withLocalEcho(false).withInitialSessionData(grabRawContext(player)).withFirstPrompt(new StartPrayer()).buildConversation(player);
+		conversation.begin();
+
+		return conversation;
 	}
 
 	// Main prayer menu
@@ -134,7 +140,7 @@ public class Prayer implements WrappedConversation
 			// Clear chat
 			Messages.clearRawChat(player);
 
-			// Send NoGrief menu
+			// Send menu
 			Messages.clearRawChat(player);
 			player.sendRawMessage(ChatColor.AQUA + " -- Prayer Menu --------------------------------------");
 			player.sendRawMessage(" ");
@@ -144,6 +150,7 @@ public class Prayer implements WrappedConversation
 			player.sendRawMessage(ChatColor.GRAY + " To begin, choose an option by entering its number in the chat:");
 			player.sendRawMessage(" ");
 
+			// Send menu options
 			for(Menu menu : Menu.values())
 				if(menu.getCategory().canUse(context)) player.sendRawMessage(ChatColor.GRAY + "   [" + menu.getId() + ".] " + menu.getCategory().getChatName(context));
 
@@ -794,7 +801,7 @@ public class Prayer implements WrappedConversation
 		@Override
 		protected boolean isInputValid(ConversationContext context, String message)
 		{
-			return "y".equalsIgnoreCase(message) || "n".equalsIgnoreCase(message);
+			return "menu".equalsIgnoreCase(message) || "y".equalsIgnoreCase(message) || "n".equalsIgnoreCase(message);
 		}
 
 		@Override

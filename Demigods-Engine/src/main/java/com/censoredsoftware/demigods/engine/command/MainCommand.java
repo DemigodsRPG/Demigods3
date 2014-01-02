@@ -1,5 +1,18 @@
 package com.censoredsoftware.demigods.engine.command;
 
+import java.util.Collection;
+import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.PluginManager;
+
 import com.censoredsoftware.censoredlib.helper.WrappedCommand;
 import com.censoredsoftware.censoredlib.language.Symbol;
 import com.censoredsoftware.censoredlib.util.Strings;
@@ -19,18 +32,6 @@ import com.censoredsoftware.demigods.engine.util.Messages;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
-import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.PluginManager;
-
-import java.util.Collection;
-import java.util.Map;
 
 public class MainCommand extends WrappedCommand
 {
@@ -250,63 +251,76 @@ public class MainCommand extends WrappedCommand
 		return true;
 	}
 
-	private static boolean dg_admin(Player sender, String[] args)
+	private static boolean dg_admin(Player player, String[] args)
 	{
-		if(!sender.hasPermission("demigods.admin")) return Messages.noPermission(sender);
+		if(!player.hasPermission("demigods.admin")) return Messages.noPermission(player);
 
 		// Display main admin options menu
 		if(args.length < 2)
 		{
-			Messages.tagged(sender, "Admin Directory");
-			sender.sendMessage(ChatColor.GRAY + " /dg admin wand");
-			sender.sendMessage(ChatColor.GRAY + " /dg admin debug");
+			Messages.tagged(player, "Admin Directory");
+			if(player.hasPermission("demigods.admin.menu")) player.sendMessage(ChatColor.GRAY + " /dg admin menu");
+			if(player.hasPermission("demigods.admin.wand")) player.sendMessage(ChatColor.GRAY + " /dg admin wand");
+			player.sendMessage(ChatColor.GRAY + " /dg admin debug");
 			for(AdminCommand command : AdminCommand.values())
 			{
-				sender.sendMessage(ChatColor.GRAY + " " + command.getCommand().getName());
+				player.sendMessage(ChatColor.GRAY + " " + command.getCommand().getName());
 			}
-			sender.sendMessage(ChatColor.DARK_RED + " /dg admin clear data yesdoitforsurepermanently");
+			player.sendMessage(ChatColor.DARK_RED + " /dg admin clear data yesdoitforsurepermanently");
 			return true;
 		}
 
 		// Handle automatic commands
 		for(AdminCommand command : AdminCommand.values())
 		{
-			if(command.getCommand().getParentCommand().equalsIgnoreCase(args[1])) return command.getCommand().process(sender, args);
+			if(command.getCommand().getParentCommand().equalsIgnoreCase(args[1])) return command.getCommand().process(player, args);
 		}
 
 		// Handle manual commands
+		if("menu".equalsIgnoreCase(args[1]))
+		{
+			// Check for wand permission
+			if(!player.hasPermission("demigods.admin.menu")) return Messages.noPermission(player);
+
+			// Start their administration menu
+			DPlayer.Util.toggleAdministration(player, true, true);
+		}
 		if("wand".equalsIgnoreCase(args[1]))
 		{
-			if(!Admins.wandEnabled(sender))
+			// Check for wand permission
+			if(!player.hasPermission("demigods.admin.wand")) return Messages.noPermission(player);
+
+			// Do checking
+			if(!Admins.wandEnabled(player))
 			{
-				Data.saveTemp(sender.getName(), "temp_admin_wand", true);
-				sender.sendMessage(ChatColor.RED + "Your admin wand has been enabled for " + Material.getMaterial(Configs.getSettingInt("admin.wand_tool")));
+				Admins.toggleWand(player, true);
+				player.sendMessage(ChatColor.RED + "Your admin wand has been enabled for " + Material.getMaterial(Configs.getSettingInt("admin.wand_tool")));
 			}
-			else if(Admins.wandEnabled(sender))
+			else if(Admins.wandEnabled(player))
 			{
-				Data.removeTemp(sender.getName(), "temp_admin_wand");
-				sender.sendMessage(ChatColor.RED + "You have disabled your admin wand.");
+				Admins.toggleWand(player, false);
+				player.sendMessage(ChatColor.RED + "You have disabled your admin wand.");
 			}
 			return true;
 		}
 		else if("debug".equalsIgnoreCase(args[1]))
 		{
-			if(!Data.hasKeyTemp(sender.getName(), "temp_admin_debug") || !Boolean.parseBoolean(Data.getValueTemp(sender.getName(), "temp_admin_debug").toString()))
+			if(!Data.hasKeyTemp(player.getName(), "temp_admin_debug") || !Boolean.parseBoolean(Data.getValueTemp(player.getName(), "temp_admin_debug").toString()))
 			{
-				Data.saveTemp(sender.getName(), "temp_admin_debug", true);
-				sender.sendMessage(ChatColor.RED + "You have enabled debugging.");
+				Admins.togglePlayerDebug(player, true);
+				player.sendMessage(ChatColor.RED + "You have enabled debugging.");
 			}
-			else if(Data.hasKeyTemp(sender.getName(), "temp_admin_debug") && Boolean.parseBoolean(Data.getValueTemp(sender.getName(), "temp_admin_debug").toString()))
+			else if(Data.hasKeyTemp(player.getName(), "temp_admin_debug") && Boolean.parseBoolean(Data.getValueTemp(player.getName(), "temp_admin_debug").toString()))
 			{
-				Data.removeTemp(sender.getName(), "temp_admin_debug");
-				sender.sendMessage(ChatColor.RED + "You have disabled debugging.");
+				Admins.togglePlayerDebug(player, false);
+				player.sendMessage(ChatColor.RED + "You have disabled debugging.");
 			}
 		}
 		else if("clear".equalsIgnoreCase(args[1]) && args[2].equalsIgnoreCase("data") && args[3].equalsIgnoreCase("yesdoitforsurepermanently"))
 		{
-			sender.sendMessage(ChatColor.RED + English.ADMIN_CLEAR_DATA_STARTING.getLine());
+			player.sendMessage(ChatColor.RED + English.ADMIN_CLEAR_DATA_STARTING.getLine());
 			Data.flushData();
-			sender.sendMessage(ChatColor.GREEN + English.ADMIN_CLEAR_DATA_FINISHED.getLine());
+			player.sendMessage(ChatColor.GREEN + English.ADMIN_CLEAR_DATA_FINISHED.getLine());
 			return true;
 		}
 

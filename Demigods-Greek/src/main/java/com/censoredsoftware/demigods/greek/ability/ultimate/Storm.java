@@ -1,5 +1,15 @@
 package com.censoredsoftware.demigods.greek.ability.ultimate;
 
+import java.util.List;
+
+import org.bukkit.Bukkit;
+import org.bukkit.WeatherType;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.scheduler.BukkitRunnable;
+
 import com.censoredsoftware.demigods.engine.DemigodsPlugin;
 import com.censoredsoftware.demigods.engine.data.Battle;
 import com.censoredsoftware.demigods.engine.data.DCharacter;
@@ -9,15 +19,6 @@ import com.censoredsoftware.demigods.engine.mythos.Ability;
 import com.censoredsoftware.demigods.greek.ability.GreekAbility;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
-import org.bukkit.Bukkit;
-import org.bukkit.WeatherType;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.scheduler.BukkitRunnable;
-
-import java.util.List;
 
 public class Storm extends GreekAbility
 {
@@ -81,24 +82,17 @@ public class Storm extends GreekAbility
 
 	public static void setWeather(final Player player, long ticks)
 	{
-		// Handle weather effect
-		if(player.getPlayerWeather() != null && !player.getPlayerWeather().equals(WeatherType.DOWNFALL))
+		// Set the weather
+		player.setPlayerWeather(WeatherType.DOWNFALL);
+
+		// Create the runnable to switch back
+		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.plugin(), new BukkitRunnable()
 		{
-			// Save current weather
-			final WeatherType currentWeather = player.getPlayerWeather();
-
-			// Set the weather
-			player.setPlayerWeather(WeatherType.DOWNFALL);
-
-			// Create the runnable to switch back
-			Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.plugin(), new BukkitRunnable()
+			@Override
+			public void run()
 			{
-				@Override
-				public void run()
-				{
-					player.setPlayerWeather(currentWeather);
-				}
-			}, ticks);
-		}
+				player.resetPlayerWeather();
+			}
+		}, ticks);
 	}
 }

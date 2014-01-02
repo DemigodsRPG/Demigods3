@@ -1,14 +1,16 @@
 package com.censoredsoftware.demigods.engine.base;
 
-import com.censoredsoftware.censoredlib.helper.WrappedConversation;
-import com.censoredsoftware.demigods.engine.conversation.Prayer;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.Prompt;
+
+import com.censoredsoftware.censoredlib.helper.WrappedConversation;
+import com.censoredsoftware.demigods.engine.conversation.Administration;
+import com.censoredsoftware.demigods.engine.conversation.Prayer;
 
 // Conversations
 public enum DemigodsConversation
 {
-	PRAYER(new Prayer());
+	PRAYER(new Prayer()), ADMINSTRATION(new Administration());
 
 	private final WrappedConversation conversationInfo;
 

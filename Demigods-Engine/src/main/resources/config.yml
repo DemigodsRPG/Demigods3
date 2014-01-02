@@ -84,6 +84,7 @@ battles:
 ## Administrative Settings ##
 admin:
     wand_tool: 369
+    structure_wand_tool: 280
 
 ## Panel Settings ##
 panel:
