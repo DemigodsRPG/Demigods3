@@ -70,7 +70,7 @@ public class Obelisk extends GreekStructure
 		@Override
 		public Boolean apply(StructureData data, DCharacter character)
 		{
-			if(!DCharacter.Util.areAllied(character, Data.characters.get(data.getOwner())) || !data.getSanctifiers().contains(character.getId())) return false;
+			if(!DCharacter.Util.areAllied(character, Data.CHARACTER.get(data.getOwner())) || !data.getSanctifiers().contains(character.getId())) return false;
 			Location location = data.getReferenceLocation();
 			location.getWorld().playSound(location, Sound.CAT_PURR, 0.3F, 0.7F);
 			MaterialData colorData = Colors.getMaterial(character.getDeity().getColor());
@@ -83,10 +83,10 @@ public class Obelisk extends GreekStructure
 		@Override
 		public Boolean apply(StructureData data, DCharacter character)
 		{
-			if(DCharacter.Util.areAllied(character, Data.characters.get(data.getOwner()))) return false;
-			if(Data.characters.containsKey(data.getOwner()))
+			if(DCharacter.Util.areAllied(character, Data.CHARACTER.get(data.getOwner()))) return false;
+			if(Data.CHARACTER.containsKey(data.getOwner()))
 			{
-				DPlayer dPlayer = DPlayer.Util.getPlayer(Data.characters.get(data.getOwner()).getOfflinePlayer());
+				DPlayer dPlayer = DPlayer.Util.getPlayer(Data.CHARACTER.get(data.getOwner()).getOfflinePlayer());
 				long lastLogoutTime = dPlayer.getLastLogoutTime();
 				Calendar calendarHalfHour = Calendar.getInstance();
 				calendarHalfHour.add(Calendar.MINUTE, -30);

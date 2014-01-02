@@ -64,7 +64,7 @@ public class Shrine extends GreekStructure
 		@Override
 		public Boolean apply(StructureData data, DCharacter character)
 		{
-			if(!DCharacter.Util.areAllied(character, Data.characters.get(data.getOwner()))) return false;
+			if(!DCharacter.Util.areAllied(character, Data.CHARACTER.get(data.getOwner()))) return false;
 			Location location = data.getReferenceLocation();
 			location.getWorld().playSound(location, Sound.CAT_PURREOW, 0.7F, 0.9F);
 			MaterialData colorData = Colors.getMaterial(character.getDeity().getColor());
@@ -77,7 +77,7 @@ public class Shrine extends GreekStructure
 		@Override
 		public Boolean apply(StructureData data, DCharacter character)
 		{
-			if(DCharacter.Util.areAllied(character, Data.characters.get(data.getOwner()))) return false;
+			if(DCharacter.Util.areAllied(character, Data.CHARACTER.get(data.getOwner()))) return false;
 			Location location = data.getReferenceLocation();
 			location.getWorld().playSound(location, Sound.WITHER_HURT, 0.4F, 1.5F);
 			location.getWorld().playEffect(location.clone().add(0, 1, 0), Effect.STEP_SOUND, Material.REDSTONE_BLOCK.getId());

@@ -12,12 +12,12 @@ public class TimedDataManager
 {
 	public static TimedData get(UUID id)
 	{
-		return Data.timedData.get(id);
+		return Data.TIMED_DATA.get(id);
 	}
 
 	public static Set<TimedData> getAll()
 	{
-		return Sets.newHashSet(Data.timedData.values());
+		return Sets.newHashSet(Data.TIMED_DATA.values());
 	}
 
 	public static TimedData find(String key, String subKey)
@@ -44,7 +44,7 @@ public class TimedDataManager
 
 	public static void delete(TimedData data)
 	{
-		Data.timedData.remove(data.getId());
+		Data.TIMED_DATA.remove(data.getId());
 	}
 
 	public static void remove(String key, String subKey)

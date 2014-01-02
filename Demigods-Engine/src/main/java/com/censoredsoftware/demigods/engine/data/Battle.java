@@ -418,7 +418,7 @@ public class Battle implements ConfigurationSerializable
 
 	public void delete()
 	{
-		Data.battles.remove(getId());
+		Data.BATTLE.remove(getId());
 	}
 
 	public void sendMessage(String message)
@@ -466,7 +466,7 @@ public class Battle implements ConfigurationSerializable
 	{
 		public static void save(Battle battle)
 		{
-			Data.battles.put(battle.getId(), battle);
+			Data.BATTLE.put(battle.getId(), battle);
 		}
 
 		public static Battle create(Participant damager, Participant damaged)
@@ -486,12 +486,12 @@ public class Battle implements ConfigurationSerializable
 
 		public static Battle get(UUID id)
 		{
-			return Data.battles.get(id);
+			return Data.BATTLE.get(id);
 		}
 
 		public static Set<Battle> getAll()
 		{
-			return Sets.newHashSet(Data.battles.values());
+			return Sets.newHashSet(Data.BATTLE.values());
 		}
 
 		public static List<Battle> getAllActive()

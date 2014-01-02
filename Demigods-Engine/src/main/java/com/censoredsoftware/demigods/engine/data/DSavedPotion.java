@@ -20,6 +20,6 @@ public class DSavedPotion extends SavedPotion
 
 	protected void save()
 	{
-		Data.savedPotions.put(getId(), this);
+		Data.SAVED_POTION.put(getId(), this);
 	}
 }

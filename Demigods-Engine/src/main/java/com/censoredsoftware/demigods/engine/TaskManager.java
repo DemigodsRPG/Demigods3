@@ -100,7 +100,7 @@ public class TaskManager
 					Data.save();
 
 					// Send the save message to the console
-					if(SAVE_ALERT) Messages.info(Bukkit.getOnlinePlayers().length + " of " + Data.players.size() + " total players saved in " + Times.getSeconds(time) + " seconds.");
+					if(SAVE_ALERT) Messages.info(Bukkit.getOnlinePlayers().length + " of " + Data.PLAYER.keySet().size() + " total players saved in " + Times.getSeconds(time) + " seconds.");
 				}
 			};
 			FAVOR = new BukkitRunnable()

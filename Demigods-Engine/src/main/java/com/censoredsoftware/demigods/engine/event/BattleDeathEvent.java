@@ -41,13 +41,13 @@ public class BattleDeathEvent extends Event implements Cancellable
 
 	public Battle getBattle()
 	{
-		if(Data.battles.containsKey(battle)) return Battle.Util.get(battle);
+		if(Data.BATTLE.containsKey(battle)) return Battle.Util.get(battle);
 		return null;
 	}
 
 	public DCharacter getCharacter()
 	{
-		if(Data.characters.containsKey(character)) return DCharacter.Util.load(character);
+		if(Data.CHARACTER.containsKey(character)) return DCharacter.Util.load(character);
 		return null;
 	}
 
@@ -58,7 +58,7 @@ public class BattleDeathEvent extends Event implements Cancellable
 
 	public DCharacter getKiller()
 	{
-		if(killer != null && Data.characters.containsKey(killer)) return DCharacter.Util.load(killer);
+		if(killer != null && Data.CHARACTER.containsKey(killer)) return DCharacter.Util.load(killer);
 		return null;
 	}
 

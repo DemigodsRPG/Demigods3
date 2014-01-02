@@ -527,12 +527,12 @@ public class DPlayer implements ConfigurationSerializable
 
 		public static void save(DPlayer player)
 		{
-			Data.players.put(player.getMojangAccount(), player);
+			Data.PLAYER.put(player.getMojangAccount(), player);
 		}
 
 		public static void delete(String mojangAccount)
 		{
-			Data.players.remove(mojangAccount);
+			Data.PLAYER.remove(mojangAccount);
 		}
 
 		public static DPlayer getPlayer(final OfflinePlayer player)
@@ -548,7 +548,7 @@ public class DPlayer implements ConfigurationSerializable
 		{
 			try
 			{
-				return Iterables.find(Data.players.values(), new Predicate<DPlayer>()
+				return Iterables.find(Data.PLAYER.values(), new Predicate<DPlayer>()
 				{
 					@Override
 					public boolean apply(DPlayer dPlayer)
@@ -564,7 +564,7 @@ public class DPlayer implements ConfigurationSerializable
 
 		public static DPlayer getPlayer(String mojangAccount)
 		{
-			if(Data.players.containsKey(mojangAccount)) return Data.players.get(mojangAccount);
+			if(Data.PLAYER.containsKey(mojangAccount)) return Data.PLAYER.get(mojangAccount);
 			return null;
 		}
 
@@ -582,7 +582,7 @@ public class DPlayer implements ConfigurationSerializable
 
 		public static Collection<OfflinePlayer> getMortals()
 		{
-			return Collections2.transform(Collections2.filter(Data.players.values(), new Predicate<DPlayer>()
+			return Collections2.transform(Collections2.filter(Data.PLAYER.values(), new Predicate<DPlayer>()
 			{
 				@Override
 				public boolean apply(DPlayer player)

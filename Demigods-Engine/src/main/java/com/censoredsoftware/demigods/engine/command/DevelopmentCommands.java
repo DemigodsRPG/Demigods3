@@ -206,7 +206,7 @@ public class DevelopmentCommands extends WrappedCommand
 		if(!"player".equalsIgnoreCase(type)) return null;
 		try
 		{
-			return Iterators.find(Data.players.values().iterator(), new Predicate<DPlayer>()
+			return Iterators.find(Data.PLAYER.values().iterator(), new Predicate<DPlayer>()
 			{
 				@Override
 				public boolean apply(DPlayer dPlayer)

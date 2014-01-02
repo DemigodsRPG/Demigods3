@@ -40,17 +40,17 @@ public class DDeath extends Death
 	{
 		public static DDeath load(UUID id)
 		{
-			return Data.deaths.get(id);
+			return Data.DEATH.get(id);
 		}
 
 		public static void save(DDeath death)
 		{
-			Data.deaths.put(death.getId(), death);
+			Data.DEATH.put(death.getId(), death);
 		}
 
 		public static void delete(UUID id)
 		{
-			Data.deaths.remove(id);
+			Data.DEATH.remove(id);
 		}
 
 		public static Set<DDeath> getRecentDeaths(int seconds)

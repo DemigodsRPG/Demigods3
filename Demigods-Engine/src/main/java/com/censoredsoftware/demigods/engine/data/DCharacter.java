@@ -263,7 +263,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 				PotionEffect potion = Util.getSavedPotion(UUID.fromString(stringId)).toPotionEffect();
 				if(potion != null)
 				{
-					Data.savedPotions.remove(UUID.fromString(stringId));
+					Data.SAVED_POTION.remove(UUID.fromString(stringId));
 					set.add(potion);
 				}
 			}
@@ -285,7 +285,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			{
 				try
 				{
-					return Data.savedPotions.get(UUID.fromString(s));
+					return Data.SAVED_POTION.get(UUID.fromString(s));
 				}
 				catch(Exception ignored)
 				{}
@@ -558,7 +558,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		for(StructureData structureSave : Structure.Util.getStructureWithFlag(Structure.Flag.DELETE_WITH_OWNER))
 			if(structureSave.hasOwner() && structureSave.getOwner().equals(getId())) structureSave.remove();
 		for(DSavedPotion potion : getRawPotionEffects())
-			Data.savedPotions.remove(potion.getId());
+			Data.SAVED_POTION.remove(potion.getId());
 		Util.deleteInventory(getInventory().getId());
 		Util.deleteEnderInventory(getEnderInventory().getId());
 		Util.deleteMeta(getMeta().getId());
@@ -668,7 +668,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 		protected void delete()
 		{
-			Data.inventories.remove(getId());
+			Data.CHARACTER_INVENTORY.remove(getId());
 		}
 	}
 
@@ -696,7 +696,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 		protected void delete()
 		{
-			Data.enderInventories.remove(this.getId());
+			Data.CHARACTER_ENDER_INVENTORY.remove(this.getId());
 		}
 	}
 
@@ -1079,42 +1079,42 @@ public class DCharacter implements Participant, ConfigurationSerializable
 	{
 		public static void save(DCharacter character)
 		{
-			Data.characters.put(character.getId(), character);
+			Data.CHARACTER.put(character.getId(), character);
 		}
 
 		public static void saveMeta(Meta meta)
 		{
-			Data.characterMetas.put(meta.getId(), meta);
+			Data.CHARACTER_META.put(meta.getId(), meta);
 		}
 
 		public static void saveInventory(Inventory inventory)
 		{
-			Data.inventories.put(inventory.getId(), inventory);
+			Data.CHARACTER_INVENTORY.put(inventory.getId(), inventory);
 		}
 
 		public static void saveInventory(EnderInventory inventory)
 		{
-			Data.enderInventories.put(inventory.getId(), inventory);
+			Data.CHARACTER_ENDER_INVENTORY.put(inventory.getId(), inventory);
 		}
 
 		public static void delete(UUID id)
 		{
-			Data.characters.remove(id);
+			Data.CHARACTER.remove(id);
 		}
 
 		public static void deleteMeta(UUID id)
 		{
-			Data.characterMetas.remove(id);
+			Data.CHARACTER_META.remove(id);
 		}
 
 		public static void deleteInventory(UUID id)
 		{
-			Data.inventories.remove(id);
+			Data.CHARACTER_INVENTORY.remove(id);
 		}
 
 		public static void deleteEnderInventory(UUID id)
 		{
-			Data.enderInventories.remove(id);
+			Data.CHARACTER_ENDER_INVENTORY.remove(id);
 		}
 
 		public static void create(DPlayer player, String chosenDeity, String chosenName, boolean switchCharacter)
@@ -1213,24 +1213,24 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 		public static Set<DCharacter> loadAll()
 		{
-			return Sets.newHashSet(Data.characters.values());
+			return Sets.newHashSet(Data.CHARACTER.values());
 		}
 
 		public static DCharacter load(UUID id)
 		{
-			return Data.characters.get(id);
+			return Data.CHARACTER.get(id);
 		}
 
 		public static Meta loadMeta(UUID id)
 		{
-			return Data.characterMetas.get(id);
+			return Data.CHARACTER_META.get(id);
 		}
 
 		public static Inventory getInventory(UUID id)
 		{
 			try
 			{
-				return Data.inventories.get(id);
+				return Data.CHARACTER_INVENTORY.get(id);
 			}
 			catch(Exception ignored)
 			{}
@@ -1241,7 +1241,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		{
 			try
 			{
-				return Data.enderInventories.get(id);
+				return Data.CHARACTER_ENDER_INVENTORY.get(id);
 			}
 			catch(Exception ignored)
 			{}
@@ -1252,7 +1252,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		{
 			try
 			{
-				return Data.savedPotions.get(id);
+				return Data.SAVED_POTION.get(id);
 			}
 			catch(Exception ignored)
 			{}

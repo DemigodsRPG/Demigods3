@@ -15,17 +15,17 @@ public class CLocationManager extends CLocation.Util
 {
 	public static void save(CLocation location)
 	{
-		Data.locations.put(location.getId(), location);
+		Data.LOCATION.put(location.getId(), location);
 	}
 
 	public static void delete(UUID id)
 	{
-		Data.locations.remove(id);
+		Data.LOCATION.remove(id);
 	}
 
 	public static CLocation load(UUID id)
 	{
-		return Data.locations.get(id);
+		return Data.LOCATION.get(id);
 	}
 
 	public static CLocation create(String world, double X, double Y, double Z, float yaw, float pitch)
@@ -50,7 +50,7 @@ public class CLocationManager extends CLocation.Util
 
 	public static Set<CLocation> loadAll()
 	{
-		return Sets.newHashSet(Data.locations.values());
+		return Sets.newHashSet(Data.LOCATION.values());
 	}
 
 	public static CLocation get(final Location location)
