@@ -1,6 +1,6 @@
 package com.censoredsoftware.demigods.engine.util;
 
-import com.censoredsoftware.demigods.engine.data.DataManager;
+import com.censoredsoftware.demigods.engine.data.Data;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -18,7 +18,7 @@ public class Admins
 	 */
 	public static boolean wandEnabled(OfflinePlayer player)
 	{
-		return player.getPlayer().hasPermission("demigods.admin") && DataManager.hasKeyTemp(player.getName(), "temp_admin_wand") && Boolean.parseBoolean(DataManager.getValueTemp(player.getName(), "temp_admin_wand").toString());
+		return player.getPlayer().hasPermission("demigods.admin") && Data.hasKeyTemp(player.getName(), "temp_admin_wand") && Boolean.parseBoolean(Data.getValueTemp(player.getName(), "temp_admin_wand").toString());
 	}
 
 	/**
@@ -40,7 +40,7 @@ public class Admins
 	 */
 	public static boolean playerDebugEnabled(OfflinePlayer player)
 	{
-		return player.getPlayer().hasPermission("demigods.admin") && DataManager.hasKeyTemp(player.getName(), "temp_admin_debug") && Boolean.parseBoolean(DataManager.getValueTemp(player.getName(), "temp_admin_debug").toString());
+		return player.getPlayer().hasPermission("demigods.admin") && Data.hasKeyTemp(player.getName(), "temp_admin_debug") && Boolean.parseBoolean(Data.getValueTemp(player.getName(), "temp_admin_debug").toString());
 	}
 
 	/**

@@ -1,9 +1,5 @@
 package com.censoredsoftware.demigods.engine;
 
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
-
 import com.censoredsoftware.censoredlib.util.Threads;
 import com.censoredsoftware.censoredlib.util.Times;
 import com.censoredsoftware.demigods.engine.data.*;
@@ -14,6 +10,9 @@ import com.censoredsoftware.demigods.engine.util.Admins;
 import com.censoredsoftware.demigods.engine.util.Configs;
 import com.censoredsoftware.demigods.engine.util.Messages;
 import com.censoredsoftware.demigods.engine.util.Zones;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 @SuppressWarnings("deprecation")
 public class TaskManager
@@ -98,10 +97,10 @@ public class TaskManager
 					long time = System.currentTimeMillis();
 
 					// Save data
-					DataManager.save();
+					Data.save();
 
 					// Send the save message to the console
-					if(SAVE_ALERT) Messages.info(Bukkit.getOnlinePlayers().length + " of " + DataManager.players.size() + " total players saved in " + Times.getSeconds(time) + " seconds.");
+					if(SAVE_ALERT) Messages.info(Bukkit.getOnlinePlayers().length + " of " + Data.players.size() + " total players saved in " + Times.getSeconds(time) + " seconds.");
 				}
 			};
 			FAVOR = new BukkitRunnable()

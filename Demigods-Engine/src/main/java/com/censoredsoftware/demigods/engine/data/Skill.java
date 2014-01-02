@@ -226,12 +226,12 @@ public class Skill implements ConfigurationSerializable
 
 		public static void save(Skill skill)
 		{
-			DataManager.skills.put(skill.getId(), skill);
+			Data.skills.put(skill.getId(), skill);
 		}
 
 		public static Skill loadSkill(UUID id)
 		{
-			return DataManager.skills.get(id);
+			return Data.skills.get(id);
 		}
 
 		/**

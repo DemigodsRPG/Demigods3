@@ -7,7 +7,7 @@ import com.censoredsoftware.censoredlib.util.Randoms;
 import com.censoredsoftware.demigods.engine.DemigodsPlugin;
 import com.censoredsoftware.demigods.engine.data.CLocationManager;
 import com.censoredsoftware.demigods.engine.data.DCharacter;
-import com.censoredsoftware.demigods.engine.data.DataManager;
+import com.censoredsoftware.demigods.engine.data.Data;
 import com.censoredsoftware.demigods.engine.data.StructureData;
 import com.censoredsoftware.demigods.engine.mythos.Structure;
 import com.censoredsoftware.demigods.engine.util.Admins;
@@ -162,7 +162,7 @@ public class Altar extends GreekStructure
 
 				StructureData altar = Structure.Util.getStructureRegional(location);
 
-				if(DataManager.hasTimed(player.getName(), "destroy_altar"))
+				if(Data.hasTimed(player.getName(), "destroy_altar"))
 				{
 					Admins.sendDebug(ChatColor.RED + "Altar at " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ() + " removed by " + "NO_BATTLE WAND" + ".");
 
@@ -170,13 +170,13 @@ public class Altar extends GreekStructure
 
 					altar.remove();
 
-					DataManager.removeTimed(player.getName(), "destroy_altar");
+					Data.removeTimed(player.getName(), "destroy_altar");
 
 					player.sendMessage(ChatColor.GREEN + English.ADMIN_WAND_REMOVE_ALTAR_COMPLETE.getLine());
 				}
 				else
 				{
-					DataManager.saveTimed(player.getName(), "destroy_altar", true, 5);
+					Data.saveTimed(player.getName(), "destroy_altar", true, 5);
 					player.sendMessage(ChatColor.RED + English.ADMIN_WAND_REMOVE_ALTAR.getLine());
 				}
 			}

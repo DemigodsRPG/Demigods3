@@ -7,7 +7,7 @@ import com.censoredsoftware.censoredlib.util.WorldGuards;
 import com.censoredsoftware.demigods.engine.DemigodsPlugin;
 import com.censoredsoftware.demigods.engine.data.DCharacter;
 import com.censoredsoftware.demigods.engine.data.DPlayer;
-import com.censoredsoftware.demigods.engine.data.DataManager;
+import com.censoredsoftware.demigods.engine.data.Data;
 import com.censoredsoftware.demigods.engine.data.StructureData;
 import com.censoredsoftware.demigods.engine.mythos.Structure;
 import com.censoredsoftware.demigods.engine.util.Messages;
@@ -206,7 +206,7 @@ public class DevelopmentCommands extends WrappedCommand
 		if(!"player".equalsIgnoreCase(type)) return null;
 		try
 		{
-			return Iterators.find(DataManager.players.values().iterator(), new Predicate<DPlayer>()
+			return Iterators.find(Data.players.values().iterator(), new Predicate<DPlayer>()
 			{
 				@Override
 				public boolean apply(DPlayer dPlayer)

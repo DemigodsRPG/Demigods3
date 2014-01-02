@@ -33,7 +33,7 @@ public class DPet extends Pet implements Participant
 
 	public void delete()
 	{
-		DataManager.pets.remove(getId());
+		Data.pets.remove(getId());
 	}
 
 	public void setOwner(DCharacter owner)
@@ -76,12 +76,12 @@ public class DPet extends Pet implements Participant
 	{
 		public static DPet load(UUID id)
 		{
-			return DataManager.pets.get(id);
+			return Data.pets.get(id);
 		}
 
 		public static void save(DPet pet)
 		{
-			DataManager.pets.put(pet.getId(), pet);
+			Data.pets.put(pet.getId(), pet);
 		}
 
 		public static DPet create(Tameable tameable, DCharacter owner)
@@ -98,7 +98,7 @@ public class DPet extends Pet implements Participant
 
 		public static Collection<DPet> findByType(final EntityType type)
 		{
-			return Collections2.filter(DataManager.pets.values(), new Predicate<DPet>()
+			return Collections2.filter(Data.pets.values(), new Predicate<DPet>()
 			{
 				@Override
 				public boolean apply(DPet pet)
@@ -110,7 +110,7 @@ public class DPet extends Pet implements Participant
 
 		public static Collection<DPet> findByTamer(final String animalTamer)
 		{
-			return Collections2.filter(DataManager.pets.values(), new Predicate<DPet>()
+			return Collections2.filter(Data.pets.values(), new Predicate<DPet>()
 			{
 				@Override
 				public boolean apply(DPet pet)
@@ -122,7 +122,7 @@ public class DPet extends Pet implements Participant
 
 		public static Collection<DPet> findByUUID(final UUID uniqueId)
 		{
-			return Collections2.filter(DataManager.pets.values(), new Predicate<DPet>()
+			return Collections2.filter(Data.pets.values(), new Predicate<DPet>()
 			{
 				@Override
 				public boolean apply(DPet pet)
@@ -134,7 +134,7 @@ public class DPet extends Pet implements Participant
 
 		public static Collection<DPet> findByOwner(final UUID ownerId)
 		{
-			return Collections2.filter(DataManager.pets.values(), new Predicate<DPet>()
+			return Collections2.filter(Data.pets.values(), new Predicate<DPet>()
 			{
 				@Override
 				public boolean apply(DPet pet)

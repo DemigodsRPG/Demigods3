@@ -5,7 +5,7 @@ import com.censoredsoftware.demigods.engine.DemigodsPlugin;
 import com.censoredsoftware.demigods.engine.data.Battle;
 import com.censoredsoftware.demigods.engine.data.DCharacter;
 import com.censoredsoftware.demigods.engine.data.DPlayer;
-import com.censoredsoftware.demigods.engine.data.DataManager;
+import com.censoredsoftware.demigods.engine.data.Data;
 import com.censoredsoftware.demigods.engine.language.English;
 import com.censoredsoftware.demigods.engine.util.Configs;
 import com.censoredsoftware.demigods.engine.util.Messages;
@@ -87,16 +87,16 @@ public class PlayerListener implements Listener
 		}
 
 		// Remove temp battle data
-		if(DataManager.hasKeyTemp(player.getName(), "quit_during_battle"))
+		if(Data.hasKeyTemp(player.getName(), "quit_during_battle"))
 		{
-			DataManager.removeTemp(player.getName(), "quit_during_battle");
+			Data.removeTemp(player.getName(), "quit_during_battle");
 			player.sendMessage(English.WELCOME_BACK_IN_BATTLE.getLine());
 		}
 
 		// Alert of losing battle due to leaving
-		if(DataManager.hasKeyTemp(player.getName(), "quit_during_battle_final"))
+		if(Data.hasKeyTemp(player.getName(), "quit_during_battle_final"))
 		{
-			DataManager.removeTemp(player.getName(), "quit_during_battle_final");
+			Data.removeTemp(player.getName(), "quit_during_battle_final");
 			player.sendMessage(English.WELCOME_BACK_BATTLE_LOST.getLine());
 		}
 	}
@@ -143,19 +143,19 @@ public class PlayerListener implements Listener
 			{
 				Battle battle = Battle.Util.getBattle(loggingOff);
 				battle.addDeath(loggingOff);
-				DataManager.saveTemp(name, "quit_during_battle", true);
+				Data.saveTemp(name, "quit_during_battle", true);
 				Bukkit.getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.plugin(), new BukkitRunnable()
 				{
 					@Override
 					public void run()
 					{
-						if(!Bukkit.getOfflinePlayer(name).isOnline() && DataManager.hasKeyTemp(name, "quit_during_battle"))
+						if(!Bukkit.getOfflinePlayer(name).isOnline() && Data.hasKeyTemp(name, "quit_during_battle"))
 						{
 							Battle battle = Battle.Util.getBattle(loggingOff);
 							battle.removeParticipant(loggingOff);
-							DataManager.removeTemp(name, "quit_during_battle");
+							Data.removeTemp(name, "quit_during_battle");
 							battle.sendMessage(English.DISCONNECT_DURING_BATTLE.getLine().replace("{name}", loggingOff.getName()));
-							DataManager.saveTemp(name, "quit_during_battle_final", true);
+							Data.saveTemp(name, "quit_during_battle_final", true);
 						}
 					}
 				}, 200);

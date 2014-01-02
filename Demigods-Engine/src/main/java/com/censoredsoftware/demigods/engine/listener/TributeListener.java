@@ -80,7 +80,7 @@ public class TributeListener implements Listener
 		if(!event.getInventory().getName().contains("Tribute to") /* TODO make this work with translations, I'm sleepy */|| !Structure.Util.partOfStructureWithFlag(player.getTargetBlock(null, 10).getLocation(), Structure.Flag.TRIBUTE_LOCATION)) return;
 
 		// Get the creator of the shrine
-		StructureData save = StructureData.Util.load(UUID.fromString(DataManager.getValueTemp(player.getName(), character.getName()).toString()));
+		StructureData save = StructureData.Util.load(UUID.fromString(Data.getValueTemp(player.getName(), character.getName()).toString()));
 
 		// Calculate the tribute value
 		int tributeValue = 0, items = 0;
@@ -176,6 +176,6 @@ public class TributeListener implements Listener
 		// Open the tribute inventory
 		Inventory ii = Bukkit.getServer().createInventory(player, 27, English.CHEST_TRIBUTE_TO.getLine().replace("{deity}", shrineDeity.getName()));
 		player.openInventory(ii);
-		DataManager.saveTemp(player.getName(), character.getName(), save.getId());
+		Data.saveTemp(player.getName(), character.getName(), save.getId());
 	}
 }

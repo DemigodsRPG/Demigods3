@@ -80,7 +80,7 @@ public class TributeData implements ConfigurationSerializable
 
 	public void delete()
 	{
-		DataManager.timedData.remove(id);
+		Data.timedData.remove(id);
 	}
 
 	@Override
@@ -109,7 +109,7 @@ public class TributeData implements ConfigurationSerializable
 			tributeData.setAmount(amount);
 
 			// Put it in the map
-			DataManager.tributeData.put(tributeData.getId(), tributeData);
+			Data.tributeData.put(tributeData.getId(), tributeData);
 		}
 
 		public static void remove(String category, Material material)
@@ -119,12 +119,12 @@ public class TributeData implements ConfigurationSerializable
 
 		public static TributeData get(UUID id)
 		{
-			return DataManager.tributeData.get(id);
+			return Data.tributeData.get(id);
 		}
 
 		public static Set<TributeData> getAll()
 		{
-			return Sets.newHashSet(DataManager.tributeData.values());
+			return Sets.newHashSet(Data.tributeData.values());
 		}
 
 		public static TributeData find(String category, Material material)

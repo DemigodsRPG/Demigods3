@@ -3,7 +3,7 @@ package com.censoredsoftware.demigods.engine.listener;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.DemigodsPlugin;
 import com.censoredsoftware.demigods.engine.data.DPlayer;
-import com.censoredsoftware.demigods.engine.data.DataManager;
+import com.censoredsoftware.demigods.engine.data.Data;
 import com.censoredsoftware.demigods.engine.data.StructureData;
 import com.censoredsoftware.demigods.engine.language.English;
 import com.censoredsoftware.demigods.engine.mythos.DivineItem;
@@ -110,8 +110,8 @@ public class FlagListener implements Listener
 			}
 		}, 1);
 
-		if(DataManager.hasTimed("explode", "structure")) return;
-		DataManager.saveTimed("explode", "structure", true, 2);
+		if(Data.hasTimed("explode", "structure")) return;
+		Data.saveTimed("explode", "structure", true, 2);
 
 		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.plugin(), new Runnable()
 		{

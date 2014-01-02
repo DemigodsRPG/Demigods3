@@ -4,7 +4,7 @@ import com.censoredsoftware.censoredlib.language.Symbol;
 import com.censoredsoftware.censoredlib.trigger.Trigger;
 import com.censoredsoftware.demigods.engine.data.DCharacter;
 import com.censoredsoftware.demigods.engine.data.DDeath;
-import com.censoredsoftware.demigods.engine.data.DataManager;
+import com.censoredsoftware.demigods.engine.data.Data;
 import com.censoredsoftware.demigods.engine.util.Zones;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
@@ -31,7 +31,7 @@ public class NewPlayerNeedsHelp implements Trigger
 			@Override
 			public boolean apply(DCharacter character)
 			{
-				return DDeath.Util.getRecentDeaths(character, focusTime).size() >= deathsNeeded && !DataManager.hasTimed(character.getName(), "needsHelpTrigger");
+				return DDeath.Util.getRecentDeaths(character, focusTime).size() >= deathsNeeded && !Data.hasTimed(character.getName(), "needsHelpTrigger");
 			}
 		});
 		if(characters.isEmpty()) return;
@@ -39,7 +39,7 @@ public class NewPlayerNeedsHelp implements Trigger
 		{
 			if(Zones.inNoDemigodsZone(character.getLocation())) continue;
 			character.sendAllianceMessage(ChatColor.YELLOW + " " + Symbol.CAUTION + " " + character.getDeity().getColor() + character.getName() + ChatColor.YELLOW + " needs help!");
-			DataManager.saveTimed(character.getName(), "needsHelpTrigger", true, focusTime);
+			Data.saveTimed(character.getName(), "needsHelpTrigger", true, focusTime);
 		}
 	}
 

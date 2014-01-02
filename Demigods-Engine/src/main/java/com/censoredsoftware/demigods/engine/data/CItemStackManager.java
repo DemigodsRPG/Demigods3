@@ -9,17 +9,17 @@ public class CItemStackManager
 {
 	public static void save(CItemStack itemStack)
 	{
-		DataManager.itemStacks.put(itemStack.getId(), itemStack);
+		Data.itemStacks.put(itemStack.getId(), itemStack);
 	}
 
 	public static void delete(UUID id)
 	{
-		DataManager.itemStacks.remove(id);
+		Data.itemStacks.remove(id);
 	}
 
 	public static CItemStack load(UUID id)
 	{
-		return DataManager.itemStacks.get(id);
+		return Data.itemStacks.get(id);
 	}
 
 	public static CItemStack create(ItemStack item)

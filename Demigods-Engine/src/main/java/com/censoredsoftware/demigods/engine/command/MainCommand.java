@@ -8,7 +8,7 @@ import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.DemigodsPlugin;
 import com.censoredsoftware.demigods.engine.data.DCharacter;
 import com.censoredsoftware.demigods.engine.data.DPlayer;
-import com.censoredsoftware.demigods.engine.data.DataManager;
+import com.censoredsoftware.demigods.engine.data.Data;
 import com.censoredsoftware.demigods.engine.language.English;
 import com.censoredsoftware.demigods.engine.mythos.Ability;
 import com.censoredsoftware.demigods.engine.mythos.Alliance;
@@ -279,33 +279,33 @@ public class MainCommand extends WrappedCommand
 		{
 			if(!Admins.wandEnabled(sender))
 			{
-				DataManager.saveTemp(sender.getName(), "temp_admin_wand", true);
+				Data.saveTemp(sender.getName(), "temp_admin_wand", true);
 				sender.sendMessage(ChatColor.RED + "Your admin wand has been enabled for " + Material.getMaterial(Configs.getSettingInt("admin.wand_tool")));
 			}
 			else if(Admins.wandEnabled(sender))
 			{
-				DataManager.removeTemp(sender.getName(), "temp_admin_wand");
+				Data.removeTemp(sender.getName(), "temp_admin_wand");
 				sender.sendMessage(ChatColor.RED + "You have disabled your admin wand.");
 			}
 			return true;
 		}
 		else if("debug".equalsIgnoreCase(args[1]))
 		{
-			if(!DataManager.hasKeyTemp(sender.getName(), "temp_admin_debug") || !Boolean.parseBoolean(DataManager.getValueTemp(sender.getName(), "temp_admin_debug").toString()))
+			if(!Data.hasKeyTemp(sender.getName(), "temp_admin_debug") || !Boolean.parseBoolean(Data.getValueTemp(sender.getName(), "temp_admin_debug").toString()))
 			{
-				DataManager.saveTemp(sender.getName(), "temp_admin_debug", true);
+				Data.saveTemp(sender.getName(), "temp_admin_debug", true);
 				sender.sendMessage(ChatColor.RED + "You have enabled debugging.");
 			}
-			else if(DataManager.hasKeyTemp(sender.getName(), "temp_admin_debug") && Boolean.parseBoolean(DataManager.getValueTemp(sender.getName(), "temp_admin_debug").toString()))
+			else if(Data.hasKeyTemp(sender.getName(), "temp_admin_debug") && Boolean.parseBoolean(Data.getValueTemp(sender.getName(), "temp_admin_debug").toString()))
 			{
-				DataManager.removeTemp(sender.getName(), "temp_admin_debug");
+				Data.removeTemp(sender.getName(), "temp_admin_debug");
 				sender.sendMessage(ChatColor.RED + "You have disabled debugging.");
 			}
 		}
 		else if("clear".equalsIgnoreCase(args[1]) && args[2].equalsIgnoreCase("data") && args[3].equalsIgnoreCase("yesdoitforsurepermanently"))
 		{
 			sender.sendMessage(ChatColor.RED + English.ADMIN_CLEAR_DATA_STARTING.getLine());
-			DataManager.flushData();
+			Data.flushData();
 			sender.sendMessage(ChatColor.GREEN + English.ADMIN_CLEAR_DATA_FINISHED.getLine());
 			return true;
 		}

@@ -1,18 +1,5 @@
 package com.censoredsoftware.demigods.engine.data;
 
-import java.util.*;
-
-import org.bukkit.*;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.material.MaterialData;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.scheduler.BukkitRunnable;
-
 import com.censoredsoftware.censoredlib.data.inventory.CEnderInventory;
 import com.censoredsoftware.censoredlib.data.inventory.CInventory;
 import com.censoredsoftware.censoredlib.data.inventory.CItemStack;
@@ -30,6 +17,18 @@ import com.censoredsoftware.demigods.engine.util.Messages;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
+import org.bukkit.*;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.material.MaterialData;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.*;
 
 public class DCharacter implements Participant, ConfigurationSerializable
 {
@@ -264,7 +263,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 				PotionEffect potion = Util.getSavedPotion(UUID.fromString(stringId)).toPotionEffect();
 				if(potion != null)
 				{
-					DataManager.savedPotions.remove(UUID.fromString(stringId));
+					Data.savedPotions.remove(UUID.fromString(stringId));
 					set.add(potion);
 				}
 			}
@@ -286,7 +285,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			{
 				try
 				{
-					return DataManager.savedPotions.get(UUID.fromString(s));
+					return Data.savedPotions.get(UUID.fromString(s));
 				}
 				catch(Exception ignored)
 				{}
@@ -559,7 +558,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		for(StructureData structureSave : Structure.Util.getStructureWithFlag(Structure.Flag.DELETE_WITH_OWNER))
 			if(structureSave.hasOwner() && structureSave.getOwner().equals(getId())) structureSave.remove();
 		for(DSavedPotion potion : getRawPotionEffects())
-			DataManager.savedPotions.remove(potion.getId());
+			Data.savedPotions.remove(potion.getId());
 		Util.deleteInventory(getInventory().getId());
 		Util.deleteEnderInventory(getEnderInventory().getId());
 		Util.deleteMeta(getMeta().getId());
@@ -669,7 +668,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 		protected void delete()
 		{
-			DataManager.inventories.remove(getId());
+			Data.inventories.remove(getId());
 		}
 	}
 
@@ -697,7 +696,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 		protected void delete()
 		{
-			DataManager.enderInventories.remove(this.getId());
+			Data.enderInventories.remove(this.getId());
 		}
 	}
 
@@ -1080,42 +1079,42 @@ public class DCharacter implements Participant, ConfigurationSerializable
 	{
 		public static void save(DCharacter character)
 		{
-			DataManager.characters.put(character.getId(), character);
+			Data.characters.put(character.getId(), character);
 		}
 
 		public static void saveMeta(Meta meta)
 		{
-			DataManager.characterMetas.put(meta.getId(), meta);
+			Data.characterMetas.put(meta.getId(), meta);
 		}
 
 		public static void saveInventory(Inventory inventory)
 		{
-			DataManager.inventories.put(inventory.getId(), inventory);
+			Data.inventories.put(inventory.getId(), inventory);
 		}
 
 		public static void saveInventory(EnderInventory inventory)
 		{
-			DataManager.enderInventories.put(inventory.getId(), inventory);
+			Data.enderInventories.put(inventory.getId(), inventory);
 		}
 
 		public static void delete(UUID id)
 		{
-			DataManager.characters.remove(id);
+			Data.characters.remove(id);
 		}
 
 		public static void deleteMeta(UUID id)
 		{
-			DataManager.characterMetas.remove(id);
+			Data.characterMetas.remove(id);
 		}
 
 		public static void deleteInventory(UUID id)
 		{
-			DataManager.inventories.remove(id);
+			Data.inventories.remove(id);
 		}
 
 		public static void deleteEnderInventory(UUID id)
 		{
-			DataManager.enderInventories.remove(id);
+			Data.enderInventories.remove(id);
 		}
 
 		public static void create(DPlayer player, String chosenDeity, String chosenName, boolean switchCharacter)
@@ -1214,24 +1213,24 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 		public static Set<DCharacter> loadAll()
 		{
-			return Sets.newHashSet(DataManager.characters.values());
+			return Sets.newHashSet(Data.characters.values());
 		}
 
 		public static DCharacter load(UUID id)
 		{
-			return DataManager.characters.get(id);
+			return Data.characters.get(id);
 		}
 
 		public static Meta loadMeta(UUID id)
 		{
-			return DataManager.characterMetas.get(id);
+			return Data.characterMetas.get(id);
 		}
 
 		public static Inventory getInventory(UUID id)
 		{
 			try
 			{
-				return DataManager.inventories.get(id);
+				return Data.inventories.get(id);
 			}
 			catch(Exception ignored)
 			{}
@@ -1242,7 +1241,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		{
 			try
 			{
-				return DataManager.enderInventories.get(id);
+				return Data.enderInventories.get(id);
 			}
 			catch(Exception ignored)
 			{}
@@ -1253,7 +1252,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		{
 			try
 			{
-				return DataManager.savedPotions.get(id);
+				return Data.savedPotions.get(id);
 			}
 			catch(Exception ignored)
 			{}
@@ -1291,18 +1290,18 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 		public static boolean isCooledDown(DCharacter character, String abilityName)
 		{
-			return !DataManager.hasTimed(character.getName(), abilityName + "_cooldown");
+			return !Data.hasTimed(character.getName(), abilityName + "_cooldown");
 			// return !DataManager.hasKeyTemp(character.getName(), abilityName + "_cooldown") || getCooldown(character, abilityName) < System.currentTimeMillis();
 		}
 
 		public static void setCooldown(DCharacter character, String abilityName, int cooldown)
 		{
-			DataManager.saveTimed(character.getName(), abilityName + "_cooldown", true, cooldown);
+			Data.saveTimed(character.getName(), abilityName + "_cooldown", true, cooldown);
 		}
 
 		public static long getCooldown(DCharacter character, String abilityName)
 		{
-			return DataManager.getTimedExpiration(character.getName(), abilityName + "_cooldown");
+			return Data.getTimedExpiration(character.getName(), abilityName + "_cooldown");
 		}
 
 		public static Set<DCharacter> getAllActive()

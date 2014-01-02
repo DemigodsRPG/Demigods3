@@ -361,7 +361,7 @@ public class Battle implements ConfigurationSerializable
 	public void end() // TODO Make this specify that it was a pet that won/lost a duel
 	{
 		for(String stringId : involvedPlayers)
-			DataManager.saveTimed(stringId, "just_finished_battle", true, 60);
+			Data.saveTimed(stringId, "just_finished_battle", true, 60);
 
 		Map<UUID, Integer> scores = getScores();
 		List<UUID> participants = Lists.newArrayList(scores.keySet());
@@ -418,7 +418,7 @@ public class Battle implements ConfigurationSerializable
 
 	public void delete()
 	{
-		DataManager.battles.remove(getId());
+		Data.battles.remove(getId());
 	}
 
 	public void sendMessage(String message)
@@ -466,7 +466,7 @@ public class Battle implements ConfigurationSerializable
 	{
 		public static void save(Battle battle)
 		{
-			DataManager.battles.put(battle.getId(), battle);
+			Data.battles.put(battle.getId(), battle);
 		}
 
 		public static Battle create(Participant damager, Participant damaged)
@@ -486,12 +486,12 @@ public class Battle implements ConfigurationSerializable
 
 		public static Battle get(UUID id)
 		{
-			return DataManager.battles.get(id);
+			return Data.battles.get(id);
 		}
 
 		public static Set<Battle> getAll()
 		{
-			return Sets.newHashSet(DataManager.battles.values());
+			return Sets.newHashSet(Data.battles.values());
 		}
 
 		public static List<Battle> getAllActive()

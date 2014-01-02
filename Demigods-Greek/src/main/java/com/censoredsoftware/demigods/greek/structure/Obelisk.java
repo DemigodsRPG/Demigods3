@@ -6,7 +6,7 @@ import com.censoredsoftware.censoredlib.schematic.Selection;
 import com.censoredsoftware.censoredlib.util.Colors;
 import com.censoredsoftware.demigods.engine.data.DCharacter;
 import com.censoredsoftware.demigods.engine.data.DPlayer;
-import com.censoredsoftware.demigods.engine.data.DataManager;
+import com.censoredsoftware.demigods.engine.data.Data;
 import com.censoredsoftware.demigods.engine.data.StructureData;
 import com.censoredsoftware.demigods.engine.mythos.Deity;
 import com.censoredsoftware.demigods.engine.mythos.Structure;
@@ -70,7 +70,7 @@ public class Obelisk extends GreekStructure
 		@Override
 		public Boolean apply(StructureData data, DCharacter character)
 		{
-			if(!DCharacter.Util.areAllied(character, DataManager.characters.get(data.getOwner())) || !data.getSanctifiers().contains(character.getId())) return false;
+			if(!DCharacter.Util.areAllied(character, Data.characters.get(data.getOwner())) || !data.getSanctifiers().contains(character.getId())) return false;
 			Location location = data.getReferenceLocation();
 			location.getWorld().playSound(location, Sound.CAT_PURR, 0.3F, 0.7F);
 			MaterialData colorData = Colors.getMaterial(character.getDeity().getColor());
@@ -83,10 +83,10 @@ public class Obelisk extends GreekStructure
 		@Override
 		public Boolean apply(StructureData data, DCharacter character)
 		{
-			if(DCharacter.Util.areAllied(character, DataManager.characters.get(data.getOwner()))) return false;
-			if(DataManager.characters.containsKey(data.getOwner()))
+			if(DCharacter.Util.areAllied(character, Data.characters.get(data.getOwner()))) return false;
+			if(Data.characters.containsKey(data.getOwner()))
 			{
-				DPlayer dPlayer = DPlayer.Util.getPlayer(DataManager.characters.get(data.getOwner()).getOfflinePlayer());
+				DPlayer dPlayer = DPlayer.Util.getPlayer(Data.characters.get(data.getOwner()).getOfflinePlayer());
 				long lastLogoutTime = dPlayer.getLastLogoutTime();
 				Calendar calendarHalfHour = Calendar.getInstance();
 				calendarHalfHour.add(Calendar.MINUTE, -30);
@@ -192,11 +192,11 @@ public class Obelisk extends GreekStructure
 				StructureData save = Structure.Util.getStructureRegional(location);
 				DCharacter owner = DCharacter.Util.load(save.getOwner());
 
-				if(DataManager.hasTimed(player.getName(), "destroy_obelisk"))
+				if(Data.hasTimed(player.getName(), "destroy_obelisk"))
 				{
 					// Remove the Obelisk
 					save.remove();
-					DataManager.removeTimed(player.getName(), "destroy_obelisk");
+					Data.removeTimed(player.getName(), "destroy_obelisk");
 
 					Admins.sendDebug(ChatColor.RED + "Obelisk owned by (" + owner.getName() + ") at: " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ() + " removed.");
 
@@ -204,7 +204,7 @@ public class Obelisk extends GreekStructure
 				}
 				else
 				{
-					DataManager.saveTimed(player.getName(), "destroy_obelisk", true, 5);
+					Data.saveTimed(player.getName(), "destroy_obelisk", true, 5);
 					player.sendMessage(ChatColor.RED + English.ADMIN_WAND_REMOVE_OBELISK.getLine());
 				}
 			}

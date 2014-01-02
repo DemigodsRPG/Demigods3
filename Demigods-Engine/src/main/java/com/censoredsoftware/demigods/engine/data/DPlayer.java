@@ -162,12 +162,12 @@ public class DPlayer implements ConfigurationSerializable
 		else if(!inNoPvpZone)
 		{
 			setCanPvp(true);
-			DataManager.removeTimed(player.getName(), "pvp_cooldown");
+			Data.removeTimed(player.getName(), "pvp_cooldown");
 		}
-		else if(canPvp() && !DataManager.hasTimed(player.getName(), "pvp_cooldown"))
+		else if(canPvp() && !Data.hasTimed(player.getName(), "pvp_cooldown"))
 		{
 			int delay = Configs.getSettingInt("zones.pvp_area_delay_time");
-			DataManager.saveTimed(player.getName(), "pvp_cooldown", true, delay);
+			Data.saveTimed(player.getName(), "pvp_cooldown", true, delay);
 
 			Bukkit.getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.plugin(), new BukkitRunnable()
 			{
@@ -527,12 +527,12 @@ public class DPlayer implements ConfigurationSerializable
 
 		public static void save(DPlayer player)
 		{
-			DataManager.players.put(player.getMojangAccount(), player);
+			Data.players.put(player.getMojangAccount(), player);
 		}
 
 		public static void delete(String mojangAccount)
 		{
-			DataManager.players.remove(mojangAccount);
+			Data.players.remove(mojangAccount);
 		}
 
 		public static DPlayer getPlayer(final OfflinePlayer player)
@@ -548,7 +548,7 @@ public class DPlayer implements ConfigurationSerializable
 		{
 			try
 			{
-				return Iterables.find(DataManager.players.values(), new Predicate<DPlayer>()
+				return Iterables.find(Data.players.values(), new Predicate<DPlayer>()
 				{
 					@Override
 					public boolean apply(DPlayer dPlayer)
@@ -564,7 +564,7 @@ public class DPlayer implements ConfigurationSerializable
 
 		public static DPlayer getPlayer(String mojangAccount)
 		{
-			if(DataManager.players.containsKey(mojangAccount)) return DataManager.players.get(mojangAccount);
+			if(Data.players.containsKey(mojangAccount)) return Data.players.get(mojangAccount);
 			return null;
 		}
 
@@ -582,7 +582,7 @@ public class DPlayer implements ConfigurationSerializable
 
 		public static Collection<OfflinePlayer> getMortals()
 		{
-			return Collections2.transform(Collections2.filter(DataManager.players.values(), new Predicate<DPlayer>()
+			return Collections2.transform(Collections2.filter(Data.players.values(), new Predicate<DPlayer>()
 			{
 				@Override
 				public boolean apply(DPlayer player)
@@ -637,7 +637,7 @@ public class DPlayer implements ConfigurationSerializable
 		{
 			try
 			{
-				return DataManager.hasKeyTemp(player.getName(), "prayer_conversation");
+				return Data.hasKeyTemp(player.getName(), "prayer_conversation");
 			}
 			catch(Exception ignored)
 			{}
@@ -651,11 +651,11 @@ public class DPlayer implements ConfigurationSerializable
 		 */
 		public static void clearPrayerSession(OfflinePlayer player)
 		{
-			DataManager.removeTemp(player.getName(), "prayer_conversation");
-			DataManager.removeTemp(player.getName(), "prayer_context");
-			DataManager.removeTemp(player.getName(), "prayer_location");
-			DataManager.removeTimed(player.getName(), "currently_creating");
-			DataManager.removeTimed(player.getName(), "currently_forsaking");
+			Data.removeTemp(player.getName(), "prayer_conversation");
+			Data.removeTemp(player.getName(), "prayer_context");
+			Data.removeTemp(player.getName(), "prayer_location");
+			Data.removeTimed(player.getName(), "currently_creating");
+			Data.removeTimed(player.getName(), "currently_forsaking");
 		}
 
 		/**
@@ -667,7 +667,7 @@ public class DPlayer implements ConfigurationSerializable
 		public static ConversationContext getPrayerContext(Player player)
 		{
 			if(!isPraying(player)) return null;
-			return (ConversationContext) DataManager.getValueTemp(player.getName(), "prayer_context");
+			return (ConversationContext) Data.getValueTemp(player.getName(), "prayer_context");
 		}
 
 		/**
@@ -708,8 +708,8 @@ public class DPlayer implements ConfigurationSerializable
 			{
 				// Create the conversation and save it
 				Conversation prayer = Prayer.startPrayer(player);
-				DataManager.saveTemp(player.getName(), "prayer_conversation", prayer);
-				DataManager.saveTemp(player.getName(), "prayer_location", player.getLocation());
+				Data.saveTemp(player.getName(), "prayer_conversation", prayer);
+				Data.saveTemp(player.getName(), "prayer_location", player.getLocation());
 				player.setSneaking(true);
 
 				// Record chat if enabled
@@ -718,16 +718,16 @@ public class DPlayer implements ConfigurationSerializable
 			else
 			{
 				// Save context and abandon the conversation
-				if(DataManager.hasKeyTemp(player.getName(), "prayer_conversation"))
+				if(Data.hasKeyTemp(player.getName(), "prayer_conversation"))
 				{
-					Conversation prayer = (Conversation) DataManager.getValueTemp(player.getName(), "prayer_conversation");
-					DataManager.saveTemp(player.getName(), "prayer_context", prayer.getContext());
+					Conversation prayer = (Conversation) Data.getValueTemp(player.getName(), "prayer_conversation");
+					Data.saveTemp(player.getName(), "prayer_context", prayer.getContext());
 					prayer.abandon();
 				}
 
 				// Remove the data
-				DataManager.removeTemp(player.getName(), "prayer_conversation");
-				DataManager.removeTemp(player.getName(), "prayer_location");
+				Data.removeTemp(player.getName(), "prayer_conversation");
+				Data.removeTemp(player.getName(), "prayer_location");
 				player.setSneaking(false);
 
 				// Handle recorded chat

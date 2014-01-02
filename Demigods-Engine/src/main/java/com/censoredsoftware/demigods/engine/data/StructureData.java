@@ -381,7 +381,7 @@ public class StructureData implements ConfigurationSerializable
 
 	public void save()
 	{
-		DataManager.structures.put(getId(), this);
+		Data.structures.put(getId(), this);
 	}
 
 	public void remove()
@@ -414,22 +414,22 @@ public class StructureData implements ConfigurationSerializable
 	{
 		public static void remove(UUID id)
 		{
-			DataManager.structures.remove(id);
+			Data.structures.remove(id);
 		}
 
 		public static StructureData load(UUID id)
 		{
-			return DataManager.structures.get(id);
+			return Data.structures.get(id);
 		}
 
 		public static Collection<StructureData> loadAll()
 		{
-			return DataManager.structures.values();
+			return Data.structures.values();
 		}
 
 		public static Collection<StructureData> findAll(Predicate<StructureData> predicate)
 		{
-			return Collections2.filter(DataManager.structures.values(), predicate);
+			return Collections2.filter(Data.structures.values(), predicate);
 		}
 	}
 }

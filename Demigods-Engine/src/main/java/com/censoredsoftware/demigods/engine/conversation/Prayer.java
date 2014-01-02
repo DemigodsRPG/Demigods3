@@ -1,25 +1,5 @@
 package com.censoredsoftware.demigods.engine.conversation;
 
-import java.lang.reflect.Field;
-import java.util.*;
-
-import org.apache.commons.lang.StringUtils;
-import org.bukkit.*;
-import org.bukkit.conversations.*;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.ExperienceOrb;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitRunnable;
-
 import com.censoredsoftware.censoredlib.data.player.Notification;
 import com.censoredsoftware.censoredlib.helper.WrappedConversation;
 import com.censoredsoftware.censoredlib.language.Symbol;
@@ -39,6 +19,25 @@ import com.censoredsoftware.demigods.engine.util.Messages;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.*;
+import org.bukkit.conversations.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.ExperienceOrb;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import java.lang.reflect.Field;
+import java.util.*;
 
 @SuppressWarnings("unchecked")
 public class Prayer implements WrappedConversation
@@ -101,12 +100,12 @@ public class Prayer implements WrappedConversation
 				// Compatibility with vanilla Bukkit
 				Field sessionDataField = ConversationContext.class.getDeclaredField("sessionData");
 				sessionDataField.setAccessible(true);
-				if(DataManager.hasKeyTemp(player.getName(), "prayer_context")) conversationContext = (Map<Object, Object>) sessionDataField.get(DataManager.getValueTemp(player.getName(), "prayer_context"));
+				if(Data.hasKeyTemp(player.getName(), "prayer_context")) conversationContext = (Map<Object, Object>) sessionDataField.get(Data.getValueTemp(player.getName(), "prayer_context"));
 			}
 			else
 			{
 				// Grab the context Map
-				if(DataManager.hasKeyTemp(player.getName(), "prayer_context")) conversationContext.putAll(((ConversationContext) DataManager.getValueTemp(player.getName(), "prayer_context")).getAllSessionData());
+				if(Data.hasKeyTemp(player.getName(), "prayer_context")) conversationContext.putAll(((ConversationContext) Data.getValueTemp(player.getName(), "prayer_context")).getAllSessionData());
 			}
 
 			// Build the CONVERSATION_FACTORY and begin
@@ -470,7 +469,7 @@ public class Prayer implements WrappedConversation
 					}
 					else if(skill != null ? skill.hasMetCap() : false)
 					{
-	notifications.add(English.NOTIFICATION_ERROR_SKILL_MAX_LEVEL);
+						notifications.add(English.NOTIFICATION_ERROR_SKILL_MAX_LEVEL);
 						return false;
 					}
 					else
@@ -770,7 +769,7 @@ public class Prayer implements WrappedConversation
 		public boolean canUse(ConversationContext context)
 		{
 			DCharacter character = DPlayer.Util.getPlayer((Player) context.getForWhom()).getCurrent();
-			return character != null && ((Player) context.getForWhom()).hasPermission("demigods.basic.forsake") && !DataManager.hasTimed(((Player) context.getForWhom()).getName(), "currently_creating") && !DataManager.hasTimed(((Player) context.getForWhom()).getName(), "currently_forsaking");
+			return character != null && ((Player) context.getForWhom()).hasPermission("demigods.basic.forsake") && !Data.hasTimed(((Player) context.getForWhom()).getName(), "currently_creating") && !Data.hasTimed(((Player) context.getForWhom()).getName(), "currently_forsaking");
 		}
 
 		@Override
@@ -825,7 +824,7 @@ public class Prayer implements WrappedConversation
 				player.sendRawMessage(" ");
 
 				// Save temporary data, end the CONVERSATION_FACTORY, and return
-				DataManager.saveTimed(player.getName(), "currently_forsaking", true, 600);
+				Data.saveTimed(player.getName(), "currently_forsaking", true, 600);
 				DPlayer.Util.togglePrayingSilent(player, false, true);
 			}
 			return null;
@@ -838,14 +837,14 @@ public class Prayer implements WrappedConversation
 		@Override
 		public String getChatName(ConversationContext context)
 		{
-			return ChatColor.DARK_RED + "Finish Forsaking " + ChatColor.GRAY + "(" + Times.getTimeTagged(DataManager.getTimedExpiration(((Player) context.getForWhom()).getName(), "currently_forsaking"), true) + " remaining)";
+			return ChatColor.DARK_RED + "Finish Forsaking " + ChatColor.GRAY + "(" + Times.getTimeTagged(Data.getTimedExpiration(((Player) context.getForWhom()).getName(), "currently_forsaking"), true) + " remaining)";
 		}
 
 		@Override
 		public boolean canUse(ConversationContext context)
 		{
 			Player player = (Player) context.getForWhom();
-			return DataManager.hasTimed(player.getName(), "currently_forsaking");
+			return Data.hasTimed(player.getName(), "currently_forsaking");
 		}
 
 		@Override
@@ -906,7 +905,7 @@ public class Prayer implements WrappedConversation
 		public boolean canUse(ConversationContext context)
 		{
 			Player player = (Player) context.getForWhom();
-			return DataManager.hasTimed(player.getName(), "currently_forsaking");
+			return Data.hasTimed(player.getName(), "currently_forsaking");
 		}
 
 		@Override
@@ -916,7 +915,7 @@ public class Prayer implements WrappedConversation
 			Player player = (Player) context.getForWhom();
 
 			// Cancel the temp data
-			DataManager.removeTimed(player.getName(), "currently_forsaking");
+			Data.removeTimed(player.getName(), "currently_forsaking");
 
 			return "";
 		}
@@ -940,7 +939,7 @@ public class Prayer implements WrappedConversation
 		@Override
 		public boolean canUse(ConversationContext context)
 		{
-			return ((Player) context.getForWhom()).hasPermission("demigods.basic.create") && !DataManager.hasTimed(((Player) context.getForWhom()).getName(), "currently_creating") && !DataManager.hasTimed(((Player) context.getForWhom()).getName(), "currently_forsaking") && DPlayer.Util.getPlayer((Player) context.getForWhom()).canMakeCharacter();
+			return ((Player) context.getForWhom()).hasPermission("demigods.basic.create") && !Data.hasTimed(((Player) context.getForWhom()).getName(), "currently_creating") && !Data.hasTimed(((Player) context.getForWhom()).getName(), "currently_forsaking") && DPlayer.Util.getPlayer((Player) context.getForWhom()).canMakeCharacter();
 		}
 
 		@Override
@@ -1205,7 +1204,7 @@ public class Prayer implements WrappedConversation
 					player.sendRawMessage(" ");
 
 					// Save temporary data, end the CONVERSATION_FACTORY, and return
-					DataManager.saveTimed(player.getName(), "currently_creating", true, 600);
+					Data.saveTimed(player.getName(), "currently_creating", true, 600);
 					DPlayer.Util.togglePrayingSilent(player, false, true);
 					return null;
 				}
@@ -1224,14 +1223,14 @@ public class Prayer implements WrappedConversation
 		@Override
 		public String getChatName(ConversationContext context)
 		{
-			return ChatColor.GREEN + "Confirm Character " + ChatColor.GRAY + "(" + Times.getTimeTagged(DataManager.getTimedExpiration(((Player) context.getForWhom()).getName(), "currently_creating"), true) + " remaining)";
+			return ChatColor.GREEN + "Confirm Character " + ChatColor.GRAY + "(" + Times.getTimeTagged(Data.getTimedExpiration(((Player) context.getForWhom()).getName(), "currently_creating"), true) + " remaining)";
 		}
 
 		@Override
 		public boolean canUse(ConversationContext context)
 		{
 			Player player = (Player) context.getForWhom();
-			return DataManager.hasTimed(player.getName(), "currently_creating");
+			return Data.hasTimed(player.getName(), "currently_creating");
 		}
 
 		@Override
@@ -1290,7 +1289,7 @@ public class Prayer implements WrappedConversation
 		public boolean canUse(ConversationContext context)
 		{
 			Player player = (Player) context.getForWhom();
-			return DataManager.hasTimed(player.getName(), "currently_creating");
+			return Data.hasTimed(player.getName(), "currently_creating");
 		}
 
 		@Override
@@ -1300,7 +1299,7 @@ public class Prayer implements WrappedConversation
 			Player player = (Player) context.getForWhom();
 
 			// Cancel the temp data
-			DataManager.removeTimed(player.getName(), "currently_creating");
+			Data.removeTimed(player.getName(), "currently_creating");
 
 			return "";
 		}
@@ -1407,8 +1406,8 @@ public class Prayer implements WrappedConversation
 							DCharacter.Util.create(DPlayer.Util.getPlayer(offlinePlayer), deity.getName(), chosenName, true);
 
 							// Remove temp data
-							DataManager.removeTemp(offlinePlayer.getName(), "currently_creating");
-							DataManager.removeTimed(offlinePlayer.getName(), "currently_creating");
+							Data.removeTemp(offlinePlayer.getName(), "currently_creating");
+							Data.removeTimed(offlinePlayer.getName(), "currently_creating");
 
 							// If the player is online, let them know
 							if(offlinePlayer.isOnline())
@@ -1524,7 +1523,7 @@ public class Prayer implements WrappedConversation
 			// Define variables
 			Player player = event.getPlayer();
 
-			if(DPlayer.Util.isPraying(player) && event.getTo().distance((Location) DataManager.getValueTemp(player.getName(), "prayer_location")) >= Configs.getSettingInt("zones.prayer_radius")) DPlayer.Util.togglePraying(player, false);
+			if(DPlayer.Util.isPraying(player) && event.getTo().distance((Location) Data.getValueTemp(player.getName(), "prayer_location")) >= Configs.getSettingInt("zones.prayer_radius")) DPlayer.Util.togglePraying(player, false);
 		}
 	}
 

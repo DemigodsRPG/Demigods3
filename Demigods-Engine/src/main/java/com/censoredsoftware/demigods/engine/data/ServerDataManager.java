@@ -12,12 +12,12 @@ public class ServerDataManager
 {
 	public static ServerData get(UUID id)
 	{
-		return DataManager.serverData.get(id);
+		return Data.serverData.get(id);
 	}
 
 	public static Set<ServerData> getAll()
 	{
-		return Sets.newHashSet(DataManager.serverData.values());
+		return Sets.newHashSet(Data.serverData.values());
 	}
 
 	public static ServerData find(String key, String subKey)
@@ -44,7 +44,7 @@ public class ServerDataManager
 
 	public static void delete(ServerData data)
 	{
-		DataManager.serverData.remove(data.getId());
+		Data.serverData.remove(data.getId());
 	}
 
 	public static void remove(String key, String subKey)

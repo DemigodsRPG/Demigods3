@@ -12,22 +12,22 @@ public class NotificationManager
 {
 	public static void remove(Notification notification)
 	{
-		DataManager.notifications.remove(notification.getId());
+		Data.notifications.remove(notification.getId());
 	}
 
 	public static Set<Notification> loadAll()
 	{
-		return Sets.newHashSet(DataManager.notifications.values());
+		return Sets.newHashSet(Data.notifications.values());
 	}
 
 	public static void save(Notification notification)
 	{
-		DataManager.notifications.put(notification.getId(), notification);
+		Data.notifications.put(notification.getId(), notification);
 	}
 
 	public static Notification load(UUID id)
 	{
-		return DataManager.notifications.get(id);
+		return Data.notifications.get(id);
 	}
 
 	public static Notification create(Notification.Sender sender, DCharacter receiver, Notification.Danger danger, String name, String message)
