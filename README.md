@@ -23,3 +23,7 @@ Developers
 ==========
 
 Demigods 3 is being developed by The Demigods Team, defined in [**AUTHORS.md**](AUTHORS.md).
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/CensoredSoftware/demigods/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
