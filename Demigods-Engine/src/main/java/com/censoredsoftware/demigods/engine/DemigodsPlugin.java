@@ -19,7 +19,7 @@ public class DemigodsPlugin extends CensoredJavaPlugin
 {
 	private static final String CENSORED_LIBRARY_VERSION = "1.0";
 	static DemigodsPlugin INST;
-	static boolean READY = false;
+	static boolean ready = false;
 
 	public static CensoredJavaPlugin plugin()
 	{
@@ -48,7 +48,7 @@ public class DemigodsPlugin extends CensoredJavaPlugin
 			getPluginLoader().disablePlugin(this);
 			return;
 		}
-		else READY = true;
+		else ready = true;
 
 		// Print success!
 		message("enabled");
@@ -63,6 +63,11 @@ public class DemigodsPlugin extends CensoredJavaPlugin
 		Demigods.uninit();
 
 		message("disabled");
+	}
+
+	public static boolean getReady()
+	{
+		return ready;
 	}
 
 	private void message(String status)

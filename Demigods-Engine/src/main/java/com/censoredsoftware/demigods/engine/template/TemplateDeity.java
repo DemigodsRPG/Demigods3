@@ -195,7 +195,7 @@ public class TemplateDeity implements Deity
 		return new ConfigFile2()
 		{
 			@Override
-			public void unserialize(ConfigurationSection conf)
+			public ConfigFile2 unserialize(ConfigurationSection conf)
 			{
 				if(conf.isString("name")) name = conf.getString("name");
 				if(conf.isString("permission")) permission = conf.getString("permission");
@@ -208,6 +208,7 @@ public class TemplateDeity implements Deity
 				if(conf.isInt("favorRegen")) favorRegen = conf.getInt("favorRegen");
 				if(conf.isInt("maxFavor")) maxFavor = conf.getInt("maxFavor");
 				if(conf.isDouble("maxHealth")) maxHealth = conf.getDouble("maxHealth");
+				return this;
 			}
 
 			@Override

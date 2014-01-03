@@ -1,6 +1,6 @@
 package com.censoredsoftware.demigods.exclusive.util;
 
-import com.censoredsoftware.demigods.exclusive.Exclusive;
+import com.censoredsoftware.demigods.exclusive.ExclusiveMythos;
 import org.bukkit.configuration.Configuration;
 
 import java.util.List;
@@ -18,9 +18,9 @@ public class ExConfigs
 	 */
 	static
 	{
-		Configuration config = Exclusive.PLUGIN.getConfig();
+		Configuration config = ExclusiveMythos.inst().getConfig();
 		config.options().copyDefaults(true);
-		Exclusive.PLUGIN.saveConfig();
+		ExclusiveMythos.inst().saveConfig();
 	}
 
 	/**
@@ -31,7 +31,7 @@ public class ExConfigs
 	 */
 	public static int getSettingInt(String id)
 	{
-		if(Exclusive.PLUGIN.getConfig().isInt(id)) return Exclusive.PLUGIN.getConfig().getInt(id);
+		if(ExclusiveMythos.inst().getConfig().isInt(id)) return ExclusiveMythos.inst().getConfig().getInt(id);
 		else return -1;
 	}
 
@@ -43,7 +43,7 @@ public class ExConfigs
 	 */
 	public static String getSettingString(String id)
 	{
-		if(Exclusive.PLUGIN.getConfig().isString(id)) return Exclusive.PLUGIN.getConfig().getString(id);
+		if(ExclusiveMythos.inst().getConfig().isString(id)) return ExclusiveMythos.inst().getConfig().getString(id);
 		else return null;
 	}
 
@@ -55,7 +55,7 @@ public class ExConfigs
 	 */
 	public static boolean getSettingBoolean(String id)
 	{
-		return !Exclusive.PLUGIN.getConfig().isBoolean(id) || Exclusive.PLUGIN.getConfig().getBoolean(id);
+		return !ExclusiveMythos.inst().getConfig().isBoolean(id) || ExclusiveMythos.inst().getConfig().getBoolean(id);
 	}
 
 	/**
@@ -66,7 +66,7 @@ public class ExConfigs
 	 */
 	public static double getSettingDouble(String id)
 	{
-		if(Exclusive.PLUGIN.getConfig().isDouble(id)) return Exclusive.PLUGIN.getConfig().getDouble(id);
+		if(ExclusiveMythos.inst().getConfig().isDouble(id)) return ExclusiveMythos.inst().getConfig().getDouble(id);
 		else return -1;
 	}
 
@@ -78,7 +78,7 @@ public class ExConfigs
 	 */
 	public static List<String> getSettingList(String id)
 	{
-		if(Exclusive.PLUGIN.getConfig().isList(id)) return Exclusive.PLUGIN.getConfig().getStringList(id);
+		if(ExclusiveMythos.inst().getConfig().isList(id)) return ExclusiveMythos.inst().getConfig().getStringList(id);
 		return null;
 	}
 
@@ -86,15 +86,15 @@ public class ExConfigs
 	{
 		List<String> list = getSettingList(id);
 		list.add(data);
-		Exclusive.PLUGIN.getConfig().set(id, list);
-		Exclusive.PLUGIN.saveConfig();
+		ExclusiveMythos.inst().getConfig().set(id, list);
+		ExclusiveMythos.inst().saveConfig();
 	}
 
 	public static void removeFromSettingList(String id, String data)
 	{
 		List<String> list = getSettingList(id);
 		list.remove(data);
-		Exclusive.PLUGIN.getConfig().set(id, list);
-		Exclusive.PLUGIN.saveConfig();
+		ExclusiveMythos.inst().getConfig().set(id, list);
+		ExclusiveMythos.inst().saveConfig();
 	}
 }

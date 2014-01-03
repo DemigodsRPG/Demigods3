@@ -3,6 +3,8 @@ package com.censoredsoftware.demigods.exclusive;
 import com.censoredsoftware.censoredlib.helper.WrappedCommand;
 import com.censoredsoftware.censoredlib.trigger.Trigger;
 import com.censoredsoftware.demigods.engine.mythos.*;
+import com.censoredsoftware.demigods.exclusive.listener.DistrictListener;
+import com.censoredsoftware.demigods.exclusive.listener.WorldListener;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableSet;
 import org.bukkit.event.Listener;
@@ -11,12 +13,20 @@ import org.bukkit.permissions.Permission;
 
 public class ExclusiveMythos extends MythosPlugin
 {
+	private static ExclusiveMythos inst;
+
+	public static ExclusiveMythos inst()
+	{
+		return inst;
+	}
+
 	/**
 	 * The Bukkit enable method.
 	 */
 	@Override
 	public void onEnable()
 	{
+		inst = this;
 		Exclusive.init();
 	}
 
@@ -136,7 +146,7 @@ public class ExclusiveMythos extends MythosPlugin
 
 	public ImmutableCollection<Listener> getListeners()
 	{
-		return Exclusive.inst().LISTENERS;
+		return ImmutableSet.of(new DistrictListener(), new WorldListener());
 	}
 
 	public ImmutableCollection<Permission> getPermissions()

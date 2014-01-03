@@ -275,13 +275,11 @@ public class Data
 	// Temp Data
 	private static Table<String, String, Object> tempData;
 
-	public static final String SAVE_PATH;
+	// Data folder
+	public static final String SAVE_PATH = DemigodsPlugin.plugin().getDataFolder() + "/data/"; // Don't change this.;
 
-	static
+	public static void init()
 	{
-		// Data folder
-		SAVE_PATH = DemigodsPlugin.plugin().getDataFolder() + "/data/"; // Don't change this.
-
 		for(DemigodsFile data : values())
 			data.loadToData();
 		tempData = Tables.newCustomTable(new ConcurrentHashMap<String, Map<String, Object>>(), new Supplier<ConcurrentHashMap<String, Object>>()
@@ -456,7 +454,7 @@ public class Data
 		}
 
 		@Override
-		public final String getSavePath()
+		public String getSavePath()
 		{
 			return SAVE_PATH;
 		}

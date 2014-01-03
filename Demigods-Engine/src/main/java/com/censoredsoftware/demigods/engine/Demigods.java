@@ -118,6 +118,9 @@ public class Demigods extends CensoredCentralizedClass
 			INST.loadPermissions(true);
 			INST.loadScoreboard();
 
+			// Load the data
+			Data.init();
+
 			// Update usable characters
 			DCharacter.Util.updateUsableCharacters();
 
@@ -331,7 +334,7 @@ public class Demigods extends CensoredCentralizedClass
 
 	static void uninit()
 	{
-		if(DemigodsPlugin.READY)
+		if(DemigodsPlugin.getReady())
 		{
 			// Save all the data.
 			Data.save();
