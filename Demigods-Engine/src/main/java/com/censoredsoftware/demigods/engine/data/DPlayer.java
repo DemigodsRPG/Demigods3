@@ -1,18 +1,5 @@
 package com.censoredsoftware.demigods.engine.data;
 
-import java.util.*;
-
-import org.bukkit.*;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.conversations.Conversation;
-import org.bukkit.conversations.ConversationContext;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.scheduler.BukkitRunnable;
-
 import com.censoredsoftware.censoredlib.data.location.Region;
 import com.censoredsoftware.censoredlib.exception.MojangIdNotFoundException;
 import com.censoredsoftware.censoredlib.helper.MojangIdGrabber;
@@ -30,6 +17,18 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
+import org.bukkit.*;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.conversations.Conversation;
+import org.bukkit.conversations.ConversationContext;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.*;
 
 public class DPlayer implements ConfigurationSerializable
 {

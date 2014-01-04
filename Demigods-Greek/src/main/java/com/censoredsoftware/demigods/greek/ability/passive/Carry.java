@@ -1,7 +1,11 @@
 package com.censoredsoftware.demigods.greek.ability.passive;
 
-import java.util.List;
-
+import com.censoredsoftware.demigods.engine.data.DCharacter;
+import com.censoredsoftware.demigods.engine.data.DPlayer;
+import com.censoredsoftware.demigods.engine.mythos.Deity;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.censoredsoftware.demigods.greek.ability.GreekAbility;
+import com.google.common.collect.Lists;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -10,12 +14,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 
-import com.censoredsoftware.demigods.engine.data.DCharacter;
-import com.censoredsoftware.demigods.engine.data.DPlayer;
-import com.censoredsoftware.demigods.engine.mythos.Deity;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.censoredsoftware.demigods.greek.ability.GreekAbility;
-import com.google.common.collect.Lists;
+import java.util.List;
 
 public class Carry extends GreekAbility.Passive
 {

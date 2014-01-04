@@ -1,9 +1,9 @@
 package com.censoredsoftware.demigods.engine.data;
 
-import java.util.UUID;
-
 import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
+
+import java.util.UUID;
 
 public interface Participant
 {

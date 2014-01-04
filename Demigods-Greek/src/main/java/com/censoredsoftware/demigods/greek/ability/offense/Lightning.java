@@ -1,15 +1,5 @@
 package com.censoredsoftware.demigods.greek.ability.offense;
 
-import java.util.List;
-
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageEvent;
-
 import com.censoredsoftware.demigods.engine.data.Battle;
 import com.censoredsoftware.demigods.engine.data.DCharacter;
 import com.censoredsoftware.demigods.engine.data.DPlayer;
@@ -18,6 +8,15 @@ import com.censoredsoftware.demigods.engine.mythos.Ability;
 import com.censoredsoftware.demigods.greek.ability.GreekAbility;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageEvent;
+
+import java.util.List;
 
 public class Lightning extends GreekAbility
 {

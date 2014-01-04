@@ -49,9 +49,9 @@ public class Administration implements WrappedConversation
 	 */
 	public enum Menu
 	{
-        STRUCTURE_WAND('1', new Structures.Menu());
+		STRUCTURE_WAND('1', new Structures.Menu());
 
-        private final char id;
+		private final char id;
 		private final DemigodsConversation.Category category;
 
 		private Menu(char id, DemigodsConversation.Category category)
@@ -72,8 +72,8 @@ public class Administration implements WrappedConversation
 
 		public static Menu getFromId(char id)
 		{
-            for (Menu menu : Administration.Menu.values())
-                if(menu.getId() == id) return menu;
+			for(Menu menu : Administration.Menu.values())
+				if(menu.getId() == id) return menu;
 			return null;
 		}
 	}
@@ -178,17 +178,17 @@ public class Administration implements WrappedConversation
 			player.sendRawMessage(" ");
 
 			// Send menu options
-            for (Menu menu : Administration.Menu.values())
-                if(menu.getCategory().canUse(context)) player.sendRawMessage(ChatColor.GRAY + "   [" + menu.getId() + ".] " + menu.getCategory().getChatName(context));
+			for(Menu menu : Administration.Menu.values())
+				if(menu.getCategory().canUse(context)) player.sendRawMessage(ChatColor.GRAY + "   [" + menu.getId() + ".] " + menu.getCategory().getChatName(context));
 
 			// Send menu intro footer
 			player.sendRawMessage(" ");
 			player.sendRawMessage(English.ADMINISTRATION_INTRO_FOOTER.getLine());
 
-            // Display notifications if available
-            displayNotifications(context, player, "menu");
+			// Display notifications if available
+			displayNotifications(context, player, "menu");
 
-            return "";
+			return "";
 		}
 
 		@Override
@@ -196,8 +196,8 @@ public class Administration implements WrappedConversation
 		{
 			try
 			{
-                Menu menu = Administration.Menu.getFromId(Character.toUpperCase(message.charAt(0)));
-                return menu != null && menu.getCategory().canUse(context) || "leave".equalsIgnoreCase(message);
+				Menu menu = Administration.Menu.getFromId(Character.toUpperCase(message.charAt(0)));
+				return menu != null && menu.getCategory().canUse(context) || "leave".equalsIgnoreCase(message);
 			}
 			catch(Exception ignored)
 			{
@@ -218,224 +218,263 @@ public class Administration implements WrappedConversation
 			}
 
 			// Otherwise return the chosen prompt
-            return Administration.Menu.getFromId(Character.toUpperCase(message.charAt(0))).getCategory();
-        }
+			return Administration.Menu.getFromId(Character.toUpperCase(message.charAt(0))).getCategory();
+		}
 
+	}
 
-    }
-
-    /**
-     * Houses all conversation methods related to structures that are used in the Administration menu.
-     */
-    static class Structures {
-        // Main structures menu for the Administration menu
-        static class Menu extends ValidatingPrompt implements DemigodsConversation.Category {
-            @Override
-            public String getChatName(ConversationContext context) {
-                return ChatColor.GREEN + "Generate Structure";
-            }
-
-            @Override
-            public boolean canUse(ConversationContext context) {
-                return ((Player) context.getForWhom()).hasPermission("demigods.admin.structurewand") && !Admins.structureWandEnabled((Player) context.getForWhom());
-            }
-
-            private static Map<Integer, Structure> getStructureChoices(ConversationContext context) {
-                // Grab the data (that may or may not be there)
-                Object data = context.getSessionData("generable_structures");
-
-                // Return it if it exists
-                if (data != null) {
-                    return (Map<Integer, Structure>) data;
-                } else {
-                    int count = 1;
-                    Map<Integer, Structure> structures = Maps.newHashMap();
-
-                    for (Structure structure : Demigods.mythos().getStructures()) {
-                        // Only list that shiz if it needs to be, dawg
-                        if (structure.getFlags().contains(Structure.Flag.STRUCTURE_WAND_GENERATE)) {
-                            // Add it to the choices
-                            structures.put(count, structure);
-
-                            // Count up
-                            count++;
-                        }
-                    }
-
-                    // Save it and return it
-                    context.setSessionData("generable_structures", structures);
-                    return structures;
-                }
-            }
-
-            @Override
-            public String getPromptText(ConversationContext context) {
-                // Define variables
-                Player player = (Player) context.getForWhom();
-                Location loc1 = (Location) context.getSessionData("structurewand_loc1");
-                Location loc2 = (Location) context.getSessionData("structurewand_loc2");
-
-                // Send the messages
-                Messages.clearRawChat(player);
-                player.sendRawMessage(ChatColor.YELLOW + Titles.chatTitle("Structure Chooser"));
-                player.sendRawMessage(" ");
-                for (String string : English.ADMINISTRATION_GENERATE_STRUCTURE_INTRO.getLines()) {
-                    player.sendRawMessage(string);
-                    // TODO player.sendRawMessage(string.replace("{loc1X}", "" + loc1.getX()).replace("{loc1Y}", "" + loc1.getY()).replace("{loc1Z}", "" + loc1.getZ()).replace("{loc2X}", "" + loc2.getX()).replace("{loc2Y}", "" + loc2.getY()).replace("{loc2Z}", "" + loc1.getZ()));
-                }
-                player.sendRawMessage(" ");
-
-                // List the generable structures and save a Hash Map for storing the structures with identifiers for choosing
-                for (Map.Entry<Integer, Structure> structure : getStructureChoices(context).entrySet()) {
-                    player.sendRawMessage(ChatColor.GRAY + "   [" + structure.getKey() + ".] " + ChatColor.GOLD + structure.getValue().getName());
-                }
-
-                // Type menu message
-                player.sendRawMessage(" ");
-                player.sendRawMessage(English.ADMINISTRATION_TYPE_MENU.getLine());
-
-                // Display notifications if available
-                displayNotifications(context, player, this.getClass().getSimpleName());
-
-                return "";
-            }
-
-            @Override
-            protected boolean isInputValid(ConversationContext context, String message) {
-                try {
-                    return "menu".equalsIgnoreCase(message) || getStructureChoices(context).keySet().contains(Integer.parseInt(message));
-                } catch (NumberFormatException ignored) {
-                    return false;
-                }
-            }
-
-            @Override
-            protected Prompt acceptValidatedInput(ConversationContext context, String message) {
-                if ("menu".equalsIgnoreCase(message)) {
-                    // Return to main menu
-                    return new StartAdministration();
-                } else {
-                    // Save the chosen structure to the data
-                    context.setSessionData("chosen_structure", getStructureChoices(context).get(Integer.parseInt(message)));
-
-                    // Return next menu
-                    return new Selection();
-                }
-            }
-        }
-
-        // Structure wand selection
-        static class Selection extends ValidatingPrompt {
-            private static Structure getChosenStructure(ConversationContext context) {
-                return (Structure) context.getSessionData("chosen_structure");
-            }
-
-            @Override
-            public String getPromptText(ConversationContext context) {
-                // Define variables
-                Player player = (Player) context.getForWhom();
-
-                // Get the structure
-                Structure structure = getChosenStructure(context);
-
-                // Enable the wand
-                Admins.toggleStructureWand(player, true);
-
-                // Send the messages
-                Messages.clearRawChat(player);
-                player.sendRawMessage(ChatColor.YELLOW + Titles.chatTitle("Structure Wand"));
-                player.sendRawMessage(" ");
-
-                if (structure.getRequiredGenerationPoints() == 1) {
-                    for (String string : English.ADMINISTRATION_STRUCTURE_WAND_ENABLED_1_POINT.getLines()) {
-                        player.sendRawMessage(string.replace("{item}", Material.getMaterial(Configs.getSettingInt("admin.structure_wand_tool")).name()));
-                    }
-                } else {
-                    for (String string : English.ADMINISTRATION_STRUCTURE_WAND_ENABLED_2_POINTS.getLines()) {
-                        player.sendRawMessage(string.replace("{item}", Material.getMaterial(Configs.getSettingInt("admin.structure_wand_tool")).name()));
-                    }
-                }
-
-                // Display notifications if available
-                displayNotifications(context, player, this.getClass().getSimpleName());
-
-                return "";
-            }
-
-            @Override
-            protected boolean isInputValid(ConversationContext context, String message) {
-                return "menu".equalsIgnoreCase(message) || "continue".equalsIgnoreCase(message);
-            }
-
-            @Override
-            protected Prompt acceptValidatedInput(ConversationContext context, String message) {
-                // Define variables
-                Player player = (Player) context.getForWhom();
-
-                // Get the structure
-                Structure structure = getChosenStructure(context);
-
-                if ("menu".equalsIgnoreCase(message)) {
-                    // Disable wand
-                    Admins.toggleStructureWand(player, false);
-
-                    // Return to main menu
-                    return new StartAdministration();
-                } else if ("continue".equalsIgnoreCase(message)) {
-                    // Get locations from context
-                    Object locObj1 = context.getSessionData("structurewand_loc1");
-                    Object locObj2 = context.getSessionData("structurewand_loc2");
-
-                    // Ensure that selections have been made
-                    if (structure.getRequiredGenerationPoints() == 1 && locObj1 != null) {
-                        // TODO: make sure this works
-                        // Cast the object
-                        Location loc1 = (Location) locObj1;
-
-                        // Create the structure
-                        structure.createNew(true, loc1);
-
-                        // Success boi
-                        success(context);
-                    } else if (structure.getRequiredGenerationPoints() == 2 && locObj1 != null && locObj2 != null) {
-                        // Cast the object
-                        Location loc1 = (Location) locObj1;
-                        Location loc2 = (Location) locObj2;
-
-                        // Create the structure
-                        structure.createNew(true, loc1, loc2);
-
-                        // Ye ye ye ye turtle man
-                        success(context);
-                    } else {
-                        // Add notification
-                        saveNotification(context, this.getClass().getSimpleName(), English.ADMINISTRATION_LOCATIONS_NOT_SELECTED.getLine());
-                    }
-                }
-
-                return new Selection();
-            }
-
-            private static Prompt success(ConversationContext context) {
-                // All good, toggle wand off
-                Admins.toggleStructureWand((Player) context.getForWhom(), false);
-
-                // Save notification
-                saveNotification(context, Menu.class.getSimpleName(), English.ADMINISTRATION_STRUCTURE_GENERATED.getLine());
-
-                return new Menu();
-            }
-        }
-    }
-
-    public static class Listener implements org.bukkit.event.Listener
+	/**
+	 * Houses all conversation methods related to structures that are used in the Administration menu.
+	 */
+	static class Structures
 	{
-        /**
-         * Listens for the PlayerInteract even and uses it strictly for the structure wand.
-         *
-         * @param event the PlayerInteractEvent to monitor
-         */
-        @EventHandler(priority = EventPriority.MONITOR)
+		// Main structures menu for the Administration menu
+		static class Menu extends ValidatingPrompt implements DemigodsConversation.Category
+		{
+			@Override
+			public String getChatName(ConversationContext context)
+			{
+				return ChatColor.GREEN + "Generate Structure";
+			}
+
+			@Override
+			public boolean canUse(ConversationContext context)
+			{
+				return ((Player) context.getForWhom()).hasPermission("demigods.admin.structurewand") && !Admins.structureWandEnabled((Player) context.getForWhom());
+			}
+
+			private static Map<Integer, Structure> getStructureChoices(ConversationContext context)
+			{
+				// Grab the data (that may or may not be there)
+				Object data = context.getSessionData("generable_structures");
+
+				// Return it if it exists
+				if(data != null)
+				{
+					return (Map<Integer, Structure>) data;
+				}
+				else
+				{
+					int count = 1;
+					Map<Integer, Structure> structures = Maps.newHashMap();
+
+					for(Structure structure : Demigods.mythos().getStructures())
+					{
+						// Only list that shiz if it needs to be, dawg
+						if(structure.getFlags().contains(Structure.Flag.STRUCTURE_WAND_GENERATE))
+						{
+							// Add it to the choices
+							structures.put(count, structure);
+
+							// Count up
+							count++;
+						}
+					}
+
+					// Save it and return it
+					context.setSessionData("generable_structures", structures);
+					return structures;
+				}
+			}
+
+			@Override
+			public String getPromptText(ConversationContext context)
+			{
+				// Define variables
+				Player player = (Player) context.getForWhom();
+				Location loc1 = (Location) context.getSessionData("structurewand_loc1");
+				Location loc2 = (Location) context.getSessionData("structurewand_loc2");
+
+				// Send the messages
+				Messages.clearRawChat(player);
+				player.sendRawMessage(ChatColor.YELLOW + Titles.chatTitle("Structure Chooser"));
+				player.sendRawMessage(" ");
+				for(String string : English.ADMINISTRATION_GENERATE_STRUCTURE_INTRO.getLines())
+				{
+					player.sendRawMessage(string);
+					// TODO player.sendRawMessage(string.replace("{loc1X}", "" + loc1.getX()).replace("{loc1Y}", "" + loc1.getY()).replace("{loc1Z}", "" + loc1.getZ()).replace("{loc2X}", "" + loc2.getX()).replace("{loc2Y}", "" + loc2.getY()).replace("{loc2Z}", "" + loc1.getZ()));
+				}
+				player.sendRawMessage(" ");
+
+				// List the generable structures and save a Hash Map for storing the structures with identifiers for choosing
+				for(Map.Entry<Integer, Structure> structure : getStructureChoices(context).entrySet())
+				{
+					player.sendRawMessage(ChatColor.GRAY + "   [" + structure.getKey() + ".] " + ChatColor.GOLD + structure.getValue().getName());
+				}
+
+				// Type menu message
+				player.sendRawMessage(" ");
+				player.sendRawMessage(English.ADMINISTRATION_TYPE_MENU.getLine());
+
+				// Display notifications if available
+				displayNotifications(context, player, this.getClass().getSimpleName());
+
+				return "";
+			}
+
+			@Override
+			protected boolean isInputValid(ConversationContext context, String message)
+			{
+				try
+				{
+					return "menu".equalsIgnoreCase(message) || getStructureChoices(context).keySet().contains(Integer.parseInt(message));
+				}
+				catch(NumberFormatException ignored)
+				{
+					return false;
+				}
+			}
+
+			@Override
+			protected Prompt acceptValidatedInput(ConversationContext context, String message)
+			{
+				if("menu".equalsIgnoreCase(message))
+				{
+					// Return to main menu
+					return new StartAdministration();
+				}
+				else
+				{
+					// Save the chosen structure to the data
+					context.setSessionData("chosen_structure", getStructureChoices(context).get(Integer.parseInt(message)));
+
+					// Return next menu
+					return new Selection();
+				}
+			}
+		}
+
+		// Structure wand selection
+		static class Selection extends ValidatingPrompt
+		{
+			private static Structure getChosenStructure(ConversationContext context)
+			{
+				return (Structure) context.getSessionData("chosen_structure");
+			}
+
+			@Override
+			public String getPromptText(ConversationContext context)
+			{
+				// Define variables
+				Player player = (Player) context.getForWhom();
+
+				// Get the structure
+				Structure structure = getChosenStructure(context);
+
+				// Enable the wand
+				Admins.toggleStructureWand(player, true);
+
+				// Send the messages
+				Messages.clearRawChat(player);
+				player.sendRawMessage(ChatColor.YELLOW + Titles.chatTitle("Structure Wand"));
+				player.sendRawMessage(" ");
+
+				if(structure.getRequiredGenerationPoints() == 1)
+				{
+					for(String string : English.ADMINISTRATION_STRUCTURE_WAND_ENABLED_1_POINT.getLines())
+					{
+						player.sendRawMessage(string.replace("{item}", Material.getMaterial(Configs.getSettingInt("admin.structure_wand_tool")).name()));
+					}
+				}
+				else
+				{
+					for(String string : English.ADMINISTRATION_STRUCTURE_WAND_ENABLED_2_POINTS.getLines())
+					{
+						player.sendRawMessage(string.replace("{item}", Material.getMaterial(Configs.getSettingInt("admin.structure_wand_tool")).name()));
+					}
+				}
+
+				// Display notifications if available
+				displayNotifications(context, player, this.getClass().getSimpleName());
+
+				return "";
+			}
+
+			@Override
+			protected boolean isInputValid(ConversationContext context, String message)
+			{
+				return "menu".equalsIgnoreCase(message) || "continue".equalsIgnoreCase(message);
+			}
+
+			@Override
+			protected Prompt acceptValidatedInput(ConversationContext context, String message)
+			{
+				// Define variables
+				Player player = (Player) context.getForWhom();
+
+				// Get the structure
+				Structure structure = getChosenStructure(context);
+
+				if("menu".equalsIgnoreCase(message))
+				{
+					// Disable wand
+					Admins.toggleStructureWand(player, false);
+
+					// Return to main menu
+					return new StartAdministration();
+				}
+				else if("continue".equalsIgnoreCase(message))
+				{
+					// Get locations from context
+					Object locObj1 = context.getSessionData("structurewand_loc1");
+					Object locObj2 = context.getSessionData("structurewand_loc2");
+
+					// Ensure that selections have been made
+					if(structure.getRequiredGenerationPoints() == 1 && locObj1 != null)
+					{
+						// TODO: make sure this works
+						// Cast the object
+						Location loc1 = (Location) locObj1;
+
+						// Create the structure
+						structure.createNew(true, loc1);
+
+						// Success boi
+						success(context);
+					}
+					else if(structure.getRequiredGenerationPoints() == 2 && locObj1 != null && locObj2 != null)
+					{
+						// Cast the object
+						Location loc1 = (Location) locObj1;
+						Location loc2 = (Location) locObj2;
+
+						// Create the structure
+						structure.createNew(true, loc1, loc2);
+
+						// Ye ye ye ye turtle man
+						success(context);
+					}
+					else
+					{
+						// Add notification
+						saveNotification(context, this.getClass().getSimpleName(), English.ADMINISTRATION_LOCATIONS_NOT_SELECTED.getLine());
+					}
+				}
+
+				return new Selection();
+			}
+
+			private static Prompt success(ConversationContext context)
+			{
+				// All good, toggle wand off
+				Admins.toggleStructureWand((Player) context.getForWhom(), false);
+
+				// Save notification
+				saveNotification(context, Menu.class.getSimpleName(), English.ADMINISTRATION_STRUCTURE_GENERATED.getLine());
+
+				return new Menu();
+			}
+		}
+	}
+
+	public static class Listener implements org.bukkit.event.Listener
+	{
+		/**
+		 * Listens for the PlayerInteract even and uses it strictly for the structure wand.
+		 * 
+		 * @param event the PlayerInteractEvent to monitor
+		 */
+		@EventHandler(priority = EventPriority.MONITOR)
 		private void onStructureWand(PlayerInteractEvent event)
 		{
 			// Check some requirements

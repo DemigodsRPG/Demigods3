@@ -1,14 +1,5 @@
 package com.censoredsoftware.demigods.classic;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.ObjectInputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
-import java.util.logging.Logger;
-
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import com.censoredsoftware.censoredlib.util.Randoms;
 import com.censoredsoftware.demigods.engine.data.DCharacter;
@@ -17,6 +8,15 @@ import com.censoredsoftware.demigods.engine.util.Messages;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
+import java.util.logging.Logger;
 
 public class ClassicLoader
 {

@@ -1,10 +1,5 @@
 package com.censoredsoftware.demigods.greek.deity.titan;
 
-import java.util.*;
-
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-
 import com.censoredsoftware.demigods.engine.mythos.Ability;
 import com.censoredsoftware.demigods.engine.mythos.Alliance;
 import com.censoredsoftware.demigods.engine.mythos.Deity;
@@ -17,6 +12,10 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+
+import java.util.*;
 
 public class Oceanus extends GreekDeity
 {

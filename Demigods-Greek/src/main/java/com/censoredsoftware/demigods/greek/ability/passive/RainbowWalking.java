@@ -1,15 +1,14 @@
 package com.censoredsoftware.demigods.greek.ability.passive;
 
-import java.util.List;
-
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
-
 import com.censoredsoftware.demigods.engine.data.DCharacter;
 import com.censoredsoftware.demigods.engine.util.Zones;
 import com.censoredsoftware.demigods.greek.ability.GreekAbility;
 import com.censoredsoftware.demigods.greek.ability.ultimate.Discoball;
 import com.google.common.collect.Lists;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+
+import java.util.List;
 
 public class RainbowWalking extends GreekAbility.Passive
 {

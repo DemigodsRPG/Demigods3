@@ -1,13 +1,5 @@
 package com.censoredsoftware.demigods.greek.ability.offense;
 
-import java.util.List;
-
-import org.bukkit.Material;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.material.MaterialData;
-
 import com.censoredsoftware.demigods.engine.data.DCharacter;
 import com.censoredsoftware.demigods.engine.data.DPlayer;
 import com.censoredsoftware.demigods.engine.data.Skill;
@@ -15,6 +7,13 @@ import com.censoredsoftware.demigods.engine.mythos.Ability;
 import com.censoredsoftware.demigods.greek.ability.GreekAbility;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
+import org.bukkit.Material;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.material.MaterialData;
+
+import java.util.List;
 
 public class Reel extends GreekAbility
 {

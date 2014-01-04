@@ -1,9 +1,13 @@
 package com.censoredsoftware.demigods.greek.ability.ultimate;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
+import com.censoredsoftware.demigods.engine.DemigodsPlugin;
+import com.censoredsoftware.demigods.engine.data.Battle;
+import com.censoredsoftware.demigods.engine.data.DCharacter;
+import com.censoredsoftware.demigods.engine.data.DPlayer;
+import com.censoredsoftware.demigods.engine.data.Skill;
+import com.censoredsoftware.demigods.greek.ability.GreekAbility;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Lists;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -13,14 +17,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-import com.censoredsoftware.demigods.engine.DemigodsPlugin;
-import com.censoredsoftware.demigods.engine.data.Battle;
-import com.censoredsoftware.demigods.engine.data.DCharacter;
-import com.censoredsoftware.demigods.engine.data.DPlayer;
-import com.censoredsoftware.demigods.engine.data.Skill;
-import com.censoredsoftware.demigods.greek.ability.GreekAbility;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Lists;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class Firestorm extends GreekAbility
 {
