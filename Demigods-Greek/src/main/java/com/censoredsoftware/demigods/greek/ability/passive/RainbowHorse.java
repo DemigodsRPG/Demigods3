@@ -1,7 +1,7 @@
 package com.censoredsoftware.demigods.greek.ability.passive;
 
 import com.censoredsoftware.censoredlib.util.Randoms;
-import com.censoredsoftware.demigods.engine.data.DPet;
+import com.censoredsoftware.demigods.engine.data.serializable.DPet;
 import com.censoredsoftware.demigods.engine.util.Zones;
 import com.censoredsoftware.demigods.greek.ability.GreekAbility;
 import com.google.common.collect.Lists;

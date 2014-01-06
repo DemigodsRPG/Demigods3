@@ -1,6 +1,6 @@
 package com.censoredsoftware.demigods.greek.ability;
 
-import com.censoredsoftware.demigods.engine.data.Skill;
+import com.censoredsoftware.demigods.engine.data.serializable.Skill;
 import com.censoredsoftware.demigods.engine.mythos.Ability;
 import com.google.common.base.Predicate;
 import org.bukkit.entity.Player;

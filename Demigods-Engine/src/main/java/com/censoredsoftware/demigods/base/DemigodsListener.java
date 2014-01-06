@@ -1,16 +1,15 @@
 package com.censoredsoftware.demigods.base;
 
-import org.bukkit.event.Listener;
-
-import com.censoredsoftware.demigods.engine.listener.*;
+import com.censoredsoftware.demigods.base.listener.*;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
+import org.bukkit.event.Listener;
 
 public enum DemigodsListener
 {
-	ABILITY(new AbilityListener()), BATTLE(new BattleListener()), CHAT(new ChatListener()), ENTITY(new EntityListener()), FLAG(new FlagListener()), GRIEF(new GriefListener()), MOVE(new MoveListener()), PLAYER(new PlayerListener()), TRIBUTE(new TributeListener());
+	ABILITY(new AbilityListener()), BATTLE(new BattleListener()), CHAT(new ChatListener()), ENTITY(new EntityListener()), FLAG(new FlagListener()), GRIEF(new GriefListener()), MOVE(new MoveListener()), PLAYER(new PlayerListener()), TRIBUTE(new TributeListener()), WORLD(new WorldListener());
 
 	private Listener listener;
 

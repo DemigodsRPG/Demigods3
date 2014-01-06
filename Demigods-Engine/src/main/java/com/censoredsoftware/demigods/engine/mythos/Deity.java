@@ -1,19 +1,18 @@
 package com.censoredsoftware.demigods.engine.mythos;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+import com.censoredsoftware.censoredlib.helper.ConfigFile2;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
+import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.material.MaterialData;
 
-import com.censoredsoftware.censoredlib.helper.ConfigFile2;
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.data.DCharacter;
-import com.censoredsoftware.demigods.engine.data.DPlayer;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public interface Deity
 {

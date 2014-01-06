@@ -1,7 +1,7 @@
 package com.censoredsoftware.demigods.greek.item.book;
 
 import com.censoredsoftware.censoredlib.util.Items;
-import com.censoredsoftware.demigods.engine.data.StructureData;
+import com.censoredsoftware.demigods.engine.data.serializable.StructureData;
 import com.censoredsoftware.demigods.engine.mythos.DivineItem;
 import com.censoredsoftware.demigods.engine.util.Zones;
 import com.censoredsoftware.demigods.greek.item.GreekItem;

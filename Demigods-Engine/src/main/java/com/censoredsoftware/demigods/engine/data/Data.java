@@ -1,18 +1,5 @@
 package com.censoredsoftware.demigods.engine.data;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.entity.Player;
-
 import com.censoredsoftware.censoredlib.data.ServerData;
 import com.censoredsoftware.censoredlib.data.TimedData;
 import com.censoredsoftware.censoredlib.data.inventory.CItemStack;
@@ -20,11 +7,27 @@ import com.censoredsoftware.censoredlib.data.location.CLocation;
 import com.censoredsoftware.censoredlib.data.player.Notification;
 import com.censoredsoftware.censoredlib.helper.ConfigFile;
 import com.censoredsoftware.demigods.engine.DemigodsPlugin;
+import com.censoredsoftware.demigods.engine.data.serializable.*;
+import com.censoredsoftware.demigods.engine.data.wrap.ServerDataManager;
+import com.censoredsoftware.demigods.engine.data.wrap.TimedDataManager;
 import com.censoredsoftware.demigods.engine.language.English;
 import com.google.common.base.Supplier;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Table;
 import com.google.common.collect.Tables;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.World;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.entity.Player;
+
+import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 public class Data
 {
@@ -273,6 +276,31 @@ public class Data
 		return new DemigodsFile[] { PLAYER, LOCATION, STRUCTURE, CHARACTER, CHARACTER_META, DEATH, SKILL, CHARACTER_INVENTORY, CHARACTER_ENDER_INVENTORY, ITEM_STACK, SAVED_POTION, PET, NOTIFICATION, BATTLE, TIMED_DATA, SERVER_DATA, TRIBUTE_DATA };
 	}
 
+	// World Data
+	private static ConcurrentMap<String, WorldData> worlds = Maps.newConcurrentMap();
+
+	public static void addWorld(World world)
+	{
+		WorldData dWorld = new WorldData(world.getName(), world.getWorldFolder().getPath());
+		worlds.put(world.getName(), dWorld);
+	}
+
+	public static void addWorld(WorldData world)
+	{
+		worlds.put(world.getName(), world);
+	}
+
+	public static void removeWorld(String name)
+	{
+		worlds.get(name).save();
+		worlds.remove(name);
+	}
+
+	public static WorldData getWorld(String name)
+	{
+		return worlds.get(name);
+	}
+
 	// Temp Data
 	private static Table<String, String, Object> tempData;
 
@@ -283,6 +311,10 @@ public class Data
 	{
 		for(DemigodsFile data : values())
 			data.loadToData();
+
+        for(World world : Bukkit.getWorlds())
+            addWorld(world);
+
 		tempData = Tables.newCustomTable(new ConcurrentHashMap<String, Map<String, Object>>(), new Supplier<ConcurrentHashMap<String, Object>>()
 		{
 			@Override
@@ -298,8 +330,17 @@ public class Data
 
 	public static void save()
 	{
+        boolean compact = System.currentTimeMillis() % 100000000L == 0;
+
 		for(DemigodsFile data : values())
 			data.saveToFile();
+
+		for(World world : Bukkit.getWorlds())
+        {
+			WorldData dWorld = getWorld(world.getName());
+			dWorld.save();
+			if(compact) dWorld.compact();
+		}
 	}
 
 	public static void flushData()

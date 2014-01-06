@@ -1,6 +1,6 @@
 package com.censoredsoftware.demigods.greek.ability.offense;
 
-import com.censoredsoftware.demigods.engine.data.Skill;
+import com.censoredsoftware.demigods.engine.data.serializable.Skill;
 import com.censoredsoftware.demigods.engine.mythos.Ability;
 import com.censoredsoftware.demigods.greek.ability.GreekAbility;
 import com.google.common.base.Predicate;

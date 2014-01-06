@@ -1,8 +1,8 @@
 package com.censoredsoftware.demigods.classic.listener;
 
-import com.censoredsoftware.demigods.engine.data.Battle;
-import com.censoredsoftware.demigods.engine.data.DCharacter;
-import com.censoredsoftware.demigods.engine.data.Participant;
+import com.censoredsoftware.demigods.engine.data.serializable.Battle;
+import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
+import com.censoredsoftware.demigods.engine.data.serializable.Participant;
 import com.censoredsoftware.demigods.engine.util.Zones;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;

@@ -2,8 +2,8 @@ package com.censoredsoftware.demigods.classic;
 
 import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import com.censoredsoftware.censoredlib.util.Randoms;
-import com.censoredsoftware.demigods.engine.data.DCharacter;
-import com.censoredsoftware.demigods.engine.data.DPlayer;
+import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
+import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
 import com.censoredsoftware.demigods.engine.util.Messages;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
