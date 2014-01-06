@@ -1,16 +1,5 @@
 package com.censoredsoftware.demigods.engine.mythos;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.NoSuchElementException;
-import java.util.Set;
-
-import javax.annotation.Nullable;
-
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
-
 import com.censoredsoftware.censoredlib.data.location.Region;
 import com.censoredsoftware.censoredlib.schematic.Schematic;
 import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
@@ -20,6 +9,15 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
+
+import javax.annotation.Nullable;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.NoSuchElementException;
+import java.util.Set;
 
 public interface Structure
 {
@@ -206,47 +204,35 @@ public interface Structure
 
 		public static Collection<StructureData> getInRadiusWithFlag(final Location location, final Flag... flags)
 		{
-			try
+			return Collections2.filter(getStructuresInRegionalArea(location), new Predicate<StructureData>()
 			{
-				return Collections2.filter(getStructuresInRegionalArea(location), new Predicate<StructureData>()
+				@Override
+				public boolean apply(StructureData save)
 				{
-					@Override
-					public boolean apply(StructureData save)
-					{
-						if(save.getRawFlags() == null || !save.getLocations().contains(location) && !save.getReferenceLocation().getWorld().equals(location.getWorld()) && save.getReferenceLocation().distance(location) >= save.getType().getRadius()) return false;
-						for(Flag flag : flags)
-							if(save.getRawFlags().contains(flag.name())) return true;
-						return false;
-					}
-				});
-			}
-			catch(NoSuchElementException ignored)
-			{}
-			return null;
+					if(save.getRawFlags() == null || !save.getReferenceLocation().getWorld().equals(location.getWorld()) || save.getReferenceLocation().distance(location) > save.getType().getRadius()) return false;
+					for(Flag flag : flags)
+						if(save.getRawFlags().contains(flag.name())) return true;
+					return false;
+				}
+			});
 		}
 
 		public static Collection<StructureData> getInRadiusWithFlag(final Location location, final Flag flag)
 		{
-			try
-			{
-				return Collections2.filter(getStructuresInRegionalArea(location), new Predicate<StructureData>()
+            return Collections2.filter(getStructuresInRegionalArea(location), new Predicate<StructureData>()
+            {
+				@Override
+				public boolean apply(StructureData save)
 				{
-					@Override
-					public boolean apply(StructureData save)
-					{
-						return save.getRawFlags() != null && save.getRawFlags().contains(flag.name()) && save.getReferenceLocation().getWorld().equals(location.getWorld()) && save.getReferenceLocation().distance(location) <= save.getType().getRadius();
-					}
-				});
-			}
-			catch(NoSuchElementException ignored)
-			{}
-			return null;
+					return save.getRawFlags() != null && save.getRawFlags().contains(flag.name()) && save.getReferenceLocation().getWorld().equals(location.getWorld()) && save.getReferenceLocation().distance(location) <= save.getType().getRadius();
+				}
+			});
 		}
 
 		public static StructureData closestInRadiusWithFlag(final Location location, final Flag flag)
 		{
 			StructureData found = null;
-			double nearestDistance = Double.MAX_VALUE;
+	double nearestDistance = Double.MAX_VALUE;
 			for(StructureData save : getStructuresInRegionalArea(location))
 			{
 				if(save.getRawFlags() != null && save.getRawFlags().contains(flag.name()))
