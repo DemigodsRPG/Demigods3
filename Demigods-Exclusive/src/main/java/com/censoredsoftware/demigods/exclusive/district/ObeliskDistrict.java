@@ -1,16 +1,17 @@
 package com.censoredsoftware.demigods.exclusive.district;
 
-import com.censoredsoftware.censoredlib.data.location.Region;
-import com.censoredsoftware.demigods.engine.data.serializable.StructureData;
-import com.google.common.collect.ImmutableCollection;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Range;
-import org.bukkit.World;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
+import org.bukkit.World;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+
+import com.censoredsoftware.censoredlib.data.location.Region;
+import com.censoredsoftware.demigods.engine.data.serializable.StructureSave;
+import com.google.common.collect.ImmutableCollection;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Range;
 
 public class ObeliskDistrict implements District, ConfigurationSerializable
 {
@@ -19,14 +20,14 @@ public class ObeliskDistrict implements District, ConfigurationSerializable
 	private List<String> flags;
 	private List<String> memberObelisks;
 
-	public ObeliskDistrict(StructureData mainObelisk, int maxObelisks, ImmutableCollection<Flag> flags)
+	public ObeliskDistrict(StructureSave mainObelisk, int maxObelisks, ImmutableCollection<Flag> flags)
 	{
 		this.mainObelisk = mainObelisk.getId();
 		this.maxObelisks = maxObelisks;
 		// TODO
 	}
 
-	public ObeliskDistrict(StructureData mainObelisk, int maxObelisks, Flag... flags)
+	public ObeliskDistrict(StructureSave mainObelisk, int maxObelisks, Flag... flags)
 	{
 
 	}

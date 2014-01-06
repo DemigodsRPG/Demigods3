@@ -1,22 +1,23 @@
 package com.censoredsoftware.demigods.engine.util;
 
-import com.censoredsoftware.censoredlib.util.WorldGuards;
-import com.censoredsoftware.demigods.base.listener.ZoneListener;
-import com.censoredsoftware.demigods.engine.DemigodsPlugin;
-import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
-import com.censoredsoftware.demigods.engine.data.serializable.StructureData;
-import com.censoredsoftware.demigods.engine.mythos.Structure;
-import com.google.common.base.Predicate;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Sets;
+import java.util.Set;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
-import java.util.Set;
+import com.censoredsoftware.censoredlib.util.WorldGuards;
+import com.censoredsoftware.demigods.base.listener.ZoneListener;
+import com.censoredsoftware.demigods.engine.DemigodsPlugin;
+import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
+import com.censoredsoftware.demigods.engine.data.serializable.StructureSave;
+import com.censoredsoftware.demigods.engine.mythos.Structure;
+import com.google.common.base.Predicate;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Sets;
 
 public class Zones
 {
@@ -76,7 +77,7 @@ public class Zones
 	public static boolean inNoBuildZone(Player player, Location location)
 	{
 		if(WorldGuards.worldGuardEnabled() && !WorldGuards.canBuild(player, location)) return true;
-		StructureData save = Iterables.getFirst(Structure.Util.getInRadiusWithFlag(location, Structure.Flag.NO_GRIEFING), null);
+		StructureSave save = Iterables.getFirst(Structure.Util.getInRadiusWithFlag(location, Structure.Flag.NO_GRIEFING), null);
 		return DPlayer.Util.getPlayer(player).getCurrent() != null && save != null && !DPlayer.Util.getPlayer(player).getCurrent().getId().equals(save.getOwner());
 	}
 

@@ -1,23 +1,25 @@
 package com.censoredsoftware.demigods.engine.mythos;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.NoSuchElementException;
+import java.util.Set;
+
+import javax.annotation.Nullable;
+
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
+
 import com.censoredsoftware.censoredlib.data.location.Region;
 import com.censoredsoftware.censoredlib.schematic.Schematic;
 import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
-import com.censoredsoftware.demigods.engine.data.serializable.StructureData;
+import com.censoredsoftware.demigods.engine.data.serializable.StructureSave;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
-
-import javax.annotation.Nullable;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.NoSuchElementException;
-import java.util.Set;
 
 public interface Structure
 {
@@ -29,13 +31,13 @@ public interface Structure
 
 	Listener getUniqueListener();
 
-	boolean sanctify(StructureData data, DCharacter character);
+	boolean sanctify(StructureSave data, DCharacter character);
 
-	boolean corrupt(StructureData data, DCharacter character);
+	boolean corrupt(StructureSave data, DCharacter character);
 
-	boolean birth(StructureData data, DCharacter character);
+	boolean birth(StructureSave data, DCharacter character);
 
-	boolean kill(StructureData data, DCharacter character);
+	boolean kill(StructureSave data, DCharacter character);
 
 	float getDefSanctity();
 
@@ -45,9 +47,9 @@ public interface Structure
 
 	int getRequiredGenerationPoints(); // TODO?
 
-	boolean isAllowed(@Nullable StructureData data, Player sender);
+	boolean isAllowed(@Nullable StructureSave data, Player sender);
 
-	StructureData createNew(boolean generate, Location... reference);
+	StructureSave createNew(boolean generate, Location... reference);
 
 	public interface Design
 	{
@@ -55,29 +57,29 @@ public interface Structure
 
 		Set<Location> getClickableBlocks(Location reference);
 
-		Schematic getSchematic(@Nullable StructureData data);
+		Schematic getSchematic(@Nullable StructureSave data);
 	}
 
 	public interface InteractFunction<T>
 	{
-		T apply(@Nullable StructureData data, @Nullable DCharacter character);
+		T apply(@Nullable StructureSave data, @Nullable DCharacter character);
 	}
 
 	public enum Flag
 	{
-		DELETE_WITH_OWNER, DESTRUCT_ON_BREAK, PROTECTED_BLOCKS, NO_GRIEFING, NO_PVP, PRAYER_LOCATION, TRIBUTE_LOCATION, INVISIBLE_WALL, NO_OVERLAP, STRUCTURE_WAND_GENERABLE;
+		DELETE_WITH_OWNER, DESTRUCT_ON_BREAK, PROTECTED_BLOCKS, NO_GRIEFING, NO_PVP, PRAYER_LOCATION, TRIBUTE_LOCATION, RESTRICTED_AREA, NO_OVERLAP, STRUCTURE_WAND_GENERABLE;
 	}
 
 	public static class Util
 	{
-		public static StructureData getStructureRegional(final Location location)
+		public static StructureSave getStructureRegional(final Location location)
 		{
 			try
 			{
-				return Iterables.find(getStructuresInRegionalArea(location), new Predicate<StructureData>()
+				return Iterables.find(getStructuresInRegionalArea(location), new Predicate<StructureSave>()
 				{
 					@Override
-					public boolean apply(StructureData save)
+					public boolean apply(StructureSave save)
 					{
 						return save.getLocations().contains(location);
 					}
@@ -88,14 +90,14 @@ public interface Structure
 			return null;
 		}
 
-		public static StructureData getStructureGlobal(final Location location)
+		public static StructureSave getStructureGlobal(final Location location)
 		{
 			try
 			{
-				return Iterables.find(StructureData.Util.loadAll(), new Predicate<StructureData>()
+				return Iterables.find(StructureSave.Util.loadAll(), new Predicate<StructureSave>()
 				{
 					@Override
-					public boolean apply(StructureData save)
+					public boolean apply(StructureSave save)
 					{
 						return save.getLocations().contains(location);
 					}
@@ -106,21 +108,21 @@ public interface Structure
 			return null;
 		}
 
-		public static Set<StructureData> getStructuresInRegionalArea(Location location)
+		public static Set<StructureSave> getStructuresInRegionalArea(Location location)
 		{
 			final Region center = Region.Util.getRegion(location);
-			Set<StructureData> set = new HashSet<>();
+			Set<StructureSave> set = new HashSet<>();
 			for(Region region : center.getSurroundingRegions())
 				set.addAll(getStructuresInSingleRegion(region));
 			return set;
 		}
 
-		public static Collection<StructureData> getStructuresInSingleRegion(final Region region)
+		public static Collection<StructureSave> getStructuresInSingleRegion(final Region region)
 		{
-			return StructureData.Util.findAll(new Predicate<StructureData>()
+			return StructureSave.Util.findAll(new Predicate<StructureSave>()
 			{
 				@Override
-				public boolean apply(StructureData save)
+				public boolean apply(StructureSave save)
 				{
 					return save.getRegion().equals(region.toString());
 				}
@@ -129,10 +131,10 @@ public interface Structure
 
 		public static boolean partOfStructureWithType(final Location location, final String type)
 		{
-			return Iterables.any(getStructuresInRegionalArea(location), new Predicate<StructureData>()
+			return Iterables.any(getStructuresInRegionalArea(location), new Predicate<StructureSave>()
 			{
 				@Override
-				public boolean apply(StructureData save)
+				public boolean apply(StructureSave save)
 				{
 					return save.getTypeName().equals(type) && save.getLocations().contains(location);
 				}
@@ -141,10 +143,10 @@ public interface Structure
 
 		public static boolean partOfStructureWithAllFlags(final Location location, final Flag... flags)
 		{
-			return Iterables.any(getStructuresInRegionalArea(location), new Predicate<StructureData>()
+			return Iterables.any(getStructuresInRegionalArea(location), new Predicate<StructureSave>()
 			{
 				@Override
-				public boolean apply(StructureData save)
+				public boolean apply(StructureSave save)
 				{
 					return save.getRawFlags() != null && save.getLocations().contains(location) && save.getRawFlags().containsAll(Collections2.transform(Sets.newHashSet(flags), new Function<Flag, String>()
 					{
@@ -160,10 +162,10 @@ public interface Structure
 
 		public static boolean partOfStructureWithFlag(final Location location, final Flag... flags)
 		{
-			return Iterables.any(getStructuresInRegionalArea(location), new Predicate<StructureData>()
+			return Iterables.any(getStructuresInRegionalArea(location), new Predicate<StructureSave>()
 			{
 				@Override
-				public boolean apply(StructureData save)
+				public boolean apply(StructureSave save)
 				{
 					if(save.getRawFlags() == null || !save.getLocations().contains(location)) return false;
 					for(Flag flag : flags)
@@ -175,10 +177,10 @@ public interface Structure
 
 		public static boolean partOfStructureWithFlag(final Location location, final Flag flag)
 		{
-			return Iterables.any(getStructuresInRegionalArea(location), new Predicate<StructureData>()
+			return Iterables.any(getStructuresInRegionalArea(location), new Predicate<StructureSave>()
 			{
 				@Override
-				public boolean apply(StructureData save)
+				public boolean apply(StructureSave save)
 				{
 					return save.getRawFlags() != null && save.getRawFlags().contains(flag.name()) && save.getLocations().contains(location);
 				}
@@ -187,10 +189,10 @@ public interface Structure
 
 		public static boolean isClickableBlockWithFlag(final Location location, final Flag flag)
 		{
-			return Iterables.any(getStructuresInRegionalArea(location), new Predicate<StructureData>()
+			return Iterables.any(getStructuresInRegionalArea(location), new Predicate<StructureSave>()
 			{
 				@Override
-				public boolean apply(StructureData save)
+				public boolean apply(StructureSave save)
 				{
 					return save.getRawFlags() != null && save.getRawFlags().contains(flag.name()) && save.getClickableBlocks().contains(location);
 				}
@@ -202,12 +204,12 @@ public interface Structure
 			return !getInRadiusWithFlag(location, flag).isEmpty();
 		}
 
-		public static Collection<StructureData> getInRadiusWithFlag(final Location location, final Flag... flags)
+		public static Collection<StructureSave> getInRadiusWithFlag(final Location location, final Flag... flags)
 		{
-			return Collections2.filter(getStructuresInRegionalArea(location), new Predicate<StructureData>()
+			return Collections2.filter(getStructuresInRegionalArea(location), new Predicate<StructureSave>()
 			{
 				@Override
-				public boolean apply(StructureData save)
+				public boolean apply(StructureSave save)
 				{
 					if(save.getRawFlags() == null || !save.getReferenceLocation().getWorld().equals(location.getWorld()) || save.getReferenceLocation().distance(location) > save.getType().getRadius()) return false;
 					for(Flag flag : flags)
@@ -217,23 +219,23 @@ public interface Structure
 			});
 		}
 
-		public static Collection<StructureData> getInRadiusWithFlag(final Location location, final Flag flag)
+		public static Collection<StructureSave> getInRadiusWithFlag(final Location location, final Flag flag)
 		{
-            return Collections2.filter(getStructuresInRegionalArea(location), new Predicate<StructureData>()
+			return Collections2.filter(getStructuresInRegionalArea(location), new Predicate<StructureSave>()
             {
 				@Override
-				public boolean apply(StructureData save)
+				public boolean apply(StructureSave save)
 				{
-					return save.getRawFlags() != null && save.getRawFlags().contains(flag.name()) && save.getReferenceLocation().getWorld().equals(location.getWorld()) && save.getReferenceLocation().distance(location) <= save.getType().getRadius();
+		return save.getRawFlags() != null && save.getRawFlags().contains(flag.name()) && save.getReferenceLocation().getWorld().equals(location.getWorld()) && save.getReferenceLocation().distance(location) <= save.getType().getRadius();
 				}
 			});
 		}
 
-		public static StructureData closestInRadiusWithFlag(final Location location, final Flag flag)
+		public static StructureSave closestInRadiusWithFlag(final Location location, final Flag flag)
 		{
-			StructureData found = null;
+			StructureSave found = null;
 			double nearestDistance = Double.MAX_VALUE;
-			for(StructureData save : getStructuresInRegionalArea(location))
+			for(StructureSave save : getStructuresInRegionalArea(location))
 			{
 				if(save.getRawFlags() != null && save.getRawFlags().contains(flag.name()))
 				{
@@ -248,12 +250,12 @@ public interface Structure
 			return found;
 		}
 
-		public static Set<StructureData> getInRadiusWithFlag(final Location location, final Flag flag, final int radius)
+		public static Set<StructureSave> getInRadiusWithFlag(final Location location, final Flag flag, final int radius)
 		{
-			return Sets.filter(getStructuresInRegionalArea(location), new Predicate<StructureData>()
+			return Sets.filter(getStructuresInRegionalArea(location), new Predicate<StructureSave>()
 			{
 				@Override
-				public boolean apply(StructureData save)
+				public boolean apply(StructureSave save)
 				{
 					return save.getRawFlags() != null && save.getRawFlags().contains(flag.name()) && save.getReferenceLocation().getWorld().equals(location.getWorld()) && save.getReferenceLocation().distance(location) <= radius;
 				}
@@ -262,28 +264,28 @@ public interface Structure
 
 		public static void regenerateStructures()
 		{
-			for(StructureData save : StructureData.Util.loadAll())
+			for(StructureSave save : StructureSave.Util.loadAll())
 				save.generate();
 		}
 
-		public static Collection<StructureData> getStructureWithFlag(final Flag flag)
+		public static Collection<StructureSave> getStructuresWithFlag(final Flag flag)
 		{
-			return StructureData.Util.findAll(new Predicate<StructureData>()
+			return StructureSave.Util.findAll(new Predicate<StructureSave>()
 			{
 				@Override
-				public boolean apply(StructureData save)
+				public boolean apply(StructureSave save)
 				{
 					return save.getRawFlags() != null && save.getRawFlags().contains(flag.name());
 				}
 			});
 		}
 
-		public static Collection<StructureData> getStructureWithType(final String type)
+		public static Collection<StructureSave> getStructuresWithType(final String type)
 		{
-			return StructureData.Util.findAll(new Predicate<StructureData>()
+			return StructureSave.Util.findAll(new Predicate<StructureSave>()
 			{
 				@Override
-				public boolean apply(StructureData save)
+				public boolean apply(StructureSave save)
 				{
 					return type.equals(save.getTypeName());
 				}
@@ -292,10 +294,10 @@ public interface Structure
 
 		public static boolean noOverlapStructureNearby(Location location)
 		{
-			return Iterables.any(getStructuresInRegionalArea(location), new Predicate<StructureData>()
+			return Iterables.any(getStructuresInRegionalArea(location), new Predicate<StructureSave>()
 			{
 				@Override
-				public boolean apply(StructureData save)
+				public boolean apply(StructureSave save)
 				{
 					return save.getRawFlags().contains(Flag.NO_OVERLAP.name());
 				}
@@ -355,7 +357,7 @@ public interface Structure
 		 */
 		public static void updateSanctity()
 		{
-			for(StructureData data : getStructureWithFlag(Flag.DESTRUCT_ON_BREAK))
+			for(StructureSave data : getStructuresWithFlag(Flag.DESTRUCT_ON_BREAK))
 				data.corrupt(-1F * data.getType().getSanctityRegen());
 		}
 	}

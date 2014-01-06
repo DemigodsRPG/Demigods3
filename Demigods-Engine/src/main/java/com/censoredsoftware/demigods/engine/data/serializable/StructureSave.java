@@ -20,7 +20,7 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
-public class StructureData implements ConfigurationSerializable
+public class StructureSave implements ConfigurationSerializable
 {
 	private UUID id;
 	private String type;
@@ -35,10 +35,10 @@ public class StructureData implements ConfigurationSerializable
 	private String permission;
 	private Integer ascensions;
 
-	public StructureData()
+	public StructureSave()
 	{}
 
-	public StructureData(UUID id, ConfigurationSection conf)
+	public StructureSave(UUID id, ConfigurationSection conf)
 	{
 		this.id = id;
 		type = conf.getString("type");
@@ -410,7 +410,7 @@ public class StructureData implements ConfigurationSerializable
 	@Override
 	public boolean equals(Object other)
 	{
-		return other != null && other instanceof StructureData && ((StructureData) other).getId() == getId();
+		return other != null && other instanceof StructureSave && ((StructureSave) other).getId() == getId();
 	}
 
 	public static class Util
@@ -420,17 +420,17 @@ public class StructureData implements ConfigurationSerializable
 			Data.STRUCTURE.remove(id);
 		}
 
-		public static StructureData load(UUID id)
+		public static StructureSave load(UUID id)
 		{
 			return Data.STRUCTURE.get(id);
 		}
 
-		public static Collection<StructureData> loadAll()
+		public static Collection<StructureSave> loadAll()
 		{
 			return Data.STRUCTURE.values();
 		}
 
-		public static Collection<StructureData> findAll(Predicate<StructureData> predicate)
+		public static Collection<StructureSave> findAll(Predicate<StructureSave> predicate)
 		{
 			return Collections2.filter(Data.STRUCTURE.values(), predicate);
 		}

@@ -1,7 +1,15 @@
 package com.censoredsoftware.demigods.greek.structure;
 
+import java.util.Collection;
+import java.util.NoSuchElementException;
+import java.util.Set;
+
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
+
 import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
-import com.censoredsoftware.demigods.engine.data.serializable.StructureData;
+import com.censoredsoftware.demigods.engine.data.serializable.StructureSave;
 import com.censoredsoftware.demigods.engine.mythos.Structure;
 import com.censoredsoftware.demigods.engine.util.Messages;
 import com.google.common.base.Function;
@@ -9,20 +17,13 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
-
-import java.util.Collection;
-import java.util.NoSuchElementException;
-import java.util.Set;
 
 public class GreekStructure implements Structure
 {
 	private String name;
 	private Design[] designs;
 	private Function<Location, Design> getDesign;
-	private Function<Design, StructureData> createNew;
+	private Function<Design, StructureSave> createNew;
 	private InteractFunction<Boolean> sanctify, corrupt, birth, kill;
 	private Set<Structure.Flag> flags;
 	private Listener listener;
@@ -30,7 +31,7 @@ public class GreekStructure implements Structure
 	private Predicate<Player> allowed;
 	private float sanctity, sanctityRegen;
 
-	public GreekStructure(String name, Design[] designs, Function<Location, Design> getDesign, Function<Design, StructureData> createNew, InteractFunction<Boolean> sanctify, InteractFunction<Boolean> corrupt, InteractFunction<Boolean> birth, InteractFunction<Boolean> kill, Set<Structure.Flag> flags, Listener listener, int radius, Predicate<Player> allowed, float sanctity, float sanctityRegen, int generationPoints)
+	public GreekStructure(String name, Design[] designs, Function<Location, Design> getDesign, Function<Design, StructureSave> createNew, InteractFunction<Boolean> sanctify, InteractFunction<Boolean> corrupt, InteractFunction<Boolean> birth, InteractFunction<Boolean> kill, Set<Structure.Flag> flags, Listener listener, int radius, Predicate<Player> allowed, float sanctity, float sanctityRegen, int generationPoints)
 	{
 		this.name = name;
 		this.designs = designs.clone();
@@ -96,27 +97,27 @@ public class GreekStructure implements Structure
 	}
 
 	@Override
-	public boolean isAllowed(StructureData unused, Player player)
+	public boolean isAllowed(StructureSave unused, Player player)
 	{
 		return allowed.apply(player);
 	}
 
-	public boolean sanctify(StructureData data, DCharacter dCharacter)
+	public boolean sanctify(StructureSave data, DCharacter dCharacter)
 	{
 		return sanctify.apply(data, dCharacter);
 	}
 
-	public boolean corrupt(StructureData data, DCharacter dCharacter)
+	public boolean corrupt(StructureSave data, DCharacter dCharacter)
 	{
 		return corrupt.apply(data, dCharacter);
 	}
 
-	public boolean birth(StructureData data, DCharacter dCharacter)
+	public boolean birth(StructureSave data, DCharacter dCharacter)
 	{
 		return birth.apply(data, dCharacter);
 	}
 
-	public boolean kill(StructureData data, DCharacter dCharacter)
+	public boolean kill(StructureSave data, DCharacter dCharacter)
 	{
 		return kill.apply(data, dCharacter);
 	}
@@ -131,22 +132,22 @@ public class GreekStructure implements Structure
 		return sanctityRegen;
 	}
 
-	public Collection<StructureData> getAll()
+	public Collection<StructureSave> getAll()
 	{
-		return Collections2.filter(StructureData.Util.loadAll(), new Predicate<StructureData>()
+		return Collections2.filter(StructureSave.Util.loadAll(), new Predicate<StructureSave>()
 		{
 			@Override
-			public boolean apply(StructureData save)
+			public boolean apply(StructureSave save)
 			{
 				return save.getTypeName().equals(getName());
 			}
 		});
 	}
 
-	public StructureData createNew(boolean generate, Location... reference)
+	public StructureSave createNew(boolean generate, Location... reference)
 	{
 		Design design = getDesign.apply(reference[0]);
-		StructureData save = createNew.apply(design);
+		StructureSave save = createNew.apply(design);
 
 		// All structures need these
 		save.generateId();

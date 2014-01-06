@@ -1,15 +1,7 @@
 package com.censoredsoftware.demigods.base.listener;
 
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.DemigodsPlugin;
-import com.censoredsoftware.demigods.engine.data.Data;
-import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
-import com.censoredsoftware.demigods.engine.data.serializable.StructureData;
-import com.censoredsoftware.demigods.engine.language.English;
-import com.censoredsoftware.demigods.engine.mythos.DivineItem;
-import com.censoredsoftware.demigods.engine.mythos.Structure;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.google.common.collect.Lists;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -22,7 +14,16 @@ import org.bukkit.event.block.*;
 import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 
-import java.util.List;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.DemigodsPlugin;
+import com.censoredsoftware.demigods.engine.data.Data;
+import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
+import com.censoredsoftware.demigods.engine.data.serializable.StructureSave;
+import com.censoredsoftware.demigods.engine.language.English;
+import com.censoredsoftware.demigods.engine.mythos.DivineItem;
+import com.censoredsoftware.demigods.engine.mythos.Structure;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.google.common.collect.Lists;
 
 public class FlagListener implements Listener
 {
@@ -96,7 +97,7 @@ public class FlagListener implements Listener
 	public void onEntityExplode(final EntityExplodeEvent event)
 	{
 		if(event.getEntity() == null || Zones.inNoDemigodsZone(event.getEntity().getLocation())) return;
-		final List<StructureData> saves = Lists.newArrayList(Structure.Util.getInRadiusWithFlag(event.getLocation(), Structure.Flag.PROTECTED_BLOCKS, Structure.Flag.DESTRUCT_ON_BREAK));
+		final List<StructureSave> saves = Lists.newArrayList(Structure.Util.getInRadiusWithFlag(event.getLocation(), Structure.Flag.PROTECTED_BLOCKS, Structure.Flag.DESTRUCT_ON_BREAK));
 
 		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.plugin(), new Runnable()
 		{
@@ -104,7 +105,7 @@ public class FlagListener implements Listener
 			public void run()
 			{
 				// Remove all drops from explosion zone
-				for(final StructureData save : saves)
+				for(final StructureSave save : saves)
 					for(Item drop : event.getLocation().getWorld().getEntitiesByClass(Item.class))
 						if(drop.getLocation().distance(save.getReferenceLocation()) <= save.getType().getRadius()) drop.remove();
 			}
@@ -118,7 +119,7 @@ public class FlagListener implements Listener
 			@Override
 			public void run()
 			{
-				for(final StructureData save : saves)
+				for(final StructureSave save : saves)
 					save.generate();
 			}
 		}, 30);

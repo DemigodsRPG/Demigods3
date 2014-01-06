@@ -1,23 +1,12 @@
 package com.censoredsoftware.demigods.greek.structure;
 
-import com.censoredsoftware.censoredlib.schematic.BlockData;
-import com.censoredsoftware.censoredlib.schematic.Schematic;
-import com.censoredsoftware.censoredlib.schematic.Selection;
-import com.censoredsoftware.censoredlib.util.Randoms;
-import com.censoredsoftware.demigods.engine.DemigodsPlugin;
-import com.censoredsoftware.demigods.engine.data.Data;
-import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
-import com.censoredsoftware.demigods.engine.data.serializable.StructureData;
-import com.censoredsoftware.demigods.engine.data.wrap.CLocationManager;
-import com.censoredsoftware.demigods.engine.mythos.Structure;
-import com.censoredsoftware.demigods.engine.util.Admins;
-import com.censoredsoftware.demigods.engine.util.Configs;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.censoredsoftware.demigods.greek.language.English;
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Sets;
+import java.util.HashSet;
+import java.util.NoSuchElementException;
+import java.util.Set;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
+import javax.annotation.Nullable;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -33,11 +22,24 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
 
-import javax.annotation.Nullable;
-import java.util.HashSet;
-import java.util.NoSuchElementException;
-import java.util.Set;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import com.censoredsoftware.censoredlib.schematic.BlockData;
+import com.censoredsoftware.censoredlib.schematic.Schematic;
+import com.censoredsoftware.censoredlib.schematic.Selection;
+import com.censoredsoftware.censoredlib.util.Randoms;
+import com.censoredsoftware.demigods.engine.DemigodsPlugin;
+import com.censoredsoftware.demigods.engine.data.Data;
+import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
+import com.censoredsoftware.demigods.engine.data.serializable.StructureSave;
+import com.censoredsoftware.demigods.engine.data.wrap.CLocationManager;
+import com.censoredsoftware.demigods.engine.mythos.Structure;
+import com.censoredsoftware.demigods.engine.util.Admins;
+import com.censoredsoftware.demigods.engine.util.Configs;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.censoredsoftware.demigods.greek.language.English;
+import com.google.common.base.Function;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Sets;
 
 public class Altar extends GreekStructure
 {
@@ -59,18 +61,18 @@ public class Altar extends GreekStructure
 			}
 		}
 	};
-	private static final Function<GreekStructure.Design, StructureData> createNew = new Function<GreekStructure.Design, StructureData>()
+	private static final Function<GreekStructure.Design, StructureSave> createNew = new Function<GreekStructure.Design, StructureSave>()
 	{
 		@Override
-		public StructureData apply(GreekStructure.Design design)
+		public StructureSave apply(GreekStructure.Design design)
 		{
-			return new StructureData();
+			return new StructureSave();
 		}
 	};
 	private static final Structure.InteractFunction<Boolean> sanctify = new Structure.InteractFunction<Boolean>()
 	{
 		@Override
-		public Boolean apply(@Nullable StructureData data, @Nullable DCharacter unused)
+		public Boolean apply(@Nullable StructureSave data, @Nullable DCharacter unused)
 		{
 			return false;
 		}
@@ -78,7 +80,7 @@ public class Altar extends GreekStructure
 	private static final Structure.InteractFunction<Boolean> corrupt = new Structure.InteractFunction<Boolean>()
 	{
 		@Override
-		public Boolean apply(@Nullable StructureData data, @Nullable DCharacter unused)
+		public Boolean apply(@Nullable StructureSave data, @Nullable DCharacter unused)
 		{
 			return false;
 		}
@@ -86,7 +88,7 @@ public class Altar extends GreekStructure
 	private static final Structure.InteractFunction<Boolean> birth = new Structure.InteractFunction<Boolean>()
 	{
 		@Override
-		public Boolean apply(@Nullable StructureData data, @Nullable DCharacter unused)
+		public Boolean apply(@Nullable StructureSave data, @Nullable DCharacter unused)
 		{
 			return false;
 		}
@@ -94,7 +96,7 @@ public class Altar extends GreekStructure
 	private static final Structure.InteractFunction<Boolean> kill = new Structure.InteractFunction<Boolean>()
 	{
 		@Override
-		public Boolean apply(@Nullable StructureData data, @Nullable DCharacter unused)
+		public Boolean apply(@Nullable StructureSave data, @Nullable DCharacter unused)
 		{
 			return false;
 		}
@@ -147,7 +149,7 @@ public class Altar extends GreekStructure
 				player.sendMessage(ChatColor.GRAY + English.ADMIN_WAND_GENERATE_ALTAR.getLine());
 
 				// Generate the Altar based on the block given.
-				StructureData save = inst().createNew(false, location);
+				StructureSave save = inst().createNew(false, location);
 				save.setDesign(design);
 				save.save();
 				save.generate();
@@ -160,7 +162,7 @@ public class Altar extends GreekStructure
 			{
 				event.setCancelled(true);
 
-				StructureData altar = Structure.Util.getStructureRegional(location);
+				StructureSave altar = Structure.Util.getStructureRegional(location);
 
 				if(Data.hasTimed(player.getName(), "destroy_altar"))
 				{
@@ -428,7 +430,7 @@ public class Altar extends GreekStructure
 		}
 
 		@Override
-		public Schematic getSchematic(StructureData unused)
+		public Schematic getSchematic(StructureSave unused)
 		{
 			return schematic;
 		}
@@ -498,24 +500,24 @@ public class Altar extends GreekStructure
 
 		public static boolean isAltarNearby(final Location location)
 		{
-			return Iterables.any(Structure.Util.getStructureWithType(name), new Predicate<StructureData>()
+			return Iterables.any(Structure.Util.getStructuresWithType(name), new Predicate<StructureSave>()
 			{
 				@Override
-				public boolean apply(StructureData save)
+				public boolean apply(StructureSave save)
 				{
 					return save.getReferenceLocation().distance(location) <= distance;
 				}
 			});
 		}
 
-		public static StructureData getAltarNearby(final Location location)
+		public static StructureSave getAltarNearby(final Location location)
 		{
 			try
 			{
-				return Iterables.find(Structure.Util.getStructureWithType(name), new Predicate<StructureData>()
+				return Iterables.find(Structure.Util.getStructuresWithType(name), new Predicate<StructureSave>()
 				{
 					@Override
-					public boolean apply(StructureData save)
+					public boolean apply(StructureSave save)
 					{
 						return save.getReferenceLocation().distance(location) <= distance;
 					}

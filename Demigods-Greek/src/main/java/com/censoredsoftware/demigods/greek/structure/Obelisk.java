@@ -1,22 +1,10 @@
 package com.censoredsoftware.demigods.greek.structure;
 
-import com.censoredsoftware.censoredlib.schematic.BlockData;
-import com.censoredsoftware.censoredlib.schematic.Schematic;
-import com.censoredsoftware.censoredlib.schematic.Selection;
-import com.censoredsoftware.censoredlib.util.Colors;
-import com.censoredsoftware.demigods.engine.data.Data;
-import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
-import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
-import com.censoredsoftware.demigods.engine.data.serializable.StructureData;
-import com.censoredsoftware.demigods.engine.mythos.Deity;
-import com.censoredsoftware.demigods.engine.mythos.Structure;
-import com.censoredsoftware.demigods.engine.util.Admins;
-import com.censoredsoftware.demigods.engine.util.Configs;
-import com.censoredsoftware.demigods.engine.util.Messages;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.censoredsoftware.demigods.greek.language.English;
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -27,10 +15,23 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.material.MaterialData;
 
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import com.censoredsoftware.censoredlib.schematic.BlockData;
+import com.censoredsoftware.censoredlib.schematic.Schematic;
+import com.censoredsoftware.censoredlib.schematic.Selection;
+import com.censoredsoftware.censoredlib.util.Colors;
+import com.censoredsoftware.demigods.engine.data.Data;
+import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
+import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
+import com.censoredsoftware.demigods.engine.data.serializable.StructureSave;
+import com.censoredsoftware.demigods.engine.mythos.Deity;
+import com.censoredsoftware.demigods.engine.mythos.Structure;
+import com.censoredsoftware.demigods.engine.util.Admins;
+import com.censoredsoftware.demigods.engine.util.Configs;
+import com.censoredsoftware.demigods.engine.util.Messages;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.censoredsoftware.demigods.greek.language.English;
+import com.google.common.base.Function;
+import com.google.common.base.Predicate;
 
 public class Obelisk extends GreekStructure
 {
@@ -54,12 +55,12 @@ public class Obelisk extends GreekStructure
 			}
 		}
 	};
-	private static final Function<GreekStructure.Design, StructureData> createNew = new Function<GreekStructure.Design, StructureData>()
+	private static final Function<GreekStructure.Design, StructureSave> createNew = new Function<GreekStructure.Design, StructureSave>()
 	{
 		@Override
-		public StructureData apply(GreekStructure.Design design)
+		public StructureSave apply(GreekStructure.Design design)
 		{
-			StructureData save = new StructureData();
+			StructureSave save = new StructureSave();
 			save.setSanctifiers(new HashMap<String, Long>());
 			save.setCorruptors(new HashMap<String, Long>());
 			return save;
@@ -68,7 +69,7 @@ public class Obelisk extends GreekStructure
 	private static final Structure.InteractFunction<Boolean> sanctify = new Structure.InteractFunction<Boolean>()
 	{
 		@Override
-		public Boolean apply(StructureData data, DCharacter character)
+		public Boolean apply(StructureSave data, DCharacter character)
 		{
 			if(!DCharacter.Util.areAllied(character, Data.CHARACTER.get(data.getOwner())) || !data.getSanctifiers().contains(character.getId())) return false;
 			Location location = data.getReferenceLocation();
@@ -81,7 +82,7 @@ public class Obelisk extends GreekStructure
 	private static final Structure.InteractFunction<Boolean> corrupt = new Structure.InteractFunction<Boolean>()
 	{
 		@Override
-		public Boolean apply(StructureData data, DCharacter character)
+		public Boolean apply(StructureSave data, DCharacter character)
 		{
 			if(DCharacter.Util.areAllied(character, Data.CHARACTER.get(data.getOwner()))) return false;
 			if(Data.CHARACTER.containsKey(data.getOwner()))
@@ -113,7 +114,7 @@ public class Obelisk extends GreekStructure
 	private static final Structure.InteractFunction<Boolean> birth = new Structure.InteractFunction<Boolean>()
 	{
 		@Override
-		public Boolean apply(StructureData data, DCharacter character)
+		public Boolean apply(StructureSave data, DCharacter character)
 		{
 			Location location = data.getReferenceLocation();
 			location.getWorld().strikeLightningEffect(location);
@@ -124,7 +125,7 @@ public class Obelisk extends GreekStructure
 	private static final Structure.InteractFunction<Boolean> kill = new Structure.InteractFunction<Boolean>()
 	{
 		@Override
-		public Boolean apply(StructureData data, DCharacter character)
+		public Boolean apply(StructureSave data, DCharacter character)
 		{
 			Location location = data.getReferenceLocation();
 			location.getWorld().playSound(location, Sound.WITHER_DEATH, 1F, 1.2F);
@@ -170,7 +171,7 @@ public class Obelisk extends GreekStructure
 					{
 						// Obelisk created!
 						Admins.sendDebug(ChatColor.RED + "Obelisk created by " + character.getName() + " at: " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ());
-						StructureData save = inst().createNew(true, location);
+						StructureSave save = inst().createNew(true, location);
 						save.setOwner(character.getId());
 						inst().birth(save, character);
 
@@ -189,7 +190,7 @@ public class Obelisk extends GreekStructure
 			{
 				event.setCancelled(true);
 
-				StructureData save = Structure.Util.getStructureRegional(location);
+				StructureSave save = Structure.Util.getStructureRegional(location);
 				DCharacter owner = DCharacter.Util.load(save.getOwner());
 
 				if(Data.hasTimed(player.getName(), "destroy_obelisk"))
@@ -319,7 +320,7 @@ public class Obelisk extends GreekStructure
 		}
 
 		@Override
-		public Schematic getSchematic(StructureData unused)
+		public Schematic getSchematic(StructureSave unused)
 		{
 			return schematic;
 		}

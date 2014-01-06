@@ -1,15 +1,7 @@
 package com.censoredsoftware.demigods.base.listener;
 
-import com.censoredsoftware.demigods.engine.data.Data;
-import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
-import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
-import com.censoredsoftware.demigods.engine.data.serializable.StructureData;
-import com.censoredsoftware.demigods.engine.data.wrap.TributeManager;
-import com.censoredsoftware.demigods.engine.language.English;
-import com.censoredsoftware.demigods.engine.mythos.Deity;
-import com.censoredsoftware.demigods.engine.mythos.Structure;
-import com.censoredsoftware.demigods.engine.util.Configs;
-import com.censoredsoftware.demigods.engine.util.Zones;
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -24,7 +16,16 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.UUID;
+import com.censoredsoftware.demigods.engine.data.Data;
+import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
+import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
+import com.censoredsoftware.demigods.engine.data.serializable.StructureSave;
+import com.censoredsoftware.demigods.engine.data.wrap.TributeManager;
+import com.censoredsoftware.demigods.engine.language.English;
+import com.censoredsoftware.demigods.engine.mythos.Deity;
+import com.censoredsoftware.demigods.engine.mythos.Structure;
+import com.censoredsoftware.demigods.engine.util.Configs;
+import com.censoredsoftware.demigods.engine.util.Zones;
 
 public class TributeListener implements Listener
 {
@@ -48,7 +49,7 @@ public class TributeListener implements Listener
 			event.setCancelled(true);
 
 			// Define the shrine
-			StructureData save = Structure.Util.getStructureRegional(location);
+			StructureSave save = Structure.Util.getStructureRegional(location);
 
 			// Return if they aren't clicking the gold block
 			if(!save.getClickableBlocks().contains(event.getClickedBlock().getLocation())) return;
@@ -84,7 +85,7 @@ public class TributeListener implements Listener
 		if(!event.getInventory().getName().contains("Tribute to") /* TODO make this work with translations, I'm sleepy */|| !Structure.Util.partOfStructureWithFlag(player.getTargetBlock(null, 10).getLocation(), Structure.Flag.TRIBUTE_LOCATION)) return;
 
 		// Get the creator of the shrine
-		StructureData save = StructureData.Util.load(UUID.fromString(Data.getValueTemp(player.getName(), character.getName()).toString()));
+		StructureSave save = StructureSave.Util.load(UUID.fromString(Data.getValueTemp(player.getName(), character.getName()).toString()));
 
 		// Calculate the tribute value
 		int tributeValue = 0, items = 0;
@@ -172,7 +173,7 @@ public class TributeListener implements Listener
 		event.getInventory().clear();
 	}
 
-	private static void tribute(DCharacter character, StructureData save)
+	private static void tribute(DCharacter character, StructureSave save)
 	{
 		Player player = character.getOfflinePlayer().getPlayer();
 		Deity shrineDeity = character.getDeity();

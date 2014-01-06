@@ -1,5 +1,18 @@
 package com.censoredsoftware.demigods.engine.data.serializable;
 
+import java.util.*;
+
+import org.bukkit.*;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.material.MaterialData;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.scheduler.BukkitRunnable;
+
 import com.censoredsoftware.censoredlib.data.inventory.CEnderInventory;
 import com.censoredsoftware.censoredlib.data.inventory.CInventory;
 import com.censoredsoftware.censoredlib.data.inventory.CItemStack;
@@ -20,18 +33,6 @@ import com.censoredsoftware.demigods.engine.util.Messages;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
-import org.bukkit.*;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.material.MaterialData;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.scheduler.BukkitRunnable;
-
-import java.util.*;
 
 public class DCharacter implements Participant, ConfigurationSerializable
 {
@@ -485,24 +486,24 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		});
 	}
 
-	public Collection<StructureData> getOwnedStructures()
+	public Collection<StructureSave> getOwnedStructures()
 	{
-		return StructureData.Util.findAll(new Predicate<StructureData>()
+		return StructureSave.Util.findAll(new Predicate<StructureSave>()
 		{
 			@Override
-			public boolean apply(StructureData data)
+			public boolean apply(StructureSave data)
 			{
 				return data.getOwner().equals(getId());
 			}
 		});
 	}
 
-	public Collection<StructureData> getOwnedStructures(final String type)
+	public Collection<StructureSave> getOwnedStructures(final String type)
 	{
-		return StructureData.Util.findAll(new Predicate<StructureData>()
+		return StructureSave.Util.findAll(new Predicate<StructureSave>()
 		{
 			@Override
-			public boolean apply(StructureData data)
+			public boolean apply(StructureSave data)
 			{
 				return data.getTypeName().equals(type) && data.getOwner().equals(getId());
 			}
@@ -558,7 +559,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 		// Remove the data
 		if(dPlayer.getCurrent() != null && dPlayer.getCurrent().getName().equalsIgnoreCase(getName())) dPlayer.resetCurrent();
-		for(StructureData structureSave : Structure.Util.getStructureWithFlag(Structure.Flag.DELETE_WITH_OWNER))
+		for(StructureSave structureSave : Structure.Util.getStructuresWithFlag(Structure.Flag.DELETE_WITH_OWNER))
 			if(structureSave.hasOwner() && structureSave.getOwner().equals(getId())) structureSave.remove();
 		for(DSavedPotion potion : getRawPotionEffects())
 			Data.SAVED_POTION.remove(potion.getId());

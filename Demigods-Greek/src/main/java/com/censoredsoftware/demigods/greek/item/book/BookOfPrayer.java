@@ -1,11 +1,9 @@
 package com.censoredsoftware.demigods.greek.item.book;
 
-import com.censoredsoftware.censoredlib.util.Items;
-import com.censoredsoftware.demigods.engine.data.serializable.StructureData;
-import com.censoredsoftware.demigods.engine.mythos.DivineItem;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.censoredsoftware.demigods.greek.item.GreekItem;
-import com.censoredsoftware.demigods.greek.structure.Altar;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -18,9 +16,12 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapelessRecipe;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+import com.censoredsoftware.censoredlib.util.Items;
+import com.censoredsoftware.demigods.engine.data.serializable.StructureSave;
+import com.censoredsoftware.demigods.engine.mythos.DivineItem;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.censoredsoftware.demigods.greek.item.GreekItem;
+import com.censoredsoftware.demigods.greek.structure.Altar;
 
 public class BookOfPrayer extends GreekItem
 {
@@ -63,7 +64,7 @@ public class BookOfPrayer extends GreekItem
 				if(Altar.Util.isAltarNearby(player.getLocation()))
 				{
 					// Find the nearest Altar and teleport
-					StructureData save = Altar.Util.getAltarNearby(player.getLocation());
+					StructureSave save = Altar.Util.getAltarNearby(player.getLocation());
 					player.teleport(save.getReferenceLocation().clone().add(2.0, 1.5, 0));
 					player.sendMessage(ChatColor.YELLOW + "Teleporting to the nearest Altar...");
 					player.getWorld().strikeLightningEffect(player.getLocation());

@@ -14,7 +14,7 @@ import com.censoredsoftware.censoredlib.util.Vehicles;
 import com.censoredsoftware.demigods.engine.data.Data;
 import com.censoredsoftware.demigods.engine.data.serializable.Battle;
 import com.censoredsoftware.demigods.engine.data.serializable.Participant;
-import com.censoredsoftware.demigods.engine.data.serializable.StructureData;
+import com.censoredsoftware.demigods.engine.data.serializable.StructureSave;
 import com.censoredsoftware.demigods.engine.data.wrap.CLocationManager;
 import com.censoredsoftware.demigods.engine.language.English;
 import com.censoredsoftware.demigods.engine.mythos.Structure;
@@ -63,12 +63,12 @@ public class MoveListener implements Listener
 	private static void onFlagMoveEvent(Entity entity, final Location to, final Location from)
 	{
 		// Handle invisible wall
-		if(Structure.Util.isInRadiusWithFlag(to, Structure.Flag.INVISIBLE_WALL))
+		if(Structure.Util.isInRadiusWithFlag(to, Structure.Flag.RESTRICTED_AREA))
 		{
 			// Immediately return when possible
 			if(!(entity instanceof Player) && !(entity instanceof Vehicle)) return;
 
-			StructureData save = Structure.Util.closestInRadiusWithFlag(to, Structure.Flag.INVISIBLE_WALL);
+			StructureSave save = Structure.Util.closestInRadiusWithFlag(to, Structure.Flag.RESTRICTED_AREA);
 			if(save == null) return;
 
 			boolean collision = Iterables.any(save.getLocations(), new Predicate<Location>()

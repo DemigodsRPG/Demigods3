@@ -2,15 +2,18 @@ package com.censoredsoftware.demigods.base.structure;
 
 import java.util.Set;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
 import com.censoredsoftware.censoredlib.schematic.Schematic;
 import com.censoredsoftware.censoredlib.schematic.Selection;
+import com.censoredsoftware.demigods.engine.DemigodsPlugin;
 import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
 import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
-import com.censoredsoftware.demigods.engine.data.serializable.StructureData;
+import com.censoredsoftware.demigods.engine.data.serializable.StructureSave;
 import com.censoredsoftware.demigods.engine.mythos.Structure;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Sets;
@@ -30,7 +33,7 @@ public class InvisibleWall implements Structure, Structure.Design
 	}
 
 	@Override
-	public Schematic getSchematic(StructureData data)
+	public Schematic getSchematic(StructureSave data)
 	{
 		Schematic theWall = new Schematic("Invisible Wall", "Generated", 16);
 		Location required = data.getReferenceLocation();
@@ -54,7 +57,7 @@ public class InvisibleWall implements Structure, Structure.Design
 	@Override
 	public Set<Flag> getFlags()
 	{
-		return Sets.newHashSet(Flag.INVISIBLE_WALL, Flag.STRUCTURE_WAND_GENERABLE);
+		return Sets.newHashSet(Flag.RESTRICTED_AREA, Flag.STRUCTURE_WAND_GENERABLE);
 	}
 
 	@Override
@@ -64,25 +67,25 @@ public class InvisibleWall implements Structure, Structure.Design
 	}
 
 	@Override
-	public boolean sanctify(StructureData data, DCharacter character)
+	public boolean sanctify(StructureSave data, DCharacter character)
 	{
 		return false;
 	}
 
 	@Override
-	public boolean corrupt(StructureData data, DCharacter character)
+	public boolean corrupt(StructureSave data, DCharacter character)
 	{
 		return false;
 	}
 
 	@Override
-	public boolean birth(StructureData data, DCharacter character)
+	public boolean birth(StructureSave data, DCharacter character)
 	{
 		return false;
 	}
 
 	@Override
-	public boolean kill(StructureData data, DCharacter character)
+	public boolean kill(StructureSave data, DCharacter character)
 	{
 		return false;
 	}
@@ -106,7 +109,7 @@ public class InvisibleWall implements Structure, Structure.Design
 	}
 
 	@Override
-	public boolean isAllowed(final StructureData data, Player player)
+	public boolean isAllowed(final StructureSave data, Player player)
 	{
 		Predicate<Player> permissionPredicate = new Predicate<Player>()
 		{
@@ -121,10 +124,10 @@ public class InvisibleWall implements Structure, Structure.Design
 	}
 
 	@Override
-	public StructureData createNew(boolean unused, Location... reference)
+	public StructureSave createNew(boolean unused, Location... reference)
 	{
 		if(reference.length < 2) return null;
-		StructureData save = new StructureData();
+		StructureSave save = new StructureSave();
 		save.generateId();
 		save.setActive(true);
 		save.setDesign("Invisible Wall");
@@ -136,5 +139,37 @@ public class InvisibleWall implements Structure, Structure.Design
 		save.save();
 		save.generate();
 		return null;
+	}
+
+	public static class Util
+	{
+		private Util()
+		{}
+
+		/**
+		 * Makes all invisible walls/areas visible to the <code>player</code> as glass with
+		 * a fake block update.
+		 * 
+		 * @param player the player to make the blocks visible to
+		 */
+		public static void debugRestrictedAreas(final Player player)
+		{
+			// Create a sync delayed task to avoid asynchronous block update issues
+			Bukkit.getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.plugin(), new Runnable()
+			{
+				@Override
+				public void run()
+				{
+					// Loop through all invisible wall structures
+					for(StructureSave save : Structure.Util.getStructuresWithFlag(Flag.RESTRICTED_AREA))
+					{
+						for(Location location : save.getType().getDesign("Invisible Wall").getSchematic(save).getLocations(save.getReferenceLocation()))
+						{
+							player.sendBlockChange(location, Material.GLASS, (byte) 0);
+						}
+					}
+				}
+			});
+		}
 	}
 }

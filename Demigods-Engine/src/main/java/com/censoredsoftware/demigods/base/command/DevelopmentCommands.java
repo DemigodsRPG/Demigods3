@@ -1,19 +1,13 @@
 package com.censoredsoftware.demigods.base.command;
 
-import com.censoredsoftware.censoredlib.helper.WrappedCommand;
-import com.censoredsoftware.censoredlib.schematic.Schematic;
-import com.censoredsoftware.censoredlib.util.Images;
-import com.censoredsoftware.demigods.engine.DemigodsPlugin;
-import com.censoredsoftware.demigods.engine.data.Data;
-import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
-import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
-import com.censoredsoftware.demigods.engine.data.serializable.StructureData;
-import com.censoredsoftware.demigods.engine.mythos.Structure;
-import com.censoredsoftware.demigods.engine.util.Messages;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Iterators;
-import com.google.common.collect.Sets;
+import java.awt.image.BufferedImage;
+import java.net.URL;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Set;
+
+import javax.imageio.ImageIO;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -22,12 +16,20 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.net.URL;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Set;
+import com.censoredsoftware.censoredlib.helper.WrappedCommand;
+import com.censoredsoftware.censoredlib.schematic.Schematic;
+import com.censoredsoftware.censoredlib.util.Images;
+import com.censoredsoftware.demigods.engine.DemigodsPlugin;
+import com.censoredsoftware.demigods.engine.data.Data;
+import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
+import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
+import com.censoredsoftware.demigods.engine.data.serializable.StructureSave;
+import com.censoredsoftware.demigods.engine.mythos.Structure;
+import com.censoredsoftware.demigods.engine.util.Messages;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Iterators;
+import com.google.common.collect.Sets;
 
 public class DevelopmentCommands extends WrappedCommand
 {
@@ -149,7 +151,7 @@ public class DevelopmentCommands extends WrappedCommand
 			return false;
 		}
 
-		StructureData obelisk = Iterables.getFirst(Structure.Util.getInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_GRIEFING), null);
+		StructureSave obelisk = Iterables.getFirst(Structure.Util.getInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_GRIEFING), null);
 		if(obelisk != null)
 		{
 			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();

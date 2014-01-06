@@ -1,13 +1,10 @@
 package com.censoredsoftware.demigods.base.listener;
 
-import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
-import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
-import com.censoredsoftware.demigods.engine.data.serializable.StructureData;
-import com.censoredsoftware.demigods.engine.data.wrap.CLocationManager;
-import com.censoredsoftware.demigods.engine.mythos.Structure;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -28,10 +25,14 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
+import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
+import com.censoredsoftware.demigods.engine.data.serializable.StructureSave;
+import com.censoredsoftware.demigods.engine.data.wrap.CLocationManager;
+import com.censoredsoftware.demigods.engine.mythos.Structure;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 
 public class GriefListener implements Listener
 {
@@ -56,7 +57,7 @@ public class GriefListener implements Listener
 	public void onBlockPlace(BlockPlaceEvent event)
 	{
 		if(Zones.inNoDemigodsZone(event.getBlock().getLocation())) return;
-		StructureData save = Iterables.getFirst(Structure.Util.getInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING), null);
+		StructureSave save = Iterables.getFirst(Structure.Util.getInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING), null);
 		if(save != null && save.hasMembers())
 		{
 			DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
@@ -71,7 +72,7 @@ public class GriefListener implements Listener
 	{
 		Location location = event.getBlock().getLocation();
 		if(Zones.inNoDemigodsZone(location) || Structure.Util.partOfStructureWithFlag(location, Structure.Flag.DESTRUCT_ON_BREAK)) return;
-		StructureData save = Iterables.getFirst(Structure.Util.getInRadiusWithFlag(location, Structure.Flag.NO_GRIEFING), null);
+		StructureSave save = Iterables.getFirst(Structure.Util.getInRadiusWithFlag(location, Structure.Flag.NO_GRIEFING), null);
 		if(save != null && save.hasMembers())
 		{
 			DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
@@ -90,7 +91,7 @@ public class GriefListener implements Listener
 			event.setCancelled(true);
 			return;
 		}
-		StructureData save = Iterables.getFirst(Structure.Util.getInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING), null);
+		StructureSave save = Iterables.getFirst(Structure.Util.getInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING), null);
 		if(save != null && save.hasMembers())
 		{
 			DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
@@ -161,7 +162,7 @@ public class GriefListener implements Listener
 	{
 		Location location = event.getBlock().getLocation();
 		if(Zones.inNoDemigodsZone(location)) return;
-		StructureData save = Iterables.getFirst(Structure.Util.getInRadiusWithFlag(location, Structure.Flag.NO_GRIEFING), null);
+		StructureSave save = Iterables.getFirst(Structure.Util.getInRadiusWithFlag(location, Structure.Flag.NO_GRIEFING), null);
 		if(save != null && save.hasMembers())
 		{
 			if(Structure.Util.partOfStructureWithAllFlags(location, Structure.Flag.NO_GRIEFING, Structure.Flag.DESTRUCT_ON_BREAK)) return;
@@ -176,7 +177,7 @@ public class GriefListener implements Listener
 	public void onPlayerInteract(final PlayerInteractEvent event)
 	{
 		if(Zones.inNoDemigodsZone(event.getPlayer().getLocation())) return;
-		StructureData save = event.getAction().equals(Action.LEFT_CLICK_BLOCK) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK) ? Iterables.getFirst(Structure.Util.getInRadiusWithFlag(event.getClickedBlock().getLocation(), Structure.Flag.NO_GRIEFING), null) : Iterables.getFirst(Structure.Util.getInRadiusWithFlag(event.getPlayer().getLocation(), Structure.Flag.NO_GRIEFING), null);
+		StructureSave save = event.getAction().equals(Action.LEFT_CLICK_BLOCK) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK) ? Iterables.getFirst(Structure.Util.getInRadiusWithFlag(event.getClickedBlock().getLocation(), Structure.Flag.NO_GRIEFING), null) : Iterables.getFirst(Structure.Util.getInRadiusWithFlag(event.getPlayer().getLocation(), Structure.Flag.NO_GRIEFING), null);
 		if(save != null && save.hasMembers())
 		{
 			if(Structure.Util.partOfStructureWithAllFlags(event.getPlayer().getLocation(), Structure.Flag.NO_GRIEFING, Structure.Flag.DESTRUCT_ON_BREAK)) return;
@@ -212,7 +213,7 @@ public class GriefListener implements Listener
 	public void onItemDropEvent(PlayerDropItemEvent event)
 	{
 		if(Zones.inNoDemigodsZone(event.getPlayer().getLocation())) return;
-		StructureData save = Iterables.getFirst(Structure.Util.getInRadiusWithFlag(event.getPlayer().getLocation(), Structure.Flag.NO_GRIEFING), null);
+		StructureSave save = Iterables.getFirst(Structure.Util.getInRadiusWithFlag(event.getPlayer().getLocation(), Structure.Flag.NO_GRIEFING), null);
 		if(save != null && save.hasMembers())
 		{
 			DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
@@ -227,7 +228,7 @@ public class GriefListener implements Listener
 	{
 		if(Zones.inNoDemigodsZone(event.getPlayer().getLocation())) return;
 		Entity entity = event.getRightClicked();
-		StructureData save = Iterables.getFirst(Structure.Util.getInRadiusWithFlag(entity.getLocation(), Structure.Flag.NO_GRIEFING), null);
+		StructureSave save = Iterables.getFirst(Structure.Util.getInRadiusWithFlag(entity.getLocation(), Structure.Flag.NO_GRIEFING), null);
 		if(save != null && save.hasMembers())
 		{
 			DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
@@ -243,7 +244,7 @@ public class GriefListener implements Listener
 		if(Zones.inNoDemigodsZone(event.getPlayer().getLocation())) return;
 		if(!event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) return;
 		Block block = event.getClickedBlock();
-		StructureData save = Iterables.getFirst(Structure.Util.getInRadiusWithFlag(block.getLocation(), Structure.Flag.NO_GRIEFING), null);
+		StructureSave save = Iterables.getFirst(Structure.Util.getInRadiusWithFlag(block.getLocation(), Structure.Flag.NO_GRIEFING), null);
 		if(save == null || !save.hasMembers()) return;
 		if(BLOCK_INVENTORIES.contains(block.getType()))
 		{

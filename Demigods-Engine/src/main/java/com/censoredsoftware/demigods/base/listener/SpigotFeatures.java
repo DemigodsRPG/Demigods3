@@ -1,18 +1,19 @@
 package com.censoredsoftware.demigods.base.listener;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
+
 import com.censoredsoftware.censoredlib.trigger.Trigger;
 import com.censoredsoftware.censoredlib.util.Threads;
 import com.censoredsoftware.demigods.engine.DemigodsPlugin;
 import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
 import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
-import com.censoredsoftware.demigods.engine.data.serializable.StructureData;
+import com.censoredsoftware.demigods.engine.data.serializable.StructureSave;
 import com.censoredsoftware.demigods.engine.mythos.Structure;
 import com.censoredsoftware.demigods.engine.util.Zones;
 import com.google.common.collect.Iterables;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
 
 public class SpigotFeatures implements Listener
 {
@@ -32,7 +33,7 @@ public class SpigotFeatures implements Listener
 						online.spigot().setCollidesWithEntities(true);
 						continue;
 					}
-					StructureData save = Iterables.getFirst(Structure.Util.getInRadiusWithFlag(location, Structure.Flag.NO_GRIEFING), null);
+					StructureSave save = Iterables.getFirst(Structure.Util.getInRadiusWithFlag(location, Structure.Flag.NO_GRIEFING), null);
 					if(save == null || save.getOwner().equals(character.getId()))
 					{
 						online.spigot().setCollidesWithEntities(true);
