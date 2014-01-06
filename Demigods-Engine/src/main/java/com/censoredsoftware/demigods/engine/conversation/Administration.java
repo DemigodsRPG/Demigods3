@@ -1,19 +1,10 @@
 package com.censoredsoftware.demigods.engine.conversation;
 
-import com.censoredsoftware.censoredlib.helper.WrappedConversation;
-import com.censoredsoftware.censoredlib.util.Titles;
-import com.censoredsoftware.demigods.base.DemigodsConversation;
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.data.Data;
-import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
-import com.censoredsoftware.demigods.engine.language.English;
-import com.censoredsoftware.demigods.engine.mythos.Structure;
-import com.censoredsoftware.demigods.engine.util.Admins;
-import com.censoredsoftware.demigods.engine.util.Configs;
-import com.censoredsoftware.demigods.engine.util.Messages;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.Map;
+
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -28,9 +19,21 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-import java.lang.reflect.Field;
-import java.util.List;
-import java.util.Map;
+import com.censoredsoftware.censoredlib.helper.WrappedConversation;
+import com.censoredsoftware.censoredlib.util.Titles;
+import com.censoredsoftware.demigods.base.DemigodsConversation;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.DemigodsPlugin;
+import com.censoredsoftware.demigods.engine.data.Data;
+import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
+import com.censoredsoftware.demigods.engine.language.English;
+import com.censoredsoftware.demigods.engine.mythos.Structure;
+import com.censoredsoftware.demigods.engine.util.Admins;
+import com.censoredsoftware.demigods.engine.util.Configs;
+import com.censoredsoftware.demigods.engine.util.Messages;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 @SuppressWarnings("unchecked")
 public class Administration implements WrappedConversation
@@ -49,7 +52,7 @@ public class Administration implements WrappedConversation
 	 */
 	public enum Menu
 	{
-		STRUCTURE_WAND('1', new Structures.Menu());
+		GENERATE_STRUCTURES('1', new Structures.Menu());
 
 		private final char id;
 		private final DemigodsConversation.Category category;
@@ -111,24 +114,24 @@ public class Administration implements WrappedConversation
 		return context;
 	}
 
-	public static void saveNotification(ConversationContext context, String menuName, String notification)
+	public static void saveNotification(ConversationContext context, String key, String notification)
 	{
 		// Create the data
-		if(context.getSessionData(menuName + "_notifications") == null)
+		if(context.getSessionData(key + "_notifications") == null)
 		{
-			context.setSessionData(menuName + "_notifications", Lists.newArrayList());
+			context.setSessionData(key + "_notifications", Lists.newArrayList());
 		}
 
 		// Save the notification
-		((List<String>) context.getSessionData(menuName + "_notifications")).add(notification);
+		((List<String>) context.getSessionData(key + "_notifications")).add(notification);
 	}
 
-	public static void displayNotifications(ConversationContext context, Player player, String menuName)
+	public static void displayNotifications(ConversationContext context, Player player, String key)
 	{
-		if(context.getSessionData(menuName + "_notifications") != null && !((List<String>) context.getSessionData(menuName + "_notifications")).isEmpty())
+		if(context.getSessionData(key + "_notifications") != null && !((List<String>) context.getSessionData(key + "_notifications")).isEmpty())
 		{
 			// Grab the notifications
-			List<String> notifications = (List<String>) context.getSessionData(menuName + "_notifications");
+			List<String> notifications = (List<String>) context.getSessionData(key + "_notifications");
 
 			player.sendRawMessage(" ");
 
@@ -261,7 +264,7 @@ public class Administration implements WrappedConversation
 					for(Structure structure : Demigods.mythos().getStructures())
 					{
 						// Only list that shiz if it needs to be, dawg
-						if(structure.getFlags().contains(Structure.Flag.STRUCTURE_WAND_GENERATE))
+						if(structure.getFlags().contains(Structure.Flag.STRUCTURE_WAND_GENERABLE))
 						{
 							// Add it to the choices
 							structures.put(count, structure);
@@ -282,8 +285,6 @@ public class Administration implements WrappedConversation
 			{
 				// Define variables
 				Player player = (Player) context.getForWhom();
-				Location loc1 = (Location) context.getSessionData("structurewand_loc1");
-				Location loc2 = (Location) context.getSessionData("structurewand_loc2");
 
 				// Send the messages
 				Messages.clearRawChat(player);
@@ -422,15 +423,14 @@ public class Administration implements WrappedConversation
 					// Ensure that selections have been made
 					if(structure.getRequiredGenerationPoints() == 1 && locObj1 != null)
 					{
-						// TODO: make sure this works
 						// Cast the object
 						Location loc1 = (Location) locObj1;
 
 						// Create the structure
-						structure.createNew(true, loc1);
+						scheduleGeneration(structure, loc1);
 
 						// Success boi
-						success(context);
+						return success(context);
 					}
 					else if(structure.getRequiredGenerationPoints() == 2 && locObj1 != null && locObj2 != null)
 					{
@@ -439,13 +439,13 @@ public class Administration implements WrappedConversation
 						Location loc2 = (Location) locObj2;
 
 						// Create the structure
-						structure.createNew(true, loc1, loc2);
+						scheduleGeneration(structure, loc1, loc2);
 
 						// Ye ye ye ye turtle man
-						success(context);
+						return success(context);
 					}
 					else
-					{
+				{
 						// Add notification
 						saveNotification(context, this.getClass().getSimpleName(), English.ADMINISTRATION_LOCATIONS_NOT_SELECTED.getLine());
 					}
@@ -462,7 +462,24 @@ public class Administration implements WrappedConversation
 				// Save notification
 				saveNotification(context, Menu.class.getSimpleName(), English.ADMINISTRATION_STRUCTURE_GENERATED.getLine());
 
+				// Set data to null
+				context.setSessionData("structurewand_loc1", null);
+				context.setSessionData("structurewand_loc2", null);
+
 				return new Menu();
+			}
+
+			private static void scheduleGeneration(final Structure structure, final Location... locations)
+			{
+				// This must be schedules synchronously because chat is handled asynchronously
+				Bukkit.getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.plugin(), new Runnable()
+				{
+					@Override
+					public void run()
+					{
+						structure.createNew(true, locations);
+					}
+				});
 			}
 		}
 	}
@@ -470,7 +487,7 @@ public class Administration implements WrappedConversation
 	public static class Listener implements org.bukkit.event.Listener
 	{
 		/**
-		 * Listens for the PlayerInteract even and uses it strictly for the structure wand.
+		 * Listens for the PlayerInteract event and uses it strictly for the structure wand.
 		 * 
 		 * @param event the PlayerInteractEvent to monitor
 		 */
@@ -478,7 +495,7 @@ public class Administration implements WrappedConversation
 		private void onStructureWand(PlayerInteractEvent event)
 		{
 			// Check some requirements
-			if(event.getClickedBlock() == null || Zones.inNoDemigodsZone(event.getPlayer().getLocation()) || !Admins.structureWandEnabled(event.getPlayer())) return;
+		if(event.getClickedBlock() == null || Zones.inNoDemigodsZone(event.getPlayer().getLocation()) || !Admins.useStructureWand(event.getPlayer())) return;
 
 			// All good, handle the wand
 			Player player = event.getPlayer();

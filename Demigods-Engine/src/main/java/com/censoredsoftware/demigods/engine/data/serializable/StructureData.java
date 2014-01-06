@@ -1,5 +1,12 @@
 package com.censoredsoftware.demigods.engine.data.serializable;
 
+import java.util.*;
+
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+
 import com.censoredsoftware.censoredlib.data.location.CLocation;
 import com.censoredsoftware.censoredlib.data.location.Region;
 import com.censoredsoftware.demigods.engine.Demigods;
@@ -12,12 +19,6 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-
-import java.util.*;
 
 public class StructureData implements ConfigurationSerializable
 {
@@ -245,7 +246,7 @@ public class StructureData implements ConfigurationSerializable
 		this.permission = permission;
 	}
 
-	public void setAscensions(int ascensions)
+	public void setRequiredAscensions(int ascensions)
 	{
 		this.ascensions = ascensions;
 	}
@@ -266,7 +267,7 @@ public class StructureData implements ConfigurationSerializable
 		return permission;
 	}
 
-	public Integer getAscensions()
+	public Integer getRequiredAscensions()
 	{
 		return ascensions;
 	}

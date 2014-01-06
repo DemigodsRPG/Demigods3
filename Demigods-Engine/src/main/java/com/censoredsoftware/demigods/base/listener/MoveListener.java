@@ -1,16 +1,5 @@
 package com.censoredsoftware.demigods.base.listener;
 
-import com.censoredsoftware.censoredlib.util.Vehicles;
-import com.censoredsoftware.demigods.engine.data.Data;
-import com.censoredsoftware.demigods.engine.data.serializable.Battle;
-import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
-import com.censoredsoftware.demigods.engine.data.serializable.Participant;
-import com.censoredsoftware.demigods.engine.data.serializable.StructureData;
-import com.censoredsoftware.demigods.engine.data.wrap.CLocationManager;
-import com.censoredsoftware.demigods.engine.mythos.Structure;
-import com.censoredsoftware.demigods.engine.util.Configs;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -20,6 +9,18 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.vehicle.VehicleMoveEvent;
+
+import com.censoredsoftware.censoredlib.util.Vehicles;
+import com.censoredsoftware.demigods.engine.data.Data;
+import com.censoredsoftware.demigods.engine.data.serializable.Battle;
+import com.censoredsoftware.demigods.engine.data.serializable.Participant;
+import com.censoredsoftware.demigods.engine.data.serializable.StructureData;
+import com.censoredsoftware.demigods.engine.data.wrap.CLocationManager;
+import com.censoredsoftware.demigods.engine.language.English;
+import com.censoredsoftware.demigods.engine.mythos.Structure;
+import com.censoredsoftware.demigods.engine.util.Configs;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 
 public class MoveListener implements Listener
 {
@@ -61,11 +62,16 @@ public class MoveListener implements Listener
 
 	private static void onFlagMoveEvent(Entity entity, final Location to, final Location from)
 	{
+		// Handle invisible wall
 		if(Structure.Util.isInRadiusWithFlag(to, Structure.Flag.INVISIBLE_WALL))
 		{
-			StructureData data = Structure.Util.closestInRadiusWithFlag(to, Structure.Flag.INVISIBLE_WALL);
-			if(data == null) return;
-			boolean toBool = Iterables.any(data.getLocations(), new Predicate<Location>()
+			// Immediately return when possible
+			if(!(entity instanceof Player) && !(entity instanceof Vehicle)) return;
+
+			StructureData save = Structure.Util.closestInRadiusWithFlag(to, Structure.Flag.INVISIBLE_WALL);
+			if(save == null) return;
+
+			boolean collision = Iterables.any(save.getLocations(), new Predicate<Location>()
 			{
 				@Override
 				public boolean apply(Location location)
@@ -73,26 +79,32 @@ public class MoveListener implements Listener
 					return CLocationManager.distanceFlat(to, location) < 1;
 				}
 			});
-			boolean fromBool = Iterables.any(data.getLocations(), new Predicate<Location>()
+
+			if(collision)
 			{
-				@Override
-				public boolean apply(Location location)
+				// Handle teleportation
+				if(entity instanceof Player && !save.getType().isAllowed(save, (Player) entity))
 				{
-					return CLocationManager.distanceFlat(from, location) < 1;
+					Location location = entity.getLocation();
+
+					// Turn them the opposite direction
+					if(location.getYaw() > 0) location.setYaw(location.getYaw() - 180);
+					else location.setYaw(location.getYaw() + 180);
+
+					entity.teleport(location);
 				}
-			});
-			if(toBool && !fromBool && entity instanceof Player && !data.getType().isAllowed(data, (Player) entity)) Data.saveTemp(DPlayer.Util.getPlayer((Player) entity).getMojangAccount(), "invisible_wall_location", from);
-			if(toBool)
-			{
-				if(entity instanceof Player && data.getType().isAllowed(data, (Player) entity)) return;
-				if(entity instanceof Vehicle) entity.eject();
-				if(!(entity instanceof Player)) return;
-				if(Data.hasKeyTemp(DPlayer.Util.getPlayer((Player) entity).getMojangAccount(), "invisible_wall_location"))
+				else if(entity instanceof Vehicle && entity.getPassenger() != null && !save.getType().isAllowed(save, (Player) entity.getPassenger()))
 				{
-					entity.teleport((Location) Data.getValueTemp(DPlayer.Util.getPlayer((Player) entity).getMojangAccount(), "invisible_wall_location"));
-					Data.removeTemp(DPlayer.Util.getPlayer((Player) entity).getMojangAccount(), "invisible_wall_location");
+					// Eject the rider
+					entity.eject();
 				}
+
+				// Let 'em know what's up
+				if(entity instanceof Player) ((Player) entity).sendMessage(English.NOT_ALLOWED_PAST_INIVISBLE_WALL.getLine());
 			}
+
+			// FIXME: Handle entrances from above.
+			// FIXME: Handle bugs with vehicles. (e.g. If a player looks backwards and rides into a wall they are teleported to the opposite side. There are likely others.)
 		}
 	}
 }

@@ -1,5 +1,11 @@
 package com.censoredsoftware.demigods.base.structure;
 
+import java.util.Set;
+
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
+
 import com.censoredsoftware.censoredlib.schematic.Schematic;
 import com.censoredsoftware.censoredlib.schematic.Selection;
 import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
@@ -8,12 +14,6 @@ import com.censoredsoftware.demigods.engine.data.serializable.StructureData;
 import com.censoredsoftware.demigods.engine.mythos.Structure;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Sets;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
-
-import java.util.Set;
 
 public class InvisibleWall implements Structure, Structure.Design
 {
@@ -35,7 +35,7 @@ public class InvisibleWall implements Structure, Structure.Design
 		Schematic theWall = new Schematic("Invisible Wall", "Generated", 16);
 		Location required = data.getReferenceLocation();
 		Location optional = data.getOptionalLocation();
-		theWall.add(new Selection(0, 0, 0, optional.getBlockX() - data.getReferenceLocation().getBlockX(), optional.getBlockY() - required.getBlockY(), optional.getBlockZ() - required.getBlockZ(), Material.WOOD));
+		theWall.add(new Selection(0, 0, 0, optional.getBlockX() - data.getReferenceLocation().getBlockX(), optional.getBlockY() - required.getBlockY(), optional.getBlockZ() - required.getBlockZ()));
 		return theWall;
 	}
 
@@ -54,7 +54,7 @@ public class InvisibleWall implements Structure, Structure.Design
 	@Override
 	public Set<Flag> getFlags()
 	{
-		return Sets.newHashSet(Flag.INVISIBLE_WALL, Flag.STRUCTURE_WAND_GENERATE);
+		return Sets.newHashSet(Flag.INVISIBLE_WALL, Flag.STRUCTURE_WAND_GENERABLE);
 	}
 
 	@Override
@@ -114,7 +114,7 @@ public class InvisibleWall implements Structure, Structure.Design
 			public boolean apply(Player player)
 			{
 				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
-				return player.hasPermission(data.getPermission()) || character != null && character.getMeta().getAscensions() >= data.getAscensions();
+				return data.getPermission() != null && player.hasPermission(data.getPermission()) || character != null && data.getRequiredAscensions() != null && character.getMeta().getAscensions() >= data.getRequiredAscensions();
 			}
 		};
 		return permissionPredicate.apply(player);
@@ -125,11 +125,15 @@ public class InvisibleWall implements Structure, Structure.Design
 	{
 		if(reference.length < 2) return null;
 		StructureData save = new StructureData();
+		save.generateId();
 		save.setActive(true);
 		save.setDesign("Invisible Wall");
+		save.addFlags(getFlags());
+		save.setPermission("demigods.structure.invisiblewall.immunity");
 		save.setType(getName());
 		save.setReferenceLocation(reference[0]);
 		save.setOptionalLocation(reference[1]);
+		save.save();
 		save.generate();
 		return null;
 	}
