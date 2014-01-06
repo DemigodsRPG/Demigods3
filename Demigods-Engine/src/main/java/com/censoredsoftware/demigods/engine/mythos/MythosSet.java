@@ -1,17 +1,18 @@
 package com.censoredsoftware.demigods.engine.mythos;
 
+import java.util.Collections;
+import java.util.Set;
+
+import org.bukkit.event.Listener;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.permissions.Permission;
+
 import com.censoredsoftware.censoredlib.helper.WrappedCommand;
 import com.censoredsoftware.censoredlib.trigger.Trigger;
 import com.censoredsoftware.demigods.base.DemigodsMythos;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
-import org.bukkit.event.Listener;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.permissions.Permission;
-
-import java.util.Collections;
-import java.util.Set;
 
 public class MythosSet implements Mythos
 {

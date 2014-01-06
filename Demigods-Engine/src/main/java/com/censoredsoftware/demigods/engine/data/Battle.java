@@ -1,20 +1,9 @@
 package com.censoredsoftware.demigods.engine.data;
 
-import com.censoredsoftware.censoredlib.exception.SpigotNotFoundException;
-import com.censoredsoftware.censoredlib.language.Symbol;
-import com.censoredsoftware.censoredlib.util.Randoms;
-import com.censoredsoftware.censoredlib.util.Vehicles;
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.DemigodsPlugin;
-import com.censoredsoftware.demigods.engine.event.BattleDeathEvent;
-import com.censoredsoftware.demigods.engine.mythos.Alliance;
-import com.censoredsoftware.demigods.engine.mythos.Deity;
-import com.censoredsoftware.demigods.engine.util.Configs;
-import com.censoredsoftware.demigods.engine.util.Messages;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
-import com.google.common.collect.*;
+import java.util.*;
+
+import javax.annotation.Nullable;
+
 import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
@@ -30,8 +19,21 @@ import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.util.Vector;
 
-import javax.annotation.Nullable;
-import java.util.*;
+import com.censoredsoftware.censoredlib.exception.SpigotNotFoundException;
+import com.censoredsoftware.censoredlib.language.Symbol;
+import com.censoredsoftware.censoredlib.util.Randoms;
+import com.censoredsoftware.censoredlib.util.Vehicles;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.DemigodsPlugin;
+import com.censoredsoftware.demigods.engine.event.BattleDeathEvent;
+import com.censoredsoftware.demigods.engine.mythos.Alliance;
+import com.censoredsoftware.demigods.engine.mythos.Deity;
+import com.censoredsoftware.demigods.engine.util.Configs;
+import com.censoredsoftware.demigods.engine.util.Messages;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.google.common.base.Function;
+import com.google.common.base.Predicate;
+import com.google.common.collect.*;
 
 public class Battle implements ConfigurationSerializable
 {

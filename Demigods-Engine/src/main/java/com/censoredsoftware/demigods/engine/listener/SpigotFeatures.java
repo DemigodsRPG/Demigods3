@@ -1,5 +1,10 @@
 package com.censoredsoftware.demigods.engine.listener;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
+
 import com.censoredsoftware.censoredlib.trigger.Trigger;
 import com.censoredsoftware.censoredlib.util.Threads;
 import com.censoredsoftware.demigods.engine.DemigodsPlugin;
@@ -9,10 +14,6 @@ import com.censoredsoftware.demigods.engine.data.StructureData;
 import com.censoredsoftware.demigods.engine.mythos.Structure;
 import com.censoredsoftware.demigods.engine.util.Zones;
 import com.google.common.collect.Iterables;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
 
 public class SpigotFeatures implements Listener
 {

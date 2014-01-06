@@ -3,3 +3,4 @@
  * Certain Triggers, Structures, and various other Mythos related objects are funneled through the BaseMythos.
  */
 package com.censoredsoftware.demigods.base;
+

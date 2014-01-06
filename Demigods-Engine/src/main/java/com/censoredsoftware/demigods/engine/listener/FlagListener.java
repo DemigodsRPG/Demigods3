@@ -1,15 +1,7 @@
 package com.censoredsoftware.demigods.engine.listener;
 
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.DemigodsPlugin;
-import com.censoredsoftware.demigods.engine.data.DPlayer;
-import com.censoredsoftware.demigods.engine.data.Data;
-import com.censoredsoftware.demigods.engine.data.StructureData;
-import com.censoredsoftware.demigods.engine.language.English;
-import com.censoredsoftware.demigods.engine.mythos.DivineItem;
-import com.censoredsoftware.demigods.engine.mythos.Structure;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.google.common.collect.Lists;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -22,7 +14,16 @@ import org.bukkit.event.block.*;
 import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 
-import java.util.List;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.DemigodsPlugin;
+import com.censoredsoftware.demigods.engine.data.DPlayer;
+import com.censoredsoftware.demigods.engine.data.Data;
+import com.censoredsoftware.demigods.engine.data.StructureData;
+import com.censoredsoftware.demigods.engine.language.English;
+import com.censoredsoftware.demigods.engine.mythos.DivineItem;
+import com.censoredsoftware.demigods.engine.mythos.Structure;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.google.common.collect.Lists;
 
 public class FlagListener implements Listener
 {

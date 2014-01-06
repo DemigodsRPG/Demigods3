@@ -1,13 +1,14 @@
 package com.censoredsoftware.demigods.base;
 
+import java.util.HashMap;
+
+import org.bukkit.permissions.Permission;
+import org.bukkit.permissions.PermissionDefault;
+
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
-import org.bukkit.permissions.Permission;
-import org.bukkit.permissions.PermissionDefault;
-
-import java.util.HashMap;
 
 // Permissions
 public enum DemigodsPermission

@@ -1,5 +1,21 @@
 package com.censoredsoftware.demigods.base.command;
 
+import java.awt.image.BufferedImage;
+import java.net.URL;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Set;
+
+import javax.imageio.ImageIO;
+
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
 import com.censoredsoftware.censoredlib.helper.WrappedCommand;
 import com.censoredsoftware.censoredlib.schematic.Schematic;
 import com.censoredsoftware.censoredlib.util.Images;
@@ -16,20 +32,6 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Sets;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.net.URL;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Set;
 
 public class DevelopmentCommands extends WrappedCommand
 {

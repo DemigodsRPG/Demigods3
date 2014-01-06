@@ -1,16 +1,17 @@
 package com.censoredsoftware.demigods.engine;
 
+import java.io.File;
+import java.util.Collection;
+import java.util.List;
+
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
+
 import com.censoredsoftware.censoredlib.CensoredLibPlugin;
 import com.censoredsoftware.censoredlib.helper.CensoredJavaPlugin;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
-
-import java.io.File;
-import java.util.Collection;
-import java.util.List;
 
 /**
  * Class for all plugins of demigods.

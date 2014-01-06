@@ -1,12 +1,12 @@
 package com.censoredsoftware.demigods.engine.data;
 
+import java.util.Set;
+import java.util.UUID;
+
 import com.censoredsoftware.censoredlib.data.ServerData;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
-
-import java.util.Set;
-import java.util.UUID;
 
 public class ServerDataManager
 {

@@ -1,12 +1,13 @@
 package com.censoredsoftware.demigods.engine.data;
 
+import java.util.Set;
+import java.util.UUID;
+
+import org.bukkit.entity.Player;
+
 import com.censoredsoftware.censoredlib.data.player.Notification;
 import com.censoredsoftware.demigods.engine.language.English;
 import com.google.common.collect.Sets;
-import org.bukkit.entity.Player;
-
-import java.util.Set;
-import java.util.UUID;
 
 public class NotificationManager
 {

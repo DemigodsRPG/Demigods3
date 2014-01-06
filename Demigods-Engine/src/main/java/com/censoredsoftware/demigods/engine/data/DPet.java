@@ -1,18 +1,19 @@
 package com.censoredsoftware.demigods.engine.data;
 
-import com.censoredsoftware.censoredlib.data.player.Pet;
-import com.censoredsoftware.demigods.engine.mythos.Deity;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Iterables;
+import java.util.Collection;
+import java.util.UUID;
+
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Tameable;
 
-import java.util.Collection;
-import java.util.UUID;
+import com.censoredsoftware.censoredlib.data.player.Pet;
+import com.censoredsoftware.demigods.engine.mythos.Deity;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Iterables;
 
 public class DPet extends Pet implements Participant
 {

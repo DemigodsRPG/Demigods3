@@ -1,11 +1,7 @@
 package com.censoredsoftware.demigods.engine.listener;
 
-import com.censoredsoftware.demigods.engine.data.*;
-import com.censoredsoftware.demigods.engine.language.English;
-import com.censoredsoftware.demigods.engine.mythos.Deity;
-import com.censoredsoftware.demigods.engine.mythos.Structure;
-import com.censoredsoftware.demigods.engine.util.Configs;
-import com.censoredsoftware.demigods.engine.util.Zones;
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -20,7 +16,12 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.UUID;
+import com.censoredsoftware.demigods.engine.data.*;
+import com.censoredsoftware.demigods.engine.language.English;
+import com.censoredsoftware.demigods.engine.mythos.Deity;
+import com.censoredsoftware.demigods.engine.mythos.Structure;
+import com.censoredsoftware.demigods.engine.util.Configs;
+import com.censoredsoftware.demigods.engine.util.Zones;
 
 public class TributeListener implements Listener
 {

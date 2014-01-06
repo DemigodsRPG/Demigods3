@@ -1,9 +1,10 @@
 package com.censoredsoftware.demigods.engine.util;
 
-import com.censoredsoftware.demigods.engine.DemigodsPlugin;
+import java.util.List;
+
 import org.bukkit.configuration.Configuration;
 
-import java.util.List;
+import com.censoredsoftware.demigods.engine.DemigodsPlugin;
 
 /**
  * Module to load configuration settings from any passed in plugin's config.yml.

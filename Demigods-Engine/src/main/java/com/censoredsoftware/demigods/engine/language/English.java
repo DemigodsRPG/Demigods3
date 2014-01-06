@@ -1,11 +1,12 @@
 package com.censoredsoftware.demigods.engine.language;
 
-import com.censoredsoftware.censoredlib.language.Symbol;
-import com.google.common.collect.Lists;
-import org.bukkit.ChatColor;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.bukkit.ChatColor;
+
+import com.censoredsoftware.censoredlib.language.Symbol;
+import com.google.common.collect.Lists;
 
 public enum English
 {
@@ -99,7 +100,7 @@ public enum English
 		{
 			add(ChatColor.GREEN + "  Welcome to the structure generator!");
 			add(" ");
-			add(ChatColor.GRAY + "  To generate a structure, being by entering its number");
+			add(ChatColor.GRAY + "  To generate a structure, begin by entering its number");
 			add(ChatColor.GRAY + "  from the list: ");
 		}
 	}), ADMINISTRATION_STRUCTURE_CHOOSER_FOOTER(new ArrayList<String>()

@@ -3,3 +3,4 @@
  * Almost everything that has to do with data processing, saving, battles, deity handling, and general centralization can be found in this class.
  */
 package com.censoredsoftware.demigods.engine;
+

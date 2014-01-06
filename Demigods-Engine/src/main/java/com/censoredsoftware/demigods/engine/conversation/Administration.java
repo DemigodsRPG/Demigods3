@@ -1,19 +1,9 @@
 package com.censoredsoftware.demigods.engine.conversation;
 
-import com.censoredsoftware.censoredlib.helper.WrappedConversation;
-import com.censoredsoftware.censoredlib.util.Titles;
-import com.censoredsoftware.demigods.base.DemigodsConversation;
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.data.DPlayer;
-import com.censoredsoftware.demigods.engine.data.Data;
-import com.censoredsoftware.demigods.engine.language.English;
-import com.censoredsoftware.demigods.engine.mythos.Structure;
-import com.censoredsoftware.demigods.engine.util.Admins;
-import com.censoredsoftware.demigods.engine.util.Configs;
-import com.censoredsoftware.demigods.engine.util.Messages;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.Map;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -28,9 +18,20 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-import java.lang.reflect.Field;
-import java.util.List;
-import java.util.Map;
+import com.censoredsoftware.censoredlib.helper.WrappedConversation;
+import com.censoredsoftware.censoredlib.util.Titles;
+import com.censoredsoftware.demigods.base.DemigodsConversation;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.data.DPlayer;
+import com.censoredsoftware.demigods.engine.data.Data;
+import com.censoredsoftware.demigods.engine.language.English;
+import com.censoredsoftware.demigods.engine.mythos.Structure;
+import com.censoredsoftware.demigods.engine.util.Admins;
+import com.censoredsoftware.demigods.engine.util.Configs;
+import com.censoredsoftware.demigods.engine.util.Messages;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 @SuppressWarnings("unchecked")
 public class Administration implements WrappedConversation
@@ -373,14 +374,14 @@ public class Administration implements WrappedConversation
 				{
 					for(String string : English.ADMINISTRATION_STRUCTURE_WAND_ENABLED_1_POINT.getLines())
 					{
-						player.sendRawMessage(string.replace("{item}", Material.getMaterial(Configs.getSettingInt("admin.structure_wand_tool")).name()));
+						player.sendRawMessage(string.replace("{item}", Material.getMaterial(Configs.getSettingInt("admin.structure_wand_tool")).name()).replace("{structure}", structure.getName()));
 					}
 				}
 				else
 				{
 					for(String string : English.ADMINISTRATION_STRUCTURE_WAND_ENABLED_2_POINTS.getLines())
 					{
-						player.sendRawMessage(string.replace("{item}", Material.getMaterial(Configs.getSettingInt("admin.structure_wand_tool")).name()));
+						player.sendRawMessage(string.replace("{item}", Material.getMaterial(Configs.getSettingInt("admin.structure_wand_tool")).name()).replace("{structure}", structure.getName()));
 					}
 				}
 
