@@ -232,7 +232,7 @@ public interface Structure
 		public static StructureData closestInRadiusWithFlag(final Location location, final Flag flag)
 		{
 			StructureData found = null;
-	double nearestDistance = Double.MAX_VALUE;
+			double nearestDistance = Double.MAX_VALUE;
 			for(StructureData save : getStructuresInRegionalArea(location))
 			{
 				if(save.getRawFlags() != null && save.getRawFlags().contains(flag.name()))
