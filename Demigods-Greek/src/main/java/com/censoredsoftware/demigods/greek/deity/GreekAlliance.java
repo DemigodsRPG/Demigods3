@@ -1,10 +1,11 @@
 package com.censoredsoftware.demigods.greek.deity;
 
+import org.bukkit.permissions.PermissionDefault;
+
 import com.censoredsoftware.demigods.engine.mythos.Alliance;
 import com.censoredsoftware.demigods.engine.mythos.Deity;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
-import org.bukkit.permissions.PermissionDefault;
 
 public enum GreekAlliance implements Alliance
 {

@@ -1,11 +1,12 @@
 package com.censoredsoftware.demigods.base.listener;
 
-import com.censoredsoftware.demigods.engine.data.Data;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.event.world.WorldUnloadEvent;
+
+import com.censoredsoftware.demigods.engine.data.Data;
 
 public class WorldListener implements Listener
 {

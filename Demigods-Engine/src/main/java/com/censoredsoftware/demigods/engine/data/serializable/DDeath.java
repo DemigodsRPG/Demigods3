@@ -1,5 +1,11 @@
 package com.censoredsoftware.demigods.engine.data.serializable;
 
+import java.util.Collection;
+import java.util.Set;
+import java.util.UUID;
+
+import org.bukkit.configuration.ConfigurationSection;
+
 import com.censoredsoftware.censoredlib.data.player.Death;
 import com.censoredsoftware.demigods.engine.data.Data;
 import com.google.common.base.Function;
@@ -7,11 +13,6 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
-import org.bukkit.configuration.ConfigurationSection;
-
-import java.util.Collection;
-import java.util.Set;
-import java.util.UUID;
 
 public class DDeath extends Death
 {

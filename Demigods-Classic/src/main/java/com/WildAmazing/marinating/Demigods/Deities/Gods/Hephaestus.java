@@ -1,9 +1,10 @@
 package com.WildAmazing.marinating.Demigods.Deities.Gods;
 
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.Listener;
+
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
 
 public class Hephaestus implements Deity, Listener
 {

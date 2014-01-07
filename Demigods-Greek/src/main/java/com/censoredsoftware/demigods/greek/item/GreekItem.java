@@ -1,11 +1,12 @@
 package com.censoredsoftware.demigods.greek.item;
 
-import com.censoredsoftware.demigods.engine.mythos.DivineItem;
+import java.util.Set;
+
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 
-import java.util.Set;
+import com.censoredsoftware.demigods.engine.mythos.DivineItem;
 
 public abstract class GreekItem implements DivineItem
 {

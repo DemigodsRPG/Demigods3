@@ -445,7 +445,7 @@ public class Administration implements WrappedConversation
 						return success(context);
 					}
 					else
-				{
+					{
 						// Add notification
 						saveNotification(context, this.getClass().getSimpleName(), English.ADMINISTRATION_LOCATIONS_NOT_SELECTED.getLine());
 					}
@@ -495,7 +495,7 @@ public class Administration implements WrappedConversation
 		private void onStructureWand(PlayerInteractEvent event)
 		{
 			// Check some requirements
-		if(event.getClickedBlock() == null || Zones.inNoDemigodsZone(event.getPlayer().getLocation()) || !Admins.useStructureWand(event.getPlayer())) return;
+			if(event.getClickedBlock() == null || Zones.inNoDemigodsZone(event.getPlayer().getLocation()) || !Admins.useStructureWand(event.getPlayer())) return;
 
 			// All good, handle the wand
 			Player player = event.getPlayer();

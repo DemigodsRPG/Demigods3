@@ -1,9 +1,9 @@
 package com.WildAmazing.marinating.Demigods.Deities;
 
+import java.io.Serializable;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
-
-import java.io.Serializable;
 
 /*
  * Each Deity is attached to a player.

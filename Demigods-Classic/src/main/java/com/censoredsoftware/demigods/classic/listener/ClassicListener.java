@@ -1,7 +1,8 @@
 package com.censoredsoftware.demigods.classic.listener;
 
-import com.censoredsoftware.demigods.base.listener.*;
 import org.bukkit.event.Listener;
+
+import com.censoredsoftware.demigods.base.listener.*;
 
 public enum ClassicListener
 {

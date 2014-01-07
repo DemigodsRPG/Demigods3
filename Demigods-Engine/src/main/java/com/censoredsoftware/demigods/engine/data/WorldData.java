@@ -1,8 +1,9 @@
 package com.censoredsoftware.demigods.engine.data;
 
-import com.censoredsoftware.censoredlib.helper.MapDBFile;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+
+import com.censoredsoftware.censoredlib.helper.MapDBFile;
 
 public class WorldData extends MapDBFile
 {

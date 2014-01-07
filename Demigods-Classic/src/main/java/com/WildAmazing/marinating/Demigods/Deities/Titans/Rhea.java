@@ -1,12 +1,13 @@
 package com.WildAmazing.marinating.Demigods.Deities.Titans;
 
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
-import com.WildAmazing.marinating.Demigods.WriteLocation;
+import java.util.ArrayList;
+
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 
-import java.util.ArrayList;
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import com.WildAmazing.marinating.Demigods.WriteLocation;
 
 public class Rhea implements Deity
 {

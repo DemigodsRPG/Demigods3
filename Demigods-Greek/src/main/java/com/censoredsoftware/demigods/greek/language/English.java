@@ -1,10 +1,11 @@
 package com.censoredsoftware.demigods.greek.language;
 
-import com.google.common.collect.Lists;
-import org.bukkit.ChatColor;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.bukkit.ChatColor;
+
+import com.google.common.collect.Lists;
 
 public enum English
 {

@@ -1,9 +1,10 @@
 package com.clashnia.Demigods.Deities.Giants;
 
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
+
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
 
 public class Typhon implements Deity
 {
