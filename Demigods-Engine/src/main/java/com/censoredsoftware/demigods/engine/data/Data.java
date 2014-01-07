@@ -299,7 +299,7 @@ public class Data
 	public static void flushData()
 	{
 		// Kick everyone
-    for(Player player : Bukkit.getOnlinePlayers())
+		for(Player player : Bukkit.getOnlinePlayers())
 			player.kickPlayer(ChatColor.GREEN + English.DATA_RESET_KICK.getLine());
 
 		// Clear the data

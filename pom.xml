@@ -11,9 +11,10 @@
     <modules>
         <module>Demigods-Engine</module>
         <module>Demigods-Greek</module>
-        <module>Demigods-Panel</module>
         <module>Demigods-Exclusive</module>
         <module>Demigods-Classic</module>
+        <module>Demigods-Panel\Bukkit</module>
+        <module>Demigods-Panel</module>
     </modules>
 
     <name>Demigods</name>
@@ -69,27 +70,39 @@
 
     <repositories>
         <repository>
-            <id>sk89q-repo</id>
-            <url>http://maven.sk89q.com/repo/</url>
-        </repository>
-        <repository>
             <id>md5-repo</id>
             <url>http://repo.md-5.net/content/repositories/snapshots/</url>
         </repository>
         <repository>
-            <id>censoredsoftware-repo</id>
-            <url>http://repo.censoredsoftware.com</url>
+            <id>censored-software</id>
+            <url>http://repo.censoredsoftware.com/</url>
+        </repository>
+        <repository>
+            <id>sk89q-repo</id>
+            <url>http://maven.sk89q.com/repo/</url>
         </repository>
     </repositories>
 
     <dependencies>
+        <!-- Spigot API -->
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <version>${spigot.version}</version>
+        </dependency>
+        <!-- CensoredLib -->
         <dependency>
             <groupId>com.censoredsoftware</groupId>
             <artifactId>CensoredLib-Core</artifactId>
             <version>${censoredLib.version}</version>
-            <scope>compile</scope>
-            <type>jar</type>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
+        <!-- Scala Library -->
         <dependency>
             <groupId>org.scala-lang</groupId>
             <artifactId>scala-library</artifactId>
@@ -105,13 +118,6 @@
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
             <version>2.5</version>
-        </dependency>
-        <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
-            <version>${spigot.version}</version>
-            <scope>compile</scope>
-            <type>jar</type>
         </dependency>
     </dependencies>
 
