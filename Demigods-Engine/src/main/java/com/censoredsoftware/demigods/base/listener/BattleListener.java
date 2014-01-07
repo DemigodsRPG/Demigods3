@@ -64,13 +64,13 @@ public class BattleListener implements Listener
 			event.setCancelled(true);
 			return;
 		}
-		if(damageeParticipant instanceof DCharacter && Data.hasTimed(damageeParticipant.getId().toString(), "just_finished_battle"))
+		if(damageeParticipant instanceof DCharacter && Data.TIMED.boolContainsKey(damageeParticipant.getId().toString() + "just_finished_battle"))
 		{
 			((Player) damager).sendMessage(ChatColor.YELLOW + "That player is in cooldown from a recent battle.");
 			event.setCancelled(true);
 			return;
 		}
-		if(damagerParticipant instanceof DCharacter && Data.hasTimed(damagerParticipant.getId().toString(), "just_finished_battle"))
+		if(damagerParticipant instanceof DCharacter && Data.TIMED.boolContainsKey(damagerParticipant.getId().toString() + "just_finished_battle"))
 		{
 			((Player) damager).sendMessage(ChatColor.YELLOW + "You are still in cooldown from a recent battle.");
 			event.setCancelled(true);
@@ -145,7 +145,7 @@ public class BattleListener implements Listener
 
 		Participant participant = Battle.Util.defineParticipant(event.getEntity());
 
-		if(participant instanceof DCharacter && Data.hasTimed(participant.getId().toString(), "just_finished_battle"))
+		if(participant instanceof DCharacter && Data.TIMED.boolContainsKey(participant.getId().toString() + "just_finished_battle"))
 		{
 			event.setCancelled(true);
 			return;

@@ -107,7 +107,7 @@ public class PlayerListener implements Listener
 		if(!Zones.inNoDemigodsZone(event.getPlayer().getLocation()) && DPlayer.Util.isPraying(event.getPlayer())) DPlayer.Util.togglePraying(event.getPlayer(), false);
 	}
 
-	@EventHandler(priority = EventPriority.HIGHEST)
+	// TODO @EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerQuit(PlayerQuitEvent event)
 	{
 		final String name = event.getPlayer().getName();

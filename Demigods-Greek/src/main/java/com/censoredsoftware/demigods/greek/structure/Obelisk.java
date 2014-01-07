@@ -1,20 +1,5 @@
 package com.censoredsoftware.demigods.greek.structure;
 
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
-
-import org.bukkit.*;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.material.MaterialData;
-
 import com.censoredsoftware.censoredlib.schematic.BlockData;
 import com.censoredsoftware.censoredlib.schematic.Schematic;
 import com.censoredsoftware.censoredlib.schematic.Selection;
@@ -32,6 +17,21 @@ import com.censoredsoftware.demigods.engine.util.Zones;
 import com.censoredsoftware.demigods.greek.language.English;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
+import org.bukkit.*;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.material.MaterialData;
+
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 public class Obelisk extends GreekStructure
 {
@@ -193,11 +193,11 @@ public class Obelisk extends GreekStructure
 				StructureSave save = Structure.Util.getStructureRegional(location);
 				DCharacter owner = DCharacter.Util.load(save.getOwner());
 
-				if(Data.hasTimed(player.getName(), "destroy_obelisk"))
+				if(Data.TIMED.boolContainsKey(player.getName() + "destroy_obelisk"))
 				{
 					// Remove the Obelisk
 					save.remove();
-					Data.removeTimed(player.getName(), "destroy_obelisk");
+					Data.TIMED.removeBool(player.getName() + "destroy_obelisk");
 
 					Admins.sendDebug(ChatColor.RED + "Obelisk owned by (" + owner.getName() + ") at: " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ() + " removed.");
 
@@ -205,7 +205,7 @@ public class Obelisk extends GreekStructure
 				}
 				else
 				{
-					Data.saveTimed(player.getName(), "destroy_obelisk", true, 5);
+					Data.TIMED.setBool(player.getName() + "destroy_obelisk", true, 5, TimeUnit.SECONDS);
 					player.sendMessage(ChatColor.RED + English.ADMIN_WAND_REMOVE_OBELISK.getLine());
 				}
 			}

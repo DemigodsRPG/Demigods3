@@ -34,6 +34,7 @@ import org.bukkit.util.Vector;
 
 import javax.annotation.Nullable;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class Battle implements ConfigurationSerializable
 {
@@ -363,7 +364,7 @@ public class Battle implements ConfigurationSerializable
 	public void end() // TODO Make this specify that it was a pet that won/lost a duel
 	{
 		for(String stringId : involvedPlayers)
-			Data.saveTimed(stringId, "just_finished_battle", true, 60);
+			Data.TIMED.setBool(stringId + "just_finished_battle", true, 1, TimeUnit.MINUTES);
 
 		Map<UUID, Integer> scores = getScores();
 		List<UUID> participants = Lists.newArrayList(scores.keySet());

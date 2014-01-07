@@ -1,27 +1,5 @@
 package com.censoredsoftware.demigods.greek.structure;
 
-import java.util.HashSet;
-import java.util.NoSuchElementException;
-import java.util.Set;
-import java.util.concurrent.ConcurrentLinkedQueue;
-
-import javax.annotation.Nullable;
-
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Biome;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.world.ChunkLoadEvent;
-
 import com.censoredsoftware.censoredlib.schematic.BlockData;
 import com.censoredsoftware.censoredlib.schematic.Schematic;
 import com.censoredsoftware.censoredlib.schematic.Selection;
@@ -40,6 +18,27 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Biome;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.world.ChunkLoadEvent;
+
+import javax.annotation.Nullable;
+import java.util.HashSet;
+import java.util.NoSuchElementException;
+import java.util.Set;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.TimeUnit;
 
 public class Altar extends GreekStructure
 {
@@ -164,7 +163,7 @@ public class Altar extends GreekStructure
 
 				StructureSave altar = Structure.Util.getStructureRegional(location);
 
-				if(Data.hasTimed(player.getName(), "destroy_altar"))
+				if(Data.TIMED.boolContainsKey(player.getName() + "destroy_altar"))
 				{
 					Admins.sendDebug(ChatColor.RED + "Altar at " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ() + " removed by " + "NO_BATTLE WAND" + ".");
 
@@ -172,13 +171,13 @@ public class Altar extends GreekStructure
 
 					altar.remove();
 
-					Data.removeTimed(player.getName(), "destroy_altar");
+					Data.TIMED.removeBool(player.getName() + "destroy_altar");
 
 					player.sendMessage(ChatColor.GREEN + English.ADMIN_WAND_REMOVE_ALTAR_COMPLETE.getLine());
 				}
 				else
 				{
-					Data.saveTimed(player.getName(), "destroy_altar", true, 5);
+					Data.TIMED.setBool(player.getName() + "destroy_altar", true, 5, TimeUnit.SECONDS);
 					player.sendMessage(ChatColor.RED + English.ADMIN_WAND_REMOVE_ALTAR.getLine());
 				}
 			}

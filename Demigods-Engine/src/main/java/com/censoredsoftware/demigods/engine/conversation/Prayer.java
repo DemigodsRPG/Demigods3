@@ -43,6 +43,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings("unchecked")
 public class Prayer implements WrappedConversation
@@ -778,7 +779,7 @@ public class Prayer implements WrappedConversation
 		public boolean canUse(ConversationContext context)
 		{
 			DCharacter character = DPlayer.Util.getPlayer((Player) context.getForWhom()).getCurrent();
-			return character != null && ((Player) context.getForWhom()).hasPermission("demigods.basic.forsake") && !Data.hasTimed(((Player) context.getForWhom()).getName(), "currently_creating") && !Data.hasTimed(((Player) context.getForWhom()).getName(), "currently_forsaking");
+			return character != null && ((Player) context.getForWhom()).hasPermission("demigods.basic.forsake") && !Data.TIMED.boolContainsKey(((Player) context.getForWhom()).getName() + "currently_creating") && !Data.TIMED.boolContainsKey(((Player) context.getForWhom()).getName() + "currently_forsaking");
 		}
 
 		@Override
@@ -832,8 +833,8 @@ public class Prayer implements WrappedConversation
 				player.sendRawMessage(ChatColor.AQUA + "  Your prayer has been disabled.");
 				player.sendRawMessage(" ");
 
-				// Save temporary data, end the CONVERSATION_FACTORY, and return
-				Data.saveTimed(player.getName(), "currently_forsaking", true, 600);
+				// Save timed data, end the conversation, and return
+				Data.TIMED.setBool(player.getName() + "currently_forsaking", true, 10, TimeUnit.MINUTES);
 				DPlayer.Util.togglePrayingSilent(player, false, true);
 			}
 			return null;
@@ -846,14 +847,14 @@ public class Prayer implements WrappedConversation
 		@Override
 		public String getChatName(ConversationContext context)
 		{
-			return ChatColor.DARK_RED + "Finish Forsaking " + ChatColor.GRAY + "(" + Times.getTimeTagged(Data.getTimedExpiration(((Player) context.getForWhom()).getName(), "currently_forsaking"), true) + " remaining)";
+			return ChatColor.DARK_RED + "Finish Forsaking " + ChatColor.GRAY + "(" + Times.getTimeTagged(Data.TIMED.boolExpireInMilli(((Player) context.getForWhom()).getName() + "currently_forsaking"), true) + " remaining)";
 		}
 
 		@Override
 		public boolean canUse(ConversationContext context)
 		{
 			Player player = (Player) context.getForWhom();
-			return Data.hasTimed(player.getName(), "currently_forsaking");
+			return Data.TIMED.boolContainsKey(player.getName() + "currently_forsaking");
 		}
 
 		@Override
@@ -914,7 +915,7 @@ public class Prayer implements WrappedConversation
 		public boolean canUse(ConversationContext context)
 		{
 			Player player = (Player) context.getForWhom();
-			return Data.hasTimed(player.getName(), "currently_forsaking");
+			return Data.TIMED.boolContainsKey(player.getName() + "currently_forsaking");
 		}
 
 		@Override
@@ -924,7 +925,7 @@ public class Prayer implements WrappedConversation
 			Player player = (Player) context.getForWhom();
 
 			// Cancel the temp data
-			Data.removeTimed(player.getName(), "currently_forsaking");
+			Data.TIMED.removeBool(player.getName() + "currently_forsaking");
 
 			return "";
 		}
@@ -948,7 +949,7 @@ public class Prayer implements WrappedConversation
 		@Override
 		public boolean canUse(ConversationContext context)
 		{
-			return ((Player) context.getForWhom()).hasPermission("demigods.basic.create") && !Data.hasTimed(((Player) context.getForWhom()).getName(), "currently_creating") && !Data.hasTimed(((Player) context.getForWhom()).getName(), "currently_forsaking") && DPlayer.Util.getPlayer((Player) context.getForWhom()).canMakeCharacter();
+			return ((Player) context.getForWhom()).hasPermission("demigods.basic.create") && !Data.TIMED.boolContainsKey(((Player) context.getForWhom()).getName() + "currently_creating") && !Data.TIMED.boolContainsKey(((Player) context.getForWhom()).getName() + "currently_forsaking") && DPlayer.Util.getPlayer((Player) context.getForWhom()).canMakeCharacter();
 		}
 
 		@Override
@@ -1213,7 +1214,7 @@ public class Prayer implements WrappedConversation
 					player.sendRawMessage(" ");
 
 					// Save temporary data, end the CONVERSATION_FACTORY, and return
-					Data.saveTimed(player.getName(), "currently_creating", true, 600);
+					Data.TIMED.setBool(player.getName() + "currently_creating", true, 10, TimeUnit.MINUTES);
 					DPlayer.Util.togglePrayingSilent(player, false, true);
 					return null;
 				}
@@ -1232,14 +1233,14 @@ public class Prayer implements WrappedConversation
 		@Override
 		public String getChatName(ConversationContext context)
 		{
-			return ChatColor.GREEN + "Confirm Character " + ChatColor.GRAY + "(" + Times.getTimeTagged(Data.getTimedExpiration(((Player) context.getForWhom()).getName(), "currently_creating"), true) + " remaining)";
+			return ChatColor.GREEN + "Confirm Character " + ChatColor.GRAY + "(" + Times.getTimeTagged(Data.TIMED.boolExpireInMilli(((Player) context.getForWhom()).getName() + "currently_creating"), true) + " remaining)";
 		}
 
 		@Override
 		public boolean canUse(ConversationContext context)
 		{
 			Player player = (Player) context.getForWhom();
-			return Data.hasTimed(player.getName(), "currently_creating");
+			return Data.TIMED.boolContainsKey(player.getName() + "currently_creating");
 		}
 
 		@Override
@@ -1298,7 +1299,7 @@ public class Prayer implements WrappedConversation
 		public boolean canUse(ConversationContext context)
 		{
 			Player player = (Player) context.getForWhom();
-			return Data.hasTimed(player.getName(), "currently_creating");
+			return Data.TIMED.boolContainsKey(player.getName() + "currently_creating");
 		}
 
 		@Override
@@ -1308,7 +1309,7 @@ public class Prayer implements WrappedConversation
 			Player player = (Player) context.getForWhom();
 
 			// Cancel the temp data
-			Data.removeTimed(player.getName(), "currently_creating");
+			Data.TIMED.boolContainsKey(player.getName() + "currently_creating");
 
 			return "";
 		}
@@ -1414,9 +1415,8 @@ public class Prayer implements WrappedConversation
 							// Accepted, finish everything up!
 							DCharacter.Util.create(DPlayer.Util.getPlayer(offlinePlayer), deity.getName(), chosenName, true);
 
-							// Remove temp data
-							Data.removeTemp(offlinePlayer.getName(), "currently_creating");
-							Data.removeTimed(offlinePlayer.getName(), "currently_creating");
+							// Remove temp and data
+							Data.TIMED.removeBool(offlinePlayer.getName() + "currently_creating");
 
 							// If the player is online, let them know
 							if(offlinePlayer.isOnline())

@@ -8,7 +8,6 @@ import com.censoredsoftware.demigods.engine.data.serializable.Battle;
 import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
 import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
 import com.censoredsoftware.demigods.engine.data.wrap.NotificationManager;
-import com.censoredsoftware.demigods.engine.data.wrap.TimedDataManager;
 import com.censoredsoftware.demigods.engine.mythos.Ability;
 import com.censoredsoftware.demigods.engine.mythos.Deity;
 import com.censoredsoftware.demigods.engine.mythos.Structure;
@@ -88,7 +87,7 @@ public class TaskManager
 				public void run()
 				{
 					// Update Timed Data
-					TimedDataManager.updateTimedData();
+					Data.TIMED.clearExpired();
 
 					// Update Notifications
 					NotificationManager.updateNotifications();

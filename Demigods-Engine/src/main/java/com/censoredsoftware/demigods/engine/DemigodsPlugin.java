@@ -1,17 +1,16 @@
 package com.censoredsoftware.demigods.engine;
 
-import java.io.File;
-import java.util.Collection;
-import java.util.List;
-
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
-
 import com.censoredsoftware.censoredlib.CensoredLibPlugin;
 import com.censoredsoftware.censoredlib.helper.CensoredJavaPlugin;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
+
+import java.io.File;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Class for all plugins of demigods.
@@ -85,8 +84,13 @@ public class DemigodsPlugin extends CensoredJavaPlugin
 	private boolean checkForCensoredLib()
 	{
 		// Check for CensoredLib
+		boolean messageOption = true;
 		Plugin check = Bukkit.getPluginManager().getPlugin("CensoredLib");
-		if(check instanceof CensoredLibPlugin && check.getDescription().getVersion().startsWith(CENSORED_LIBRARY_VERSION)) return true;
+		if(check instanceof CensoredLibPlugin)
+		{
+			if(check.getDescription().getVersion().startsWith(CENSORED_LIBRARY_VERSION)) return true;
+			messageOption = false;
+		}
 		getLogger().severe("  ");
 		getLogger().severe("                  888        d8b   888");
 		getLogger().severe("                  888              888");
@@ -95,7 +99,7 @@ public class DemigodsPlugin extends CensoredJavaPlugin
 		getLogger().severe("       Y88b.      888        888   888 d88P");
 		getLogger().severe("        \"Y8888P   88888888   888   88888P\"");
 		getLogger().severe("  ");
-		getLogger().severe(" CensoredLib was not found (or did not to load).");
+		getLogger().severe(messageOption ? " CensoredLib was not found (or did not to load)." : " The correct version of CensoredLib is missing.");
 		getLogger().severe(" Demigods cannot load without CensoredLib enabled!");
 		getLogger().severe(" Please go to the BukkitDev project page to");
 		getLogger().severe(" download and install CensoredLib.");

@@ -11,6 +11,7 @@ import com.google.common.collect.Collections2;
 import org.bukkit.ChatColor;
 
 import java.util.Collection;
+import java.util.concurrent.TimeUnit;
 
 public class NewPlayerNeedsHelp implements Trigger
 {
@@ -18,7 +19,7 @@ public class NewPlayerNeedsHelp implements Trigger
 
 	static
 	{
-		focusTime = 2400;
+		focusTime = 40;
 		deathsNeeded = 7;
 		noobAscensions = 3;
 	}
@@ -31,7 +32,7 @@ public class NewPlayerNeedsHelp implements Trigger
 			@Override
 			public boolean apply(DCharacter character)
 			{
-				return DDeath.Util.getRecentDeaths(character, focusTime).size() >= deathsNeeded && !Data.hasTimed(character.getName(), "needsHelpTrigger");
+				return DDeath.Util.getRecentDeaths(character, focusTime).size() >= deathsNeeded && !Data.TIMED.boolContainsKey(character.getName() + "needsHelpTrigger");
 			}
 		});
 		if(characters.isEmpty()) return;
@@ -39,7 +40,7 @@ public class NewPlayerNeedsHelp implements Trigger
 		{
 			if(Zones.inNoDemigodsZone(character.getLocation())) continue;
 			character.sendAllianceMessage(ChatColor.YELLOW + " " + Symbol.CAUTION + " " + character.getDeity().getColor() + character.getName() + ChatColor.YELLOW + " needs help!");
-			Data.saveTimed(character.getName(), "needsHelpTrigger", true, focusTime);
+			Data.TIMED.setBool(character.getName() + "needsHelpTrigger", true, focusTime, TimeUnit.MINUTES);
 		}
 	}
 

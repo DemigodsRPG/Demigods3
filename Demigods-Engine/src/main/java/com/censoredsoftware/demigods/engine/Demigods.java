@@ -1,7 +1,6 @@
 package com.censoredsoftware.demigods.engine;
 
 import com.censoredsoftware.censoredlib.helper.CensoredCentralizedClass;
-import com.censoredsoftware.censoredlib.helper.QuitReasonHandler;
 import com.censoredsoftware.censoredlib.helper.WrappedConversation;
 import com.censoredsoftware.demigods.base.DemigodsConversation;
 import com.censoredsoftware.demigods.base.listener.ChatListener;
@@ -249,7 +248,7 @@ public class Demigods extends CensoredCentralizedClass
 		}
 
 		// Quit reason.
-		Bukkit.getServer().getLogger().addHandler(new QuitReasonHandler());
+		// TODO Bukkit.getServer().getLogger().addHandler(new QuitReasonHandler());
 	}
 
 	protected void loadScoreboard()

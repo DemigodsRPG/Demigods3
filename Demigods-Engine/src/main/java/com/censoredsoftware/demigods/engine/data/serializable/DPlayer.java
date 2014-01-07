@@ -30,6 +30,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class DPlayer implements ConfigurationSerializable
 {
@@ -161,12 +162,12 @@ public class DPlayer implements ConfigurationSerializable
 		else if(!inNoPvpZone)
 		{
 			setCanPvp(true);
-			Data.removeTimed(player.getName(), "pvp_cooldown");
+			Data.TIMED.removeBool(player.getName() + "pvp_cooldown");
 		}
-		else if(canPvp() && !Data.hasTimed(player.getName(), "pvp_cooldown"))
+		else if(canPvp() && !Data.TIMED.boolContainsKey(player.getName() + "pvp_cooldown"))
 		{
 			int delay = Configs.getSettingInt("zones.pvp_area_delay_time");
-			Data.saveTimed(player.getName(), "pvp_cooldown", true, delay);
+			Data.TIMED.setBool(player.getName() + "pvp_cooldown", true, delay, TimeUnit.SECONDS);
 
 			Bukkit.getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.plugin(), new BukkitRunnable()
 			{
@@ -653,8 +654,8 @@ public class DPlayer implements ConfigurationSerializable
 			Data.removeTemp(player.getName(), "prayer_conversation");
 			Data.removeTemp(player.getName(), "prayer_context");
 			Data.removeTemp(player.getName(), "prayer_location");
-			Data.removeTimed(player.getName(), "currently_creating");
-			Data.removeTimed(player.getName(), "currently_forsaking");
+			Data.TIMED.removeBool(player.getName() + "currently_creating");
+			Data.TIMED.removeBool(player.getName() + "currently_forsaking");
 		}
 
 		/**

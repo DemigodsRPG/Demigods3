@@ -1,21 +1,5 @@
 package com.censoredsoftware.demigods.base.command;
 
-import java.awt.image.BufferedImage;
-import java.net.URL;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Set;
-
-import javax.imageio.ImageIO;
-
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import com.censoredsoftware.censoredlib.helper.WrappedCommand;
 import com.censoredsoftware.censoredlib.schematic.Schematic;
 import com.censoredsoftware.censoredlib.util.Images;
@@ -30,6 +14,21 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Sets;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.net.URL;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 public class DevelopmentCommands extends WrappedCommand
 {
@@ -57,8 +56,12 @@ public class DevelopmentCommands extends WrappedCommand
 	{
 		Player player = (Player) sender;
 
-		if(args.length > 0) Data.getWorld(player.getWorld().getName()).setString(player.getName(), args[0]);
-		else player.sendMessage(Data.getWorld(player.getWorld().getName()).getString(player.getName()));
+		if(args.length > 0) Data.TIMED.setString(player.getName(), args[0], 1, TimeUnit.HOURS);
+		else
+		{
+			String data = Data.TIMED.getString(player.getName());
+			player.sendMessage(data != null ? data : "null :O");
+		}
 
 		// for(Battle battle : Battle.Util.getAllActive())
 		// battle.end();

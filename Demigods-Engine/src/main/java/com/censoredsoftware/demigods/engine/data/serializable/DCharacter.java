@@ -1,18 +1,5 @@
 package com.censoredsoftware.demigods.engine.data.serializable;
 
-import java.util.*;
-
-import org.bukkit.*;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.material.MaterialData;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.scheduler.BukkitRunnable;
-
 import com.censoredsoftware.censoredlib.data.inventory.CEnderInventory;
 import com.censoredsoftware.censoredlib.data.inventory.CInventory;
 import com.censoredsoftware.censoredlib.data.inventory.CItemStack;
@@ -33,6 +20,19 @@ import com.censoredsoftware.demigods.engine.util.Messages;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
+import org.bukkit.*;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.material.MaterialData;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class DCharacter implements Participant, ConfigurationSerializable
 {
@@ -1294,18 +1294,17 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 		public static boolean isCooledDown(DCharacter character, String abilityName)
 		{
-			return !Data.hasTimed(character.getName(), abilityName + "_cooldown");
-			// return !DataManager.hasKeyTemp(character.getName(), abilityName + "_cooldown") || getCooldown(character, abilityName) < System.currentTimeMillis();
+			return !Data.TIMED.boolContainsKey(character.getName() + abilityName + "_cooldown");
 		}
 
 		public static void setCooldown(DCharacter character, String abilityName, int cooldown)
 		{
-			Data.saveTimed(character.getName(), abilityName + "_cooldown", true, cooldown);
+			Data.TIMED.setBool(character.getName() + abilityName + "_cooldown", true, cooldown, TimeUnit.SECONDS);
 		}
 
-		public static long getCooldown(DCharacter character, String abilityName)
+		public static Long getCooldown(DCharacter character, String abilityName)
 		{
-			return Data.getTimedExpiration(character.getName(), abilityName + "_cooldown");
+			return Data.TIMED.boolExpireInMilli(character.getName() + abilityName + "_cooldown");
 		}
 
 		public static Set<DCharacter> getAllActive()

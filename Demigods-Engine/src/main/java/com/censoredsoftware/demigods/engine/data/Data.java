@@ -1,12 +1,18 @@
 package com.censoredsoftware.demigods.engine.data;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-
+import com.censoredsoftware.censoredlib.data.inventory.CItemStack;
+import com.censoredsoftware.censoredlib.data.location.CLocation;
+import com.censoredsoftware.censoredlib.data.player.Notification;
+import com.censoredsoftware.censoredlib.helper.ConfigFile;
+import com.censoredsoftware.censoredlib.helper.MapDBFile;
+import com.censoredsoftware.censoredlib.helper.TimedMapDBFile;
+import com.censoredsoftware.demigods.engine.DemigodsPlugin;
+import com.censoredsoftware.demigods.engine.data.serializable.*;
+import com.censoredsoftware.demigods.engine.language.English;
+import com.google.common.base.Supplier;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Table;
+import com.google.common.collect.Tables;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
@@ -14,24 +20,25 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.Player;
 
-import com.censoredsoftware.censoredlib.data.ServerData;
-import com.censoredsoftware.censoredlib.data.TimedData;
-import com.censoredsoftware.censoredlib.data.inventory.CItemStack;
-import com.censoredsoftware.censoredlib.data.location.CLocation;
-import com.censoredsoftware.censoredlib.data.player.Notification;
-import com.censoredsoftware.censoredlib.helper.ConfigFile;
-import com.censoredsoftware.demigods.engine.DemigodsPlugin;
-import com.censoredsoftware.demigods.engine.data.serializable.*;
-import com.censoredsoftware.demigods.engine.data.wrap.ServerDataManager;
-import com.censoredsoftware.demigods.engine.data.wrap.TimedDataManager;
-import com.censoredsoftware.demigods.engine.language.English;
-import com.google.common.base.Supplier;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Table;
-import com.google.common.collect.Tables;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
+/**
+ * This is the data management file for Demigods.
+ */
 public class Data
 {
+	// -- VARIABLES -- //
+
+	// Data Folder
+	public static final String SAVE_PATH = DemigodsPlugin.plugin().getDataFolder() + "/data/"; // Don't change this.;
+
+	// -- YAML FILES -- //
+
 	public static final DemigodsFile<String, DPlayer> PLAYER = new DemigodsFile<String, DPlayer>("players.yml")
 	{
 		@Override
@@ -229,34 +236,6 @@ public class Data
 			return UUID.fromString(stringId);
 		}
 	};
-	public static final DemigodsFile<UUID, TimedData> TIMED_DATA = new DemigodsFile<UUID, TimedData>("timeddata.yml")
-	{
-		@Override
-		public TimedData create(UUID uuid, ConfigurationSection conf)
-		{
-			return new TimedData(uuid, conf);
-		}
-
-		@Override
-		public UUID convertFromString(String stringId)
-		{
-			return UUID.fromString(stringId);
-		}
-	};
-	public static final DemigodsFile<UUID, ServerData> SERVER_DATA = new DemigodsFile<UUID, ServerData>("serverdata.yml")
-	{
-		@Override
-		public ServerData create(UUID uuid, ConfigurationSection conf)
-		{
-			return new ServerData(uuid, conf);
-		}
-
-		@Override
-		public UUID convertFromString(String stringId)
-		{
-			return UUID.fromString(stringId);
-		}
-	};
 	public static final DemigodsFile<UUID, TributeData> TRIBUTE_DATA = new DemigodsFile<UUID, TributeData>("tributedata.yml")
 	{
 		@Override
@@ -272,68 +251,38 @@ public class Data
 		}
 	};
 
-	public static DemigodsFile[] values()
-	{
-		return new DemigodsFile[] { PLAYER, LOCATION, STRUCTURE, CHARACTER, CHARACTER_META, DEATH, SKILL, CHARACTER_INVENTORY, CHARACTER_ENDER_INVENTORY, ITEM_STACK, SAVED_POTION, PET, NOTIFICATION, BATTLE, TIMED_DATA, SERVER_DATA, TRIBUTE_DATA };
-	}
+	// -- BINARY & MISC DATA FILES -- //
 
-	// World Data
-	private static ConcurrentMap<String, WorldData> worlds = Maps.newConcurrentMap();
+	// Timed and Server Data
+	public static final TimedMapDBFile TIMED = new TimedMapDBFile("TIMED.dg", SAVE_PATH);
+	public static final MapDBFile SERVER = new MapDBFile("SERVER.dg", SAVE_PATH);
 
-	public static void addWorld(World world)
-	{
-		WorldData dWorld = new WorldData(world.getName(), world.getWorldFolder().getPath());
-		worlds.put(world.getName(), dWorld);
-	}
+	// -- CONSTRUCTOR -- //
 
-	public static void addWorld(WorldData world)
-	{
-		worlds.put(world.getName(), world);
-	}
+	private Data()
+	{}
 
-	public static void removeWorld(String name)
-	{
-		worlds.get(name).save();
-		worlds.remove(name);
-	}
-
-	public static WorldData getWorld(String name)
-	{
-		return worlds.get(name);
-	}
-
-	// Temp Data
-	private static Table<String, String, Object> tempData;
-
-	// Data folder
-	public static final String SAVE_PATH = DemigodsPlugin.plugin().getDataFolder() + "/data/"; // Don't change this.;
+	// -- UTIL METHODS -- //
 
 	public static void init()
 	{
-		for(DemigodsFile data : values())
+		for(DemigodsFile data : yamlFiles())
 			data.loadToData();
 
 		for(World world : Bukkit.getWorlds())
 			addWorld(world);
-
-		tempData = Tables.newCustomTable(new ConcurrentHashMap<String, Map<String, Object>>(), new Supplier<ConcurrentHashMap<String, Object>>()
-		{
-			@Override
-			public ConcurrentHashMap<String, Object> get()
-			{
-				return new ConcurrentHashMap<>();
-			}
-		});
 	}
 
-	private Data()
-	{}
+	public static DemigodsFile[] yamlFiles()
+	{
+		return new DemigodsFile[] { PLAYER, LOCATION, STRUCTURE, CHARACTER, CHARACTER_META, DEATH, SKILL, CHARACTER_INVENTORY, CHARACTER_ENDER_INVENTORY, ITEM_STACK, SAVED_POTION, PET, NOTIFICATION, BATTLE, TRIBUTE_DATA };
+	}
 
 	public static void save()
 	{
 		boolean compact = System.currentTimeMillis() % 100000000L == 0;
 
-		for(DemigodsFile data : values())
+		for(DemigodsFile data : yamlFiles())
 			data.saveToFile();
 
 		for(World world : Bukkit.getWorlds())
@@ -342,18 +291,21 @@ public class Data
 			dWorld.save();
 			if(compact) dWorld.compact();
 		}
+
+		TIMED.save();
+		SERVER.save();
 	}
 
 	public static void flushData()
 	{
 		// Kick everyone
-		for(Player player : Bukkit.getOnlinePlayers())
+    for(Player player : Bukkit.getOnlinePlayers())
 			player.kickPlayer(ChatColor.GREEN + English.DATA_RESET_KICK.getLine());
 
 		// Clear the data
-		for(DemigodsFile data : values())
+		for(DemigodsFile data : yamlFiles())
 			data.clear();
-		tempData.clear();
+		TEMP.clear();
 
 		save();
 
@@ -362,118 +314,72 @@ public class Data
 		Bukkit.getServer().getPluginManager().enablePlugin(DemigodsPlugin.plugin());
 	}
 
-	/*
-	 * Temporary data
-	 */
+	// -- WORLD DATA -- //
+
+	// World Data
+	private static final ConcurrentMap<String, WorldData> WORLDS = Maps.newConcurrentMap();
+
+	public static void addWorld(World world)
+	{
+		WorldData dWorld = new WorldData(world.getName(), world.getWorldFolder().getPath());
+		WORLDS.put(world.getName(), dWorld);
+	}
+
+	public static void addWorld(WorldData world)
+	{
+		WORLDS.put(world.getName(), world);
+	}
+
+	public static void removeWorld(String name)
+	{
+		WORLDS.get(name).save();
+		WORLDS.remove(name);
+	}
+
+	public static WorldData getWorld(String name)
+	{
+		return WORLDS.get(name);
+	}
+
+	// -- TEMP DATA -- //
+
+	// Temp Data
+	private static final Table<String, String, Object> TEMP = Tables.newCustomTable(new ConcurrentHashMap<String, Map<String, Object>>(), new Supplier<ConcurrentHashMap<String, Object>>()
+	{
+		@Override
+		public ConcurrentHashMap<String, Object> get()
+		{
+			return new ConcurrentHashMap<>();
+		}
+	});
+
 	public static boolean hasKeyTemp(String row, String column)
 	{
-		return tempData.contains(row, column);
+		return TEMP.contains(row, column);
 	}
 
 	public static Object getValueTemp(String row, String column)
 	{
-		if(hasKeyTemp(row, column)) return tempData.get(row, column);
+		if(hasKeyTemp(row, column)) return TEMP.get(row, column);
 		else return null;
 	}
 
 	public static void saveTemp(String row, String column, Object value)
 	{
-		tempData.put(row, column, value);
+		TEMP.put(row, column, value);
 	}
 
 	public static void removeTemp(String row, String column)
 	{
-		if(hasKeyTemp(row, column)) tempData.remove(row, column);
+		if(hasKeyTemp(row, column)) TEMP.remove(row, column);
 	}
 
-	/*
-	 * Timed data
+	/**
+	 * Abstract class extending ConfigFile for easy yaml file creation inside of Demigods.
+	 * 
+	 * @param <ID> The id type.
+	 * @param <DATA> The data type.
 	 */
-	public static void saveTimed(String key, String subKey, Object data, Integer seconds)
-	{
-		// Remove the data if it exists already
-		TimedDataManager.remove(key, subKey);
-
-		// Create and save the timed data
-		TimedData timedData = new TimedData();
-		timedData.generateId();
-		timedData.setKey(key);
-		timedData.setSubKey(subKey);
-		timedData.setData(data.toString());
-		timedData.setSeconds(seconds);
-		TIMED_DATA.put(timedData.getId(), timedData);
-	}
-
-	/*
-	 * Timed data
-	 */
-	public static void saveTimedWeek(String key, String subKey, Object data)
-	{
-		// Remove the data if it exists already
-		TimedDataManager.remove(key, subKey);
-
-		// Create and save the timed data
-		TimedData timedData = new TimedData();
-		timedData.generateId();
-		timedData.setKey(key);
-		timedData.setSubKey(subKey);
-		timedData.setData(data.toString());
-		timedData.setHours(168);
-		TIMED_DATA.put(timedData.getId(), timedData);
-	}
-
-	public static void removeTimed(String key, String subKey)
-	{
-		TimedDataManager.remove(key, subKey);
-	}
-
-	public static boolean hasTimed(String key, String subKey)
-	{
-		return TimedDataManager.find(key, subKey) != null;
-	}
-
-	public static Object getTimedValue(String key, String subKey)
-	{
-		return TimedDataManager.find(key, subKey).getData();
-	}
-
-	public static long getTimedExpiration(String key, String subKey)
-	{
-		return TimedDataManager.find(key, subKey).getExpiration();
-	}
-
-	/*
-	 * Server data
-	 */
-	public static void saveServerData(String key, String subKey, Object data)
-	{
-		// Remove the data if it exists already
-		ServerDataManager.remove(key, subKey);
-
-		// Create and save the timed data
-		ServerData serverData = new ServerData();
-		serverData.generateId();
-		serverData.setKey(key);
-		serverData.setSubKey(subKey);
-		serverData.setData(data.toString());
-		SERVER_DATA.put(serverData.getId(), serverData);
-	}
-
-	public static void removeServerData(String key, String subKey)
-	{
-		ServerDataManager.remove(key, subKey);
-	}
-
-	public static boolean hasServerData(String key, String subKey)
-	{
-		return ServerDataManager.find(key, subKey) != null;
-	}
-
-	public static Object getServerDataValue(String key, String subKey)
-	{
-		return ServerDataManager.find(key, subKey).getData();
-	}
-
 	public abstract static class DemigodsFile<ID, DATA extends ConfigurationSerializable> extends ConfigFile<ID, DATA>
 	{
 		private final String saveFile;
