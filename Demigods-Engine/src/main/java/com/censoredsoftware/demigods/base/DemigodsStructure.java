@@ -1,6 +1,6 @@
 package com.censoredsoftware.demigods.base;
 
-import com.censoredsoftware.demigods.base.structure.InvisibleWall;
+import com.censoredsoftware.demigods.base.structure.RestrictedArea;
 import com.censoredsoftware.demigods.engine.mythos.Structure;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
@@ -10,7 +10,7 @@ import com.google.common.collect.Sets;
 // Structures
 public enum DemigodsStructure
 {
-	INVISIBLE_WALL(new InvisibleWall());
+	INVISIBLE_WALL(new RestrictedArea());
 
 	private final Structure structure;
 

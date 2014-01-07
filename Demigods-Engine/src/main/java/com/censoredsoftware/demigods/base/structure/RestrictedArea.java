@@ -18,12 +18,12 @@ import com.censoredsoftware.demigods.engine.mythos.Structure;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Sets;
 
-public class InvisibleWall implements Structure, Structure.Design
+public class RestrictedArea implements Structure, Structure.Design
 {
 	@Override
 	public String getName()
 	{
-		return "Invisible Wall";
+		return "Restricted Area";
 	}
 
 	@Override
@@ -35,7 +35,7 @@ public class InvisibleWall implements Structure, Structure.Design
 	@Override
 	public Schematic getSchematic(StructureSave data)
 	{
-		Schematic theWall = new Schematic("Invisible Wall", "Generated", 16);
+		Schematic theWall = new Schematic(getName(), "Generated", getRadius());
 		Location required = data.getReferenceLocation();
 		Location optional = data.getOptionalLocation();
 		theWall.add(new Selection(0, 0, 0, optional.getBlockX() - data.getReferenceLocation().getBlockX(), optional.getBlockY() - required.getBlockY(), optional.getBlockZ() - required.getBlockZ()));
@@ -130,9 +130,9 @@ public class InvisibleWall implements Structure, Structure.Design
 		StructureSave save = new StructureSave();
 		save.generateId();
 		save.setActive(true);
-		save.setDesign("Invisible Wall");
+		save.setDesign(getName());
 		save.addFlags(getFlags());
-		save.setPermission("demigods.structure.invisiblewall.immunity");
+		save.setPermission("demigods.structure.restrictedarea.immunity");
 		save.setType(getName());
 		save.setReferenceLocation(reference[0]);
 		save.setOptionalLocation(reference[1]);
@@ -152,24 +152,46 @@ public class InvisibleWall implements Structure, Structure.Design
 		 * 
 		 * @param player the player to make the blocks visible to
 		 */
-		public static void debugRestrictedAreas(final Player player)
+		public static void toggleDebugRestrictedAreas(final Player player, boolean option)
 		{
-			// Create a sync delayed task to avoid asynchronous block update issues
-			Bukkit.getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.plugin(), new Runnable()
+			if(option)
 			{
-				@Override
-				public void run()
+				// Create a sync delayed task to avoid asynchronous block update issues
+				Bukkit.getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.plugin(), new Runnable()
 				{
-					// Loop through all invisible wall structures
-					for(StructureSave save : Structure.Util.getStructuresWithFlag(Flag.RESTRICTED_AREA))
+					@Override
+					public void run()
 					{
-						for(Location location : save.getType().getDesign("Invisible Wall").getSchematic(save).getLocations(save.getReferenceLocation()))
+						// Loop through all invisible wall structures
+						for(StructureSave save : Structure.Util.getStructuresWithFlag(Flag.RESTRICTED_AREA))
 						{
-							player.sendBlockChange(location, Material.GLASS, (byte) 0);
+							for(Location location : save.getType().getDesign("Restricted Area").getSchematic(save).getLocations(save.getReferenceLocation()))
+							{
+								player.sendBlockChange(location, Material.GLASS, (byte) 0);
+							}
 						}
 					}
-				}
-			});
+				});
+			}
+			else
+			{
+				// Create a sync delayed task to avoid asynchronous block update issues
+				Bukkit.getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.plugin(), new Runnable()
+				{
+					@Override
+					public void run()
+					{
+						// Loop through all invisible wall structures
+						for(StructureSave save : Structure.Util.getStructuresWithFlag(Flag.RESTRICTED_AREA))
+						{
+							for(Location location : save.getType().getDesign("Restricted Area").getSchematic(save).getLocations(save.getReferenceLocation()))
+							{
+								player.sendBlockChange(location, location.getBlock().getType(), location.getBlock().getData());
+							}
+						}
+					}
+				});
+			}
 		}
 	}
 }

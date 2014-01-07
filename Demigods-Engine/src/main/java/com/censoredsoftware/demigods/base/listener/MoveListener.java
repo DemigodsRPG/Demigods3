@@ -82,9 +82,14 @@ public class MoveListener implements Listener
 
 			if(collision)
 			{
+				// Define the player for messaging later
+				Player player = null;
+
 				// Handle teleportation
 				if(entity instanceof Player && !save.getType().isAllowed(save, (Player) entity))
 				{
+					// Set the player and location
+					player = (Player) entity;
 					Location location = entity.getLocation();
 
 					// Turn them the opposite direction
@@ -93,14 +98,17 @@ public class MoveListener implements Listener
 
 					entity.teleport(location);
 				}
-				else if(entity instanceof Vehicle && entity.getPassenger() != null && !save.getType().isAllowed(save, (Player) entity.getPassenger()))
+				else if(entity instanceof Vehicle && entity.getPassenger() != null && entity.getPassenger() instanceof Player && !save.getType().isAllowed(save, (Player) entity.getPassenger()))
 				{
+					// Set the player
+					player = (Player) entity.getPassenger();
+
 					// Eject the rider
 					entity.eject();
 				}
 
 				// Let 'em know what's up
-				if(entity instanceof Player) ((Player) entity).sendMessage(English.NOT_ALLOWED_PAST_INIVISBLE_WALL.getLine());
+				if(player != null) player.sendMessage(English.NOT_ALLOWED_PAST_INIVISBLE_WALL.getLine());
 			}
 
 			// FIXME: Handle entrances from above.

@@ -1,9 +1,24 @@
 package com.censoredsoftware.demigods.engine.data.serializable;
 
+import java.util.*;
+import java.util.concurrent.TimeUnit;
+
+import org.bukkit.*;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.conversations.Conversation;
+import org.bukkit.conversations.ConversationContext;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.scheduler.BukkitRunnable;
+
 import com.censoredsoftware.censoredlib.data.location.Region;
 import com.censoredsoftware.censoredlib.exception.MojangIdNotFoundException;
 import com.censoredsoftware.censoredlib.helper.MojangIdGrabber;
 import com.censoredsoftware.demigods.base.listener.ChatRecorder;
+import com.censoredsoftware.demigods.base.structure.RestrictedArea;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.DemigodsPlugin;
 import com.censoredsoftware.demigods.engine.conversation.Administration;
@@ -18,19 +33,6 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
-import org.bukkit.*;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.conversations.Conversation;
-import org.bukkit.conversations.ConversationContext;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.scheduler.BukkitRunnable;
-
-import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 public class DPlayer implements ConfigurationSerializable
 {
@@ -802,8 +804,12 @@ public class DPlayer implements ConfigurationSerializable
 				Conversation conversation = Administration.startAdministration(player);
 				Data.saveTemp(player.getName(), "administration_conversation", conversation);
 
+				// Set clear weather and daylight
 				player.setPlayerWeather(WeatherType.CLEAR);
 				player.setPlayerTime(100, false);
+
+				// Debug invisible structures
+				RestrictedArea.Util.toggleDebugRestrictedAreas(player, true);
 
 				// Record chat if enabled
 				if(recordChat) DPlayer.Util.getPlayer(player).startRecording();
@@ -824,6 +830,9 @@ public class DPlayer implements ConfigurationSerializable
 				// Reset weather and time
 				player.resetPlayerWeather();
 				player.resetPlayerTime();
+
+				// Disable debugging of invisible structures
+				RestrictedArea.Util.toggleDebugRestrictedAreas(player, false);
 
 				// Message them
 				Messages.clearRawChat(player);
