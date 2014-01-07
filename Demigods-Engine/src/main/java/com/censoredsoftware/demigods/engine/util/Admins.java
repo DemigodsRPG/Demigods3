@@ -1,12 +1,13 @@
 package com.censoredsoftware.demigods.engine.util;
 
-import com.censoredsoftware.demigods.engine.data.Data;
+import java.util.ArrayList;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
+import com.censoredsoftware.demigods.engine.data.Data;
 
 public class Admins
 {

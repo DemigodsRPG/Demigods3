@@ -1,16 +1,17 @@
 package com.censoredsoftware.demigods.exclusive.data;
 
-import com.censoredsoftware.censoredlib.exception.MojangIdNotFoundException;
-import com.censoredsoftware.censoredlib.helper.MojangIdGrabber;
-import com.censoredsoftware.demigods.engine.data.Data;
-import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.censoredsoftware.censoredlib.exception.MojangIdNotFoundException;
+import com.censoredsoftware.censoredlib.helper.MojangIdGrabber;
+import com.censoredsoftware.demigods.engine.data.Data;
+import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
 
 public class ExDPlayer implements ConfigurationSerializable
 {

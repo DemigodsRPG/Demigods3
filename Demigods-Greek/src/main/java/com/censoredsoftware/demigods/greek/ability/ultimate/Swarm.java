@@ -1,14 +1,8 @@
 package com.censoredsoftware.demigods.greek.ability.ultimate;
 
-import com.censoredsoftware.censoredlib.util.Spigots;
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
-import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
-import com.censoredsoftware.demigods.engine.data.serializable.Skill;
-import com.censoredsoftware.demigods.greek.ability.GreekAbility;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
+import java.util.List;
+import java.util.Set;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
@@ -19,8 +13,15 @@ import org.bukkit.entity.Zombie;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.List;
-import java.util.Set;
+import com.censoredsoftware.censoredlib.util.Spigots;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
+import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
+import com.censoredsoftware.demigods.engine.data.serializable.Skill;
+import com.censoredsoftware.demigods.greek.ability.GreekAbility;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 public class Swarm extends GreekAbility
 {

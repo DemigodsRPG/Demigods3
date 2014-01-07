@@ -1,9 +1,10 @@
 package com.censoredsoftware.demigods.exclusive.util;
 
-import com.censoredsoftware.demigods.exclusive.ExclusiveMythos;
+import java.util.List;
+
 import org.bukkit.configuration.Configuration;
 
-import java.util.List;
+import com.censoredsoftware.demigods.exclusive.ExclusiveMythos;
 
 /**
  * Module to load configuration settings from any passed in PLUGIN's config.yml.

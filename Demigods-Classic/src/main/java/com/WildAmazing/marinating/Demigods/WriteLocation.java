@@ -1,10 +1,10 @@
 package com.WildAmazing.marinating.Demigods;
 
+import java.io.Serializable;
+
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.plugin.Plugin;
-
-import java.io.Serializable;
 
 public class WriteLocation implements Serializable
 {

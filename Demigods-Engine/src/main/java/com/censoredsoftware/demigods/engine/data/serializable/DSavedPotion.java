@@ -1,11 +1,12 @@
 package com.censoredsoftware.demigods.engine.data.serializable;
 
-import com.censoredsoftware.censoredlib.data.player.SavedPotion;
-import com.censoredsoftware.demigods.engine.data.Data;
+import java.util.UUID;
+
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.potion.PotionEffect;
 
-import java.util.UUID;
+import com.censoredsoftware.censoredlib.data.player.SavedPotion;
+import com.censoredsoftware.demigods.engine.data.Data;
 
 public class DSavedPotion extends SavedPotion
 {

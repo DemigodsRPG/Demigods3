@@ -1,11 +1,12 @@
 package com.censoredsoftware.demigods.base;
 
+import org.bukkit.event.Listener;
+
 import com.censoredsoftware.demigods.base.listener.*;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
-import org.bukkit.event.Listener;
 
 public enum DemigodsListener
 {

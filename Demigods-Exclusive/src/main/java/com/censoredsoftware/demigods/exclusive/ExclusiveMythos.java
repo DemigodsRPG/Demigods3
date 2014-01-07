@@ -1,5 +1,9 @@
 package com.censoredsoftware.demigods.exclusive;
 
+import org.bukkit.event.Listener;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.permissions.Permission;
+
 import com.censoredsoftware.censoredlib.helper.WrappedCommand;
 import com.censoredsoftware.censoredlib.trigger.Trigger;
 import com.censoredsoftware.demigods.base.listener.WorldListener;
@@ -7,9 +11,6 @@ import com.censoredsoftware.demigods.engine.mythos.*;
 import com.censoredsoftware.demigods.exclusive.listener.DistrictListener;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableSet;
-import org.bukkit.event.Listener;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.permissions.Permission;
 
 public class ExclusiveMythos extends MythosPlugin
 {

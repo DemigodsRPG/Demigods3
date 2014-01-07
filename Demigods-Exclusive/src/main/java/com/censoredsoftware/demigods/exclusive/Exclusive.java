@@ -1,9 +1,10 @@
 package com.censoredsoftware.demigods.exclusive;
 
-import com.censoredsoftware.demigods.engine.mythos.Mythos;
-import com.censoredsoftware.demigods.exclusive.data.ExData;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.ServicePriority;
+
+import com.censoredsoftware.demigods.engine.mythos.Mythos;
+import com.censoredsoftware.demigods.exclusive.data.ExData;
 
 public class Exclusive
 {

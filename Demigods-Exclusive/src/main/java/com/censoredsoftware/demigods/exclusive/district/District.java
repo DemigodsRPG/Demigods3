@@ -1,9 +1,10 @@
 package com.censoredsoftware.demigods.exclusive.district;
 
+import org.bukkit.World;
+
 import com.censoredsoftware.censoredlib.data.location.Region;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Range;
-import org.bukkit.World;
 
 public interface District
 {

@@ -1,7 +1,7 @@
 package com.censoredsoftware.demigods.engine.util;
 
-import com.censoredsoftware.demigods.engine.DemigodsPlugin;
-import com.censoredsoftware.demigods.engine.event.DemigodsChatEvent;
+import java.util.logging.Logger;
+
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -10,7 +10,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.logging.Logger;
+import com.censoredsoftware.demigods.engine.DemigodsPlugin;
+import com.censoredsoftware.demigods.engine.event.DemigodsChatEvent;
 
 /**
  * Module to handle all common messages sent to players or the console.

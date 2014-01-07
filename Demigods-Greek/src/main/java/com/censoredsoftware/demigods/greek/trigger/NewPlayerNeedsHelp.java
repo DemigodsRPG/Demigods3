@@ -1,5 +1,10 @@
 package com.censoredsoftware.demigods.greek.trigger;
 
+import java.util.Collection;
+import java.util.concurrent.TimeUnit;
+
+import org.bukkit.ChatColor;
+
 import com.censoredsoftware.censoredlib.language.Symbol;
 import com.censoredsoftware.censoredlib.trigger.Trigger;
 import com.censoredsoftware.demigods.engine.data.Data;
@@ -8,10 +13,6 @@ import com.censoredsoftware.demigods.engine.data.serializable.DDeath;
 import com.censoredsoftware.demigods.engine.util.Zones;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
-import org.bukkit.ChatColor;
-
-import java.util.Collection;
-import java.util.concurrent.TimeUnit;
 
 public class NewPlayerNeedsHelp implements Trigger
 {

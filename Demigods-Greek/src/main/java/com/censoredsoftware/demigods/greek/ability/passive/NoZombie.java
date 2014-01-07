@@ -1,11 +1,7 @@
 package com.censoredsoftware.demigods.greek.ability.passive;
 
-import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
-import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
-import com.censoredsoftware.demigods.engine.mythos.Deity;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.censoredsoftware.demigods.greek.ability.GreekAbility;
-import com.google.common.collect.Lists;
+import java.util.List;
+
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
@@ -15,7 +11,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 
-import java.util.List;
+import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
+import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
+import com.censoredsoftware.demigods.engine.mythos.Deity;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.censoredsoftware.demigods.greek.ability.GreekAbility;
+import com.google.common.collect.Lists;
 
 public class NoZombie extends GreekAbility.Passive
 {

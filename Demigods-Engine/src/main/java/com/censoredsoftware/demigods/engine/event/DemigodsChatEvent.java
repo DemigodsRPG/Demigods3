@@ -1,20 +1,22 @@
 package com.censoredsoftware.demigods.engine.event;
 
-import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Sets;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Set;
+
+import javax.annotation.Nullable;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-import javax.annotation.Nullable;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Set;
+import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
+import com.google.common.base.Function;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Sets;
 
 public class DemigodsChatEvent extends Event implements Cancellable
 {

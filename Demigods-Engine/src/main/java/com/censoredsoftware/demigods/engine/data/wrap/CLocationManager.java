@@ -1,16 +1,17 @@
 package com.censoredsoftware.demigods.engine.data.wrap;
 
+import java.util.NoSuchElementException;
+import java.util.Set;
+import java.util.UUID;
+
+import org.bukkit.Location;
+
 import com.censoredsoftware.censoredlib.data.location.CLocation;
 import com.censoredsoftware.censoredlib.data.location.Region;
 import com.censoredsoftware.demigods.engine.data.Data;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Sets;
-import org.bukkit.Location;
-
-import java.util.NoSuchElementException;
-import java.util.Set;
-import java.util.UUID;
 
 public class CLocationManager extends CLocation.Util
 {

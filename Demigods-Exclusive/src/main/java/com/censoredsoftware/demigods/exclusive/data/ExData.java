@@ -1,7 +1,8 @@
 package com.censoredsoftware.demigods.exclusive.data;
 
-import com.censoredsoftware.demigods.engine.data.Data;
 import org.bukkit.configuration.ConfigurationSection;
+
+import com.censoredsoftware.demigods.engine.data.Data;
 
 public class ExData
 {

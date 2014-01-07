@@ -1,16 +1,17 @@
 package com.censoredsoftware.demigods.greek.ability.passive;
 
-import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.censoredsoftware.demigods.greek.ability.GreekAbility;
-import com.google.common.collect.Lists;
+import java.util.List;
+
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.List;
+import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.censoredsoftware.demigods.greek.ability.GreekAbility;
+import com.google.common.collect.Lists;
 
 public class NoFire extends GreekAbility.Passive
 {

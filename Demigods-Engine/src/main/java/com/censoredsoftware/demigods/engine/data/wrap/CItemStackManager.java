@@ -1,10 +1,11 @@
 package com.censoredsoftware.demigods.engine.data.wrap;
 
-import com.censoredsoftware.censoredlib.data.inventory.CItemStack;
-import com.censoredsoftware.demigods.engine.data.Data;
+import java.util.UUID;
+
 import org.bukkit.inventory.ItemStack;
 
-import java.util.UUID;
+import com.censoredsoftware.censoredlib.data.inventory.CItemStack;
+import com.censoredsoftware.demigods.engine.data.Data;
 
 public class CItemStackManager
 {

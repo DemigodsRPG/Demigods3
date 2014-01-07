@@ -1,9 +1,5 @@
 package com.censoredsoftware.demigods.classic.listener;
 
-import com.censoredsoftware.demigods.engine.data.serializable.Battle;
-import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
-import com.censoredsoftware.demigods.engine.data.serializable.Participant;
-import com.censoredsoftware.demigods.engine.util.Zones;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Projectile;
@@ -11,6 +7,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+
+import com.censoredsoftware.demigods.engine.data.serializable.Battle;
+import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
+import com.censoredsoftware.demigods.engine.data.serializable.Participant;
+import com.censoredsoftware.demigods.engine.util.Zones;
 
 public class ClassicBattleListener implements Listener
 {

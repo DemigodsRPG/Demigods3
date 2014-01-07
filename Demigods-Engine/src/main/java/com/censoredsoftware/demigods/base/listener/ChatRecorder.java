@@ -1,12 +1,8 @@
 package com.censoredsoftware.demigods.base.listener;
 
-import com.censoredsoftware.censoredlib.util.Times;
-import com.censoredsoftware.demigods.engine.DemigodsPlugin;
-import com.censoredsoftware.demigods.engine.event.DemigodsChatEvent;
-import com.google.common.base.Function;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import java.util.List;
+import java.util.Map;
+
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,8 +11,13 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-import java.util.List;
-import java.util.Map;
+import com.censoredsoftware.censoredlib.util.Times;
+import com.censoredsoftware.demigods.engine.DemigodsPlugin;
+import com.censoredsoftware.demigods.engine.event.DemigodsChatEvent;
+import com.google.common.base.Function;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 public class ChatRecorder
 {

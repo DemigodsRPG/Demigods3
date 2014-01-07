@@ -222,11 +222,11 @@ public interface Structure
 		public static Collection<StructureSave> getInRadiusWithFlag(final Location location, final Flag flag)
 		{
 			return Collections2.filter(getStructuresInRegionalArea(location), new Predicate<StructureSave>()
-            {
+			{
 				@Override
 				public boolean apply(StructureSave save)
 				{
-		return save.getRawFlags() != null && save.getRawFlags().contains(flag.name()) && save.getReferenceLocation().getWorld().equals(location.getWorld()) && save.getReferenceLocation().distance(location) <= save.getType().getRadius();
+					return save.getRawFlags() != null && save.getRawFlags().contains(flag.name()) && save.getReferenceLocation().getWorld().equals(location.getWorld()) && save.getReferenceLocation().distance(location) <= save.getType().getRadius();
 				}
 			});
 		}
