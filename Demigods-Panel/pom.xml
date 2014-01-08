@@ -185,6 +185,6 @@
                 <artifactId>jetty-maven-plugin</artifactId>
             </plugin>
         </plugins>
-        <defaultGoal>clean install package</defaultGoal>
+        <defaultGoal>clean</defaultGoal>
     </build>
 </project>
