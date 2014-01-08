@@ -99,7 +99,7 @@
     </dependencies>
 
     <build>
-        <defaultGoal>install</defaultGoal>
+        <defaultGoal>clean install</defaultGoal>
     </build>
 
 </project>
