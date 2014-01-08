@@ -98,19 +98,8 @@
         </dependency>
     </dependencies>
 
-    <profiles>
-        <!-- Jenkins profile (to only build what we test on the beta server) -->
-        <profile>
-            <id>jenkins-fast-build</id>
-            <modules>
-                <module>Demigods-Engine</module>
-                <module>Demigods-Greek</module>
-                <module>Demigods-Exclusive</module>
-                <module>Demigods-Panel/Bukkit</module>
-            </modules>
-            <build>
-                <defaultGoal>clean install</defaultGoal>
-            </build>
-        </profile>
-    </profiles>
+    <build>
+        <defaultGoal>install</defaultGoal>
+    </build>
+
 </project>
