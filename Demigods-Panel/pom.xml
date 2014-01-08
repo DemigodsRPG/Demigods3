@@ -111,6 +111,7 @@
     </dependencies>
 
     <build>
+        <defaultGoal>clean install package</defaultGoal>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -185,6 +186,5 @@
                 <artifactId>jetty-maven-plugin</artifactId>
             </plugin>
         </plugins>
-        <defaultGoal>clean</defaultGoal>
     </build>
 </project>
