@@ -1,20 +1,19 @@
-package com.censoredsoftware.demigods.exclusive;
+package com.censoredsoftware.demigods.panel;
 
 import com.censoredsoftware.censoredlib.helper.WrappedCommand;
 import com.censoredsoftware.censoredlib.trigger.Trigger;
 import com.censoredsoftware.demigods.engine.mythos.*;
-import com.censoredsoftware.demigods.exclusive.listener.DistrictListener;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableSet;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.Permission;
 
-public class ExclusiveMythos extends MythosPlugin
+public class DemigodsPanelPlugin extends MythosPlugin
 {
-	private static ExclusiveMythos inst;
+	private static DemigodsPanelPlugin inst;
 
-	public static ExclusiveMythos inst()
+	public static DemigodsPanelPlugin inst()
 	{
 		return inst;
 	}
@@ -26,7 +25,7 @@ public class ExclusiveMythos extends MythosPlugin
 	public void onEnable()
 	{
 		inst = this;
-		Exclusive.init();
+		// TODO Connect to panel here.
 	}
 
 	/**
@@ -39,13 +38,13 @@ public class ExclusiveMythos extends MythosPlugin
 	@Override
 	public String getTitle()
 	{
-		return "Exclusive";
+		return "Web Panel";
 	}
 
 	@Override
 	public String getTagline()
 	{
-		return "Exclusive enhancements for the official Demigods RPG server.";
+		return "Official Panel for Demigods RPG.";
 	}
 
 	@Override
@@ -145,7 +144,7 @@ public class ExclusiveMythos extends MythosPlugin
 
 	public ImmutableCollection<Listener> getListeners()
 	{
-		return ImmutableSet.of((Listener) new DistrictListener());
+		return ImmutableSet.of();
 	}
 
 	public ImmutableCollection<Permission> getPermissions()
