@@ -98,10 +98,6 @@
         </dependency>
     </dependencies>
 
-    <build>
-        <defaultGoal>clean install</defaultGoal>
-    </build>
-
     <profiles>
         <!-- Jenkins profile (to only build what we test on the beta server) -->
         <profile>
@@ -112,6 +108,9 @@
                 <module>Demigods-Exclusive</module>
                 <module>Demigods-Panel/Bukkit</module>
             </modules>
+            <build>
+                <defaultGoal>clean install</defaultGoal>
+            </build>
         </profile>
     </profiles>
 </project>
