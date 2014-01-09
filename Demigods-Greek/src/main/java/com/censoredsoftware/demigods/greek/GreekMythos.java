@@ -1,11 +1,6 @@
 package com.censoredsoftware.demigods.greek;
 
-import org.bukkit.event.Listener;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.permissions.Permission;
-import org.bukkit.plugin.ServicePriority;
-
-import com.censoredsoftware.censoredlib.helper.WrappedCommand;
+import com.censoredsoftware.censoredlib.helper.CommandManager;
 import com.censoredsoftware.censoredlib.trigger.Trigger;
 import com.censoredsoftware.demigods.engine.mythos.*;
 import com.censoredsoftware.demigods.greek.deity.GreekAlliance;
@@ -26,6 +21,10 @@ import com.censoredsoftware.demigods.greek.trigger.NewPlayerNeedsHelp;
 import com.censoredsoftware.demigods.greek.trigger.ProcessAltars;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableSet;
+import org.bukkit.event.Listener;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.permissions.Permission;
+import org.bukkit.plugin.ServicePriority;
 
 public class GreekMythos extends MythosPlugin
 {
@@ -167,7 +166,7 @@ public class GreekMythos extends MythosPlugin
 	}
 
 	@Override
-	public ImmutableCollection<WrappedCommand> getCommands()
+	public ImmutableCollection<CommandManager> getCommands()
 	{
 		return ImmutableSet.of();
 	}

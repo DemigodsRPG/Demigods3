@@ -1,19 +1,6 @@
 package com.censoredsoftware.demigods.base.command;
 
-import java.util.Collection;
-import java.util.Map;
-
-import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.PluginManager;
-
-import com.censoredsoftware.censoredlib.helper.WrappedCommand;
+import com.censoredsoftware.censoredlib.helper.CommandManager;
 import com.censoredsoftware.censoredlib.language.Symbol;
 import com.censoredsoftware.censoredlib.util.Strings;
 import com.censoredsoftware.censoredlib.util.Times;
@@ -31,23 +18,39 @@ import com.censoredsoftware.demigods.engine.util.Configs;
 import com.censoredsoftware.demigods.engine.util.Messages;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
-import com.google.common.collect.Sets;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.PluginManager;
 
-public class MainCommand extends WrappedCommand
+import java.util.Collection;
+import java.util.Map;
+
+// TODO Convert this over to the sub-command format.
+
+public class MainCommand extends CommandManager
 {
-	public MainCommand()
+	@Override
+	public ImmutableSet<String> getCommandNames()
 	{
-		super(DemigodsPlugin.plugin(), false);
+		return ImmutableSet.of("demigods", "deity");
 	}
 
 	@Override
-	public java.util.Set<String> getCommandNames()
+	public ImmutableList<CommandManager.Sub> getSubCommands()
 	{
-		return Sets.newHashSet("demigods", "deity");
+		return ImmutableList.of();
 	}
 
 	@Override
-	public boolean processCommand(CommandSender sender, Command command, String[] args)
+	public boolean always(CommandSender sender, Command command, String label, String[] args)
 	{
 		// Commands able to be run by the console
 		if("demigods".equals(command.getName()))
@@ -58,12 +61,12 @@ public class MainCommand extends WrappedCommand
 				pluginManager.disablePlugin(DemigodsPlugin.plugin());
 				pluginManager.enablePlugin(DemigodsPlugin.plugin());
 				sender.sendMessage(ChatColor.GREEN + English.RELOAD_COMPLETE.getLine());
-				return true;
+				return false;
 			}
 		}
 
 		// No console below this point
-		if(sender instanceof ConsoleCommandSender) return Messages.noConsole((ConsoleCommandSender) sender);
+		if(sender instanceof ConsoleCommandSender) return !Messages.noConsole((ConsoleCommandSender) sender);
 
 		// Define Player
 		Player player = (Player) sender;
@@ -72,27 +75,27 @@ public class MainCommand extends WrappedCommand
 		if(args.length > 0 && "admin".equalsIgnoreCase(args[0]))
 		{
 			dg_admin(player, args);
-			return true;
+			return false;
 		}
 		else if(args.length > 0)
 		{
 			dg_extended(player, args);
-			return true;
+			return false;
 		}
 
 		// Check Permissions
-		if(!player.hasPermission("demigods.basic")) return Messages.noPermission(player);
+		if(!player.hasPermission("demigods.basic")) return !Messages.noPermission(player);
 
 		if("deity".equals(command.getName()) && DPlayer.Util.getPlayer(player).getCurrent() != null && DPlayer.Util.getPlayer(player).getCurrent().isUsable())
 		{
 			Deity deity = DPlayer.Util.getPlayer(player).getCurrent().getDeity();
 			player.chat("/dg " + deity.getAlliance().getName().toLowerCase() + " " + deity.getName().toLowerCase());
-			return true;
+			return false;
 		}
 		else if("deity".equals(command.getName()))
 		{
 			player.sendMessage(ChatColor.RED + "This command requires you to have a character.");
-			return true;
+			return false;
 		}
 
 		Messages.tagged(sender, "Documentation");
@@ -102,7 +105,7 @@ public class MainCommand extends WrappedCommand
 		if(player.hasPermission("demigods.admin")) sender.sendMessage(ChatColor.RED + " /dg admin");
 		sender.sendMessage(" ");
 		sender.sendMessage(ChatColor.WHITE + " Use " + ChatColor.YELLOW + "/check" + ChatColor.WHITE + " to see your player information.");
-		return true;
+		return false;
 	}
 
 	private static boolean dg_extended(Player player, String[] args)

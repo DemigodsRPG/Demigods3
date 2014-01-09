@@ -1,6 +1,6 @@
 package com.censoredsoftware.demigods.engine.mythos;
 
-import org.bukkit.plugin.java.JavaPlugin;
+import com.censoredsoftware.censoredlib.helper.CensoredJavaPlugin;
 
-public abstract class MythosPlugin extends JavaPlugin implements Mythos
+public abstract class MythosPlugin extends CensoredJavaPlugin implements Mythos
 {}

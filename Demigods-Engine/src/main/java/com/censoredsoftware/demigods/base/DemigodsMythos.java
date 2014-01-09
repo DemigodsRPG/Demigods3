@@ -1,14 +1,13 @@
 package com.censoredsoftware.demigods.base;
 
-import org.bukkit.event.Listener;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.permissions.Permission;
-
-import com.censoredsoftware.censoredlib.helper.WrappedCommand;
+import com.censoredsoftware.censoredlib.helper.CommandManager;
 import com.censoredsoftware.censoredlib.trigger.Trigger;
 import com.censoredsoftware.demigods.engine.mythos.*;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableSet;
+import org.bukkit.event.Listener;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.permissions.Permission;
 
 public class DemigodsMythos implements Mythos
 {
@@ -132,7 +131,7 @@ public class DemigodsMythos implements Mythos
 	}
 
 	@Override
-	public ImmutableCollection<WrappedCommand> getCommands()
+	public ImmutableCollection<CommandManager> getCommands()
 	{
 		return DemigodsCommand.commands();
 	}

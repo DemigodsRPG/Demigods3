@@ -1,6 +1,6 @@
 package com.censoredsoftware.demigods.panel;
 
-import com.censoredsoftware.censoredlib.helper.WrappedCommand;
+import com.censoredsoftware.censoredlib.helper.CommandManager;
 import com.censoredsoftware.censoredlib.trigger.Trigger;
 import com.censoredsoftware.demigods.engine.mythos.*;
 import com.google.common.collect.ImmutableCollection;
@@ -153,7 +153,7 @@ public class DemigodsPanelPlugin extends MythosPlugin
 	}
 
 	@Override
-	public ImmutableCollection<WrappedCommand> getCommands()
+	public ImmutableCollection<CommandManager> getCommands()
 	{
 		return ImmutableSet.of();
 	}

@@ -1,6 +1,6 @@
 package com.censoredsoftware.demigods.exclusive;
 
-import com.censoredsoftware.censoredlib.helper.WrappedCommand;
+import com.censoredsoftware.censoredlib.helper.CommandManager;
 import com.censoredsoftware.censoredlib.trigger.Trigger;
 import com.censoredsoftware.demigods.engine.mythos.*;
 import com.censoredsoftware.demigods.exclusive.listener.DistrictListener;
@@ -154,7 +154,7 @@ public class ExclusiveMythos extends MythosPlugin
 	}
 
 	@Override
-	public ImmutableCollection<WrappedCommand> getCommands()
+	public ImmutableCollection<CommandManager> getCommands()
 	{
 		return ImmutableSet.of();
 	}

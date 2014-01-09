@@ -1,18 +1,17 @@
 package com.censoredsoftware.demigods.engine.mythos;
 
-import java.util.Collections;
-import java.util.Set;
-
-import org.bukkit.event.Listener;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.permissions.Permission;
-
-import com.censoredsoftware.censoredlib.helper.WrappedCommand;
+import com.censoredsoftware.censoredlib.helper.CommandManager;
 import com.censoredsoftware.censoredlib.trigger.Trigger;
 import com.censoredsoftware.demigods.base.DemigodsMythos;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
+import org.bukkit.event.Listener;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.permissions.Permission;
+
+import java.util.Collections;
+import java.util.Set;
 
 public class MythosSet implements Mythos
 {
@@ -25,7 +24,7 @@ public class MythosSet implements Mythos
 	private final ImmutableSet<Structure> STRUCTURES;
 	private final ImmutableSet<Listener> LISTENERS;
 	private final ImmutableSet<Permission> PERMISSIONS;
-	private final ImmutableSet<WrappedCommand> COMMANDS;
+	private final ImmutableSet<CommandManager> COMMANDS;
 	private final ImmutableSet<Trigger> TRIGGERS;
 
 	public MythosSet(Mythos primaryMythos, Set<Mythos> mythosSet)
@@ -51,7 +50,7 @@ public class MythosSet implements Mythos
 		Set<Structure> structure = Sets.newHashSet();
 		Set<Listener> listener = Sets.newHashSet();
 		Set<Permission> permission = Sets.newHashSet();
-		Set<WrappedCommand> command = Sets.newHashSet();
+		Set<CommandManager> command = Sets.newHashSet();
 		Set<Trigger> trigger = Sets.newHashSet();
 
 		for(Mythos mythos : SET)
@@ -208,7 +207,7 @@ public class MythosSet implements Mythos
 	}
 
 	@Override
-	public ImmutableCollection<WrappedCommand> getCommands()
+	public ImmutableCollection<CommandManager> getCommands()
 	{
 		return COMMANDS;
 	}

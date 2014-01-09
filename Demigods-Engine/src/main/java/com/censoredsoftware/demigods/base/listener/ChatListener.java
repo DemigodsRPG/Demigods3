@@ -1,7 +1,12 @@
 package com.censoredsoftware.demigods.base.listener;
 
-import java.util.Set;
-
+import com.censoredsoftware.censoredlib.helper.CommandManager;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.DemigodsPlugin;
+import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
+import com.censoredsoftware.demigods.engine.mythos.Ability;
+import com.censoredsoftware.demigods.engine.util.Messages;
+import com.censoredsoftware.demigods.engine.util.Zones;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -9,28 +14,13 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
-import com.censoredsoftware.censoredlib.helper.WrappedCommand;
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
-import com.censoredsoftware.demigods.engine.mythos.Ability;
-import com.censoredsoftware.demigods.engine.util.Messages;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Sets;
-
 public class ChatListener implements Listener
 {
-	private static ImmutableSet<String> COMMANDS;
+	private static final CommandManager.Registry COMMAND_REGISTRY = new CommandManager.Registry(DemigodsPlugin.plugin());
 
 	public static void init()
 	{
-		Set<String> commands = Sets.newHashSet();
-		for(WrappedCommand command : Demigods.mythos().getCommands())
-		{
-			commands.addAll(command.getCommandNames());
-			commands.addAll(command.getAliases());
-		}
-		COMMANDS = ImmutableSet.copyOf(commands);
+		COMMAND_REGISTRY.registerManager(Demigods.mythos().getCommands());
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -43,7 +33,7 @@ public class ChatListener implements Listener
 
 		if(Zones.inNoDemigodsZone(event.getPlayer().getLocation()))
 		{
-			if(COMMANDS.contains(args[0]))
+			if(COMMAND_REGISTRY.getCommandsAndAliases().contains(args[0]))
 			{
 				player.sendMessage(ChatColor.GRAY + "Demigods is disabled in this world.");
 				event.setCancelled(true);

@@ -1,6 +1,6 @@
 package com.censoredsoftware.demigods.base;
 
-import com.censoredsoftware.censoredlib.helper.WrappedCommand;
+import com.censoredsoftware.censoredlib.helper.CommandManager;
 import com.censoredsoftware.demigods.base.command.DevelopmentCommands;
 import com.censoredsoftware.demigods.base.command.GeneralCommands;
 import com.censoredsoftware.demigods.base.command.MainCommand;
@@ -14,26 +14,26 @@ public enum DemigodsCommand
 {
 	MAIN(new MainCommand()), GENERAL(new GeneralCommands()), DEVELOPMENT(new DevelopmentCommands());
 
-	private WrappedCommand command;
+	private CommandManager command;
 
-	private DemigodsCommand(WrappedCommand command)
+	private DemigodsCommand(CommandManager command)
 	{
 		this.command = command;
 	}
 
-	public WrappedCommand getCommand()
+	public CommandManager getCommandManager()
 	{
 		return command;
 	}
 
-	public static ImmutableSet<WrappedCommand> commands()
+	public static ImmutableSet<CommandManager> commands()
 	{
-		return ImmutableSet.copyOf(Collections2.transform(Sets.newHashSet(values()), new Function<DemigodsCommand, WrappedCommand>()
+		return ImmutableSet.copyOf(Collections2.transform(Sets.newHashSet(values()), new Function<DemigodsCommand, CommandManager>()
 		{
 			@Override
-			public WrappedCommand apply(DemigodsCommand dCommand)
+			public CommandManager apply(DemigodsCommand dCommand)
 			{
-				return dCommand.getCommand();
+				return dCommand.getCommandManager();
 			}
 		}));
 	}

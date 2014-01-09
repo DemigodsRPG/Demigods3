@@ -1,11 +1,6 @@
 package com.censoredsoftware.demigods.classic;
 
-import org.bukkit.event.Listener;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.permissions.Permission;
-import org.bukkit.plugin.ServicePriority;
-
-import com.censoredsoftware.censoredlib.helper.WrappedCommand;
+import com.censoredsoftware.censoredlib.helper.CommandManager;
 import com.censoredsoftware.censoredlib.trigger.Trigger;
 import com.censoredsoftware.demigods.classic.listener.ClassicListener;
 import com.censoredsoftware.demigods.engine.mythos.*;
@@ -15,6 +10,10 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
+import org.bukkit.event.Listener;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.permissions.Permission;
+import org.bukkit.plugin.ServicePriority;
 
 public class ClassicMythos extends MythosPlugin
 {
@@ -170,7 +169,7 @@ public class ClassicMythos extends MythosPlugin
 	}
 
 	@Override
-	public ImmutableCollection<WrappedCommand> getCommands()
+	public ImmutableCollection<CommandManager> getCommands()
 	{
 		return ImmutableSet.of();
 	}

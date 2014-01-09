@@ -1,23 +1,7 @@
 package com.censoredsoftware.demigods.engine;
 
-import java.util.*;
-
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.conversations.ConversationFactory;
-import org.bukkit.event.HandlerList;
-import org.bukkit.event.Listener;
-import org.bukkit.permissions.Permission;
-import org.bukkit.permissions.PermissionDefault;
-import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.RegisteredServiceProvider;
-import org.bukkit.plugin.ServicesManager;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.ScoreboardManager;
-import org.bukkit.scoreboard.Team;
-
 import com.censoredsoftware.censoredlib.helper.CensoredCentralizedClass;
-import com.censoredsoftware.censoredlib.helper.WrappedConversation;
+import com.censoredsoftware.censoredlib.helper.ConversationManager;
 import com.censoredsoftware.demigods.base.DemigodsConversation;
 import com.censoredsoftware.demigods.base.listener.ChatListener;
 import com.censoredsoftware.demigods.base.listener.SpigotFeatures;
@@ -36,6 +20,21 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.conversations.ConversationFactory;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
+import org.bukkit.permissions.Permission;
+import org.bukkit.permissions.PermissionDefault;
+import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.plugin.ServicesManager;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.ScoreboardManager;
+import org.bukkit.scoreboard.Team;
+
+import java.util.*;
 
 public class Demigods extends CensoredCentralizedClass
 {
@@ -224,17 +223,17 @@ public class Demigods extends CensoredCentralizedClass
 			if(structure.getUniqueListener() != null) register.registerEvents(structure.getUniqueListener(), DemigodsPlugin.plugin());
 
 		// Conversations
-		for(WrappedConversation conversation : Collections2.filter(Collections2.transform(Sets.newHashSet(DemigodsConversation.values()), new Function<DemigodsConversation, WrappedConversation>()
+		for(ConversationManager conversation : Collections2.filter(Collections2.transform(Sets.newHashSet(DemigodsConversation.values()), new Function<DemigodsConversation, ConversationManager>()
 		{
 			@Override
-			public WrappedConversation apply(DemigodsConversation conversation)
+			public ConversationManager apply(DemigodsConversation conversation)
 			{
 				return conversation.getConversation();
 			}
-		}), new Predicate<WrappedConversation>()
+		}), new Predicate<ConversationManager>()
 		{
 			@Override
-			public boolean apply(WrappedConversation conversation)
+			public boolean apply(ConversationManager conversation)
 			{
 				return conversation.getUniqueListener() != null;
 			}

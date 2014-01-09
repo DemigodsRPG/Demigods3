@@ -1,23 +1,10 @@
 package com.censoredsoftware.demigods.base.command;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-
-import org.apache.commons.lang.StringUtils;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
-import com.censoredsoftware.censoredlib.helper.WrappedCommand;
+import com.censoredsoftware.censoredlib.helper.CommandManager;
 import com.censoredsoftware.censoredlib.language.Symbol;
 import com.censoredsoftware.censoredlib.util.Maps2;
 import com.censoredsoftware.censoredlib.util.Strings;
 import com.censoredsoftware.censoredlib.util.Times;
-import com.censoredsoftware.demigods.engine.DemigodsPlugin;
 import com.censoredsoftware.demigods.engine.data.serializable.Battle;
 import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
 import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
@@ -27,58 +14,73 @@ import com.censoredsoftware.demigods.engine.language.English;
 import com.censoredsoftware.demigods.engine.mythos.Alliance;
 import com.censoredsoftware.demigods.engine.util.Messages;
 import com.google.common.base.Joiner;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
-public class GeneralCommands extends WrappedCommand
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+
+// TODO Convert this over to the sub-command format.
+
+public class GeneralCommands extends CommandManager
 {
-	public GeneralCommands()
+	@Override
+	public ImmutableSet<String> getCommandNames()
 	{
-		super(DemigodsPlugin.plugin(), false);
+		return ImmutableSet.of("check", "owner", "binds", "leaderboard", "alliance", "tributes", "names", "skills");
 	}
 
 	@Override
-	public Set<String> getCommandNames()
+	public ImmutableList<Sub> getSubCommands()
 	{
-		return Sets.newHashSet("check", "owner", "binds", "leaderboard", "alliance", "tributes", "names", "skills");
+		return ImmutableList.of();
 	}
 
 	@Override
-	public boolean processCommand(CommandSender sender, Command command, String[] args)
+	public boolean always(CommandSender sender, Command command, String label, String[] args)
 	{
 		// Check permission
-		if(!sender.hasPermission("demigods.basic")) return Messages.noPermission(sender);
+		if(!sender.hasPermission("demigods.basic")) return !Messages.noPermission(sender);
 
 		// Define player and (try to define) character
 		Player player = (Player) sender;
 		DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
 		// Basic commands
-		if("owner".equalsIgnoreCase(command.getName())) return owner(sender, args);
-		if("leaderboard".equalsIgnoreCase(command.getName())) return leaderboard(sender);
-		if("tributes".equalsIgnoreCase(command.getName())) return tributes(sender);
-		if("names".equalsIgnoreCase(command.getName())) return names(sender);
+		if("owner".equalsIgnoreCase(command.getName())) return !owner(sender, args);
+		if("leaderboard".equalsIgnoreCase(command.getName())) return !leaderboard(sender);
+		if("tributes".equalsIgnoreCase(command.getName())) return !tributes(sender);
+		if("names".equalsIgnoreCase(command.getName())) return !names(sender);
 
 		// Character/Deity specific commands
 		if(character == null)
 		{
 			// They have no character, reject them
 			player.sendMessage(ChatColor.RED + "You cannot use that commands, mortal.");
-			return true;
+			return false;
 		}
 		else
 		{
 			// Accepted
-			if("check".equalsIgnoreCase(command.getName())) return check(player, character);
-			if("alliance".equalsIgnoreCase(command.getName())) return alliance(player, character, args);
-			if("binds".equalsIgnoreCase(command.getName())) return binds(player, character);
-			if("skills".equalsIgnoreCase(command.getName())) return skills(player, character);
+			if("check".equalsIgnoreCase(command.getName())) return !check(player, character);
+			if("alliance".equalsIgnoreCase(command.getName())) return !alliance(player, character, args);
+			if("binds".equalsIgnoreCase(command.getName())) return !binds(player, character);
+			if("skills".equalsIgnoreCase(command.getName())) return !skills(player, character);
 		}
 
 		// FIXME: This will only work for actual players. Console will always give an error.
 
-		return false;
+		return true;
 	}
 
 	private boolean check(Player player, DCharacter character)

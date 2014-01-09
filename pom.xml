@@ -77,10 +77,6 @@
             <id>censored-software</id>
             <url>http://repo.censoredsoftware.com/</url>
         </repository>
-        <repository>
-            <id>sk89q-repo</id>
-            <url>http://maven.sk89q.com/repo/</url>
-        </repository>
     </repositories>
 
     <dependencies>
