@@ -10,7 +10,15 @@ import com.google.common.collect.Lists;
 
 public enum English
 {
-	ADMINISTRATION_STRUCTURE_WAND_ENABLED_1_POINT(new ArrayList<String>()
+	ADMINISTRATION_STRUCTURE_DESIGN_SELECTION(new ArrayList<String>()
+	{
+		{
+			add(ChatColor.GRAY + "  Some structures, including the one you have selection,");
+			add(ChatColor.GRAY + "  have various designs to choose from. Please select the");
+			add(ChatColor.GRAY + "  design you would like to use to generate the chosen");
+			add(ChatColor.GOLD + "  {structure}.");
+		}
+	}), ADMINISTRATION_STRUCTURE_WAND_ENABLED_1_POINT(new ArrayList<String>()
 	{
 		{
 			add(ChatColor.GREEN + "  Your structure wand has been enabled for {item}!"); // TODO: Make this look neater (the item).

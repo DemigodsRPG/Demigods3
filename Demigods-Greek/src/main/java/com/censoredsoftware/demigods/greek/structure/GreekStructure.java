@@ -75,6 +75,11 @@ public class GreekStructure implements Structure
 		return null;
 	}
 
+	public Set<Design> getDesigns()
+	{
+		return Sets.newHashSet(designs);
+	}
+
 	public Set<Structure.Flag> getFlags()
 	{
 		return flags;

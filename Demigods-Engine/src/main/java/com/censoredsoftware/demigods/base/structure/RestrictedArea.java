@@ -1,5 +1,6 @@
 package com.censoredsoftware.demigods.base.structure;
 
+import java.util.Collection;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
@@ -52,6 +53,12 @@ public class RestrictedArea implements Structure, Structure.Design
 	public Design getDesign(String name)
 	{
 		return this;
+	}
+
+	@Override
+	public Collection<Design> getDesigns()
+	{
+		return null;
 	}
 
 	@Override

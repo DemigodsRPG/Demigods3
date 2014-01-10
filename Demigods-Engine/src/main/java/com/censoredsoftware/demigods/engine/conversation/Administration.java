@@ -1,20 +1,9 @@
 package com.censoredsoftware.demigods.engine.conversation;
 
-import com.censoredsoftware.censoredlib.helper.ConversationManager;
-import com.censoredsoftware.censoredlib.util.Titles;
-import com.censoredsoftware.demigods.base.DemigodsConversation;
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.DemigodsPlugin;
-import com.censoredsoftware.demigods.engine.data.Data;
-import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
-import com.censoredsoftware.demigods.engine.language.English;
-import com.censoredsoftware.demigods.engine.mythos.Structure;
-import com.censoredsoftware.demigods.engine.util.Admins;
-import com.censoredsoftware.demigods.engine.util.Configs;
-import com.censoredsoftware.demigods.engine.util.Messages;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.Map;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -30,9 +19,22 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-import java.lang.reflect.Field;
-import java.util.List;
-import java.util.Map;
+import com.censoredsoftware.censoredlib.helper.ConversationManager;
+import com.censoredsoftware.censoredlib.util.Strings;
+import com.censoredsoftware.censoredlib.util.Titles;
+import com.censoredsoftware.demigods.base.DemigodsConversation;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.DemigodsPlugin;
+import com.censoredsoftware.demigods.engine.data.Data;
+import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
+import com.censoredsoftware.demigods.engine.language.English;
+import com.censoredsoftware.demigods.engine.mythos.Structure;
+import com.censoredsoftware.demigods.engine.util.Admins;
+import com.censoredsoftware.demigods.engine.util.Configs;
+import com.censoredsoftware.demigods.engine.util.Messages;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 @SuppressWarnings("unchecked")
 public class Administration implements ConversationManager
@@ -51,7 +53,7 @@ public class Administration implements ConversationManager
 	 */
 	public enum Menu
 	{
-		GENERATE_STRUCTURES('1', new Structures.Menu());
+		GENERATE_STRUCTURES('1', new Generation.Menu());
 
 		private final char id;
 		private final DemigodsConversation.Category category;
@@ -226,9 +228,9 @@ public class Administration implements ConversationManager
 	}
 
 	/**
-	 * Houses all conversation methods related to structures that are used in the Administration menu.
+	 * Houses all conversation methods related to generation (e.g. structures) that are used in the Administration menu.
 	 */
-	static class Structures
+	static class Generation
 	{
 		// Main structures menu for the Administration menu
 		static class Menu extends ValidatingPrompt implements DemigodsConversation.Category
@@ -239,14 +241,14 @@ public class Administration implements ConversationManager
 				return ChatColor.GREEN + "Generate Structure";
 			}
 
-			@Override
+            @Override
 			public boolean canUse(ConversationContext context)
 			{
 				return ((Player) context.getForWhom()).hasPermission("demigods.admin.structurewand") && !Admins.structureWandEnabled((Player) context.getForWhom());
 			}
 
 			private static Map<Integer, Structure> getStructureChoices(ConversationContext context)
-			{
+            {
 				// Grab the data (that may or may not be there)
 				Object data = context.getSessionData("generable_structures");
 
@@ -254,8 +256,8 @@ public class Administration implements ConversationManager
 				if(data != null)
 				{
 					return (Map<Integer, Structure>) data;
-				}
-				else
+                }
+                else
 				{
 					int count = 1;
 					Map<Integer, Structure> structures = Maps.newHashMap();
@@ -264,7 +266,7 @@ public class Administration implements ConversationManager
 					{
 						// Only list that shiz if it needs to be, dawg
 						if(structure.getFlags().contains(Structure.Flag.STRUCTURE_WAND_GENERABLE))
-						{
+                        {
 							// Add it to the choices
 							structures.put(count, structure);
 
@@ -277,12 +279,12 @@ public class Administration implements ConversationManager
 					context.setSessionData("generable_structures", structures);
 					return structures;
 				}
-			}
+         }
 
-			@Override
-			public String getPromptText(ConversationContext context)
-			{
-				// Define variables
+            @Override
+            public String getPromptText(ConversationContext context)
+            {
+                // Define variables
 				Player player = (Player) context.getForWhom();
 
 				// Send the messages
@@ -290,9 +292,8 @@ public class Administration implements ConversationManager
 				player.sendRawMessage(ChatColor.YELLOW + Titles.chatTitle("Structure Chooser"));
 				player.sendRawMessage(" ");
 				for(String string : English.ADMINISTRATION_GENERATE_STRUCTURE_INTRO.getLines())
-				{
+                {
 					player.sendRawMessage(string);
-					// TODO player.sendRawMessage(string.replace("{loc1X}", "" + loc1.getX()).replace("{loc1Y}", "" + loc1.getY()).replace("{loc1Z}", "" + loc1.getZ()).replace("{loc2X}", "" + loc2.getX()).replace("{loc2Y}", "" + loc2.getY()).replace("{loc2Z}", "" + loc1.getZ()));
 				}
 				player.sendRawMessage(" ");
 
@@ -320,6 +321,98 @@ public class Administration implements ConversationManager
 					return "menu".equalsIgnoreCase(message) || getStructureChoices(context).keySet().contains(Integer.parseInt(message));
 				}
 				catch(NumberFormatException ignored)
+                {
+                    return false;
+                }
+            }
+
+            @Override
+			protected Prompt acceptValidatedInput(ConversationContext context, String message)
+			{
+				if("menu".equalsIgnoreCase(message))
+        {
+					// Return to main menu
+					return new StartAdministration();
+				}
+				else
+				{
+   // Save the chosen structure to the data
+					context.setSessionData("chosen_structure", getStructureChoices(context).get(Integer.parseInt(message)));
+
+					// Return next menu depending on the chosen structure
+					if(((Structure) context.getSessionData("chosen_structure")).getDesigns().size() > 1)
+					{
+						return new Design();
+					}
+					else
+					{
+						return new Selection();
+					}
+				}
+			}
+		}
+
+        // Design selection
+        static class Design extends ValidatingPrompt
+        {
+			private static Structure getChosenStructure(ConversationContext context)
+			{
+				return (Structure) context.getSessionData("chosen_structure");
+			}
+
+			private static Map<Integer, Structure.Design> getDesignChoices(ConversationContext context)
+			{
+				int count = 1;
+				Map<Integer, Structure.Design> designs = Maps.newHashMap();
+
+				for(Structure.Design design : getChosenStructure(context).getDesigns())
+				{
+					// Add the design to the map along with it's count
+					designs.put(count, design);
+
+                    // Count up
+                    count++;
+                }
+
+				// Return the designs
+				return designs;
+			}
+
+			@Override
+			public String getPromptText(ConversationContext context)
+			{
+				// Define variables
+				Player player = (Player) context.getForWhom();
+
+				// Get the structure
+				Structure structure = getChosenStructure(context);
+
+				// Send the messages
+				Messages.clearRawChat(player);
+                player.sendRawMessage(ChatColor.YELLOW + Titles.chatTitle("Design Selection"));
+				player.sendRawMessage(" ");
+				for(String string : English.ADMINISTRATION_STRUCTURE_DESIGN_SELECTION.getLines())
+				{
+					player.sendRawMessage(string.replace("{structure}", structure.getName()));
+				}
+
+				// Display the design choices
+				for(Map.Entry<Integer, Structure.Design> design : getDesignChoices(context).entrySet())
+				{
+					player.sendRawMessage(ChatColor.GRAY + "   [" + design.getKey() + ".] " + ChatColor.LIGHT_PURPLE + Strings.beautify(design.getValue().getName()));
+                }
+
+				return "";
+			}
+
+			@Override
+			protected boolean isInputValid(ConversationContext context, String message)
+			{
+				try
+				{
+					return "menu".equalsIgnoreCase(message) || getDesignChoices(context).keySet().contains(Integer.parseInt(message));
+				}
+				catch(NumberFormatException ignored)
 				{
 					return false;
 				}
@@ -332,13 +425,13 @@ public class Administration implements ConversationManager
 				{
 					// Return to main menu
 					return new StartAdministration();
-				}
-				else
+                }
+                else
 				{
 					// Save the chosen structure to the data
-					context.setSessionData("chosen_structure", getStructureChoices(context).get(Integer.parseInt(message)));
+					context.setSessionData("chosen_design", getDesignChoices(context).get(Integer.parseInt(message)));
 
-					// Return next menu
+					// Send them to the selection
 					return new Selection();
 				}
 			}
@@ -350,9 +443,9 @@ public class Administration implements ConversationManager
 			private static Structure getChosenStructure(ConversationContext context)
 			{
 				return (Structure) context.getSessionData("chosen_structure");
-			}
+            }
 
-			@Override
+            @Override
 			public String getPromptText(ConversationContext context)
 			{
 				// Define variables
@@ -365,7 +458,7 @@ public class Administration implements ConversationManager
 				Admins.toggleStructureWand(player, true);
 
 				// Send the messages
-				Messages.clearRawChat(player);
+                Messages.clearRawChat(player);
 				player.sendRawMessage(ChatColor.YELLOW + Titles.chatTitle("Structure Wand"));
 				player.sendRawMessage(" ");
 
@@ -374,10 +467,10 @@ public class Administration implements ConversationManager
 					for(String string : English.ADMINISTRATION_STRUCTURE_WAND_ENABLED_1_POINT.getLines())
 					{
 						player.sendRawMessage(string.replace("{item}", Material.getMaterial(Configs.getSettingInt("admin.structure_wand_tool")).name()).replace("{structure}", structure.getName()));
-					}
-				}
-				else
-				{
+   }
+                }
+                else
+                {
 					for(String string : English.ADMINISTRATION_STRUCTURE_WAND_ENABLED_2_POINTS.getLines())
 					{
 						player.sendRawMessage(string.replace("{item}", Material.getMaterial(Configs.getSettingInt("admin.structure_wand_tool")).name()).replace("{structure}", structure.getName()));
@@ -391,8 +484,8 @@ public class Administration implements ConversationManager
 			}
 
 			@Override
-			protected boolean isInputValid(ConversationContext context, String message)
-			{
+            protected boolean isInputValid(ConversationContext context, String message)
+            {
 				return "menu".equalsIgnoreCase(message) || "continue".equalsIgnoreCase(message);
 			}
 
@@ -406,23 +499,24 @@ public class Administration implements ConversationManager
 				Structure structure = getChosenStructure(context);
 
 				if("menu".equalsIgnoreCase(message))
-				{
-					// Disable wand
+                {
+                    // Disable wand
 					Admins.toggleStructureWand(player, false);
 
 					// Return to main menu
 					return new StartAdministration();
 				}
 				else if("continue".equalsIgnoreCase(message))
-				{
+                {
 					// Get locations from context
 					Object locObj1 = context.getSessionData("structurewand_loc1");
 					Object locObj2 = context.getSessionData("structurewand_loc2");
+					String design = ((Structure.Design) context.getSessionData("chosen_design")).getName();
 
 					// Ensure that selections have been made
 					if(structure.getRequiredGenerationPoints() == 1 && locObj1 != null)
 					{
-						// Cast the object
+             // Cast the object
 						Location loc1 = (Location) locObj1;
 
 						// Create the structure
@@ -445,13 +539,13 @@ public class Administration implements ConversationManager
 					}
 					else
 					{
-						// Add notification
-						saveNotification(context, this.getClass().getSimpleName(), English.ADMINISTRATION_LOCATIONS_NOT_SELECTED.getLine());
-					}
-				}
+       // Add notification
+                        saveNotification(context, this.getClass().getSimpleName(), English.ADMINISTRATION_LOCATIONS_NOT_SELECTED.getLine());
+                    }
+                }
 
-				return new Selection();
-			}
+                return new Selection();
+            }
 
 			private static Prompt success(ConversationContext context)
 			{

@@ -105,10 +105,11 @@ public class Altar extends GreekStructure
 	private static final Set<Structure.Flag> flags = new HashSet<Structure.Flag>()
 	{
 		{
-			add(Structure.Flag.NO_PVP);
-			add(Structure.Flag.PRAYER_LOCATION);
-			add(Structure.Flag.PROTECTED_BLOCKS);
-			add(Structure.Flag.NO_OVERLAP);
+			add(Flag.NO_PVP);
+			add(Flag.PRAYER_LOCATION);
+			add(Flag.PROTECTED_BLOCKS);
+			add(Flag.NO_OVERLAP);
+			add(Flag.STRUCTURE_WAND_GENERABLE);
 		}
 	};
 	private static final Listener listener = new Listener()

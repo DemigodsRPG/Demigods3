@@ -27,6 +27,8 @@ public interface Structure
 
 	Design getDesign(final String name);
 
+	Collection<Design> getDesigns();
+
 	Collection<Flag> getFlags();
 
 	Listener getUniqueListener();
