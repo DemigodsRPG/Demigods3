@@ -2,6 +2,7 @@ package com.censoredsoftware.demigods.exclusive;
 
 import com.censoredsoftware.censoredlib.helper.CommandManager;
 import com.censoredsoftware.demigods.engine.mythos.Mythos;
+import com.censoredsoftware.demigods.exclusive.command.WorldCommands;
 import com.censoredsoftware.demigods.exclusive.data.ExData;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.ServicePriority;
@@ -29,6 +30,9 @@ public class Exclusive
 
 		// Register commands
 		COMMAND_REGISTRY.registerManager(ExclusiveMythos.inst().getCommands());
+
+		// Load worlds
+		WorldCommands.Util.loadHandledWorlds(); // FIXME Doesn't work yet.
 
 		return true;
 	}
