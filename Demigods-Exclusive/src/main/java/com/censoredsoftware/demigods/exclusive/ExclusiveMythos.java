@@ -3,6 +3,7 @@ package com.censoredsoftware.demigods.exclusive;
 import com.censoredsoftware.censoredlib.helper.CommandManager;
 import com.censoredsoftware.censoredlib.trigger.Trigger;
 import com.censoredsoftware.demigods.engine.mythos.*;
+import com.censoredsoftware.demigods.exclusive.command.WorldCommands;
 import com.censoredsoftware.demigods.exclusive.listener.DistrictListener;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableSet;
@@ -156,7 +157,7 @@ public class ExclusiveMythos extends MythosPlugin
 	@Override
 	public ImmutableCollection<CommandManager> getCommands()
 	{
-		return ImmutableSet.of();
+		return ImmutableSet.of((CommandManager) WorldCommands.inst());
 	}
 
 	public ImmutableCollection<Trigger> getTriggers()

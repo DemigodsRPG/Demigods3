@@ -4,3 +4,9 @@ main: com.censoredsoftware.demigods.exclusive.ExclusiveMythos
 version: ${project.parent.version}
 authors: [_Alex, HmmmQuestionMark]
 depend: [Demigods]
+commands:
+  world:
+    usage: /<command> [subcommand] [args] ...
+permissions:
+  exclusive.world:
+    default: op
