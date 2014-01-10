@@ -1,6 +1,7 @@
 package com.censoredsoftware.demigods.base.listener;
 
 import com.censoredsoftware.censoredlib.helper.CommandManager;
+import com.censoredsoftware.demigods.base.DemigodsCommand;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.DemigodsPlugin;
 import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
@@ -20,7 +21,8 @@ public class ChatListener implements Listener
 
 	public static void init()
 	{
-		COMMAND_REGISTRY.registerManager(Demigods.mythos().getCommands());
+		COMMAND_REGISTRY.registerManager(DemigodsCommand.commands());
+		COMMAND_REGISTRY.registerNamesOnly(Demigods.mythos().getCommands());
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)

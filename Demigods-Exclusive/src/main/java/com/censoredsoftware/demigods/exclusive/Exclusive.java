@@ -1,14 +1,15 @@
 package com.censoredsoftware.demigods.exclusive;
 
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.ServicePriority;
-
+import com.censoredsoftware.censoredlib.helper.CommandManager;
 import com.censoredsoftware.demigods.engine.mythos.Mythos;
 import com.censoredsoftware.demigods.exclusive.data.ExData;
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.ServicePriority;
 
 public class Exclusive
 {
 	private static final Exclusive INST = new Exclusive();
+	private static final CommandManager.Registry COMMAND_REGISTRY = new CommandManager.Registry(ExclusiveMythos.inst());
 
 	private Exclusive()
 	{}
@@ -25,6 +26,9 @@ public class Exclusive
 
 		// Load data
 		ExData.init();
+
+		// Register commands
+		COMMAND_REGISTRY.registerManager(ExclusiveMythos.inst().getCommands());
 
 		return true;
 	}
