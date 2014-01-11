@@ -19,13 +19,13 @@ import org.bukkit.material.MaterialData;
 import com.censoredsoftware.censoredlib.schematic.Schematic;
 import com.censoredsoftware.censoredlib.schematic.Selection;
 import com.censoredsoftware.censoredlib.util.Colors;
+import com.censoredsoftware.demigods.engine.conversation.Administration;
 import com.censoredsoftware.demigods.engine.data.Data;
 import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
 import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
 import com.censoredsoftware.demigods.engine.data.serializable.StructureSave;
 import com.censoredsoftware.demigods.engine.mythos.Deity;
 import com.censoredsoftware.demigods.engine.mythos.Structure;
-import com.censoredsoftware.demigods.engine.util.Admins;
 import com.censoredsoftware.demigods.engine.util.Configs;
 import com.censoredsoftware.demigods.engine.util.Messages;
 import com.censoredsoftware.demigods.engine.util.Zones;
@@ -141,7 +141,7 @@ public class Shrine extends GreekStructure
 					try
 					{
 						// Shrine created!
-						Admins.sendDebug(ChatColor.RED + "Shrine created by " + character.getName() + " (" + character.getDeity() + ") at: " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ());
+						Administration.Util.sendDebug(ChatColor.RED + "Shrine created by " + character.getName() + " (" + character.getDeity() + ") at: " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ());
 						StructureSave save = inst().createNew(true, null, location);
 						save.setOwner(character.getId());
 						inst().birth(save, character);
@@ -169,7 +169,7 @@ public class Shrine extends GreekStructure
 				}
 			}
 
-			if(Admins.useWand(player) && Structure.Util.partOfStructureWithType(location, "Shrine"))
+			if(Administration.Util.useWand(player) && Structure.Util.partOfStructureWithType(location, "Shrine"))
 			{
 				event.setCancelled(true);
 
@@ -182,7 +182,7 @@ public class Shrine extends GreekStructure
 					save.remove();
 					Data.TIMED.removeBool(player.getName() + "destroy_shrine");
 
-					Admins.sendDebug(ChatColor.RED + "Shrine of (" + owner.getDeity() + ") at: " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ() + " removed.");
+					Administration.Util.sendDebug(ChatColor.RED + "Shrine of (" + owner.getDeity() + ") at: " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ() + " removed.");
 
 					player.sendMessage(ChatColor.GREEN + English.ADMIN_WAND_REMOVE_SHRINE_COMPLETE.getLine());
 				}

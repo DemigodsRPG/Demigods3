@@ -44,7 +44,7 @@ public class RestrictedArea implements Structure, Structure.Design
 	}
 
 	@Override
-	public int getRequiredGenerationPoints()
+	public int getRequiredGenerationCoords()
 	{
 		return 2;
 	}

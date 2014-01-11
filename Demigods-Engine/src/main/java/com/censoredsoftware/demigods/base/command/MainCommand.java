@@ -1,26 +1,8 @@
 package com.censoredsoftware.demigods.base.command;
 
-import com.censoredsoftware.censoredlib.helper.CommandManager;
-import com.censoredsoftware.censoredlib.language.Symbol;
-import com.censoredsoftware.censoredlib.util.Strings;
-import com.censoredsoftware.censoredlib.util.Threads;
-import com.censoredsoftware.censoredlib.util.Times;
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.DemigodsPlugin;
-import com.censoredsoftware.demigods.engine.data.Data;
-import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
-import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
-import com.censoredsoftware.demigods.engine.language.English;
-import com.censoredsoftware.demigods.engine.mythos.Ability;
-import com.censoredsoftware.demigods.engine.mythos.Alliance;
-import com.censoredsoftware.demigods.engine.mythos.Deity;
-import com.censoredsoftware.demigods.engine.util.Admins;
-import com.censoredsoftware.demigods.engine.util.Configs;
-import com.censoredsoftware.demigods.engine.util.Messages;
-import com.google.common.base.Function;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
+import java.util.Collection;
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -31,8 +13,27 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 
-import java.util.Collection;
-import java.util.Map;
+import com.censoredsoftware.censoredlib.helper.CommandManager;
+import com.censoredsoftware.censoredlib.language.Symbol;
+import com.censoredsoftware.censoredlib.util.Strings;
+import com.censoredsoftware.censoredlib.util.Threads;
+import com.censoredsoftware.censoredlib.util.Times;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.DemigodsPlugin;
+import com.censoredsoftware.demigods.engine.conversation.Administration;
+import com.censoredsoftware.demigods.engine.data.Data;
+import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
+import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
+import com.censoredsoftware.demigods.engine.language.English;
+import com.censoredsoftware.demigods.engine.mythos.Ability;
+import com.censoredsoftware.demigods.engine.mythos.Alliance;
+import com.censoredsoftware.demigods.engine.mythos.Deity;
+import com.censoredsoftware.demigods.engine.util.Configs;
+import com.censoredsoftware.demigods.engine.util.Messages;
+import com.google.common.base.Function;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 
 // TODO Convert this over to the sub-command format.
 
@@ -288,7 +289,7 @@ public class MainCommand extends CommandManager
 			if(!player.hasPermission("demigods.admin.menu")) return Messages.noPermission(player);
 
 			// Start their administration menu
-			DPlayer.Util.toggleAdministration(player, true, true);
+			Administration.Util.toggleAdministration(player, true, true);
 		}
 		if("wand".equalsIgnoreCase(args[1]))
 		{
@@ -296,14 +297,14 @@ public class MainCommand extends CommandManager
 			if(!player.hasPermission("demigods.admin.wand")) return Messages.noPermission(player);
 
 			// Do checking
-			if(!Admins.wandEnabled(player))
+			if(!Administration.Util.wandEnabled(player))
 			{
-				Admins.toggleWand(player, true);
+				Administration.Util.toggleWand(player, true);
 				player.sendMessage(ChatColor.RED + "Your admin wand has been enabled for " + Material.getMaterial(Configs.getSettingInt("admin.wand_tool")));
 			}
-			else if(Admins.wandEnabled(player))
+			else if(Administration.Util.wandEnabled(player))
 			{
-				Admins.toggleWand(player, false);
+				Administration.Util.toggleWand(player, false);
 				player.sendMessage(ChatColor.RED + "You have disabled your admin wand.");
 			}
 			return true;
@@ -312,12 +313,12 @@ public class MainCommand extends CommandManager
 		{
 			if(!Data.hasKeyTemp(player.getName(), "temp_admin_debug") || !Boolean.parseBoolean(Data.getValueTemp(player.getName(), "temp_admin_debug").toString()))
 			{
-				Admins.togglePlayerDebug(player, true);
+				Administration.Util.togglePlayerDebug(player, true);
 				player.sendMessage(ChatColor.RED + "You have enabled debugging.");
 			}
 			else if(Data.hasKeyTemp(player.getName(), "temp_admin_debug") && Boolean.parseBoolean(Data.getValueTemp(player.getName(), "temp_admin_debug").toString()))
 			{
-				Admins.togglePlayerDebug(player, false);
+				Administration.Util.togglePlayerDebug(player, false);
 				player.sendMessage(ChatColor.RED + "You have disabled debugging.");
 			}
 		}
@@ -343,10 +344,10 @@ public class MainCommand extends CommandManager
 					}
 					catch(Exception errored)
 					{
-						if(player.isOnline()) player.sendMessage(ChatColor.RED + "Data compression could not complete!");
+						if(player.isOnline()) player.sendMessage(ChatColor.RED + "Data compression could not complete.");
 						return;
 					}
-					if(player.isOnline()) player.sendMessage(ChatColor.YELLOW + "Data compression complete.");
+					if(player.isOnline()) player.sendMessage(ChatColor.YELLOW + "Data compression complete!");
 				}
 			}, 1);
 		}

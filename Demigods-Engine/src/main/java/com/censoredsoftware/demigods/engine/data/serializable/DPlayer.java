@@ -3,11 +3,12 @@ package com.censoredsoftware.demigods.engine.data.serializable;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.conversations.Conversation;
-import org.bukkit.conversations.ConversationContext;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.PlayerInventory;
@@ -18,11 +19,8 @@ import com.censoredsoftware.censoredlib.data.location.Region;
 import com.censoredsoftware.censoredlib.exception.MojangIdNotFoundException;
 import com.censoredsoftware.censoredlib.helper.MojangIdGrabber;
 import com.censoredsoftware.demigods.base.listener.ChatRecorder;
-import com.censoredsoftware.demigods.base.structure.RestrictedArea;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.DemigodsPlugin;
-import com.censoredsoftware.demigods.engine.conversation.Administration;
-import com.censoredsoftware.demigods.engine.conversation.Prayer;
 import com.censoredsoftware.demigods.engine.data.Data;
 import com.censoredsoftware.demigods.engine.language.English;
 import com.censoredsoftware.demigods.engine.util.Configs;
@@ -627,220 +625,6 @@ public class DPlayer implements ConfigurationSerializable
 			for(DCharacter character : getPlayer(player).getCharacters())
 				if(character.getName().equalsIgnoreCase(charName)) return true;
 			return false;
-		}
-
-		/**
-		 * Returns true if the <code>player</code> is currently praying.
-		 * 
-		 * @param player the player to check.
-		 * @return boolean
-		 */
-		public static boolean isPraying(Player player)
-		{
-			try
-			{
-				return Data.hasKeyTemp(player.getName(), "prayer_conversation");
-			}
-			catch(Exception ignored)
-			{}
-			return false;
-		}
-
-		/**
-		 * Removes all temp data related to prayer for the <code>player</code>.
-		 * 
-		 * @param player the player to clean.
-		 */
-		public static void clearPrayerSession(OfflinePlayer player)
-		{
-			Data.removeTemp(player.getName(), "prayer_conversation");
-			Data.removeTemp(player.getName(), "prayer_context");
-			Data.removeTemp(player.getName(), "prayer_location");
-			Data.TIMED.removeBool(player.getName() + "currently_creating");
-			Data.TIMED.removeBool(player.getName() + "currently_forsaking");
-		}
-
-		/**
-		 * Returns the context for the <code>player</code>'s prayer conversation.
-		 * 
-		 * @param player the player whose context to return.
-		 * @return ConversationContext
-		 */
-		public static ConversationContext getPrayerContext(Player player)
-		{
-			if(!isPraying(player)) return null;
-			return (ConversationContext) Data.getValueTemp(player.getName(), "prayer_context");
-		}
-
-		/**
-		 * Changes prayer status for <code>player</code> to <code>option</code> and tells them.
-		 * 
-		 * @param player the player the manipulate.
-		 * @param option the boolean to set to.
-		 */
-		public static void togglePraying(Player player, boolean option)
-		{
-			if(option)
-			{
-				// Toggle on
-				togglePrayingSilent(player, true, true);
-			}
-			else
-			{
-				// Message them
-				Messages.clearRawChat(player);
-				for(String message : English.PRAYER_ENDED.getLines())
-					player.sendRawMessage(message);
-
-				// Toggle off
-				togglePrayingSilent(player, false, true);
-			}
-		}
-
-		/**
-		 * Changes prayer status for <code>player</code> to <code>option</code> silently.
-		 * 
-		 * @param player the player the manipulate.
-		 * @param option the boolean to set to.
-		 * @param recordChat whether or not the chat should be recorded.
-		 */
-		public static void togglePrayingSilent(Player player, boolean option, boolean recordChat)
-		{
-			if(option)
-			{
-				// Create the conversation and save it
-				Conversation conversation = Prayer.startPrayer(player);
-				Data.saveTemp(player.getName(), "prayer_conversation", conversation);
-				Data.saveTemp(player.getName(), "prayer_location", player.getLocation());
-				player.setSneaking(true);
-
-				// Record chat if enabled
-				if(recordChat) DPlayer.Util.getPlayer(player).startRecording();
-			}
-			else
-			{
-				// Save context and abandon the conversation
-				if(Data.hasKeyTemp(player.getName(), "prayer_conversation"))
-				{
-					Conversation conversation = (Conversation) Data.getValueTemp(player.getName(), "prayer_conversation");
-					Data.saveTemp(player.getName(), "prayer_context", conversation.getContext());
-					conversation.abandon();
-				}
-
-				// Remove the data
-				Data.removeTemp(player.getName(), "prayer_conversation");
-				Data.removeTemp(player.getName(), "prayer_location");
-				player.setSneaking(false);
-
-				// Handle recorded chat
-				DPlayer.Util.getPlayer(player).stopRecording(recordChat);
-			}
-		}
-
-		/**
-		 * Returns true if the <code>player</code> is currently praying.
-		 * 
-		 * @param player the player to check.
-		 * @return boolean
-		 */
-		public static boolean isAdministrating(Player player)
-		{
-			try
-			{
-				return Data.hasKeyTemp(player.getName(), "administration_conversation");
-			}
-			catch(Exception ignored)
-			{}
-			return false;
-		}
-
-		/**
-		 * Removes all temp data related to administration for the <code>player</code>.
-		 * 
-		 * @param player the player to clean.
-		 */
-		public static void clearAdministrationSession(OfflinePlayer player)
-		{
-			Data.removeTemp(player.getName(), "administration_conversation");
-			Data.removeTemp(player.getName(), "administration_context");
-		}
-
-		/**
-		 * Saves the context for the <code>player</code>'s administration conversation.
-		 * 
-		 * @param player the player to save for.
-		 * @param context the context to save.
-		 * @return ConversationContext
-		 */
-		public static void saveAdministrationContext(Player player, ConversationContext context)
-		{
-			Data.saveTemp(player.getName(), "administration_context", context);
-		}
-
-		/**
-		 * Returns the context for the <code>player</code>'s administration conversation.
-		 * 
-		 * @param player the player whose context to return.
-		 * @return ConversationContext
-		 */
-		public static ConversationContext getAdministrationContext(Player player)
-		{
-			if(!isAdministrating(player)) return null;
-			return (ConversationContext) Data.getValueTemp(player.getName(), "administration_context");
-		}
-
-		/**
-		 * Changes administration status for <code>player</code> to <code>option</code>.
-		 * 
-		 * @param player the player the manipulate.
-		 * @param option the boolean to set to.
-		 * @param recordChat whether or not the chat should be recorded.
-		 */
-		public static void toggleAdministration(Player player, boolean option, boolean recordChat)
-		{
-			if(option)
-			{
-				// Create the conversation and save it
-				Conversation conversation = Administration.startAdministration(player);
-				Data.saveTemp(player.getName(), "administration_conversation", conversation);
-
-				// Set clear weather and daylight
-				player.setPlayerWeather(WeatherType.CLEAR);
-				player.setPlayerTime(100, false);
-
-				// Debug invisible structures
-				RestrictedArea.Util.toggleDebugRestrictedAreas(player, true);
-
-				// Record chat if enabled
-				if(recordChat) DPlayer.Util.getPlayer(player).startRecording();
-			}
-			else
-			{
-				// Save context and abandon the conversation
-				if(Data.hasKeyTemp(player.getName(), "administration_conversation"))
-				{
-					Conversation conversation = (Conversation) Data.getValueTemp(player.getName(), "administration_conversation");
-					Data.saveTemp(player.getName(), "administration_context", conversation.getContext());
-					conversation.abandon();
-				}
-
-				// Remove the data
-				Data.removeTemp(player.getName(), "administration_conversation");
-
-				// Reset weather and time
-				player.resetPlayerWeather();
-				player.resetPlayerTime();
-
-				// Disable debugging of invisible structures
-				RestrictedArea.Util.toggleDebugRestrictedAreas(player, false);
-
-				// Message them
-				Messages.clearRawChat(player);
-				player.sendMessage(English.ADMINISTRATION_ENDED.getLine());
-
-				// Handle recorded chat
-				DPlayer.Util.getPlayer(player).stopRecording(recordChat);
-			}
 		}
 	}
 }

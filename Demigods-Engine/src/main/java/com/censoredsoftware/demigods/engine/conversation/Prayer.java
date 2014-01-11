@@ -372,7 +372,7 @@ public class Prayer implements ConversationManager
 			else if("warp".equalsIgnoreCase(arg0))
 			{
 				// Disable prayer
-				DPlayer.Util.togglePrayingSilent(player, false, true);
+				Util.togglePrayingSilent(player, false, true);
 
 				// Teleport and message
 				if(character.getMeta().getWarps().containsKey(arg1.toLowerCase())) player.teleport(CLocationManager.load(UUID.fromString(character.getMeta().getWarps().get(arg1.toLowerCase()).toString())).toLocation());
@@ -836,7 +836,7 @@ public class Prayer implements ConversationManager
 
 				// Save timed data, end the conversation, and return
 				Data.TIMED.setBool(player.getName() + "currently_forsaking", true, 10, TimeUnit.MINUTES);
-				DPlayer.Util.togglePrayingSilent(player, false, true);
+				Util.togglePrayingSilent(player, false, true);
 			}
 			return null;
 		}
@@ -1216,7 +1216,7 @@ public class Prayer implements ConversationManager
 
 					// Save temporary data, end the CONVERSATION_FACTORY, and return
 					Data.TIMED.setBool(player.getName() + "currently_creating", true, 10, TimeUnit.MINUTES);
-					DPlayer.Util.togglePrayingSilent(player, false, true);
+					Util.togglePrayingSilent(player, false, true);
 					return null;
 				}
 				else
@@ -1335,7 +1335,7 @@ public class Prayer implements ConversationManager
 			// First we check if the player is clicking a prayer block
 			if(Structure.Util.isClickableBlockWithFlag(event.getClickedBlock().getLocation(), Structure.Flag.PRAYER_LOCATION))
 			{
-				if(!DPlayer.Util.isPraying(player))
+				if(!Util.isPraying(player))
 				{
 					if(DPlayer.Util.getPlayer(player).canPvp())
 					{
@@ -1346,16 +1346,16 @@ public class Prayer implements ConversationManager
 					}
 
 					// Toggle praying
-					DPlayer.Util.togglePraying(player, true);
+					Util.togglePraying(player, true);
 
 					// Tell nearby players that the user is praying
 					for(Entity entity : player.getNearbyEntities(20, 20, 20))
 						if(entity instanceof Player) ((Player) entity).sendMessage(ChatColor.AQUA + English.KNELT_FOR_PRAYER.getLine().replace("{player}", ChatColor.stripColor(player.getDisplayName())));
 				}
-				else if(DPlayer.Util.isPraying(player))
+				else if(Util.isPraying(player))
 				{
 					// Toggle prayer to false
-					DPlayer.Util.togglePraying(player, false);
+					Util.togglePraying(player, false);
 				}
 
 				event.setCancelled(true);
@@ -1375,10 +1375,10 @@ public class Prayer implements ConversationManager
 				if(!event.getInventory().getName().contains("Place Your Tributes Here")) return;
 
 				// Exit if this isn't for character creation
-				if(!DPlayer.Util.isPraying(player)) return;
+				if(!Util.isPraying(player)) return;
 
 				// Define variables
-				ConversationContext prayerContext = DPlayer.Util.getPrayerContext(player);
+				ConversationContext prayerContext = Util.getPrayerContext(player);
 				final String chosenName = (String) prayerContext.getSessionData("chosen_name");
 				final Deity deity = Demigods.mythos().getDeity((String) prayerContext.getSessionData("chosen_deity"));
 				final String deityName = deity.getName();
@@ -1395,7 +1395,7 @@ public class Prayer implements ConversationManager
 				Messages.clearRawChat(player);
 
 				// Stop their praying
-				DPlayer.Util.togglePrayingSilent(player, false, true);
+				Util.togglePrayingSilent(player, false, true);
 
 				player.sendMessage(deityColor + deityName + ChatColor.GRAY + " is pondering your offerings...");
 
@@ -1452,7 +1452,7 @@ public class Prayer implements ConversationManager
 						}
 
 						// Clear the prayer session
-						DPlayer.Util.clearPrayerSession(offlinePlayer);
+						Util.clearPrayerSession(offlinePlayer);
 
 						// Clear the confirmation case
 						event.getInventory().clear();
@@ -1478,7 +1478,7 @@ public class Prayer implements ConversationManager
 				if(!event.getInventory().getName().contains("Place Items Here")) return;
 
 				// Exit if this isn't for character creation
-				if(!DPlayer.Util.isPraying(player)) return;
+				if(!Util.isPraying(player)) return;
 
 				// Define variables
 				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
@@ -1492,7 +1492,7 @@ public class Prayer implements ConversationManager
 					if(event.getInventory().contains(entry.getKey(), entry.getValue())) items++;
 
 				// Stop their praying
-				DPlayer.Util.togglePrayingSilent(player, false, true);
+				Util.togglePrayingSilent(player, false, true);
 
 				// Clear chat and send update
 				Messages.clearRawChat(player);
@@ -1503,7 +1503,7 @@ public class Prayer implements ConversationManager
 					// TODO: Look into why this is so fancy even though the player gets kicked immediately...
 
 					// Clear the prayer session first
-					DPlayer.Util.clearPrayerSession(player);
+					Util.clearPrayerSession(player);
 
 					// Accepted, delete the character and message the player
 					character.remove();
@@ -1533,7 +1533,7 @@ public class Prayer implements ConversationManager
 			// Define variables
 			Player player = event.getPlayer();
 
-			if(DPlayer.Util.isPraying(player) && event.getTo().distance((Location) Data.getValueTemp(player.getName(), "prayer_location")) >= Configs.getSettingInt("zones.prayer_radius")) DPlayer.Util.togglePraying(player, false);
+			if(Util.isPraying(player) && event.getTo().distance((Location) Data.getValueTemp(player.getName(), "prayer_location")) >= Configs.getSettingInt("zones.prayer_radius")) Util.togglePraying(player, false);
 		}
 	}
 
@@ -1567,5 +1567,116 @@ public class Prayer implements ConversationManager
 		}
 
 		return set;
+	}
+
+	public static class Util
+	{
+		/**
+		 * Returns true if the <code>player</code> is currently praying.
+		 * 
+		 * @param player the player to check.
+		 * @return boolean
+		 */
+		public static boolean isPraying(Player player)
+		{
+			try
+			{
+				return Data.hasKeyTemp(player.getName(), "prayer_conversation");
+			}
+			catch(Exception ignored)
+			{}
+			return false;
+		}
+
+		/**
+		 * Removes all temp data related to prayer for the <code>player</code>.
+		 * 
+		 * @param player the player to clean.
+		 */
+		public static void clearPrayerSession(OfflinePlayer player)
+		{
+			Data.removeTemp(player.getName(), "prayer_conversation");
+			Data.removeTemp(player.getName(), "prayer_context");
+			Data.removeTemp(player.getName(), "prayer_location");
+			Data.TIMED.removeBool(player.getName() + "currently_creating");
+			Data.TIMED.removeBool(player.getName() + "currently_forsaking");
+		}
+
+		/**
+		 * Returns the context for the <code>player</code>'s prayer conversation.
+		 * 
+		 * @param player the player whose context to return.
+		 * @return ConversationContext
+		 */
+		public static ConversationContext getPrayerContext(Player player)
+		{
+			if(!isPraying(player)) return null;
+			return (ConversationContext) Data.getValueTemp(player.getName(), "prayer_context");
+		}
+
+		/**
+		 * Changes prayer status for <code>player</code> to <code>option</code> and tells them.
+		 * 
+		 * @param player the player the manipulate.
+		 * @param option the boolean to set to.
+		 */
+		public static void togglePraying(Player player, boolean option)
+		{
+			if(option)
+			{
+				// Toggle on
+				togglePrayingSilent(player, true, true);
+			}
+			else
+			{
+				// Message them
+				Messages.clearRawChat(player);
+				for(String message : English.PRAYER_ENDED.getLines())
+					player.sendRawMessage(message);
+
+				// Toggle off
+				togglePrayingSilent(player, false, true);
+			}
+		}
+
+		/**
+		 * Changes prayer status for <code>player</code> to <code>option</code> silently.
+		 * 
+		 * @param player the player the manipulate.
+		 * @param option the boolean to set to.
+		 * @param recordChat whether or not the chat should be recorded.
+		 */
+		public static void togglePrayingSilent(Player player, boolean option, boolean recordChat)
+		{
+			if(option)
+			{
+				// Create the conversation and save it
+				Conversation conversation = Prayer.startPrayer(player);
+				Data.saveTemp(player.getName(), "prayer_conversation", conversation);
+				Data.saveTemp(player.getName(), "prayer_location", player.getLocation());
+				player.setSneaking(true);
+
+				// Record chat if enabled
+				if(recordChat) DPlayer.Util.getPlayer(player).startRecording();
+			}
+			else
+			{
+				// Save context and abandon the conversation
+				if(Data.hasKeyTemp(player.getName(), "prayer_conversation"))
+				{
+					Conversation conversation = (Conversation) Data.getValueTemp(player.getName(), "prayer_conversation");
+					Data.saveTemp(player.getName(), "prayer_context", conversation.getContext());
+					conversation.abandon();
+				}
+
+				// Remove the data
+				Data.removeTemp(player.getName(), "prayer_conversation");
+				Data.removeTemp(player.getName(), "prayer_location");
+				player.setSneaking(false);
+
+				// Handle recorded chat
+				DPlayer.Util.getPlayer(player).stopRecording(recordChat);
+			}
+		}
 	}
 }

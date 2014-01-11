@@ -1,15 +1,13 @@
 package com.censoredsoftware.demigods.engine.conversation;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nullable;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.Prompt;
@@ -25,13 +23,13 @@ import com.censoredsoftware.censoredlib.helper.ConversationManager;
 import com.censoredsoftware.censoredlib.util.Strings;
 import com.censoredsoftware.censoredlib.util.Titles;
 import com.censoredsoftware.demigods.base.DemigodsConversation;
+import com.censoredsoftware.demigods.base.structure.RestrictedArea;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.DemigodsPlugin;
 import com.censoredsoftware.demigods.engine.data.Data;
 import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
 import com.censoredsoftware.demigods.engine.language.English;
 import com.censoredsoftware.demigods.engine.mythos.Structure;
-import com.censoredsoftware.demigods.engine.util.Admins;
 import com.censoredsoftware.demigods.engine.util.Configs;
 import com.censoredsoftware.demigods.engine.util.Messages;
 import com.censoredsoftware.demigods.engine.util.Zones;
@@ -153,7 +151,7 @@ public class Administration implements ConversationManager
 		Conversation conversation = Demigods.CONVERSATION_FACTORY.withEscapeSequence("/exit").withLocalEcho(false).withInitialSessionData(grabRawContext(player)).withFirstPrompt(new StartAdministration()).buildConversation(player);
 
 		// Save the context
-		DPlayer.Util.saveAdministrationContext(player, conversation.getContext());
+		Util.saveAdministrationContext(player, conversation.getContext());
 
 		// Begin
 		conversation.begin();
@@ -219,7 +217,7 @@ public class Administration implements ConversationManager
 			if("leave".equalsIgnoreCase(message))
 			{
 				// Toggle everything off
-				DPlayer.Util.toggleAdministration((Player) context.getForWhom(), false, true);
+				Util.toggleAdministration((Player) context.getForWhom(), false, true);
 				return null;
 			}
 
@@ -246,7 +244,7 @@ public class Administration implements ConversationManager
 			@Override
 			public boolean canUse(ConversationContext context)
 			{
-				return ((Player) context.getForWhom()).hasPermission("demigods.admin.structurewand") && !Admins.structureWandEnabled((Player) context.getForWhom());
+				return ((Player) context.getForWhom()).hasPermission("demigods.admin.structurewand") && !Util.structureWandEnabled((Player) context.getForWhom());
 			}
 
 			private static Map<Integer, Structure> getStructureChoices(ConversationContext context)
@@ -458,14 +456,14 @@ public class Administration implements ConversationManager
 				Structure structure = getChosenStructure(context);
 
 				// Enable the wand
-				Admins.toggleStructureWand(player, true);
+				Util.toggleStructureWand(player, true);
 
 				// Send the messages
 				Messages.clearRawChat(player);
 				player.sendRawMessage(ChatColor.YELLOW + Titles.chatTitle("Structure Wand"));
 				player.sendRawMessage(" ");
 
-				if(structure.getRequiredGenerationPoints() == 1)
+				if(structure.getRequiredGenerationCoords() == 1)
 				{
 					for(String string : English.ADMINISTRATION_STRUCTURE_WAND_ENABLED_1_POINT.getLines())
 					{
@@ -504,7 +502,7 @@ public class Administration implements ConversationManager
 				if("menu".equalsIgnoreCase(message))
 				{
 					// Disable wand
-					Admins.toggleStructureWand(player, false);
+					Util.toggleStructureWand(player, false);
 
 					// Return to main menu
 					return new StartAdministration();
@@ -517,7 +515,7 @@ public class Administration implements ConversationManager
 					String design = ((Structure.Design) context.getSessionData("chosen_design")).getName();
 
 					// Ensure that selections have been made
-					if(structure.getRequiredGenerationPoints() == 1 && locObj1 != null)
+					if(structure.getRequiredGenerationCoords() == 1 && locObj1 != null)
 					{
 						// Cast the object
 						Location loc1 = (Location) locObj1;
@@ -528,7 +526,7 @@ public class Administration implements ConversationManager
 						// Success boi
 						return success(context);
 					}
-					else if(structure.getRequiredGenerationPoints() == 2 && locObj1 != null && locObj2 != null)
+					else if(structure.getRequiredGenerationCoords() == 2 && locObj1 != null && locObj2 != null)
 					{
 						// Cast the object
 						Location loc1 = (Location) locObj1;
@@ -553,7 +551,7 @@ public class Administration implements ConversationManager
 			private static Prompt success(ConversationContext context)
 			{
 				// All good, toggle wand off
-				Admins.toggleStructureWand((Player) context.getForWhom(), false);
+				Util.toggleStructureWand((Player) context.getForWhom(), false);
 
 				// Save notification
 				saveNotification(context, Menu.class.getSimpleName(), English.ADMINISTRATION_STRUCTURE_GENERATED.getLine());
@@ -591,13 +589,13 @@ public class Administration implements ConversationManager
 		private void onStructureWand(PlayerInteractEvent event)
 		{
 			// Check some requirements
-			if(event.getClickedBlock() == null || Zones.inNoDemigodsZone(event.getPlayer().getLocation()) || !Admins.useStructureWand(event.getPlayer())) return;
+			if(event.getClickedBlock() == null || Zones.inNoDemigodsZone(event.getPlayer().getLocation()) || !Util.useStructureWand(event.getPlayer())) return;
 
 			// All good, handle the wand
 			Player player = event.getPlayer();
 
 			// Grab the context
-			ConversationContext context = DPlayer.Util.getAdministrationContext(player);
+			ConversationContext context = Util.getAdministrationContext(player);
 
 			// Save the blocks
 			if(event.getAction() == Action.LEFT_CLICK_BLOCK)
@@ -628,10 +626,270 @@ public class Administration implements ConversationManager
 			Player player = event.getPlayer();
 
 			// Remind them that they're administrating
-			if(DPlayer.Util.isAdministrating(player) && System.currentTimeMillis() % 4000 < 1000)
+			if(Util.isAdministrating(player) && System.currentTimeMillis() % 4000 < 1000)
 			{
 				player.sendMessage(English.ADMINISTRATION_STILL_IN_MENU.getLine());
 			}
+		}
+	}
+
+	public static class Util
+	{
+		/**
+		 * Returns true if the <code>player</code> is currently praying.
+		 * 
+		 * @param player the player to check.
+		 * @return boolean
+		 */
+		public static boolean isAdministrating(Player player)
+		{
+			try
+			{
+				return Data.hasKeyTemp(player.getName(), "administration_conversation");
+			}
+			catch(Exception ignored)
+			{}
+			return false;
+		}
+
+		/**
+		 * Removes all temp data related to administration for the <code>player</code>.
+		 * 
+		 * @param player the player to clean.
+		 */
+		public static void clearAdministrationSession(OfflinePlayer player)
+		{
+			Data.removeTemp(player.getName(), "administration_conversation");
+			Data.removeTemp(player.getName(), "administration_context");
+		}
+
+		/**
+		 * Saves the context for the <code>player</code>'s administration conversation.
+		 * 
+		 * @param player the player to save for.
+		 * @param context the context to save.
+		 * @return ConversationContext
+		 */
+		public static void saveAdministrationContext(Player player, ConversationContext context)
+		{
+			Data.saveTemp(player.getName(), "administration_context", context);
+		}
+
+		/**
+		 * Returns the context for the <code>player</code>'s administration conversation.
+		 * 
+		 * @param player the player whose context to return.
+		 * @return ConversationContext
+		 */
+		public static ConversationContext getAdministrationContext(Player player)
+		{
+			if(!isAdministrating(player)) return null;
+			return (ConversationContext) Data.getValueTemp(player.getName(), "administration_context");
+		}
+
+		/**
+		 * Changes administration status for <code>player</code> to <code>option</code>.
+		 * 
+		 * @param player the player the manipulate.
+		 * @param option the boolean to set to.
+		 * @param recordChat whether or not the chat should be recorded.
+		 */
+		public static void toggleAdministration(Player player, boolean option, boolean recordChat)
+		{
+			if(option)
+			{
+				// Create the conversation and save it
+				Conversation conversation = Administration.startAdministration(player);
+				Data.saveTemp(player.getName(), "administration_conversation", conversation);
+
+				// Set clear weather and daylight
+				player.setPlayerWeather(WeatherType.CLEAR);
+				player.setPlayerTime(100, false);
+
+				// Debug invisible structures
+				RestrictedArea.Util.toggleDebugRestrictedAreas(player, true);
+
+				// Record chat if enabled
+				if(recordChat) DPlayer.Util.getPlayer(player).startRecording();
+			}
+			else
+			{
+				// Save context and abandon the conversation
+				if(Data.hasKeyTemp(player.getName(), "administration_conversation"))
+				{
+					Conversation conversation = (Conversation) Data.getValueTemp(player.getName(), "administration_conversation");
+					Data.saveTemp(player.getName(), "administration_context", conversation.getContext());
+					conversation.abandon();
+				}
+
+				// Remove the data
+				Data.removeTemp(player.getName(), "administration_conversation");
+
+				// Reset weather and time
+				player.resetPlayerWeather();
+				player.resetPlayerTime();
+
+				// Disable debugging of invisible structures
+				RestrictedArea.Util.toggleDebugRestrictedAreas(player, false);
+
+				// Message them
+				Messages.clearRawChat(player);
+				player.sendMessage(English.ADMINISTRATION_ENDED.getLine());
+
+				// Handle recorded chat
+				DPlayer.Util.getPlayer(player).stopRecording(recordChat);
+			}
+		}
+
+		/**
+		 * Returns true if the <code>player</code> is an admin and has their admin wand enabled.
+		 * 
+		 * @param player the player to check.
+		 * @return boolean
+		 */
+		public static boolean wandEnabled(OfflinePlayer player)
+		{
+			return player.getPlayer().hasPermission("demigods.admin") && Data.hasKeyTemp(player.getName(), "temp_admin_wand") && Boolean.parseBoolean(Data.getValueTemp(player.getName(), "temp_admin_wand").toString());
+		}
+
+		/**
+		 * Returns true if the <code>player</code>'s admin wand is enabled and in their hand.
+		 * 
+		 * @param player the player to check.
+		 * @return boolean
+		 */
+		public static boolean useWand(OfflinePlayer player)
+		{
+			return wandEnabled(player) && player.getPlayer().getItemInHand().getTypeId() == Configs.getSettingInt("admin.wand_tool");
+		}
+
+		/**
+		 * Toggles the admin wand for the <code>player</code> to <code>option</code>.
+		 * 
+		 * @param player the player to toggle for.
+		 * @param option the option to toggle to.
+		 */
+		public static void toggleWand(OfflinePlayer player, boolean option)
+		{
+			if(option)
+			{
+				Data.saveTemp(player.getName(), "temp_admin_wand", true);
+			}
+			else
+			{
+				Data.removeTemp(player.getName(), "temp_admin_wand");
+			}
+		}
+
+		/**
+		 * Returns true if the <code>player</code> is an admin and has their structure wand enabled.
+		 * 
+		 * @param player the player to check.
+		 * @return boolean
+		 */
+		public static boolean structureWandEnabled(OfflinePlayer player)
+		{
+			return player.getPlayer().hasPermission("demigods.admin") && Data.hasKeyTemp(player.getName(), "temp_admin_structurewand") && Boolean.parseBoolean(Data.getValueTemp(player.getName(), "temp_admin_structurewand").toString());
+		}
+
+		/**
+		 * Returns true if the <code>player</code>'s structure wand is enabled and in their hand.
+		 * 
+		 * @param player the player to check.
+		 * @return boolean
+		 */
+		public static boolean useStructureWand(OfflinePlayer player)
+		{
+			return structureWandEnabled(player) && player.getPlayer().getItemInHand().getTypeId() == Configs.getSettingInt("admin.structure_wand_tool");
+		}
+
+		/**
+		 * Toggles the structure wand for the <code>player</code> to <code>option</code>.
+		 * 
+		 * @param player the player to toggle for.
+		 * @param option the option to toggle to.
+		 */
+		public static void toggleStructureWand(OfflinePlayer player, boolean option)
+		{
+			if(option)
+			{
+				Data.saveTemp(player.getName(), "temp_admin_structurewand", true);
+			}
+			else
+			{
+				Data.removeTemp(player.getName(), "temp_admin_structurewand");
+			}
+		}
+
+		/**
+		 * Toggles the debugging for the <code>player</code> to <code>option</code>.
+		 * 
+		 * @param player the player to toggle for.
+		 * @param option the option to toggle to.
+		 */
+		public static void togglePlayerDebug(OfflinePlayer player, boolean option)
+		{
+			if(option)
+			{
+				Data.saveTemp(player.getName(), "temp_admin_debug", true);
+			}
+			else
+			{
+				Data.removeTemp(player.getName(), "temp_admin_debug");
+			}
+		}
+
+		/**
+		 * Returns true if <code>player</code>'s demigods debugging is enabled.
+		 * 
+		 * @param player the player to check.
+		 * @return boolean
+		 */
+		public static boolean playerDebugEnabled(OfflinePlayer player)
+		{
+			return player.getPlayer().hasPermission("demigods.admin") && Data.hasKeyTemp(player.getName(), "temp_admin_debug") && Boolean.parseBoolean(Data.getValueTemp(player.getName(), "temp_admin_debug").toString());
+		}
+
+		/**
+		 * Returns true if console debugging is enabled in the config.
+		 * 
+		 * @return boolean
+		 */
+		public static boolean consoleDebugEnabled()
+		{
+			return Configs.getSettingBoolean("misc.console_debug");
+		}
+
+		/**
+		 * Sends the <code>message</code> to all applicable recipients.
+		 * 
+		 * @param message the message to send.
+		 */
+		public static void sendDebug(String message)
+		{
+			// Log to console
+			if(consoleDebugEnabled()) Messages.info("[Debug] " + ChatColor.stripColor(message));
+
+			// Log to online, debugging admins
+			for(Player player : getOnlineAdmins())
+			{
+				if(playerDebugEnabled(player)) player.sendMessage(ChatColor.RED + "[Debug] " + message);
+			}
+		}
+
+		/**
+		 * Returns an ArrayList of all online admins.
+		 * 
+		 * @return ArrayList
+		 */
+		public static ArrayList<Player> getOnlineAdmins()
+		{
+			ArrayList<Player> toReturn = new ArrayList<>();
+			for(Player player : Bukkit.getOnlinePlayers())
+			{
+				if(player.hasPermission("demigods.admin")) toReturn.add(player);
+			}
+			return toReturn;
 		}
 	}
 }

@@ -96,7 +96,7 @@ public class GreekStructure implements Structure
 	}
 
 	@Override
-	public int getRequiredGenerationPoints()
+	public int getRequiredGenerationCoords()
 	{
 		return generationPoints;
 	}

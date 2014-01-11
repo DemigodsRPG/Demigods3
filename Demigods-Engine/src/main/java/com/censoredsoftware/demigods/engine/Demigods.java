@@ -1,10 +1,28 @@
 package com.censoredsoftware.demigods.engine;
 
+import java.util.*;
+
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.conversations.ConversationFactory;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
+import org.bukkit.permissions.Permission;
+import org.bukkit.permissions.PermissionDefault;
+import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.plugin.ServicesManager;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.ScoreboardManager;
+import org.bukkit.scoreboard.Team;
+
 import com.censoredsoftware.censoredlib.helper.CensoredCentralizedClass;
 import com.censoredsoftware.censoredlib.helper.ConversationManager;
 import com.censoredsoftware.demigods.base.DemigodsConversation;
 import com.censoredsoftware.demigods.base.listener.ChatListener;
 import com.censoredsoftware.demigods.base.listener.SpigotFeatures;
+import com.censoredsoftware.demigods.engine.conversation.Administration;
+import com.censoredsoftware.demigods.engine.conversation.Prayer;
 import com.censoredsoftware.demigods.engine.data.Data;
 import com.censoredsoftware.demigods.engine.data.TaskManager;
 import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
@@ -20,21 +38,6 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.conversations.ConversationFactory;
-import org.bukkit.event.HandlerList;
-import org.bukkit.event.Listener;
-import org.bukkit.permissions.Permission;
-import org.bukkit.permissions.PermissionDefault;
-import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.RegisteredServiceProvider;
-import org.bukkit.plugin.ServicesManager;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.ScoreboardManager;
-import org.bukkit.scoreboard.Team;
-
-import java.util.*;
 
 public class Demigods extends CensoredCentralizedClass
 {
@@ -351,12 +354,12 @@ public class Demigods extends CensoredCentralizedClass
 			for(DCharacter character : DCharacter.Util.getOnlineCharacters())
 			{
 				// Toggle prayer off and clear the session
-				DPlayer.Util.togglePrayingSilent(character.getOfflinePlayer().getPlayer(), false, false);
-				DPlayer.Util.clearPrayerSession(character.getOfflinePlayer());
+				Prayer.Util.togglePrayingSilent(character.getOfflinePlayer().getPlayer(), false, false);
+				Prayer.Util.clearPrayerSession(character.getOfflinePlayer());
 
 				// Toggle administration off and clear its session
-				DPlayer.Util.toggleAdministration(character.getOfflinePlayer().getPlayer(), false, false);
-				DPlayer.Util.clearAdministrationSession(character.getOfflinePlayer());
+				Administration.Util.toggleAdministration(character.getOfflinePlayer().getPlayer(), false, false);
+				Administration.Util.clearAdministrationSession(character.getOfflinePlayer());
 			}
 		}
 

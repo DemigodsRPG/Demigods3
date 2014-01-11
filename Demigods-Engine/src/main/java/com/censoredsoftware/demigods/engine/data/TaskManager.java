@@ -8,6 +8,7 @@ import com.censoredsoftware.censoredlib.util.Threads;
 import com.censoredsoftware.censoredlib.util.Times;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.DemigodsPlugin;
+import com.censoredsoftware.demigods.engine.conversation.Administration;
 import com.censoredsoftware.demigods.engine.data.serializable.Battle;
 import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
 import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
@@ -15,7 +16,6 @@ import com.censoredsoftware.demigods.engine.data.wrap.NotificationManager;
 import com.censoredsoftware.demigods.engine.mythos.Ability;
 import com.censoredsoftware.demigods.engine.mythos.Deity;
 import com.censoredsoftware.demigods.engine.mythos.Structure;
-import com.censoredsoftware.demigods.engine.util.Admins;
 import com.censoredsoftware.demigods.engine.util.Configs;
 import com.censoredsoftware.demigods.engine.util.Messages;
 import com.censoredsoftware.demigods.engine.util.Zones;
@@ -29,15 +29,15 @@ public class TaskManager
 	{
 		// Start sync demigods runnable
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(DemigodsPlugin.plugin(), Util.getSyncDemigodsRunnable(), 20, 20);
-		Admins.sendDebug("Main Demigods SYNC runnable enabled...");
+		Administration.Util.sendDebug("Main Demigods SYNC runnable enabled...");
 
 		// Start async demigods runnable
 		Bukkit.getScheduler().scheduleAsyncRepeatingTask(DemigodsPlugin.plugin(), Util.getAsyncDemigodsRunnable(), 20, 20);
-		Admins.sendDebug("Main Demigods ASYNC runnable enabled...");
+		Administration.Util.sendDebug("Main Demigods ASYNC runnable enabled...");
 
 		// Start favor runnable
 		Bukkit.getScheduler().scheduleAsyncRepeatingTask(DemigodsPlugin.plugin(), Util.getFavorRunnable(), 20, (Configs.getSettingInt("regeneration_rates.favor") * 20));
-		Admins.sendDebug("Favor regeneration runnable enabled...");
+		Administration.Util.sendDebug("Favor regeneration runnable enabled...");
 
 		// Start saving runnable
 		Bukkit.getScheduler().scheduleAsyncRepeatingTask(DemigodsPlugin.plugin(), Util.getSaveRunnable(), 20, (Configs.getSettingInt("saving.freq") * 20));

@@ -12,6 +12,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import com.censoredsoftware.censoredlib.helper.QuitReasonHandler;
 import com.censoredsoftware.demigods.engine.DemigodsPlugin;
+import com.censoredsoftware.demigods.engine.conversation.Prayer;
 import com.censoredsoftware.demigods.engine.data.Data;
 import com.censoredsoftware.demigods.engine.data.serializable.Battle;
 import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
@@ -105,7 +106,7 @@ public class PlayerListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerTeleport(PlayerTeleportEvent event)
 	{
-		if(!Zones.inNoDemigodsZone(event.getPlayer().getLocation()) && DPlayer.Util.isPraying(event.getPlayer())) DPlayer.Util.togglePraying(event.getPlayer(), false);
+		if(!Zones.inNoDemigodsZone(event.getPlayer().getLocation()) && Prayer.Util.isPraying(event.getPlayer())) Prayer.Util.togglePraying(event.getPlayer(), false);
 	}
 
 	// TODO @EventHandler(priority = EventPriority.HIGHEST)

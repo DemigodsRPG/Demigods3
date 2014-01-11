@@ -20,13 +20,13 @@ import com.censoredsoftware.censoredlib.schematic.BlockData;
 import com.censoredsoftware.censoredlib.schematic.Schematic;
 import com.censoredsoftware.censoredlib.schematic.Selection;
 import com.censoredsoftware.censoredlib.util.Colors;
+import com.censoredsoftware.demigods.engine.conversation.Administration;
 import com.censoredsoftware.demigods.engine.data.Data;
 import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
 import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
 import com.censoredsoftware.demigods.engine.data.serializable.StructureSave;
 import com.censoredsoftware.demigods.engine.mythos.Deity;
 import com.censoredsoftware.demigods.engine.mythos.Structure;
-import com.censoredsoftware.demigods.engine.util.Admins;
 import com.censoredsoftware.demigods.engine.util.Configs;
 import com.censoredsoftware.demigods.engine.util.Messages;
 import com.censoredsoftware.demigods.engine.util.Zones;
@@ -171,7 +171,7 @@ public class Obelisk extends GreekStructure
 					try
 					{
 						// Obelisk created!
-						Admins.sendDebug(ChatColor.RED + "Obelisk created by " + character.getName() + " at: " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ());
+						Administration.Util.sendDebug(ChatColor.RED + "Obelisk created by " + character.getName() + " at: " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ());
 						StructureSave save = inst().createNew(true, null, location);
 						save.setOwner(character.getId());
 						inst().birth(save, character);
@@ -187,7 +187,7 @@ public class Obelisk extends GreekStructure
 				}
 			}
 
-			if(Admins.useWand(player) && Structure.Util.partOfStructureWithType(location, "Obelisk"))
+			if(Administration.Util.useWand(player) && Structure.Util.partOfStructureWithType(location, "Obelisk"))
 			{
 				event.setCancelled(true);
 
@@ -200,7 +200,7 @@ public class Obelisk extends GreekStructure
 					save.remove();
 					Data.TIMED.removeBool(player.getName() + "destroy_obelisk");
 
-					Admins.sendDebug(ChatColor.RED + "Obelisk owned by (" + owner.getName() + ") at: " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ() + " removed.");
+					Administration.Util.sendDebug(ChatColor.RED + "Obelisk owned by (" + owner.getName() + ") at: " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ() + " removed.");
 
 					player.sendMessage(ChatColor.GREEN + English.ADMIN_WAND_REMOVE_OBELISK_COMPLETE.getLine());
 				}

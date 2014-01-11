@@ -47,7 +47,7 @@ public interface Structure
 
 	int getRadius();
 
-	int getRequiredGenerationPoints(); // TODO?
+	int getRequiredGenerationCoords();
 
 	boolean isAllowed(@Nullable StructureSave data, Player sender);
 
@@ -69,7 +69,7 @@ public interface Structure
 
 	public enum Flag
 	{
-		DELETE_WITH_OWNER, DESTRUCT_ON_BREAK, PROTECTED_BLOCKS, NO_GRIEFING, NO_PVP, PRAYER_LOCATION, TRIBUTE_LOCATION, RESTRICTED_AREA, NO_OVERLAP, STRUCTURE_WAND_GENERABLE;
+		DELETE_WITH_OWNER, DESTRUCT_ON_BREAK, PROTECTED_BLOCKS, NO_GRIEFING, NO_PVP, PRAYER_LOCATION, OBELISK_LOCATION, TRIBUTE_LOCATION, RESTRICTED_AREA, NO_OVERLAP, STRUCTURE_WAND_GENERABLE;
 	}
 
 	public static class Util
