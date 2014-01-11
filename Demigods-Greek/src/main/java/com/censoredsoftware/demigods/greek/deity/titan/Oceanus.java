@@ -1,10 +1,5 @@
 package com.censoredsoftware.demigods.greek.deity.titan;
 
-import java.util.*;
-
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-
 import com.censoredsoftware.demigods.engine.mythos.Ability;
 import com.censoredsoftware.demigods.engine.mythos.Alliance;
 import com.censoredsoftware.demigods.engine.mythos.Deity;
@@ -17,12 +12,18 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.permissions.PermissionDefault;
+
+import java.util.*;
 
 public class Oceanus extends GreekDeity
 {
-	public static final String NAME = "Oceanus", SHORT_DESCRIPTION = ChatColor.GRAY + "The Titan of the oceans.";
+	public static final String NAME = "Oceanus", SHORT_DESCRIPTION = ChatColor.GRAY + "The titan of the oceans.";
 	public static final Alliance ALLIANCE = GreekAlliance.TITAN;
 	public static final String PERMISSION = ALLIANCE.getPermission() + "." + NAME.toLowerCase();
+	public static final PermissionDefault PERMISSION_DEFAULT = null;
 	public static final int ACCURACY = 15, FAVOR_REGEN = 5, MAX_FAVOR = 20000, MAX_HEALTH = 50, FAVOR_BANK = 10000;
 	public static final ChatColor COLOR = ChatColor.DARK_AQUA;
 	public static final Map<Material, Integer> CLAIM_ITEMS = Maps.newHashMap(ImmutableMap.of(Material.RAW_FISH, 2, Material.FISHING_ROD, 1));
@@ -36,7 +37,7 @@ public class Oceanus extends GreekDeity
 
 	private Oceanus()
 	{
-		super(NAME, PERMISSION, ALLIANCE, COLOR, CLAIM_ITEMS, FORSAKE_ITEMS, SHORT_DESCRIPTION, LORE, FLAGS, ABILITIES, ACCURACY, FAVOR_REGEN, MAX_FAVOR, MAX_HEALTH, FAVOR_BANK, moodPacks);
+		super(NAME, PERMISSION, PERMISSION_DEFAULT, ALLIANCE, COLOR, CLAIM_ITEMS, FORSAKE_ITEMS, SHORT_DESCRIPTION, LORE, FLAGS, ABILITIES, ACCURACY, FAVOR_REGEN, MAX_FAVOR, MAX_HEALTH, FAVOR_BANK, moodPacks);
 	}
 
 	private static final Deity INST = new Oceanus();

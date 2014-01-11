@@ -1,17 +1,5 @@
 package com.censoredsoftware.demigods.engine.template;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.Sound;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.material.MaterialData;
-import org.bukkit.permissions.PermissionDefault;
-
 import com.censoredsoftware.censoredlib.helper.ConfigFile2;
 import com.censoredsoftware.censoredlib.language.Symbol;
 import com.censoredsoftware.censoredlib.util.Strings;
@@ -21,6 +9,17 @@ import com.censoredsoftware.demigods.engine.mythos.Alliance;
 import com.censoredsoftware.demigods.engine.mythos.Deity;
 import com.google.common.base.Function;
 import com.google.common.collect.*;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.material.MaterialData;
+import org.bukkit.permissions.PermissionDefault;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class TemplateDeity implements Deity
 {
@@ -58,6 +57,7 @@ public class TemplateDeity implements Deity
 		}
 	};
 	public static String permission = alliance.getPermission() + "." + name.toLowerCase();
+	public static PermissionDefault permissionDefault = PermissionDefault.FALSE;
 	public static int accuracy = 15, favorRegen = 5, maxFavor = 20000, favorBank = 10000;
 	public static double maxHealth = 40.0;
 	public static ChatColor color = ChatColor.GRAY;
@@ -98,6 +98,12 @@ public class TemplateDeity implements Deity
 	public String getPermission()
 	{
 		return permission;
+	}
+
+	@Override
+	public PermissionDefault getPermissionDefault()
+	{
+		return permissionDefault;
 	}
 
 	@Override

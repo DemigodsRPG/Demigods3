@@ -1,19 +1,5 @@
 package com.censoredsoftware.demigods.engine.data;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.World;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.entity.Player;
-
 import com.censoredsoftware.censoredlib.data.inventory.CItemStack;
 import com.censoredsoftware.censoredlib.data.location.CLocation;
 import com.censoredsoftware.censoredlib.data.player.Notification;
@@ -27,6 +13,19 @@ import com.google.common.base.Supplier;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Table;
 import com.google.common.collect.Tables;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.World;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.entity.Player;
+
+import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * This is the data management file for Demigods.
@@ -255,8 +254,8 @@ public class Data
 	// -- BINARY & MISC DATA FILES -- //
 
 	// Timed and Server Data
-	public static final TimedMapDBFile TIMED = new TimedMapDBFile("TIMED.dg", SAVE_PATH);
-	public static final MapDBFile SERVER = new MapDBFile("SERVER.dg", SAVE_PATH);
+	public static final TimedMapDBFile TIMED = new TimedMapDBFile("TIMED.dg", SAVE_PATH + "bin/");
+	public static final MapDBFile SERVER = new MapDBFile("SERVER.dg", SAVE_PATH + "bin/");
 
 	// -- CONSTRUCTOR -- //
 
@@ -307,6 +306,8 @@ public class Data
 		for(DemigodsFile data : yamlFiles())
 			data.clear();
 		TEMP.clear();
+		TIMED.clear();
+		SERVER.clear();
 
 		save();
 

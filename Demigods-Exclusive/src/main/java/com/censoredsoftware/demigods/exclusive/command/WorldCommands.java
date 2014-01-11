@@ -4,8 +4,8 @@ import com.censoredsoftware.censoredlib.helper.CommandManager;
 import com.censoredsoftware.demigods.engine.DemigodsPlugin;
 import com.censoredsoftware.demigods.engine.data.Data;
 import com.censoredsoftware.demigods.engine.util.Messages;
+import com.censoredsoftware.demigods.engine.util.Zones;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import org.bukkit.*;
@@ -28,7 +28,7 @@ public class WorldCommands extends CommandManager
 	private WorldCommands()
 	{}
 
-	private static final Sub createWorld, importWorld, editWorld, disableWorld, teleport;
+	private static final Sub createWorld, importWorld, editWorld, disableWorld, teleport, list;
 
 	static
 	{
@@ -61,14 +61,16 @@ public class WorldCommands extends CommandManager
 					{
 						try
 						{
-							String worldName = args[1];
-							World.Environment environment = World.Environment.valueOf(args[2]);
+							final String worldName = args[1];
+							final World.Environment environment = World.Environment.valueOf(args[2]);
+
 							Util.enableDemigods(worldName);
-							World created = Util.createWorld(worldName, environment);
-							Util.addWorldToData(created);
+							Util.createWorld(worldName, environment);
+							Util.addWorldToData(worldName);
 						}
 						catch(Exception errored)
 						{
+                            errored.printStackTrace();
 							sender.sendMessage(ChatColor.RED + "Something went wrong. :C");
 						}
 						break;
@@ -77,15 +79,17 @@ public class WorldCommands extends CommandManager
 					{
 						try
 						{
-							String worldName = args[1];
-							WorldType type = WorldType.valueOf(args[2]);
-							World.Environment environment = World.Environment.valueOf(args[3]);
+							final String worldName = args[1];
+							final WorldType type = WorldType.valueOf(args[2]);
+							final World.Environment environment = World.Environment.valueOf(args[3]);
+
 							Util.enableDemigods(worldName);
-							World created = Util.createWorld(worldName, type, environment);
-							Util.addWorldToData(created);
+							Util.createWorld(worldName, type, environment);
+							Util.addWorldToData(worldName);
 						}
 						catch(Exception errored)
 						{
+            errored.printStackTrace();
 							sender.sendMessage(ChatColor.RED + "Something went wrong. :C");
 						}
 						break;
@@ -223,6 +227,39 @@ public class WorldCommands extends CommandManager
 				return true;
 			}
 		};
+        list = new Sub()
+        {
+            @Override
+            public String getName()
+            {
+                return "ls";
+			}
+
+			@Override
+			public String getParentCommand()
+			{
+				return "world";
+			}
+
+			@Override
+			public int getMinArgs()
+			{
+				return 1;
+			}
+
+			@Override
+			public boolean execute(CommandSender sender, String label, String[] args)
+			{
+				String working = "Worlds: ";
+				for(World world : Bukkit.getWorlds())
+					working += world.getName() + ", ";
+				working = working.substring(0, working.length() - 2) + ".";
+				String[] message = sender instanceof Player ? Messages.wrapInGame(working) : Messages.wrapConsole(working);
+				for(String line : message)
+					sender.sendMessage(line);
+				return true;
+			}
+		};
 	}
 
 	@Override
@@ -234,7 +271,7 @@ public class WorldCommands extends CommandManager
 	@Override
 	public ImmutableList<Sub> getSubCommands()
 	{
-		return ImmutableList.of(createWorld, importWorld, editWorld, disableWorld, teleport);
+		return ImmutableList.of(createWorld, importWorld, editWorld, disableWorld, teleport, list);
 	}
 
 	@Override
@@ -242,10 +279,10 @@ public class WorldCommands extends CommandManager
 	{
         if(sender instanceof Player && !sender.hasPermission("exclusive.world"))
         {
-            sender.sendMessage(ChatColor.RED + "You do not have permission to use that command.");
-            return false;
-        }
-        if(args.length < 1) sender.sendMessage(ChatColor.RED + "Not enough args."); // TODO MENU (for loop of commands maybe)
+			sender.sendMessage(ChatColor.RED + "You do not have permission to use that command.");
+			return false;
+		}
+		if(args.length < 1) sender.sendMessage(ChatColor.RED + "Not enough args."); // TODO MENU (for loop of sub-commands maybe)
 		return true;
 	}
 
@@ -258,23 +295,27 @@ public class WorldCommands extends CommandManager
 
         public static void loadHandledWorlds()
         {
-            for(String world : getHandledWorlds())
-            {
-                if(Bukkit.getWorld(world) != null) continue;
-                loadWorld(world);
-            }
+            if(noWorlds()) return;
+            Messages.info("Loading worlds...");
+			for(String world : getHandledWorlds())
+			{
+				loadWorld(world);
+				Messages.info(world + " loaded.");
+     }
         }
 
         // -- ENABLE DEMIGODS -- //
 
         public static void enableDemigods(String worldName)
         {
-            List<String> enabled = DemigodsPlugin.plugin().getConfig().getStringList("restrictions.enabled_worlds");
-            if(!enabled.contains(worldName))
-            {
-                enabled.add(worldName);
-                DemigodsPlugin.plugin().saveConfig();
-            }
+			List<String> enabled = DemigodsPlugin.plugin().getConfig().getStringList("restrictions.enabled_worlds");
+			if(!enabled.contains(worldName))
+			{
+      enabled.add(worldName);
+                DemigodsPlugin.plugin().getConfig().set("restrictions.enabled_worlds", enabled);
+				DemigodsPlugin.plugin().saveConfig();
+      }
+            Zones.enableWorld(worldName);
         }
 
         // -- CREATE WORLD -- //
@@ -284,10 +325,10 @@ public class WorldCommands extends CommandManager
             return WorldCreator.name(worldName).type(WorldType.NORMAL).environment(environment).createWorld();
         }
 
-        public static World createWorld(String worldName, World.Environment environment, long seed)
-        {
+		public static World createWorld(String worldName, World.Environment environment, long seed)
+		{
 			return WorldCreator.name(worldName).type(WorldType.NORMAL).environment(environment).seed(seed).createWorld();
-        }
+		}
 
 		public static World createWorld(String worldName, WorldType worldType, World.Environment environment)
 		{
@@ -299,55 +340,37 @@ public class WorldCommands extends CommandManager
 			return WorldCreator.name(worldName).type(worldType).environment(environment).seed(seed).createWorld();
 		}
 
-		private static void addWorldToData(World world)
+		private static void addWorldToData(String worldName)
 		{
-			ImmutableList.Builder<String> builder = ImmutableList.builder();
-       builder.addAll(getHandledWorlds());
-			builder.add(world.getName());
-			setHandledWorlds(builder.build());
-			setHandledWorldOptions(world);
+            List<String> list = Lists.newArrayList();
+            if(!noWorlds()) list.addAll(getHandledWorlds());
+            list.add(worldName);
+			setHandledWorlds(list);
 		}
 
 		private static void removeWorldFromData(String worldName)
 		{
-			List<String> list = Lists.newArrayList(getHandledWorlds());
+			List<String> list = Lists.newArrayList();
+            if(!noWorlds()) list.addAll(getHandledWorlds());
 			list.remove(worldName);
-			setHandledWorlds(ImmutableList.copyOf(list));
+			setHandledWorlds(list);
 		}
 
-		public static ImmutableList<String> getHandledWorlds()
+		public static List<String> getHandledWorlds()
 		{
-			ImmutableList<String> list = Data.SERVER.getStringList("worlds");
+			List<String> list = Data.SERVER.getStringList("worlds");
 			if(list != null) return list;
-			return ImmutableList.of();
+			return Lists.newArrayList();
 		}
 
-		public static WorldCreator getHandledWorldOptions(String worldName)
+		private static boolean noWorlds()
 		{
-			ImmutableMap<String, String> worldOptions = Data.SERVER.getStringMap("world:" + worldName);
-			try
-			{
-				return WorldCreator.name(worldName).type(WorldType.valueOf(worldOptions.get("type"))).environment(World.Environment.valueOf(worldOptions.get("env"))).seed(Long.parseLong(worldOptions.get("seed")));
-			}
-			catch(Exception errored)
-			{
-				Messages.logException(errored);
-			}
-			return WorldCreator.name(worldName);
+			return getHandledWorlds().isEmpty();
 		}
 
-		private static void setHandledWorlds(ImmutableList<String> worlds)
+		private static void setHandledWorlds(List<String> worlds)
 		{
 			Data.SERVER.setStringList("worlds", worlds);
-		}
-
-		public static void setHandledWorldOptions(World world)
-		{
-			ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
-			builder.put("type", world.getWorldType().name());
-			builder.put("env", world.getEnvironment().name());
-			builder.put("seed", String.valueOf(world.getSeed()));
-			Data.SERVER.setStringMap("world:" + world.getName(), builder.build());
 		}
 
 		// -- LOAD WORLD -- //
@@ -367,6 +390,14 @@ public class WorldCommands extends CommandManager
 		public static void disableWorld(String worldName)
 		{
 			Bukkit.unloadWorld(worldName, true);
+			List<String> enabled = DemigodsPlugin.plugin().getConfig().getStringList("restrictions.enabled_worlds");
+			if(enabled.contains(worldName))
+            {
+                enabled.remove(worldName);
+                DemigodsPlugin.plugin().getConfig().set("restrictions.enabled_worlds", enabled);
+                DemigodsPlugin.plugin().saveConfig();
+            }
+            Zones.disableWorld(worldName);
 		}
 	}
 }

@@ -1,16 +1,5 @@
 package com.censoredsoftware.demigods.greek.deity;
 
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.Sound;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.material.MaterialData;
-
 import com.censoredsoftware.censoredlib.helper.ConfigFile2;
 import com.censoredsoftware.demigods.engine.DemigodsPlugin;
 import com.censoredsoftware.demigods.engine.mythos.Ability;
@@ -21,10 +10,22 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.material.MaterialData;
+import org.bukkit.permissions.PermissionDefault;
+
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class GreekDeity implements Deity, Deity.MoodManager
 {
 	private String name, permission;
+	private PermissionDefault permissionDefault;
 	private Alliance alliance;
 	private ChatColor color;
 	private Map<Material, Integer> claimItems, forsakeItems;
@@ -41,10 +42,11 @@ public class GreekDeity implements Deity, Deity.MoodManager
 	// Config File
 	private ConfigFile2 configFile;
 
-	public GreekDeity(String name, String permission, Alliance alliance, ChatColor color, Map<Material, Integer> claimItems, Map<Material, Integer> forsakeItems, String shortDescription, List<String> lore, Set<Flag> flags, List<Ability> abilities, int accuracy, int favorRegen, int maxFavor, double maxHealth, int favorBank, EnumMap<Deity.Mood, Deity.MoodPack> moodPacks)
+	public GreekDeity(String name, String permission, PermissionDefault permissionDefault, Alliance alliance, ChatColor color, Map<Material, Integer> claimItems, Map<Material, Integer> forsakeItems, String shortDescription, List<String> lore, Set<Flag> flags, List<Ability> abilities, int accuracy, int favorRegen, int maxFavor, double maxHealth, int favorBank, EnumMap<Deity.Mood, Deity.MoodPack> moodPacks)
 	{
 		this.name = name;
 		this.permission = permission;
+		this.permissionDefault = permissionDefault;
 		this.alliance = alliance;
 		this.color = color;
 		this.claimItems = claimItems;
@@ -84,6 +86,12 @@ public class GreekDeity implements Deity, Deity.MoodManager
 	public String getPermission()
 	{
 		return permission;
+	}
+
+	@Override
+	public PermissionDefault getPermissionDefault()
+	{
+		return permissionDefault;
 	}
 
 	public ChatColor getColor()
@@ -186,6 +194,7 @@ public class GreekDeity implements Deity, Deity.MoodManager
 		{
 			if(conf.isString("name")) name = conf.getString("name");
 			if(conf.isString("permission")) permission = conf.getString("permission");
+			if(conf.isString("permissionDefault")) permissionDefault = PermissionDefault.valueOf(conf.getString("permissionDefault"));
 			if(conf.isString("color")) color = ChatColor.valueOf(conf.getString("color"));
 			if(conf.getConfigurationSection("claimItems") != null) claimItems = convertItemsFromSave(conf.getConfigurationSection("claimItems").getValues(false));
 			if(conf.getConfigurationSection("forsakeItems") != null) forsakeItems = convertItemsFromSave(conf.getConfigurationSection("forsakeItems").getValues(false));
@@ -216,6 +225,7 @@ public class GreekDeity implements Deity, Deity.MoodManager
 			Map<String, Object> map = Maps.newHashMap();
 			map.put("name", name);
 			map.put("permission", permission);
+			if(permissionDefault != null) map.put("permissionDefault", permissionDefault.name());
 			// Cannot save/load alliance, currently. Mythos would be screwed up if we did.
 			map.put("color", color.name());
 			map.put("claimItems", convertItemsToSave(claimItems));

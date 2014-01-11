@@ -1,21 +1,9 @@
 package com.censoredsoftware.demigods.base.command;
 
-import java.util.Collection;
-import java.util.Map;
-
-import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.PluginManager;
-
 import com.censoredsoftware.censoredlib.helper.CommandManager;
 import com.censoredsoftware.censoredlib.language.Symbol;
 import com.censoredsoftware.censoredlib.util.Strings;
+import com.censoredsoftware.censoredlib.util.Threads;
 import com.censoredsoftware.censoredlib.util.Times;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.DemigodsPlugin;
@@ -33,6 +21,18 @@ import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.PluginManager;
+
+import java.util.Collection;
+import java.util.Map;
 
 // TODO Convert this over to the sub-command format.
 
@@ -255,7 +255,7 @@ public class MainCommand extends CommandManager
 		return true;
 	}
 
-	private static boolean dg_admin(Player player, String[] args)
+	private static boolean dg_admin(final Player player, String[] args)
 	{
 		if(!player.hasPermission("demigods.admin")) return Messages.noPermission(player);
 
@@ -271,6 +271,7 @@ public class MainCommand extends CommandManager
 				player.sendMessage(ChatColor.GRAY + " " + command.getCommand().getName());
 			}
 			player.sendMessage(ChatColor.DARK_RED + " /dg admin clear data yesdoitforsurepermanently");
+			player.sendMessage(ChatColor.DARK_RED + " /dg admin compress");
 			return true;
 		}
 
@@ -326,6 +327,28 @@ public class MainCommand extends CommandManager
 			Data.flushData();
 			player.sendMessage(ChatColor.GREEN + English.ADMIN_CLEAR_DATA_FINISHED.getLine());
 			return true;
+		}
+		else if("compact".equalsIgnoreCase(args[1]) || "compress".equalsIgnoreCase(args[1]))
+		{
+			player.sendMessage(ChatColor.YELLOW + "Attempting to compress binary data.");
+			Threads.newTimedTask(new Threads.CensoredRunnable()
+			{
+				@Override
+				public void runIt()
+				{
+					try
+					{
+						Data.SERVER.compact();
+						Data.TIMED.compact();
+					}
+					catch(Exception errored)
+					{
+						if(player.isOnline()) player.sendMessage(ChatColor.RED + "Data compression could not complete!");
+						return;
+					}
+					if(player.isOnline()) player.sendMessage(ChatColor.YELLOW + "Data compression complete.");
+				}
+			}, 1);
 		}
 
 		return true;

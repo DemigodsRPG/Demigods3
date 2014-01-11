@@ -4,6 +4,7 @@ import com.censoredsoftware.censoredlib.helper.CommandManager;
 import com.censoredsoftware.censoredlib.trigger.Trigger;
 import com.censoredsoftware.demigods.engine.mythos.*;
 import com.censoredsoftware.demigods.exclusive.command.WorldCommands;
+import com.censoredsoftware.demigods.exclusive.deity.Hestia;
 import com.censoredsoftware.demigods.exclusive.listener.DistrictListener;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableSet;
@@ -118,7 +119,7 @@ public class ExclusiveMythos extends MythosPlugin
 	@Override
 	public ImmutableCollection<Deity> getDeities()
 	{
-		return ImmutableSet.of();
+		return ImmutableSet.of(Hestia.inst());
 	}
 
 	@Override

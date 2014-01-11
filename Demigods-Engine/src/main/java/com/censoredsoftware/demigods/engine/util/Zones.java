@@ -1,13 +1,5 @@
 package com.censoredsoftware.demigods.engine.util;
 
-import java.util.Set;
-
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-
 import com.censoredsoftware.censoredlib.util.WorldGuards;
 import com.censoredsoftware.demigods.base.listener.ZoneListener;
 import com.censoredsoftware.demigods.engine.DemigodsPlugin;
@@ -15,13 +7,19 @@ import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
 import com.censoredsoftware.demigods.engine.data.serializable.StructureSave;
 import com.censoredsoftware.demigods.engine.mythos.Structure;
 import com.google.common.base.Predicate;
-import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+
+import java.util.Set;
 
 public class Zones
 {
-	private static ImmutableSet<String> ENABLED_WORLDS;
+	private static final Set<String> ENABLED_WORLDS = Sets.newHashSet();
 
 	public static int init()
 	{
@@ -33,7 +31,7 @@ public class Zones
 			enabledWorlds.add(world);
 			erroredWorlds += Bukkit.getServer().getWorld(world) == null ? 1 : 0;
 		}
-		ENABLED_WORLDS = ImmutableSet.copyOf(enabledWorlds);
+		ENABLED_WORLDS.addAll(enabledWorlds);
 
 		// Zone listener (load here for consistency)
 		Bukkit.getPluginManager().registerEvents(new ZoneListener(), DemigodsPlugin.plugin());
@@ -89,5 +87,15 @@ public class Zones
 	public static boolean isNoDemigodsWorld(World world)
 	{
 		return !ENABLED_WORLDS.contains(world.getName());
+	}
+
+	public static void enableWorld(String worldName)
+	{
+		ENABLED_WORLDS.add(worldName);
+	}
+
+	public static void disableWorld(String worldName)
+	{
+		ENABLED_WORLDS.remove(worldName);
 	}
 }

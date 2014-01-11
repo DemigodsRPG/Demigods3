@@ -1,10 +1,5 @@
 package com.censoredsoftware.demigods.greek.deity.donor;
 
-import java.util.*;
-
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-
 import com.censoredsoftware.demigods.engine.mythos.Ability;
 import com.censoredsoftware.demigods.engine.mythos.Alliance;
 import com.censoredsoftware.demigods.engine.mythos.Deity;
@@ -17,12 +12,18 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.permissions.PermissionDefault;
+
+import java.util.*;
 
 public class DrD1sco extends GreekDeity
 {
 	public static final String NAME = "DrD1sco", SHORT_DESCRIPTION = ChatColor.BLUE + "The donor of dance.";
 	public static final Alliance ALLIANCE = GreekAlliance.DONOR;
 	public static final String PERMISSION = ALLIANCE.getPermission() + "." + NAME.toLowerCase();
+	public static final PermissionDefault PERMISSION_DEFAULT = PermissionDefault.NOT_OP;
 	public static final int ACCURACY = 15, FAVOR_REGEN = 5, MAX_FAVOR = 20000, MAX_HEALTH = 40, FAVOR_BANK = 10000;
 	public static final ChatColor COLOR = ChatColor.DARK_PURPLE;
 	public static final Map<Material, Integer> CLAIM_ITEMS = Maps.newHashMap(ImmutableMap.of(Material.JUKEBOX, 2));
@@ -36,7 +37,7 @@ public class DrD1sco extends GreekDeity
 
 	private DrD1sco()
 	{
-		super(NAME, PERMISSION, ALLIANCE, COLOR, CLAIM_ITEMS, FORSAKE_ITEMS, SHORT_DESCRIPTION, LORE, FLAGS, ABILITIES, ACCURACY, FAVOR_REGEN, MAX_FAVOR, MAX_HEALTH, FAVOR_BANK, moodPacks);
+		super(NAME, PERMISSION, PERMISSION_DEFAULT, ALLIANCE, COLOR, CLAIM_ITEMS, FORSAKE_ITEMS, SHORT_DESCRIPTION, LORE, FLAGS, ABILITIES, ACCURACY, FAVOR_REGEN, MAX_FAVOR, MAX_HEALTH, FAVOR_BANK, moodPacks);
 	}
 
 	private static final Deity INST = new DrD1sco();

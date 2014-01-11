@@ -1,10 +1,5 @@
 package com.censoredsoftware.demigods.greek.deity.fate;
 
-import java.util.*;
-
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-
 import com.censoredsoftware.demigods.engine.mythos.Ability;
 import com.censoredsoftware.demigods.engine.mythos.Alliance;
 import com.censoredsoftware.demigods.engine.mythos.Deity;
@@ -18,12 +13,18 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.permissions.PermissionDefault;
+
+import java.util.*;
 
 public class Atropos extends GreekDeity
 {
 	public static final String NAME = "Atropos", SHORT_DESCRIPTION = ChatColor.GRAY + "The one who cuts the string.";
 	public static final Alliance ALLIANCE = GreekAlliance.FATE;
 	public static final String PERMISSION = ALLIANCE.getPermission() + "." + NAME.toLowerCase();
+	public static final PermissionDefault PERMISSION_DEFAULT = PermissionDefault.NOT_OP;
 	public static final int ACCURACY = 15, FAVOR_REGEN = 999, MAX_FAVOR = 20000, MAX_HEALTH = 2, FAVOR_BANK = 10000;
 	public static final ChatColor COLOR = ChatColor.DARK_RED;
 	public static final Map<Material, Integer> CLAIM_ITEMS = Maps.newHashMap(ImmutableMap.of(Material.BEDROCK, 3));
@@ -37,7 +38,7 @@ public class Atropos extends GreekDeity
 
 	private Atropos()
 	{
-		super(NAME, PERMISSION, ALLIANCE, COLOR, CLAIM_ITEMS, FORSAKE_ITEMS, SHORT_DESCRIPTION, LORE, FLAGS, ABILITIES, ACCURACY, FAVOR_REGEN, MAX_FAVOR, MAX_HEALTH, FAVOR_BANK, moodPacks);
+		super(NAME, PERMISSION, PERMISSION_DEFAULT, ALLIANCE, COLOR, CLAIM_ITEMS, FORSAKE_ITEMS, SHORT_DESCRIPTION, LORE, FLAGS, ABILITIES, ACCURACY, FAVOR_REGEN, MAX_FAVOR, MAX_HEALTH, FAVOR_BANK, moodPacks);
 	}
 
 	private static final Deity INST = new Atropos();
