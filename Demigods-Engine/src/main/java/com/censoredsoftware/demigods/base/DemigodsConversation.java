@@ -1,10 +1,11 @@
 package com.censoredsoftware.demigods.base;
 
+import org.bukkit.conversations.ConversationContext;
+import org.bukkit.conversations.Prompt;
+
 import com.censoredsoftware.censoredlib.helper.ConversationManager;
 import com.censoredsoftware.demigods.engine.conversation.Administration;
 import com.censoredsoftware.demigods.engine.conversation.Prayer;
-import org.bukkit.conversations.ConversationContext;
-import org.bukkit.conversations.Prompt;
 
 // Conversations
 public enum DemigodsConversation

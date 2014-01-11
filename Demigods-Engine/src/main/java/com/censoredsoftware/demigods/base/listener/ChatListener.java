@@ -1,5 +1,12 @@
 package com.censoredsoftware.demigods.base.listener;
 
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+
 import com.censoredsoftware.censoredlib.helper.CommandManager;
 import com.censoredsoftware.demigods.base.DemigodsCommand;
 import com.censoredsoftware.demigods.engine.Demigods;
@@ -8,12 +15,6 @@ import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
 import com.censoredsoftware.demigods.engine.mythos.Ability;
 import com.censoredsoftware.demigods.engine.util.Messages;
 import com.censoredsoftware.demigods.engine.util.Zones;
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 public class ChatListener implements Listener
 {

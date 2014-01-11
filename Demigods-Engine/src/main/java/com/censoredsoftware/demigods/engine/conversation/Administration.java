@@ -241,14 +241,14 @@ public class Administration implements ConversationManager
 				return ChatColor.GREEN + "Generate Structure";
 			}
 
-            @Override
+			@Override
 			public boolean canUse(ConversationContext context)
 			{
 				return ((Player) context.getForWhom()).hasPermission("demigods.admin.structurewand") && !Admins.structureWandEnabled((Player) context.getForWhom());
 			}
 
 			private static Map<Integer, Structure> getStructureChoices(ConversationContext context)
-            {
+			{
 				// Grab the data (that may or may not be there)
 				Object data = context.getSessionData("generable_structures");
 
@@ -256,8 +256,8 @@ public class Administration implements ConversationManager
 				if(data != null)
 				{
 					return (Map<Integer, Structure>) data;
-                }
-                else
+				}
+				else
 				{
 					int count = 1;
 					Map<Integer, Structure> structures = Maps.newHashMap();
@@ -266,7 +266,7 @@ public class Administration implements ConversationManager
 					{
 						// Only list that shiz if it needs to be, dawg
 						if(structure.getFlags().contains(Structure.Flag.STRUCTURE_WAND_GENERABLE))
-                        {
+						{
 							// Add it to the choices
 							structures.put(count, structure);
 
@@ -279,12 +279,12 @@ public class Administration implements ConversationManager
 					context.setSessionData("generable_structures", structures);
 					return structures;
 				}
-         }
+			}
 
-            @Override
-            public String getPromptText(ConversationContext context)
-            {
-                // Define variables
+			@Override
+			public String getPromptText(ConversationContext context)
+			{
+				// Define variables
 				Player player = (Player) context.getForWhom();
 
 				// Send the messages
@@ -292,7 +292,7 @@ public class Administration implements ConversationManager
 				player.sendRawMessage(ChatColor.YELLOW + Titles.chatTitle("Structure Chooser"));
 				player.sendRawMessage(" ");
 				for(String string : English.ADMINISTRATION_GENERATE_STRUCTURE_INTRO.getLines())
-                {
+				{
 					player.sendRawMessage(string);
 				}
 				player.sendRawMessage(" ");
@@ -321,22 +321,22 @@ public class Administration implements ConversationManager
 					return "menu".equalsIgnoreCase(message) || getStructureChoices(context).keySet().contains(Integer.parseInt(message));
 				}
 				catch(NumberFormatException ignored)
-                {
-                    return false;
-                }
-            }
+				{
+					return false;
+				}
+			}
 
-            @Override
+			@Override
 			protected Prompt acceptValidatedInput(ConversationContext context, String message)
 			{
 				if("menu".equalsIgnoreCase(message))
-        {
+				{
 					// Return to main menu
 					return new StartAdministration();
 				}
 				else
 				{
-   // Save the chosen structure to the data
+					// Save the chosen structure to the data
 					context.setSessionData("chosen_structure", getStructureChoices(context).get(Integer.parseInt(message)));
 
 					// Return next menu depending on the chosen structure
@@ -352,9 +352,9 @@ public class Administration implements ConversationManager
 			}
 		}
 
-        // Design selection
-        static class Design extends ValidatingPrompt
-        {
+		// Design selection
+		static class Design extends ValidatingPrompt
+		{
 			private static Structure getChosenStructure(ConversationContext context)
 			{
 				return (Structure) context.getSessionData("chosen_structure");
@@ -370,9 +370,9 @@ public class Administration implements ConversationManager
 					// Add the design to the map along with it's count
 					designs.put(count, design);
 
-                    // Count up
-                    count++;
-                }
+					// Count up
+					count++;
+				}
 
 				// Return the designs
 				return designs;
@@ -389,18 +389,19 @@ public class Administration implements ConversationManager
 
 				// Send the messages
 				Messages.clearRawChat(player);
-                player.sendRawMessage(ChatColor.YELLOW + Titles.chatTitle("Design Selection"));
+				player.sendRawMessage(ChatColor.YELLOW + Titles.chatTitle("Design Selection"));
 				player.sendRawMessage(" ");
 				for(String string : English.ADMINISTRATION_STRUCTURE_DESIGN_SELECTION.getLines())
 				{
 					player.sendRawMessage(string.replace("{structure}", structure.getName()));
 				}
+				player.sendRawMessage(" ");
 
 				// Display the design choices
 				for(Map.Entry<Integer, Structure.Design> design : getDesignChoices(context).entrySet())
 				{
 					player.sendRawMessage(ChatColor.GRAY + "   [" + design.getKey() + ".] " + ChatColor.LIGHT_PURPLE + Strings.beautify(design.getValue().getName()));
-                }
+				}
 
 				return "";
 			}
@@ -425,8 +426,8 @@ public class Administration implements ConversationManager
 				{
 					// Return to main menu
 					return new StartAdministration();
-                }
-                else
+				}
+				else
 				{
 					// Save the chosen structure to the data
 					context.setSessionData("chosen_design", getDesignChoices(context).get(Integer.parseInt(message)));
@@ -443,9 +444,9 @@ public class Administration implements ConversationManager
 			private static Structure getChosenStructure(ConversationContext context)
 			{
 				return (Structure) context.getSessionData("chosen_structure");
-            }
+			}
 
-            @Override
+			@Override
 			public String getPromptText(ConversationContext context)
 			{
 				// Define variables
@@ -458,7 +459,7 @@ public class Administration implements ConversationManager
 				Admins.toggleStructureWand(player, true);
 
 				// Send the messages
-                Messages.clearRawChat(player);
+				Messages.clearRawChat(player);
 				player.sendRawMessage(ChatColor.YELLOW + Titles.chatTitle("Structure Wand"));
 				player.sendRawMessage(" ");
 
@@ -467,10 +468,10 @@ public class Administration implements ConversationManager
 					for(String string : English.ADMINISTRATION_STRUCTURE_WAND_ENABLED_1_POINT.getLines())
 					{
 						player.sendRawMessage(string.replace("{item}", Material.getMaterial(Configs.getSettingInt("admin.structure_wand_tool")).name()).replace("{structure}", structure.getName()));
-   }
-                }
-                else
-                {
+					}
+				}
+				else
+				{
 					for(String string : English.ADMINISTRATION_STRUCTURE_WAND_ENABLED_2_POINTS.getLines())
 					{
 						player.sendRawMessage(string.replace("{item}", Material.getMaterial(Configs.getSettingInt("admin.structure_wand_tool")).name()).replace("{structure}", structure.getName()));
@@ -484,8 +485,8 @@ public class Administration implements ConversationManager
 			}
 
 			@Override
-            protected boolean isInputValid(ConversationContext context, String message)
-            {
+			protected boolean isInputValid(ConversationContext context, String message)
+			{
 				return "menu".equalsIgnoreCase(message) || "continue".equalsIgnoreCase(message);
 			}
 
@@ -499,15 +500,15 @@ public class Administration implements ConversationManager
 				Structure structure = getChosenStructure(context);
 
 				if("menu".equalsIgnoreCase(message))
-                {
-                    // Disable wand
+				{
+					// Disable wand
 					Admins.toggleStructureWand(player, false);
 
 					// Return to main menu
 					return new StartAdministration();
 				}
 				else if("continue".equalsIgnoreCase(message))
-                {
+				{
 					// Get locations from context
 					Object locObj1 = context.getSessionData("structurewand_loc1");
 					Object locObj2 = context.getSessionData("structurewand_loc2");
@@ -516,7 +517,7 @@ public class Administration implements ConversationManager
 					// Ensure that selections have been made
 					if(structure.getRequiredGenerationPoints() == 1 && locObj1 != null)
 					{
-             // Cast the object
+						// Cast the object
 						Location loc1 = (Location) locObj1;
 
 						// Create the structure
@@ -539,13 +540,13 @@ public class Administration implements ConversationManager
 					}
 					else
 					{
-       // Add notification
-                        saveNotification(context, this.getClass().getSimpleName(), English.ADMINISTRATION_LOCATIONS_NOT_SELECTED.getLine());
-                    }
-                }
+						// Add notification
+						saveNotification(context, this.getClass().getSimpleName(), English.ADMINISTRATION_LOCATIONS_NOT_SELECTED.getLine());
+					}
+				}
 
-                return new Selection();
-            }
+				return new Selection();
+			}
 
 			private static Prompt success(ConversationContext context)
 			{
