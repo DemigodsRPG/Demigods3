@@ -4,6 +4,8 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -264,7 +266,7 @@ public class Administration implements ConversationManager
 
 					for(Structure structure : Demigods.mythos().getStructures())
 					{
-						// Only list that shiz if it needs to be, dawg
+						// Only list that shiz if it needs to be listed, dawg
 						if(structure.getFlags().contains(Structure.Flag.STRUCTURE_WAND_GENERABLE))
 						{
 							// Add it to the choices
@@ -521,7 +523,7 @@ public class Administration implements ConversationManager
 						Location loc1 = (Location) locObj1;
 
 						// Create the structure
-						scheduleGeneration(structure, loc1);
+						scheduleGeneration(structure, design, loc1);
 
 						// Success boi
 						return success(context);
@@ -533,7 +535,7 @@ public class Administration implements ConversationManager
 						Location loc2 = (Location) locObj2;
 
 						// Create the structure
-						scheduleGeneration(structure, loc1, loc2);
+						scheduleGeneration(structure, design, loc1, loc2);
 
 						// Ye ye ye ye turtle man
 						return success(context);
@@ -563,7 +565,7 @@ public class Administration implements ConversationManager
 				return new Menu();
 			}
 
-			private static void scheduleGeneration(final Structure structure, final Location... locations)
+			private static void scheduleGeneration(final Structure structure, @Nullable final String design, final Location... locations)
 			{
 				// This must be schedules synchronously because chat is handled asynchronously
 				Bukkit.getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.plugin(), new Runnable()
@@ -571,7 +573,7 @@ public class Administration implements ConversationManager
 					@Override
 					public void run()
 					{
-						structure.createNew(true, locations);
+						structure.createNew(true, design, locations);
 					}
 				});
 			}

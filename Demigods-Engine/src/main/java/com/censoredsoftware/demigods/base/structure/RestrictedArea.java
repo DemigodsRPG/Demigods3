@@ -131,7 +131,7 @@ public class RestrictedArea implements Structure, Structure.Design
 	}
 
 	@Override
-	public StructureSave createNew(boolean unused, Location... reference)
+	public StructureSave createNew(boolean unused, String string, Location... reference)
 	{
 		if(reference.length < 2) return null;
 		StructureSave save = new StructureSave();

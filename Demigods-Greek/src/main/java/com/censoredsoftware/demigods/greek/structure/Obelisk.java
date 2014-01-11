@@ -172,7 +172,7 @@ public class Obelisk extends GreekStructure
 					{
 						// Obelisk created!
 						Admins.sendDebug(ChatColor.RED + "Obelisk created by " + character.getName() + " at: " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ());
-						StructureSave save = inst().createNew(true, location);
+						StructureSave save = inst().createNew(true, null, location);
 						save.setOwner(character.getId());
 						inst().birth(save, character);
 

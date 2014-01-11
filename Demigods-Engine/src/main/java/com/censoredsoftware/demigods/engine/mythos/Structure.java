@@ -51,7 +51,7 @@ public interface Structure
 
 	boolean isAllowed(@Nullable StructureSave data, Player sender);
 
-	StructureSave createNew(boolean generate, Location... reference);
+	StructureSave createNew(boolean generate, @Nullable String design, Location... reference);
 
 	public interface Design
 	{

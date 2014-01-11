@@ -16,7 +16,7 @@ public enum English
 			add(ChatColor.GRAY + "  Some structures, including the one you have selection,");
 			add(ChatColor.GRAY + "  have various designs to choose from. Please select the");
 			add(ChatColor.GRAY + "  design you would like to use to generate the chosen");
-			add(ChatColor.GOLD + "  {structure}.");
+			add(ChatColor.GOLD + "  {structure}" + ChatColor.GRAY + ".");
 		}
 	}), ADMINISTRATION_STRUCTURE_WAND_ENABLED_1_POINT(new ArrayList<String>()
 	{

@@ -149,10 +149,24 @@ public class GreekStructure implements Structure
 		});
 	}
 
-	public StructureSave createNew(boolean generate, Location... reference)
+	public StructureSave createNew(boolean generate, String designName, Location... reference)
 	{
-		Design design = getDesign.apply(reference[0]);
-		StructureSave save = createNew.apply(design);
+		// Define variables
+		Design design;
+		StructureSave save;
+
+		// Determine the design
+		if(designName == null)
+		{
+			design = getDesign.apply(reference[0]);
+		}
+		else
+		{
+			design = getDesign(designName);
+		}
+
+		// Create the save
+		save = createNew.apply(design);
 
 		// All structures need these
 		save.generateId();
