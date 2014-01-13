@@ -141,10 +141,12 @@ public class Shrine extends GreekStructure
 					try
 					{
 						// Shrine created!
-						Administration.Util.sendDebug(ChatColor.RED + "Shrine created by " + character.getName() + " (" + character.getDeity() + ") at: " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ());
 						StructureSave save = inst().createNew(true, null, location);
 						save.setOwner(character.getId());
 						inst().birth(save, character);
+
+						// Log the generation
+						Messages.info(com.censoredsoftware.demigods.engine.language.English.LOG_STRUCTURE_CREATED.getLine().replace("{structure}", name + " (" + character.getDeity() + ")").replace("{locX}", location.getX() + "").replace("{locY}", location.getY() + "").replace("{locZ}", location.getZ() + "").replace("{world}", location.getWorld().getName()).replace("{creator}", player.getName()));
 
 						// Consume item in hand
 						ItemStack item = player.getItemInHand();
@@ -182,8 +184,10 @@ public class Shrine extends GreekStructure
 					save.remove();
 					Data.TIMED.removeBool(player.getName() + "destroy_shrine");
 
-					Administration.Util.sendDebug(ChatColor.RED + "Shrine of (" + owner.getDeity() + ") at: " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ() + " removed.");
+                    // Log the generation
+					Messages.info(com.censoredsoftware.demigods.engine.language.English.LOG_STRUCTURE_REMOVED.getLine().replace("{structure}", name + " (" + owner.getDeity() + ")").replace("{locX}", location.getX() + "").replace("{locY}", location.getY() + "").replace("{locZ}", location.getZ() + "").replace("{world}", location.getWorld().getName()).replace("{creator}", player.getName()));
 
+					// Tell the administrator
 					player.sendMessage(ChatColor.GREEN + English.ADMIN_WAND_REMOVE_SHRINE_COMPLETE.getLine());
 				}
 				else
