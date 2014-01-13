@@ -29,6 +29,7 @@ import com.censoredsoftware.demigods.engine.DemigodsPlugin;
 import com.censoredsoftware.demigods.engine.data.Data;
 import com.censoredsoftware.demigods.engine.data.wrap.CLocationManager;
 import com.censoredsoftware.demigods.engine.event.BattleDeathEvent;
+import com.censoredsoftware.demigods.engine.language.English;
 import com.censoredsoftware.demigods.engine.mythos.Alliance;
 import com.censoredsoftware.demigods.engine.mythos.Deity;
 import com.censoredsoftware.demigods.engine.util.Configs;
@@ -486,6 +487,10 @@ public class Battle implements ConfigurationSerializable
 			battle.addParticipant(damaged);
 			battle.startScoreboardRunnable();
 			save(battle);
+
+			// Log the creation
+			Messages.info(English.LOG_BATTLE_STARTED.getLine().replace("{locX}", battle.getStartLocation().getX() + "").replace("{locY}", battle.getStartLocation().getY() + "").replace("{locZ}", battle.getStartLocation().getZ() + "").replace("{world}", battle.getStartLocation().getWorld().getName()).replace("{starter}", battle.getStarter().getName()));
+
 			return battle;
 		}
 

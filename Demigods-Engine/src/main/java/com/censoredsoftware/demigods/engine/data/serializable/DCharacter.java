@@ -25,6 +25,7 @@ import com.censoredsoftware.demigods.engine.data.Data;
 import com.censoredsoftware.demigods.engine.data.wrap.CItemStackManager;
 import com.censoredsoftware.demigods.engine.data.wrap.CLocationManager;
 import com.censoredsoftware.demigods.engine.event.DemigodsChatEvent;
+import com.censoredsoftware.demigods.engine.language.English;
 import com.censoredsoftware.demigods.engine.mythos.Ability;
 import com.censoredsoftware.demigods.engine.mythos.Alliance;
 import com.censoredsoftware.demigods.engine.mythos.Deity;
@@ -1156,6 +1157,10 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			character.setLocation(player.getOfflinePlayer().getPlayer().getLocation());
 			character.setMeta(Util.createMeta(character));
 			save(character);
+
+			// Log the creation
+			Messages.info(English.LOG_CHARACTER_CREATED.getLine().replace("{character}", charName).replace("{id}", character.getId().toString()).replace("{deity}", deity.getName()));
+
 			return character;
 		}
 
