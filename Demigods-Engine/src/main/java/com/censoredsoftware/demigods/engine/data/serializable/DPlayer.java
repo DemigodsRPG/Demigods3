@@ -522,6 +522,10 @@ public class DPlayer implements ConfigurationSerializable
 			playerSave.setLastLoginTime(player.getLastPlayed());
 			playerSave.setCanPvp(true);
 			Util.save(playerSave);
+
+			// Log the creation
+			Messages.info(English.LOG_PLAYER_CREATED.getLine().replace("{player}", player.getName()).replace("{id}", MojangIdGrabber.getUUID(player)));
+
 			return playerSave;
 		}
 

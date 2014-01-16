@@ -521,7 +521,7 @@ public class Administration implements ConversationManager
 						Location loc1 = (Location) locObj1;
 
 						// Create the structure
-						scheduleGeneration(structure, design, loc1);
+						scheduleGeneration(player, structure, design, loc1);
 
 						// Success boi
 						return success(context);
@@ -533,7 +533,7 @@ public class Administration implements ConversationManager
 						Location loc2 = (Location) locObj2;
 
 						// Create the structure
-						scheduleGeneration(structure, design, loc1, loc2);
+						scheduleGeneration(player, structure, design, loc1, loc2);
 
 						// Ye ye ye ye turtle man
 						return success(context);
@@ -563,7 +563,7 @@ public class Administration implements ConversationManager
 				return new Menu();
 			}
 
-			private static void scheduleGeneration(final Structure structure, @Nullable final String design, final Location... locations)
+			private static void scheduleGeneration(final Player player, final Structure structure, @Nullable final String design, final Location... locations)
 			{
 				// This must be schedules synchronously because chat is handled asynchronously
 				Bukkit.getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.plugin(), new Runnable()
@@ -572,6 +572,9 @@ public class Administration implements ConversationManager
 					public void run()
 					{
 						structure.createNew(true, design, locations);
+
+						// Log the generation
+						Messages.info(English.LOG_STRUCTURE_CREATED.getLine().replace("{structure}", structure.getName()).replace("{locX}", locations[0].getX() + "").replace("{locY}", locations[0].getY() + "").replace("{locZ}", locations[0].getZ() + "").replace("{world}", locations[0].getWorld().getName()).replace("{creator}", player.getName()));
 					}
 				});
 			}
