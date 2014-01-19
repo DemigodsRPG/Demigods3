@@ -1,37 +1,32 @@
 package com.censoredsoftware.demigods.base.command;
 
 import com.censoredsoftware.censoredlib.helper.CommandManager;
-import com.censoredsoftware.censoredlib.schematic.Schematic;
-import com.censoredsoftware.censoredlib.util.Images;
+import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.DemigodsPlugin;
 import com.censoredsoftware.demigods.engine.data.Data;
 import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
 import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
 import com.censoredsoftware.demigods.engine.data.serializable.StructureSave;
 import com.censoredsoftware.demigods.engine.mythos.Structure;
-import com.censoredsoftware.demigods.engine.util.Messages;
+import com.censoredsoftware.shaded.org.jgrapht.ext.DOTExporter;
+import com.censoredsoftware.shaded.org.jgrapht.ext.EdgeNameProvider;
+import com.censoredsoftware.shaded.org.jgrapht.ext.VertexNameProvider;
+import com.censoredsoftware.shaded.org.jgrapht.graph.DefaultEdge;
+import com.censoredsoftware.shaded.org.jgrapht.graph.DefaultWeightedEdge;
 import com.censoredsoftware.shaded.org.jgrapht.graph.SimpleWeightedGraph;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.URL;
-import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.UUID;
@@ -65,21 +60,40 @@ public class DevelopmentCommands extends CommandManager
 	{
 		Player player = (Player) sender;
 
+		// TODO Remove all Greek stuff from here, for testng only!
 
 		try
 		{
-			File file = new File(DemigodsPlugin.plugin().getDataFolder() + "/test.txt");
+			File file = new File(DemigodsPlugin.plugin().getDataFolder() + "/obelisks.dot");
 			PrintWriter write = new PrintWriter(file);
-			write.println(Structure.Util.getGraphOfStructuresWithFlag(Structure.Flag.NO_GRIEFING).toString());
+			DOTExporter<UUID, DefaultWeightedEdge> exporter = new DOTExporter<>(new VertexNameProvider<UUID>()
+			{
+				@Override
+				public String getVertexName(UUID uuid)
+				{
+					return "U" + uuid.toString().replaceAll("-", "_");
+				}
+			}, new VertexNameProvider<UUID>()
+			{
+				@Override
+				public String getVertexName(UUID uuid)
+				{
+					return StructureSave.Util.load(uuid).getReferenceLocation().toString();
+				}
+			}, new EdgeNameProvider<DefaultWeightedEdge>()
+			{
+				@Override
+				public String getEdgeName(DefaultWeightedEdge defaultWeightedEdge)
+				{
+					return defaultWeightedEdge.toString();
+				}
+			});
+			exporter.export(write, Structure.Util.getGraphOfStructuresWithType(Demigods.mythos().getStructure("Obelisk")));
 			write.close();
 			player.sendMessage("Success!");
 			return true;
 		}
 		catch(FileNotFoundException e)
-		{
-			e.printStackTrace();
-		}
-		catch(IOException e)
 		{
 			e.printStackTrace();
 		}
@@ -92,69 +106,9 @@ public class DevelopmentCommands extends CommandManager
 		return true;
 	}
 
-	private static int thisTask = -1;
-	private static List<Schematic> toGen = null;
-	private static int taskCount = -1;
-
 	private static boolean test2(CommandSender sender, final String[] args)
 	{
 		Player player = (Player) sender;
-
-		try
-		{
-			player.sendMessage(" Here we go! ");
-
-			URL doge = new URL(args[0]);
-
-			BufferedImage veryImage = ImageIO.read(doge);
-
-			// veryImage = Images.getScaledImage(veryImage, 128, 128);
-
-			final Location render = player.getLocation();
-
-			final String playerName = player.getName();
-
-			if(player.isOp())
-			{
-				final int theTask = Images.convertImageToSchematic(DemigodsPlugin.plugin(), veryImage, 1356);
-
-				thisTask = Bukkit.getScheduler().scheduleSyncRepeatingTask(DemigodsPlugin.plugin(), new Runnable()
-				{
-
-					@Override
-					public void run()
-					{
-						if(taskCount != -1 && toGen != null)
-						{
-							toGen.get(taskCount).generate(render);
-							Messages.info(" GENERATING: " + taskCount + " / " + toGen.size() + " left!");
-							taskCount--;
-							if(taskCount == -1)
-							{
-								toGen = null;
-								OfflinePlayer player = Bukkit.getOfflinePlayer(playerName);
-								if(player.isOnline()) player.getPlayer().sendMessage(" Done! ");
-								Bukkit.getScheduler().cancelTask(thisTask);
-							}
-						}
-						else if(Images.getConvertedSchematics(theTask) != null)
-						{
-							Messages.info(" FOUND: Begin generation sequence! ");
-							toGen = Images.getConvertedSchematics(theTask);
-							taskCount = toGen.size() - 1;
-							Images.removeSchematicList(theTask);
-						}
-					}
-				}, 40, 10);
-			}
-
-			player.sendMessage(" Hold on... ");
-		}
-		catch(Exception suchError)
-		{
-			player.sendMessage(ChatColor.RED + "many problems. " + suchError.getMessage());
-			suchError.printStackTrace();
-		}
 
 		return true;
 	}
@@ -163,13 +117,15 @@ public class DevelopmentCommands extends CommandManager
 	{
         Player player = (Player) sender;
 
+        // TODO Remove all Greek stuff from here, for testng only!
+
 		StructureSave save = Iterables.getFirst(Structure.Util.getInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_GRIEFING), null);
 		if(save != null)
 		{
-			SimpleWeightedGraph graph = Structure.Util.getGraphOfStructuresWithFlag(Structure.Flag.NO_GRIEFING);
+			SimpleWeightedGraph<UUID, DefaultWeightedEdge> graph = Structure.Util.getGraphOfStructuresWithType(Demigods.mythos().getStructure("Obelisk"));
 
-			Set<UUID> test = graph.edgesOf(save.getId());
-			if(!test.isEmpty()) for(UUID found : test)
+			Set<DefaultWeightedEdge> test = graph.edgeSet();
+			if(!test.isEmpty()) for(DefaultEdge found : test)
 				player.sendMessage(found.toString());
 			else player.sendMessage("Nope.");
 		}

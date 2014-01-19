@@ -5,7 +5,7 @@ import com.censoredsoftware.censoredlib.data.location.Region;
 import com.censoredsoftware.censoredlib.schematic.Schematic;
 import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
 import com.censoredsoftware.demigods.engine.data.serializable.StructureSave;
-import com.censoredsoftware.shaded.org.jgrapht.graph.DefaultEdge;
+import com.censoredsoftware.shaded.org.jgrapht.graph.DefaultWeightedEdge;
 import com.censoredsoftware.shaded.org.jgrapht.graph.SimpleWeightedGraph;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
@@ -352,31 +352,50 @@ public interface Structure
 			return true;
 		}
 
-		public static SimpleWeightedGraph<UUID, DefaultEdge> getGraphOfStructuresWithFlag(Flag flag)
+		public static SimpleWeightedGraph<UUID, DefaultWeightedEdge> getGraphOfStructuresWithType(final Structure type)
 		{
-			SimpleWeightedGraph<UUID, DefaultEdge> graph = new SimpleWeightedGraph<>(DefaultEdge.class);
-
-			for(final StructureSave save : getStructuresWithFlag(flag))
+			return getGraphOfStructuresWithPredicate(new Predicate<StructureSave>()
 			{
-				if(!graph.containsVertex(save.getId())) graph.addVertex(save.getId());
+				@Override
+				public boolean apply(StructureSave structureSave)
+				{
+					return structureSave.getType().equals(type);
+				}
+			}, type.getRadius() * 5); // FIXME Fine tune this distance.
+		}
 
-				final int radius = save.getType().getRadius() + (save.getType().getRadius() / 3);
+		public static SimpleWeightedGraph<UUID, DefaultWeightedEdge> getGraphOfStructuresWithFlag(final Flag flag, int distance)
+		{
+			return getGraphOfStructuresWithPredicate(new Predicate<StructureSave>()
+			{
+				@Override
+				public boolean apply(StructureSave structureSave)
+				{
+					return structureSave.getType().getFlags().contains(flag);
+				}
+			}, distance);
+		}
+
+		public static SimpleWeightedGraph<UUID, DefaultWeightedEdge> getGraphOfStructuresWithPredicate(Predicate<StructureSave> predicate, final int distance)
+		{
+			SimpleWeightedGraph<UUID, DefaultWeightedEdge> graph = new SimpleWeightedGraph<>(DefaultWeightedEdge.class);
+
+			for(final StructureSave save : StructureSave.Util.findAll(predicate))
+			{
+				graph.addVertex(save.getId());
 
 				for(StructureSave found : StructureSave.Util.findAll(new Predicate<StructureSave>()
 				{
 					@Override
 					public boolean apply(StructureSave given)
 					{
-						return !given.equals(save) && CLocation.Util.distanceFlat(given.getReferenceLocation(), save.getReferenceLocation()) <= radius;
+						return !given.equals(save) && CLocation.Util.distanceFlat(given.getReferenceLocation(), save.getReferenceLocation()) <= distance;
 					}
 				}))
 				{
-					if(!graph.containsVertex(save.getId())) graph.addVertex(save.getId());
-					if(!graph.containsEdge(found.getId(), save.getId()))
-					{
-						graph.addEdge(save.getId(), found.getId());
-						graph.setEdgeWeight(graph.getEdge(save.getId(), found.getId()), CLocation.Util.distanceFlat(found.getReferenceLocation(), save.getReferenceLocation()));
-					}
+					graph.addVertex(found.getId());
+					graph.addEdge(save.getId(), found.getId());
+					graph.setEdgeWeight(graph.getEdge(save.getId(), found.getId()), CLocation.Util.distanceFlat(found.getReferenceLocation(), save.getReferenceLocation()));
 				}
 			}
 
