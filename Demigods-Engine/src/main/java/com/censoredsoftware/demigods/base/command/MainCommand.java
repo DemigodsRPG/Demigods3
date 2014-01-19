@@ -1,18 +1,5 @@
 package com.censoredsoftware.demigods.base.command;
 
-import java.util.Collection;
-import java.util.Map;
-
-import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.PluginManager;
-
 import com.censoredsoftware.censoredlib.helper.CommandManager;
 import com.censoredsoftware.censoredlib.language.Symbol;
 import com.censoredsoftware.censoredlib.util.Strings;
@@ -34,6 +21,18 @@ import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.PluginManager;
+
+import java.util.Collection;
+import java.util.Map;
 
 // TODO Convert this over to the sub-command format.
 
@@ -242,7 +241,7 @@ public class MainCommand extends CommandManager
 							}
 							catch(Exception errored)
 							{
-								Messages.logException(errored);
+								errored.printStackTrace();
 								return true;
 							}
 						}

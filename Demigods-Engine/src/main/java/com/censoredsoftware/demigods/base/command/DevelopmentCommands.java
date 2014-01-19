@@ -1,21 +1,5 @@
 package com.censoredsoftware.demigods.base.command;
 
-import java.awt.image.BufferedImage;
-import java.net.URL;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.concurrent.TimeUnit;
-
-import javax.imageio.ImageIO;
-
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import com.censoredsoftware.censoredlib.helper.CommandManager;
 import com.censoredsoftware.censoredlib.schematic.Schematic;
 import com.censoredsoftware.censoredlib.util.Images;
@@ -26,11 +10,31 @@ import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
 import com.censoredsoftware.demigods.engine.data.serializable.StructureSave;
 import com.censoredsoftware.demigods.engine.mythos.Structure;
 import com.censoredsoftware.demigods.engine.util.Messages;
+import com.censoredsoftware.shaded.org.jgrapht.graph.SimpleWeightedGraph;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.URL;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Set;
+import java.util.UUID;
 
 // TODO Convert this over to the sub-command format.
 
@@ -61,12 +65,26 @@ public class DevelopmentCommands extends CommandManager
 	{
 		Player player = (Player) sender;
 
-		if(args.length > 0) Data.TIMED.setString(player.getName(), args[0], 1, TimeUnit.HOURS);
-		else
+
+		try
 		{
-			String data = Data.TIMED.getString(player.getName());
-			player.sendMessage(data != null ? data : "null :O");
+			File file = new File(DemigodsPlugin.plugin().getDataFolder() + "/test.txt");
+			PrintWriter write = new PrintWriter(file);
+			write.println(Structure.Util.getGraphOfStructuresWithFlag(Structure.Flag.NO_GRIEFING).toString());
+			write.close();
+			player.sendMessage("Success!");
+			return true;
 		}
+		catch(FileNotFoundException e)
+		{
+			e.printStackTrace();
+		}
+		catch(IOException e)
+		{
+			e.printStackTrace();
+		}
+
+		player.sendMessage("Failure.");
 
 		// for(Battle battle : Battle.Util.getAllActive())
 		// battle.end();
@@ -135,7 +153,7 @@ public class DevelopmentCommands extends CommandManager
 		catch(Exception suchError)
 		{
 			player.sendMessage(ChatColor.RED + "many problems. " + suchError.getMessage());
-			Messages.logException(suchError);
+			suchError.printStackTrace();
 		}
 
 		return true;
@@ -143,6 +161,19 @@ public class DevelopmentCommands extends CommandManager
 
 	private static boolean test3(CommandSender sender, final String[] args)
 	{
+        Player player = (Player) sender;
+
+		StructureSave save = Iterables.getFirst(Structure.Util.getInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_GRIEFING), null);
+		if(save != null)
+		{
+			SimpleWeightedGraph graph = Structure.Util.getGraphOfStructuresWithFlag(Structure.Flag.NO_GRIEFING);
+
+			Set<UUID> test = graph.edgesOf(save.getId());
+			if(!test.isEmpty()) for(UUID found : test)
+				player.sendMessage(found.toString());
+			else player.sendMessage("Nope.");
+		}
+
 		return true;
 	}
 

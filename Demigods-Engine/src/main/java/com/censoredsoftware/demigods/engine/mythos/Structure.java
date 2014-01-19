@@ -1,25 +1,23 @@
 package com.censoredsoftware.demigods.engine.mythos;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.NoSuchElementException;
-import java.util.Set;
-
-import javax.annotation.Nullable;
-
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
-
+import com.censoredsoftware.censoredlib.data.location.CLocation;
 import com.censoredsoftware.censoredlib.data.location.Region;
 import com.censoredsoftware.censoredlib.schematic.Schematic;
 import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
 import com.censoredsoftware.demigods.engine.data.serializable.StructureSave;
+import com.censoredsoftware.shaded.org.jgrapht.graph.DefaultEdge;
+import com.censoredsoftware.shaded.org.jgrapht.graph.SimpleWeightedGraph;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
+
+import javax.annotation.Nullable;
+import java.util.*;
 
 public interface Structure
 {
@@ -352,6 +350,37 @@ public interface Structure
 			}
 
 			return true;
+		}
+
+		public static SimpleWeightedGraph<UUID, DefaultEdge> getGraphOfStructuresWithFlag(Flag flag)
+		{
+			SimpleWeightedGraph<UUID, DefaultEdge> graph = new SimpleWeightedGraph<>(DefaultEdge.class);
+
+			for(final StructureSave save : getStructuresWithFlag(flag))
+			{
+				if(!graph.containsVertex(save.getId())) graph.addVertex(save.getId());
+
+				final int radius = save.getType().getRadius() + (save.getType().getRadius() / 3);
+
+				for(StructureSave found : StructureSave.Util.findAll(new Predicate<StructureSave>()
+				{
+					@Override
+					public boolean apply(StructureSave given)
+					{
+						return !given.equals(save) && CLocation.Util.distanceFlat(given.getReferenceLocation(), save.getReferenceLocation()) <= radius;
+					}
+				}))
+				{
+					if(!graph.containsVertex(save.getId())) graph.addVertex(save.getId());
+					if(!graph.containsEdge(found.getId(), save.getId()))
+					{
+						graph.addEdge(save.getId(), found.getId());
+						graph.setEdgeWeight(graph.getEdge(save.getId(), found.getId()), CLocation.Util.distanceFlat(found.getReferenceLocation(), save.getReferenceLocation()));
+					}
+				}
+			}
+
+			return graph;
 		}
 
 		/**

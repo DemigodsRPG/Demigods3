@@ -1,22 +1,20 @@
 package com.censoredsoftware.demigods.greek.structure;
 
-import java.util.Collection;
-import java.util.NoSuchElementException;
-import java.util.Set;
-
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
-
 import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
 import com.censoredsoftware.demigods.engine.data.serializable.StructureSave;
 import com.censoredsoftware.demigods.engine.mythos.Structure;
-import com.censoredsoftware.demigods.engine.util.Messages;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
+
+import java.util.Collection;
+import java.util.NoSuchElementException;
+import java.util.Set;
 
 public class GreekStructure implements Structure
 {
@@ -70,7 +68,7 @@ public class GreekStructure implements Structure
 		}
 		catch(NoSuchElementException ignored)
 		{
-			Messages.logException(ignored);
+			ignored.printStackTrace();
 		}
 		return null;
 	}

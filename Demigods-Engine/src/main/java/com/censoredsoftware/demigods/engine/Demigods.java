@@ -1,21 +1,5 @@
 package com.censoredsoftware.demigods.engine;
 
-import java.util.*;
-
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.conversations.ConversationFactory;
-import org.bukkit.event.HandlerList;
-import org.bukkit.event.Listener;
-import org.bukkit.permissions.Permission;
-import org.bukkit.permissions.PermissionDefault;
-import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.RegisteredServiceProvider;
-import org.bukkit.plugin.ServicesManager;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.ScoreboardManager;
-import org.bukkit.scoreboard.Team;
-
 import com.censoredsoftware.censoredlib.helper.CensoredCentralizedClass;
 import com.censoredsoftware.censoredlib.helper.ConversationManager;
 import com.censoredsoftware.demigods.base.DemigodsConversation;
@@ -38,6 +22,22 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.conversations.ConversationFactory;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
+import org.bukkit.permissions.Permission;
+import org.bukkit.permissions.PermissionDefault;
+import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.plugin.ServicesManager;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.ScoreboardManager;
+import org.bukkit.scoreboard.Team;
+
+import java.util.*;
 
 public class Demigods extends CensoredCentralizedClass
 {
@@ -130,8 +130,15 @@ public class Demigods extends CensoredCentralizedClass
 			// Start threads
 			TaskManager.startThreads();
 
-			// Regenerate structures
-			Structure.Util.regenerateStructures();
+			// Regenerate structures (on a delay)
+			Bukkit.getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.plugin(), new BukkitRunnable()
+			{
+				@Override
+				public void run()
+				{
+					Structure.Util.regenerateStructures();
+				}
+			}, 120);
 
 			if(Util.isRunningSpigot())
 			{
@@ -148,7 +155,7 @@ public class Demigods extends CensoredCentralizedClass
 		}
 		catch(Exception errored)
 		{
-			Messages.logException(errored);
+			errored.printStackTrace();
 		}
 		return false;
 	}

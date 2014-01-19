@@ -1,21 +1,5 @@
 package com.censoredsoftware.demigods.greek.structure;
 
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
-
-import org.bukkit.*;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.material.MaterialData;
-
 import com.censoredsoftware.censoredlib.schematic.BlockData;
 import com.censoredsoftware.censoredlib.schematic.Schematic;
 import com.censoredsoftware.censoredlib.schematic.Selection;
@@ -33,6 +17,21 @@ import com.censoredsoftware.demigods.engine.util.Zones;
 import com.censoredsoftware.demigods.greek.language.English;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
+import org.bukkit.*;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.material.MaterialData;
+
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 public class Obelisk extends GreekStructure
 {
@@ -182,7 +181,7 @@ public class Obelisk extends GreekStructure
 					catch(Exception errored)
 					{
 						// Creation of shrine failed...
-						Messages.logException(errored);
+						Messages.warning(errored.getMessage());
 					}
 				}
 			}
