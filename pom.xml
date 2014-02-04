@@ -18,6 +18,7 @@
     </modules>
 
     <name>Demigods</name>
+    <inceptionYear>2012</inceptionYear>
     <description>Demigods RPG for Bukkit/Spigot Minecraft Servers.</description>
     <url>http://github.com/CensoredSoftware/Demigods</url>
 
