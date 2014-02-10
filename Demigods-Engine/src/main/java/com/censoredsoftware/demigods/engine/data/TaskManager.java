@@ -1,9 +1,5 @@
 package com.censoredsoftware.demigods.engine.data;
 
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
-
 import com.censoredsoftware.censoredlib.util.Threads;
 import com.censoredsoftware.censoredlib.util.Times;
 import com.censoredsoftware.demigods.engine.Demigods;
@@ -19,6 +15,9 @@ import com.censoredsoftware.demigods.engine.mythos.Structure;
 import com.censoredsoftware.demigods.engine.util.Configs;
 import com.censoredsoftware.demigods.engine.util.Messages;
 import com.censoredsoftware.demigods.engine.util.Zones;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 @SuppressWarnings("deprecation")
 public class TaskManager
@@ -88,7 +87,7 @@ public class TaskManager
 				public void run()
 				{
 					// Update Timed Data
-					Data.TIMED.clearExpired();
+					FileDataSource.TIMED.clearExpired();
 
 					// Update Notifications
 					NotificationManager.updateNotifications();
@@ -103,10 +102,10 @@ public class TaskManager
 					long time = System.currentTimeMillis();
 
 					// Save data
-					Data.save();
+					FileDataSource.save();
 
 					// Send the save message to the console
-					if(SAVE_ALERT) Messages.info(Bukkit.getOnlinePlayers().length + " of " + Data.PLAYER.keySet().size() + " total players saved in " + Times.getSeconds(time) + " seconds.");
+					if(SAVE_ALERT) Messages.info(Bukkit.getOnlinePlayers().length + " of " + FileDataSource.PLAYER.keySet().size() + " total players saved in " + Times.getSeconds(time) + " seconds.");
 				}
 			};
 			FAVOR = new BukkitRunnable()

@@ -1,19 +1,5 @@
 package com.censoredsoftware.demigods.engine.data;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.World;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.entity.Player;
-
 import com.censoredsoftware.censoredlib.data.inventory.CItemStack;
 import com.censoredsoftware.censoredlib.data.location.CLocation;
 import com.censoredsoftware.censoredlib.data.player.Notification;
@@ -23,15 +9,24 @@ import com.censoredsoftware.censoredlib.helper.TimedMapDBFile;
 import com.censoredsoftware.demigods.engine.DemigodsPlugin;
 import com.censoredsoftware.demigods.engine.data.serializable.*;
 import com.censoredsoftware.demigods.engine.language.English;
-import com.google.common.base.Supplier;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Table;
-import com.google.common.collect.Tables;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.World;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.entity.Player;
+
+import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * This is the data management file for Demigods.
  */
-public class Data
+class FileDataSource implements DataSource
 {
 	// -- VARIABLES -- //
 
@@ -258,28 +253,28 @@ public class Data
 	public static final TimedMapDBFile TIMED = new TimedMapDBFile("TIMED.dg", SAVE_PATH + "bin/");
 	public static final MapDBFile SERVER = new MapDBFile("SERVER.dg", SAVE_PATH + "bin/");
 
-	// -- CONSTRUCTOR -- //
-
-	private Data()
-	{}
-
-	// -- UTIL METHODS -- //
-
-	public static void init()
-	{
-		for(DemigodsFile data : yamlFiles())
-			data.loadToData();
-
-		for(World world : Bukkit.getWorlds())
-			addWorld(world);
-	}
-
 	public static DemigodsFile[] yamlFiles()
 	{
 		return new DemigodsFile[] { PLAYER, LOCATION, STRUCTURE, CHARACTER, CHARACTER_META, DEATH, SKILL, CHARACTER_INVENTORY, CHARACTER_ENDER_INVENTORY, ITEM_STACK, SAVED_POTION, PET, NOTIFICATION, BATTLE, TRIBUTE_DATA };
 	}
 
-	public static void save()
+	// -- CONSTRUCTOR -- //
+
+	private FileDataSource()
+	{}
+
+	// -- UTIL METHODS -- //
+
+	public void init()
+	{
+		for(DemigodsFile data : yamlFiles())
+			data.loadToData();
+
+		for(World world : Bukkit.getWorlds())
+			WorldDataSource.addWorld(world);
+	}
+
+	public void save()
 	{
 		boolean compact = System.currentTimeMillis() % 100000000L == 0;
 
@@ -288,7 +283,7 @@ public class Data
 
 		for(World world : Bukkit.getWorlds())
 		{
-			WorldData dWorld = getWorld(world.getName());
+			WorldData dWorld = WorldDataSource.getWorld(world.getName());
 			dWorld.save();
 			if(compact) dWorld.compact();
 		}
@@ -297,7 +292,7 @@ public class Data
 		SERVER.save();
 	}
 
-	public static void flushData()
+	public void flushData()
 	{
 		// Kick everyone
 		for(Player player : Bukkit.getOnlinePlayers())
@@ -306,7 +301,7 @@ public class Data
 		// Clear the data
 		for(DemigodsFile data : yamlFiles())
 			data.clear();
-		TEMP.clear();
+		TempDataSource.TEMP.clear();
 		TIMED.clear();
 		SERVER.clear();
 
@@ -317,64 +312,25 @@ public class Data
 		Bukkit.getServer().getPluginManager().enablePlugin(DemigodsPlugin.plugin());
 	}
 
-	// -- WORLD DATA -- //
-
-	// World Data
-	private static final ConcurrentMap<String, WorldData> WORLDS = Maps.newConcurrentMap();
-
-	public static void addWorld(World world)
+    @Override
+	public <T> T get(Class<T> clazz, String key)
 	{
-		WorldData dWorld = new WorldData(world.getName(), world.getWorldFolder().getPath());
-		WORLDS.put(world.getName(), dWorld);
-	}
-
-	public static void addWorld(WorldData world)
-	{
-		WORLDS.put(world.getName(), world);
-	}
-
-	public static void removeWorld(String name)
-	{
-		WORLDS.get(name).save();
-		WORLDS.remove(name);
-	}
-
-	public static WorldData getWorld(String name)
-	{
-		return WORLDS.get(name);
-	}
-
-	// -- TEMP DATA -- //
-
-	// Temp Data
-	private static final Table<String, String, Object> TEMP = Tables.newCustomTable(new ConcurrentHashMap<String, Map<String, Object>>(), new Supplier<ConcurrentHashMap<String, Object>>()
-	{
-		@Override
-		public ConcurrentHashMap<String, Object> get()
+		switch(clazz.getName())
 		{
-			return new ConcurrentHashMap<>();
+
 		}
-	});
-
-	public static boolean hasKeyTemp(String row, String column)
-	{
-		return TEMP.contains(row, column);
 	}
 
-	public static Object getValueTemp(String row, String column)
+	@Override
+	public <T> Set<T> getAll(Class<T> clazz)
 	{
-		if(hasKeyTemp(row, column)) return TEMP.get(row, column);
-		else return null;
+		return;
 	}
 
-	public static void saveTemp(String row, String column, Object value)
+	@Override
+	public <T> void save(Class<T> clazz, String key, T value)
 	{
-		TEMP.put(row, column, value);
-	}
 
-	public static void removeTemp(String row, String column)
-	{
-		if(hasKeyTemp(row, column)) TEMP.remove(row, column);
 	}
 
 	/**
@@ -391,21 +347,21 @@ public class Data
 		protected DemigodsFile(String saveFile)
 		{
 			this.saveFile = saveFile;
-		}
+        }
 
-		@Override
+        @Override
 		public final ConcurrentMap<ID, DATA> getLoadedData()
 		{
 			return dataStore;
 		}
 
-		@Override
+        @Override
 		public final Map<String, Object> serialize(ID id)
 		{
 			return getLoadedData().get(id).serialize();
 		}
 
-		@Override
+      @Override
 		public String getSavePath()
 		{
 			return SAVE_PATH;
@@ -414,10 +370,10 @@ public class Data
 		@Override
 		public final String getSaveFile()
 		{
-			return saveFile;
-		}
+   return saveFile;
+        }
 
-		@Override
+        @Override
 		public final void loadToData()
 		{
 			dataStore = loadFromFile();
@@ -429,14 +385,14 @@ public class Data
 		}
 
 		public final DATA get(ID key)
-		{
+        {
 			return dataStore.get(key);
 		}
 
 		public final void put(ID key, DATA value)
 		{
 			dataStore.put(key, value);
-		}
+        }
 
 		public final void remove(ID key)
 		{
@@ -444,19 +400,19 @@ public class Data
 		}
 
 		public final Set<ID> keySet()
-		{
+        {
 			return dataStore.keySet();
 		}
 
 		public final Set<Map.Entry<ID, DATA>> entrySet()
-		{
+   {
 			return dataStore.entrySet();
 		}
 
 		public final Collection<DATA> values()
 		{
 			return dataStore.values();
-		}
+        }
 
 		public final void clear()
 		{
