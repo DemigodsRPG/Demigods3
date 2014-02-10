@@ -1,4 +1,4 @@
-package com.censoredsoftware.demigods.engine.data;
+package com.censoredsoftware.demigods.engine.world;
 
 import com.google.common.collect.Maps;
 import org.bukkit.World;

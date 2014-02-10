@@ -2,12 +2,12 @@ package com.censoredsoftware.demigods.base.listener;
 
 import com.censoredsoftware.demigods.engine.data.Data;
 import com.censoredsoftware.demigods.engine.data.TributeManager;
-import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
-import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
 import com.censoredsoftware.demigods.engine.data.serializable.StructureSave;
+import com.censoredsoftware.demigods.engine.entity.player.DemigodsCharacter;
+import com.censoredsoftware.demigods.engine.entity.player.DemigodsPlayer;
 import com.censoredsoftware.demigods.engine.language.English;
 import com.censoredsoftware.demigods.engine.mythos.Deity;
-import com.censoredsoftware.demigods.engine.mythos.Structure;
+import com.censoredsoftware.demigods.engine.mythos.StructureType;
 import com.censoredsoftware.demigods.engine.util.Configs;
 import com.censoredsoftware.demigods.engine.util.Zones;
 import org.bukkit.Bukkit;
@@ -34,34 +34,34 @@ public class TributeListener implements Listener
 		if(Zones.inNoDemigodsZone(event.getPlayer().getLocation())) return;
 
 		// Return if the player is mortal
-		if(!DPlayer.Util.isImmortal(event.getPlayer())) return;
+		if(!DemigodsPlayer.Util.isImmortal(event.getPlayer())) return;
 		if(event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
 
 		// Define variables
 		Location location = event.getClickedBlock().getLocation();
 		Player player = event.getPlayer();
-		DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+		DemigodsCharacter character = DemigodsPlayer.Util.getPlayer(player).getCurrent();
 
-		if(Structure.Util.partOfStructureWithFlag(location, Structure.Flag.TRIBUTE_LOCATION))
+		if(StructureType.Util.partOfStructureWithFlag(location, StructureType.Flag.TRIBUTE_LOCATION))
 		{
 			// Cancel the interaction
 			event.setCancelled(true);
 
 			// Define the shrine
-			StructureSave save = Structure.Util.getStructureRegional(location);
+			StructureSave save = StructureType.Util.getStructureRegional(location);
 
 			// Return if they aren't clicking the gold block
 			if(!save.getClickableBlocks().contains(event.getClickedBlock().getLocation())) return;
 
 			// Return if the player is mortal
-			if(!DPlayer.Util.getPlayer(player).hasCurrent())
+			if(!DemigodsPlayer.Util.getPlayer(player).hasCurrent())
 			{
 				player.sendMessage(ChatColor.RED + English.DISABLED_MORTAL.getLine());
 				return;
 			}
-			else if(save.getOwner() != null && !character.getDeity().equals(DCharacter.Util.load(save.getOwner()).getDeity()))
+			else if(save.getOwner() != null && !character.getDeity().equals(DemigodsCharacter.Util.load(save.getOwner()).getDeity()))
 			{
-				player.sendMessage(English.MUST_BE_ALLIED_TO_TRIBUTE.getLine().replace("{deity}", DCharacter.Util.load(save.getOwner()).getDeity().getName()));
+				player.sendMessage(English.MUST_BE_ALLIED_TO_TRIBUTE.getLine().replace("{deity}", DemigodsCharacter.Util.load(save.getOwner()).getDeity().getName()));
 				return;
 			}
 			tribute(character, save);
@@ -75,13 +75,13 @@ public class TributeListener implements Listener
 
 		// Define player and character
 		Player player = (Player) event.getPlayer();
-		DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+		DemigodsCharacter character = DemigodsPlayer.Util.getPlayer(player).getCurrent();
 
 		// Make sure they have a character and are immortal
 		if(character == null) return;
 
 		// If it isn't a tribute chest then break the method
-		if(!event.getInventory().getName().contains("Tribute to") /* TODO make this work with translations, I'm sleepy */|| !Structure.Util.partOfStructureWithFlag(player.getTargetBlock(null, 10).getLocation(), Structure.Flag.TRIBUTE_LOCATION)) return;
+		if(!event.getInventory().getName().contains("Tribute to") /* TODO make this work with translations, I'm sleepy */|| !StructureType.Util.partOfStructureWithFlag(player.getTargetBlock(null, 10).getLocation(), StructureType.Flag.TRIBUTE_LOCATION)) return;
 
 		// Get the creator of the shrine
 		StructureSave save = StructureSave.Util.load(UUID.fromString(Data.getValueTemp(player.getName(), character.getName()).toString()));
@@ -114,7 +114,7 @@ public class TributeListener implements Listener
 		// Define the shrine owner
 		if(save.getOwner() != null)
 		{
-			DCharacter shrineOwner = DCharacter.Util.load(save.getOwner());
+			DemigodsCharacter shrineOwner = DemigodsCharacter.Util.load(save.getOwner());
 			OfflinePlayer shrineOwnerPlayer = shrineOwner.getOfflinePlayer();
 
 			if(character.getMeta().getMaxFavor() >= Configs.getSettingInt("caps.favor") && !player.getName().equals(shrineOwnerPlayer.getName()))
@@ -123,7 +123,7 @@ public class TributeListener implements Listener
 				shrineOwner.getMeta().addMaxFavor(tributeValue / 5);
 
 				// Message them
-				if(shrineOwnerPlayer.isOnline() && DPlayer.Util.getPlayer(shrineOwner.getOfflinePlayer()).getCurrent().getId().equals(shrineOwner.getId()))
+				if(shrineOwnerPlayer.isOnline() && DemigodsPlayer.Util.getPlayer(shrineOwner.getOfflinePlayer()).getCurrent().getId().equals(shrineOwner.getId()))
 				{
 					((Player) shrineOwnerPlayer).sendMessage(English.EXTERNAL_SHRINE_TRIBUTE.getLine());
 					((Player) shrineOwnerPlayer).sendMessage(English.FAVOR_CAP_INCREASED.getLine().replace("{cap}", shrineOwner.getMeta().getMaxFavor().toString()));
@@ -138,7 +138,7 @@ public class TributeListener implements Listener
 				shrineOwner.getMeta().addMaxFavor(tributeValue / 5);
 
 				// Message them
-				if(shrineOwnerPlayer.isOnline() && DPlayer.Util.getPlayer(shrineOwner.getOfflinePlayer()).getCurrent().getId().equals(shrineOwner.getId()))
+				if(shrineOwnerPlayer.isOnline() && DemigodsPlayer.Util.getPlayer(shrineOwner.getOfflinePlayer()).getCurrent().getId().equals(shrineOwner.getId()))
 				{
 					((Player) shrineOwnerPlayer).sendMessage(English.EXTERNAL_SHRINE_TRIBUTE.getLine());
 					if(shrineOwner.getMeta().getMaxFavor() > ownerFavorBefore) ((Player) shrineOwnerPlayer).sendMessage(English.FAVOR_CAP_INCREASED.getLine().replace("{cap}", shrineOwner.getMeta().getMaxFavor().toString()));
@@ -172,7 +172,7 @@ public class TributeListener implements Listener
 		event.getInventory().clear();
 	}
 
-	private static void tribute(DCharacter character, StructureSave save)
+	private static void tribute(DemigodsCharacter character, StructureSave save)
 	{
 		Player player = character.getOfflinePlayer().getPlayer();
 		Deity shrineDeity = character.getDeity();

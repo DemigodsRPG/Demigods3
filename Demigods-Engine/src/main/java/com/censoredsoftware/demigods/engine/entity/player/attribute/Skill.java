@@ -1,19 +1,19 @@
-package com.censoredsoftware.demigods.engine.data.serializable;
+package com.censoredsoftware.demigods.engine.entity.player.attribute;
+
+import com.censoredsoftware.demigods.engine.battle.Battle;
+import com.censoredsoftware.demigods.engine.battle.Participant;
+import com.censoredsoftware.demigods.engine.data.DataAccess;
+import com.censoredsoftware.demigods.engine.language.English;
+import com.censoredsoftware.demigods.engine.util.Configs;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.permissions.Permission;
+import org.bukkit.permissions.PermissionDefault;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.permissions.Permission;
-import org.bukkit.permissions.PermissionDefault;
-
-import com.censoredsoftware.demigods.engine.data.Data;
-import com.censoredsoftware.demigods.engine.language.English;
-import com.censoredsoftware.demigods.engine.util.Configs;
-
-public class Skill implements ConfigurationSerializable
+public class Skill extends DataAccess<UUID, Skill>
 {
 	private UUID id;
 	private UUID character;
@@ -215,6 +215,13 @@ public class Skill implements ConfigurationSerializable
 
 	public static class Util
 	{
+		private static final DataAccess<UUID, Skill> DATA_ACCESS = new Skill();
+
+		public static Skill get(UUID id)
+		{
+			return DATA_ACCESS.get(id);
+		}
+
 		public static Skill createSkill(DCharacter character, Skill.Type type)
 		{
 			Skill skill = new Skill();
@@ -222,18 +229,8 @@ public class Skill implements ConfigurationSerializable
 			skill.setCharacter(character);
 			skill.setType(type);
 			skill.setLevel(1);
-			save(skill);
+			skill.save();
 			return skill;
-		}
-
-		public static void save(Skill skill)
-		{
-			Data.SKILL.put(skill.getId(), skill);
-		}
-
-		public static Skill loadSkill(UUID id)
-		{
-			return Data.SKILL.get(id);
 		}
 
 		/**

@@ -12,13 +12,13 @@ public interface DataManager
 
 	void flushData() throws AccessDeniedException;
 
-	<T, K> T getFor(Class<T> clazz, K key);
+	<V extends DataAccess<K, V>, K> V getFor(Class<V> clazz, K key);
 
-	<T> Collection<T> getAllOf(Class<T> clazz);
+	<V extends DataAccess<?, V>> Collection<V> getAllOf(Class<V> clazz);
 
-	<T> ConcurrentMap<?, T> getMapFor(Class<T> clazz);
+	<V extends DataAccess<?, V>> ConcurrentMap<?, V> getMapFor(Class<V> clazz);
 
-	<T, K> void saveFor(Class<T> clazz, K key, T value);
+	<K, V extends DataAccess<K, V>> void putFor(Class<V> clazz, K key, V value);
 
-	<T, K> void removeFor(Class<T> clazz, K key);
+	<K, V extends DataAccess<K, V>> void removeFor(Class<V> clazz, K key);
 }

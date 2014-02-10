@@ -1,18 +1,17 @@
 package com.censoredsoftware.demigods.engine.mythos;
 
-import java.util.Collections;
-import java.util.Set;
-
-import org.bukkit.event.Listener;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.permissions.Permission;
-
 import com.censoredsoftware.censoredlib.helper.CommandManager;
 import com.censoredsoftware.censoredlib.trigger.Trigger;
 import com.censoredsoftware.demigods.base.DemigodsMythos;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
+import org.bukkit.event.Listener;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.permissions.Permission;
+
+import java.util.Collections;
+import java.util.Set;
 
 public class MythosSet implements Mythos
 {
@@ -22,7 +21,7 @@ public class MythosSet implements Mythos
 	private final ImmutableSet<DivineItem> DIVINE_ITEMS;
 	private final ImmutableSet<Alliance> ALLIANCES;
 	private final ImmutableSet<Deity> DEITIES;
-	private final ImmutableSet<Structure> STRUCTURES;
+	private final ImmutableSet<StructureType> STRUCTURES;
 	private final ImmutableSet<Listener> LISTENERS;
 	private final ImmutableSet<Permission> PERMISSIONS;
 	private final ImmutableSet<CommandManager> COMMANDS;
@@ -48,7 +47,7 @@ public class MythosSet implements Mythos
 		Set<DivineItem> divineItems = Sets.newHashSet();
 		Set<Alliance> alliance = Sets.newHashSet();
 		Set<Deity> deity = Sets.newHashSet();
-		Set<Structure> structure = Sets.newHashSet();
+		Set<StructureType> structureType = Sets.newHashSet();
 		Set<Listener> listener = Sets.newHashSet();
 		Set<Permission> permission = Sets.newHashSet();
 		Set<CommandManager> command = Sets.newHashSet();
@@ -61,7 +60,7 @@ public class MythosSet implements Mythos
 			divineItems.addAll(mythos.getDivineItems());
 			alliance.addAll(mythos.getAlliances());
 			deity.addAll(mythos.getDeities());
-			structure.addAll(mythos.getStructures());
+			structureType.addAll(mythos.getStructures());
 			listener.addAll(mythos.getListeners());
 			permission.addAll(mythos.getPermissions());
 			command.addAll(mythos.getCommands());
@@ -80,7 +79,7 @@ public class MythosSet implements Mythos
 		DIVINE_ITEMS = ImmutableSet.copyOf(divineItems);
 		ALLIANCES = ImmutableSet.copyOf(alliance);
 		DEITIES = ImmutableSet.copyOf(deity);
-		STRUCTURES = ImmutableSet.copyOf(structure);
+		STRUCTURES = ImmutableSet.copyOf(structureType);
 		LISTENERS = ImmutableSet.copyOf(listener);
 		PERMISSIONS = ImmutableSet.copyOf(permission);
 		COMMANDS = ImmutableSet.copyOf(command);
@@ -178,13 +177,13 @@ public class MythosSet implements Mythos
 	}
 
 	@Override
-	public ImmutableCollection<Structure> getStructures()
+	public ImmutableCollection<StructureType> getStructures()
 	{
 		return STRUCTURES;
 	}
 
 	@Override
-	public Structure getStructure(final String structureName)
+	public StructureType getStructure(final String structureName)
 	{
 		return Mythos.Util.getStructure(this, structureName);
 	}

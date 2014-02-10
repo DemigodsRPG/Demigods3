@@ -1,14 +1,26 @@
-package com.censoredsoftware.demigods.engine.data;
+package com.censoredsoftware.demigods.engine.data.file;
 
-import com.censoredsoftware.censoredlib.data.inventory.CItemStack;
-import com.censoredsoftware.censoredlib.data.location.CLocation;
-import com.censoredsoftware.censoredlib.data.player.Notification;
 import com.censoredsoftware.censoredlib.helper.ConfigFile;
-import com.censoredsoftware.censoredlib.helper.MapDBFile;
-import com.censoredsoftware.censoredlib.helper.TimedMapDBFile;
 import com.censoredsoftware.demigods.engine.DemigodsPlugin;
-import com.censoredsoftware.demigods.engine.data.serializable.*;
+import com.censoredsoftware.demigods.engine.DemigodsServer;
+import com.censoredsoftware.demigods.engine.battle.Battle;
+import com.censoredsoftware.demigods.engine.data.DataManager;
+import com.censoredsoftware.demigods.engine.data.TempDataManager;
+import com.censoredsoftware.demigods.engine.data.serializable.StructureSave;
+import com.censoredsoftware.demigods.engine.data.serializable.TributeData;
+import com.censoredsoftware.demigods.engine.entity.DemigodsPet;
+import com.censoredsoftware.demigods.engine.entity.player.DemigodsCharacter;
+import com.censoredsoftware.demigods.engine.entity.player.DemigodsPlayer;
+import com.censoredsoftware.demigods.engine.entity.player.attribute.DemigodsCharacterMeta;
+import com.censoredsoftware.demigods.engine.entity.player.attribute.Notification;
+import com.censoredsoftware.demigods.engine.entity.player.attribute.Skill;
+import com.censoredsoftware.demigods.engine.inventory.DemigodsEnderInventory;
+import com.censoredsoftware.demigods.engine.inventory.DemigodsItemStack;
+import com.censoredsoftware.demigods.engine.inventory.DemigodsPlayerInventory;
 import com.censoredsoftware.demigods.engine.language.English;
+import com.censoredsoftware.demigods.engine.location.DemigodsLocation;
+import com.censoredsoftware.demigods.engine.world.WorldData;
+import com.censoredsoftware.demigods.engine.world.WorldDataManager;
 import com.google.common.collect.Maps;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -33,16 +45,16 @@ public class FileDataManager implements DataManager
 	// -- VARIABLES -- //
 
 	// Data Folder
-	private static final String SAVE_PATH = DemigodsPlugin.plugin().getDataFolder() + "/data/"; // Don't change this.;
+	public static final String SAVE_PATH = DemigodsPlugin.getInst().getDataFolder() + "/data/"; // Don't change this.;
 
 	// -- YAML FILES -- //
 
-	private static final DemigodsFile<String, DPlayer> PLAYER = new DemigodsFile<String, DPlayer>("players.yml")
+	private static final DemigodsFile<String, DemigodsPlayer> PLAYER = new DemigodsFile<String, DemigodsPlayer>("players.yml")
 	{
 		@Override
-		public DPlayer create(String mojangAccount, ConfigurationSection conf)
+		public DemigodsPlayer create(String mojangAccount, ConfigurationSection conf)
 		{
-			return new DPlayer(mojangAccount, conf);
+			return new DemigodsPlayer(mojangAccount, conf);
 		}
 
 		@Override
@@ -51,7 +63,7 @@ public class FileDataManager implements DataManager
 			return stringId;
 		}
 	};
-	private static final DemigodsFile<UUID, CLocation> LOCATION = new DemigodsFile<UUID, CLocation>("locations.yml")
+	private static final DemigodsFile<UUID, DemigodsLocation> LOCATION = new DemigodsFile<UUID, DemigodsLocation>("locations.yml")
 	{
 		@Override
 		public CLocation create(UUID uuid, ConfigurationSection conf)
@@ -79,12 +91,12 @@ public class FileDataManager implements DataManager
 			return UUID.fromString(stringId);
 		}
 	};
-	private static final DemigodsFile<UUID, DCharacter> CHARACTER = new DemigodsFile<UUID, DCharacter>("characters.yml")
+	private static final DemigodsFile<UUID, DemigodsCharacter> CHARACTER = new DemigodsFile<UUID, DemigodsCharacter>("characters.yml")
 	{
 		@Override
-		public DCharacter create(UUID uuid, ConfigurationSection conf)
+		public DemigodsCharacter create(UUID uuid, ConfigurationSection conf)
 		{
-			return new DCharacter(uuid, conf);
+			return new DemigodsCharacter(uuid, conf);
 		}
 
 		@Override
@@ -94,12 +106,12 @@ public class FileDataManager implements DataManager
 		}
 
 	};
-	private static final DemigodsFile<UUID, DCharacter.Meta> CHARACTER_META = new DemigodsFile<UUID, DCharacter.Meta>("metas.yml")
+	private static final DemigodsFile<UUID, DemigodsCharacterMeta> CHARACTER_META = new DemigodsFile<UUID, DemigodsCharacterMeta>("metas.yml")
 	{
 		@Override
-		public DCharacter.Meta create(UUID uuid, ConfigurationSection conf)
+		public DemigodsCharacter.Meta create(UUID uuid, ConfigurationSection conf)
 		{
-			return new DCharacter.Meta(uuid, conf);
+			return new DemigodsCharacter.Meta(uuid, conf);
 		}
 
 		@Override
@@ -136,12 +148,12 @@ public class FileDataManager implements DataManager
 			return UUID.fromString(stringId);
 		}
 	};
-	private static final DemigodsFile<UUID, DCharacter.Inventory> CHARACTER_INVENTORY = new DemigodsFile<UUID, DCharacter.Inventory>("inventories.yml")
+	private static final DemigodsFile<UUID, DemigodsPlayerInventory> CHARACTER_INVENTORY = new DemigodsFile<UUID, DemigodsCharacter.Inventory>("inventories.yml")
 	{
 		@Override
-		public DCharacter.Inventory create(UUID uuid, ConfigurationSection conf)
+		public DemigodsCharacter.Inventory create(UUID uuid, ConfigurationSection conf)
 		{
-			return new DCharacter.Inventory(uuid, conf);
+			return new DemigodsCharacter.Inventory(uuid, conf);
 		}
 
 		@Override
@@ -150,12 +162,12 @@ public class FileDataManager implements DataManager
 			return UUID.fromString(stringId);
 		}
 	};
-	private static final DemigodsFile<UUID, DCharacter.EnderInventory> CHARACTER_ENDER_INVENTORY = new DemigodsFile<UUID, DCharacter.EnderInventory>("enderInventories.yml")
+	private static final DemigodsFile<UUID, DemigodsEnderInventory> CHARACTER_ENDER_INVENTORY = new DemigodsFile<UUID, DemigodsCharacter.EnderInventory>("enderInventories.yml")
 	{
 		@Override
-		public DCharacter.EnderInventory create(UUID uuid, ConfigurationSection conf)
+		public DemigodsCharacter.EnderInventory create(UUID uuid, ConfigurationSection conf)
 		{
-			return new DCharacter.EnderInventory(uuid, conf);
+			return new DemigodsCharacter.EnderInventory(uuid, conf);
 		}
 
 		@Override
@@ -164,7 +176,7 @@ public class FileDataManager implements DataManager
 			return UUID.fromString(stringId);
 		}
 	};
-	private static final DemigodsFile<UUID, CItemStack> ITEM_STACK = new DemigodsFile<UUID, CItemStack>("itemstacks.yml")
+	private static final DemigodsFile<UUID, DemigodsItemStack> ITEM_STACK = new DemigodsFile<UUID, DemigodsItemStack>("itemstacks.yml")
 	{
 		@Override
 		public CItemStack create(UUID uuid, ConfigurationSection conf)
@@ -178,7 +190,7 @@ public class FileDataManager implements DataManager
 			return UUID.fromString(stringId);
 		}
 	};
-	private static final DemigodsFile<UUID, DSavedPotion> SAVED_POTION = new DemigodsFile<UUID, DSavedPotion>("savedpotions.yml")
+	private static final DemigodsFile<UUID, DemigodsPotionEffect> SAVED_POTION = new DemigodsFile<UUID, DemigodsPotionEffect>("savedpotions.yml")
 	{
 		@Override
 		public DSavedPotion create(UUID uuid, ConfigurationSection conf)
@@ -192,7 +204,7 @@ public class FileDataManager implements DataManager
 			return UUID.fromString(stringId);
 		}
 	};
-	private static final DemigodsFile<UUID, DPet> PET = new DemigodsFile<UUID, DPet>("pets.yml")
+	private static final DemigodsFile<UUID, DemigodsPet> PET = new DemigodsFile<UUID, DemigodsPet>("pets.yml")
 	{
 		@Override
 		public DPet create(UUID uuid, ConfigurationSection conf)
@@ -249,11 +261,7 @@ public class FileDataManager implements DataManager
 		}
 	};
 
-	// -- BINARY & MISC DATA FILES -- //
-
-	// Timed and Server Data
-	public static final TimedMapDBFile TIMED = new TimedMapDBFile("TIMED.dg", SAVE_PATH + "bin/");
-	public static final MapDBFile SERVER = new MapDBFile("SERVER.dg", SAVE_PATH + "bin/");
+	// -- YAML DATA FILES -- //
 
 	public static DemigodsFile[] yamlFiles()
 	{
@@ -298,8 +306,8 @@ public class FileDataManager implements DataManager
 			if(compact) dWorld.compact();
 		}
 
-		TIMED.save();
-		SERVER.save();
+		DemigodsServer.TIMED.save();
+		DemigodsServer.SERVER.save();
 	}
 
 	@Override
@@ -313,45 +321,38 @@ public class FileDataManager implements DataManager
 		for(DemigodsFile data : yamlFiles())
 			data.clear();
 		TempDataManager.TEMP.clear();
-		TIMED.clear();
-		SERVER.clear();
+		DemigodsServer.TIMED.clear();
+		DemigodsServer.SERVER.clear();
 
 		save();
 
 		// Reload the PLUGIN
-		Bukkit.getServer().getPluginManager().disablePlugin(DemigodsPlugin.plugin());
-		Bukkit.getServer().getPluginManager().enablePlugin(DemigodsPlugin.plugin());
+		Bukkit.getServer().getPluginManager().disablePlugin(DemigodsPlugin.getInst());
+		Bukkit.getServer().getPluginManager().enablePlugin(DemigodsPlugin.getInst());
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T, K> T getFor(final Class<T> clazz, final K key)
 	{
-		final String secondFromLast = className(clazz, 1);
 		switch(className(clazz, 0))
 		{
-			case "DPlayer":
+			case "DemigodsPlayer":
 				return (T) PLAYER.__get(key);
-			case "DCharacter":
+			case "DemigodsCharacter":
 				return (T) CHARACTER.__get(key);
-			case "Meta":
-			{
-				if("DCharacter".equals(secondFromLast)) return (T) CHARACTER_META.__get(key);
-			}
-			case "Inventory":
-			{
-				if("DCharacter".equals(secondFromLast)) return (T) CHARACTER_INVENTORY.__get(key);
-			}
-			case "CItemStack":
+			case "DemigodsCharacterMeta":
+				return (T) CHARACTER_META.__get(key);
+			case "DemigodsPlayerInventory":
+				return (T) CHARACTER_INVENTORY.__get(key);
+			case "DemigodsItemStack":
 				return (T) ITEM_STACK.__get(key);
-			case "CLocation":
+			case "DemigodsLocation":
 				return (T) LOCATION.__get(key);
 			case "StructureSave":
 				return (T) STRUCTURE.__get(key);
-			case "EnderInventory":
-			{
-				if("DCharacter".equals(secondFromLast)) return (T) CHARACTER_ENDER_INVENTORY.__get(key);
-			}
+			case "DemigodsEnderInventory":
+				return (T) CHARACTER_ENDER_INVENTORY.__get(key);
 			case "DDeath":
 				return (T) DEATH.__get(key);
 			case "Skill":
@@ -376,27 +377,27 @@ public class FileDataManager implements DataManager
 		final String secondFromLast = className(clazz, 1);
 		switch(className(clazz, 0))
 		{
-			case "DPlayer":
+			case "DemigodsPlayer":
 				return (Collection<T>) PLAYER.values();
-			case "DCharacter":
+			case "DemigodsCharacter":
 				return (Collection<T>) CHARACTER.values();
 			case "Meta":
 			{
-				if("DCharacter".equals(secondFromLast)) return (Collection<T>) CHARACTER_META.values();
+				if("DemigodsCharacter".equals(secondFromLast)) return (Collection<T>) CHARACTER_META.values();
 			}
 			case "Inventory":
 			{
-				if("DCharacter".equals(secondFromLast)) return (Collection<T>) CHARACTER_INVENTORY.values();
+				if("DemigodsCharacter".equals(secondFromLast)) return (Collection<T>) CHARACTER_INVENTORY.values();
 			}
-			case "CItemStack":
+			case "DemigodsItemStack":
 				return (Collection<T>) ITEM_STACK.values();
-			case "CLocation":
+			case "DemigodsLocation":
 				return (Collection<T>) LOCATION.values();
 			case "StructureSave":
 				return (Collection<T>) STRUCTURE.values();
 			case "EnderInventory":
 			{
-				if("DCharacter".equals(secondFromLast)) return (Collection<T>) CHARACTER_ENDER_INVENTORY.values();
+				if("DemigodsCharacter".equals(secondFromLast)) return (Collection<T>) CHARACTER_ENDER_INVENTORY.values();
 			}
 			case "DDeath":
 				return (Collection<T>) DEATH.values();
@@ -422,27 +423,27 @@ public class FileDataManager implements DataManager
 		final String secondFromLast = className(clazz, 1);
 		switch(className(clazz, 0))
 		{
-			case "DPlayer":
+			case "DemigodsPlayer":
 				return (ConcurrentMap<?, T>) PLAYER.dataStore;
-			case "DCharacter":
+			case "DemigodsCharacter":
 				return (ConcurrentMap<?, T>) CHARACTER.dataStore;
 			case "Meta":
 			{
-				if("DCharacter".equals(secondFromLast)) return (ConcurrentMap<?, T>) CHARACTER_META.dataStore;
+				if("DemigodsCharacter".equals(secondFromLast)) return (ConcurrentMap<?, T>) CHARACTER_META.dataStore;
 			}
 			case "Inventory":
 			{
-				if("DCharacter".equals(secondFromLast)) return (ConcurrentMap<?, T>) CHARACTER_INVENTORY.dataStore;
+				if("DemigodsCharacter".equals(secondFromLast)) return (ConcurrentMap<?, T>) CHARACTER_INVENTORY.dataStore;
 			}
-			case "CItemStack":
+			case "DemigodsItemStack":
 				return (ConcurrentMap<?, T>) ITEM_STACK.dataStore;
-			case "CLocation":
+			case "DemigodsLocation":
 				return (ConcurrentMap<?, T>) LOCATION.dataStore;
 			case "StructureSave":
 				return (ConcurrentMap<?, T>) STRUCTURE.dataStore;
 			case "EnderInventory":
 			{
-				if("DCharacter".equals(secondFromLast)) return (ConcurrentMap<?, T>) CHARACTER_ENDER_INVENTORY.dataStore;
+				if("DemigodsCharacter".equals(secondFromLast)) return (ConcurrentMap<?, T>) CHARACTER_ENDER_INVENTORY.dataStore;
 			}
 			case "DDeath":
 				return (ConcurrentMap<?, T>) DEATH.dataStore;
@@ -462,24 +463,24 @@ public class FileDataManager implements DataManager
 	}
 
 	@Override
-	public <T, K> void saveFor(final Class<T> clazz, final K key, final T value)
+	public <T, K> void putFor(final Class<T> clazz, final K key, final T value)
 	{
 		final String secondFromLast = className(clazz, 1);
 		switch(className(clazz, 0))
 		{
-			case "DPlayer":
+			case "DemigodsPlayer":
 			{
 				PLAYER.__put(key, value);
 				break;
 			}
-			case "DCharacter":
+			case "DemigodsCharacter":
 			{
 				CHARACTER.__put(key, value);
 				break;
 			}
 			case "Meta":
 			{
-				if("DCharacter".equals(secondFromLast))
+				if("DemigodsCharacter".equals(secondFromLast))
 				{
 					CHARACTER_META.__put(key, value);
 					break;
@@ -487,18 +488,18 @@ public class FileDataManager implements DataManager
 			}
 			case "Inventory":
 			{
-				if("DCharacter".equals(secondFromLast))
+				if("DemigodsCharacter".equals(secondFromLast))
 				{
 					CHARACTER_INVENTORY.__put(key, value);
 					break;
 				}
 			}
-			case "CItemStack":
+			case "DemigodsItemStack":
 			{
 				ITEM_STACK.__put(key, value);
 				break;
 			}
-			case "CLocation":
+			case "DemigodsLocation":
 			{
 				LOCATION.__put(key, value);
 				break;
@@ -510,7 +511,7 @@ public class FileDataManager implements DataManager
 			}
 			case "EnderInventory":
 			{
-				if("DCharacter".equals(secondFromLast))
+				if("DemigodsCharacter".equals(secondFromLast))
 				{
 					CHARACTER_ENDER_INVENTORY.__put(key, value);
 					break;
@@ -557,19 +558,19 @@ public class FileDataManager implements DataManager
 		final String secondFromLast = className(clazz, 1);
 		switch(className(clazz, 0))
 		{
-			case "DPlayer":
+			case "DemigodsPlayer":
 			{
 				PLAYER.__remove(key);
 				break;
 			}
-			case "DCharacter":
+			case "DemigodsCharacter":
 			{
 				CHARACTER.__remove(key);
 				break;
 			}
 			case "Meta":
 			{
-				if("DCharacter".equals(secondFromLast))
+				if("DemigodsCharacter".equals(secondFromLast))
 				{
 					CHARACTER_META.__remove(key);
 					break;
@@ -577,18 +578,18 @@ public class FileDataManager implements DataManager
 			}
 			case "Inventory":
 			{
-				if("DCharacter".equals(secondFromLast))
+				if("DemigodsCharacter".equals(secondFromLast))
 				{
 					CHARACTER_INVENTORY.__remove(key);
 					break;
 				}
 			}
-			case "CItemStack":
+			case "DemigodsItemStack":
 			{
 				ITEM_STACK.__remove(key);
 				break;
 			}
-			case "CLocation":
+			case "DemigodsLocation":
 			{
 				LOCATION.__remove(key);
 				break;
@@ -600,7 +601,7 @@ public class FileDataManager implements DataManager
 			}
 			case "EnderInventory":
 			{
-				if("DCharacter".equals(secondFromLast))
+				if("DemigodsCharacter".equals(secondFromLast))
 				{
 					CHARACTER_ENDER_INVENTORY.__remove(key);
 					break;

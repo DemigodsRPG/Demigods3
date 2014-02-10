@@ -1,22 +1,21 @@
 package com.censoredsoftware.demigods.engine.util;
 
-import java.util.Set;
-
+import com.censoredsoftware.censoredlib.util.WorldGuards;
+import com.censoredsoftware.demigods.base.listener.ZoneListener;
+import com.censoredsoftware.demigods.engine.DemigodsPlugin;
+import com.censoredsoftware.demigods.engine.data.serializable.StructureSave;
+import com.censoredsoftware.demigods.engine.entity.player.DemigodsPlayer;
+import com.censoredsoftware.demigods.engine.mythos.StructureType;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Sets;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
-import com.censoredsoftware.censoredlib.util.WorldGuards;
-import com.censoredsoftware.demigods.base.listener.ZoneListener;
-import com.censoredsoftware.demigods.engine.DemigodsPlugin;
-import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
-import com.censoredsoftware.demigods.engine.data.serializable.StructureSave;
-import com.censoredsoftware.demigods.engine.mythos.Structure;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Sets;
+import java.util.Set;
 
 public class Zones
 {
@@ -35,12 +34,12 @@ public class Zones
 		ENABLED_WORLDS.addAll(enabledWorlds);
 
 		// Zone listener (load here for consistency)
-		Bukkit.getPluginManager().registerEvents(new ZoneListener(), DemigodsPlugin.plugin());
+		Bukkit.getPluginManager().registerEvents(new ZoneListener(), DemigodsPlugin.getInst());
 
 		// Init WorldGuard stuff
 		WorldGuards.createFlag("STATE", "demigods", true, "ALL");
 		WorldGuards.registerCreatedFlag("demigods");
-		WorldGuards.setWhenToOverridePVP(DemigodsPlugin.plugin(), new Predicate<EntityDamageByEntityEvent>()
+		WorldGuards.setWhenToOverridePVP(DemigodsPlugin.getInst(), new Predicate<EntityDamageByEntityEvent>()
 		{
 			@Override
 			public boolean apply(EntityDamageByEntityEvent event)
@@ -61,8 +60,8 @@ public class Zones
 	public static boolean inNoPvpZone(Location location)
 	{
 		if(Configs.getSettingBoolean("zones.allow_skills_anywhere")) return false;
-		if(WorldGuards.worldGuardEnabled()) return Structure.Util.isInRadiusWithFlag(location, Structure.Flag.NO_PVP) || !WorldGuards.canPVP(location);
-		return Structure.Util.isInRadiusWithFlag(location, Structure.Flag.NO_PVP);
+		if(WorldGuards.worldGuardEnabled()) return StructureType.Util.isInRadiusWithFlag(location, StructureType.Flag.NO_PVP) || !WorldGuards.canPVP(location);
+		return StructureType.Util.isInRadiusWithFlag(location, StructureType.Flag.NO_PVP);
 	}
 
 	/**
@@ -76,8 +75,8 @@ public class Zones
 	public static boolean inNoBuildZone(Player player, Location location)
 	{
 		if(WorldGuards.worldGuardEnabled() && !WorldGuards.canBuild(player, location)) return true;
-		StructureSave save = Iterables.getFirst(Structure.Util.getInRadiusWithFlag(location, Structure.Flag.NO_GRIEFING), null);
-		return DPlayer.Util.getPlayer(player).getCurrent() != null && save != null && !DPlayer.Util.getPlayer(player).getCurrent().getId().equals(save.getOwner());
+		StructureSave save = Iterables.getFirst(StructureType.Util.getInRadiusWithFlag(location, StructureType.Flag.NO_GRIEFING), null);
+		return DemigodsPlayer.Util.getPlayer(player).getCurrent() != null && save != null && !DemigodsPlayer.Util.getPlayer(player).getCurrent().getId().equals(save.getOwner());
 	}
 
 	public static boolean inNoDemigodsZone(Location location)

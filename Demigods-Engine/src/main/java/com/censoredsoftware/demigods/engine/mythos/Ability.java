@@ -1,10 +1,17 @@
 package com.censoredsoftware.demigods.engine.mythos;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
-
+import com.censoredsoftware.censoredlib.util.Strings;
+import com.censoredsoftware.demigods.engine.battle.Battle;
+import com.censoredsoftware.demigods.engine.entity.player.DemigodsCharacter;
+import com.censoredsoftware.demigods.engine.entity.player.DemigodsPlayer;
+import com.censoredsoftware.demigods.engine.entity.player.attribute.Skill;
+import com.censoredsoftware.demigods.engine.language.English;
+import com.censoredsoftware.demigods.engine.util.Configs;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -21,16 +28,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
 import org.bukkit.util.BlockIterator;
 
-import com.censoredsoftware.censoredlib.util.Strings;
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.data.serializable.*;
-import com.censoredsoftware.demigods.engine.language.English;
-import com.censoredsoftware.demigods.engine.util.Configs;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
+import java.util.Collection;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 public interface Ability
 {
@@ -67,7 +68,7 @@ public interface Ability
 		public static boolean preProcessAbility(Player player, Ability ability)
 		{
 			// Define variables
-			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+			DemigodsCharacter character = DemigodsPlayer.Util.getPlayer(player).getCurrent();
 
 			if(!Battle.Util.canTarget(character))
 			{
@@ -79,7 +80,7 @@ public interface Ability
 				player.sendMessage(ChatColor.YELLOW + "You do not have enough favor.");
 				return false;
 			}
-			else return DCharacter.Util.isCooledDown(character, ability.getName());
+			else return DemigodsCharacter.Util.isCooledDown(character, ability.getName());
 		}
 
 		/**
@@ -93,7 +94,7 @@ public interface Ability
 		public static boolean preProcessAbility(Player player, LivingEntity target, Ability ability)
 		{
 			// Define variables
-			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+			DemigodsCharacter character = DemigodsPlayer.Util.getPlayer(player).getCurrent();
 
 			if(preProcessAbility(player, ability))
 			{
@@ -109,13 +110,13 @@ public interface Ability
 				}
 				else if(target instanceof Player)
 				{
-					DCharacter attacked = DPlayer.Util.getPlayer(((Player) target)).getCurrent();
-					if(attacked != null && DCharacter.Util.areAllied(character, attacked)) return false;
+					DemigodsCharacter attacked = DemigodsPlayer.Util.getPlayer(((Player) target)).getCurrent();
+					if(attacked != null && DemigodsCharacter.Util.areAllied(character, attacked)) return false;
 				}
 				else if(target instanceof Tameable)
 				{
 					DPet attacked = DPet.Util.getPet(target);
-					if(attacked != null && DCharacter.Util.areAllied(character, attacked.getOwner())) return false;
+					if(attacked != null && DemigodsCharacter.Util.areAllied(character, attacked.getOwner())) return false;
 				}
 				return true;
 			}
@@ -125,7 +126,7 @@ public interface Ability
 		public static Set<LivingEntity> preProcessAbility(Player player, Collection<Entity> targets, Ability ability)
 		{
 			// Define variables
-			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+			DemigodsCharacter character = DemigodsPlayer.Util.getPlayer(player).getCurrent();
 			Set<LivingEntity> set = Sets.newHashSet();
 
 			if(preProcessAbility(player, ability))
@@ -137,14 +138,14 @@ public interface Ability
 					else if(Battle.Util.canParticipate(target) && !Battle.Util.canTarget(Battle.Util.defineParticipant(target))) continue;
 					else if(target instanceof Player)
 					{
-						DCharacter attacked = DPlayer.Util.getPlayer(((Player) target)).getCurrent();
-						if(attacked != null && DCharacter.Util.areAllied(character, attacked)) continue;
+						DemigodsCharacter attacked = DemigodsPlayer.Util.getPlayer(((Player) target)).getCurrent();
+						if(attacked != null && DemigodsCharacter.Util.areAllied(character, attacked)) continue;
 						if(Battle.Util.isInBattle(character) && !Battle.Util.isInBattle(attacked)) continue;
 					}
 					else if(target instanceof Tameable)
 					{
 						DPet attacked = DPet.Util.getPet((LivingEntity) target);
-						if(attacked != null && DCharacter.Util.areAllied(character, attacked.getOwner())) continue;
+						if(attacked != null && DemigodsCharacter.Util.areAllied(character, attacked.getOwner())) continue;
 					}
 					set.add((LivingEntity) target);
 				}
@@ -160,9 +161,9 @@ public interface Ability
 		 * @param character the character to manipulate.
 		 * @param ability the ability whose details to use.
 		 */
-		public static void postProcessAbility(DCharacter character, Ability ability)
+		public static void postProcessAbility(DemigodsCharacter character, Ability ability)
 		{
-			if(ability.getDelay() > 0) DCharacter.Util.setCooldown(character, ability.getName(), ability.getDelay());
+			if(ability.getDelay() > 0) DemigodsCharacter.Util.setCooldown(character, ability.getName(), ability.getDelay());
 			character.getMeta().subtractFavor(ability.getCost());
 		}
 
@@ -199,7 +200,7 @@ public interface Ability
 			if(target == null) return null;
 			BlockIterator iterator = new BlockIterator(player, range);
 			List<Entity> targets = Lists.newArrayList();
-			final DCharacter looking = DPlayer.Util.getPlayer(player).getCurrent();
+			final DemigodsCharacter looking = DemigodsPlayer.Util.getPlayer(player).getCurrent();
 
 			// Iterate through the blocks and find the target
 			while(iterator.hasNext())
@@ -216,12 +217,12 @@ public interface Ability
 							if(entity instanceof Tameable && ((Tameable) entity).isTamed() && DPet.Util.getPet((LivingEntity) entity) != null)
 							{
 								DPet wrapper = DPet.Util.getPet((LivingEntity) entity);
-								if(DCharacter.Util.areAllied(looking, wrapper.getOwner())) return false;
+								if(DemigodsCharacter.Util.areAllied(looking, wrapper.getOwner())) return false;
 							}
-							else if(entity instanceof Player && DPlayer.Util.getPlayer(((Player) entity)).getCurrent() != null)
+							else if(entity instanceof Player && DemigodsPlayer.Util.getPlayer(((Player) entity)).getCurrent() != null)
 							{
-								DCharacter character = DPlayer.Util.getPlayer(((Player) entity)).getCurrent();
-								if(DCharacter.Util.areAllied(looking, character) || ((Player) entity).getGameMode().equals(GameMode.CREATIVE)) return false;
+								DemigodsCharacter character = DemigodsPlayer.Util.getPlayer(((Player) entity)).getCurrent();
+								if(DemigodsCharacter.Util.areAllied(looking, character) || ((Player) entity).getGameMode().equals(GameMode.CREATIVE)) return false;
 							}
 							return true;
 						}
@@ -259,7 +260,7 @@ public interface Ability
 		 */
 		public static boolean target(Player player, Location target, boolean notify)
 		{
-			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+			DemigodsCharacter character = DemigodsPlayer.Util.getPlayer(player).getCurrent();
 			Location toHit = adjustedAimLocation(character, target);
 			if(isHit(target, toHit)) return true;
 			if(notify) player.sendMessage(ChatColor.RED + "Missed..."); // TODO Better message.
@@ -274,7 +275,7 @@ public interface Ability
 		 * @param target the location the character is target at
 		 * @return the aimed at location
 		 */
-		public static Location adjustedAimLocation(DCharacter character, Location target)
+		public static Location adjustedAimLocation(DemigodsCharacter character, Location target)
 		{
 			// FIXME: This needs major work.
 
@@ -333,7 +334,7 @@ public interface Ability
 		public static boolean bindAbility(Player player, String command)
 		{
 			// Define character and ability
-			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+			DemigodsCharacter character = DemigodsPlayer.Util.getPlayer(player).getCurrent();
 			Ability ability = getAbilityByCommand(character.getDeity().getName(), command);
 
 			// Return if it isn't an ability
@@ -388,18 +389,18 @@ public interface Ability
 		{
 			if(source instanceof Player)
 			{
-				DPlayer owner = DPlayer.Util.getPlayer(((Player) source));
+				DemigodsPlayer owner = DemigodsPlayer.Util.getPlayer(((Player) source));
 				if(owner != null)
 				{
 					if(target instanceof Player)
 					{
-						DCharacter targetChar = DPlayer.Util.getPlayer(((Player) target)).getCurrent();
-						if(targetChar != null && DCharacter.Util.areAllied(owner.getCurrent(), targetChar)) return;
+						DemigodsCharacter targetChar = DemigodsPlayer.Util.getPlayer(((Player) target)).getCurrent();
+						if(targetChar != null && DemigodsCharacter.Util.areAllied(owner.getCurrent(), targetChar)) return;
 					}
 					else if(target instanceof Tameable && ((Tameable) target).isTamed())
 					{
 						DPet wrapper = DPet.Util.getPet(target);
-						if(wrapper != null && DCharacter.Util.areAllied(owner.getCurrent(), wrapper.getOwner())) return;
+						if(wrapper != null && DemigodsCharacter.Util.areAllied(owner.getCurrent(), wrapper.getOwner())) return;
 					}
 				}
 			}
@@ -481,7 +482,7 @@ public interface Ability
 		{
 			Set<Ability> abilities = Sets.newHashSet();
 
-			for(Deity deity : Demigods.mythos().getDeities())
+			for(Deity deity : Demigods.getMythos().getDeities())
 			{
 				abilities.addAll(deity.getAbilities());
 			}

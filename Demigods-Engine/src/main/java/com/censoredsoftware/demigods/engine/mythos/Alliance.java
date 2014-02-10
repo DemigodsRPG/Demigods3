@@ -1,14 +1,13 @@
 package com.censoredsoftware.demigods.engine.mythos;
 
-import java.util.Collection;
-
-import org.bukkit.entity.Player;
-import org.bukkit.permissions.PermissionDefault;
-
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
+import org.bukkit.entity.Player;
+import org.bukkit.permissions.PermissionDefault;
+
+import java.util.Collection;
 
 public interface Alliance
 {
@@ -31,7 +30,7 @@ public interface Alliance
 		{
 			try
 			{
-				return Iterables.find(Demigods.mythos().getAlliances(), new Predicate<Alliance>()
+				return Iterables.find(Demigods.getMythos().getAlliances(), new Predicate<Alliance>()
 				{
 					@Override
 					public boolean apply(Alliance alliance)
@@ -85,7 +84,7 @@ public interface Alliance
 
 		public static Collection<Deity> getLoadedDeitiesInAlliance(final Alliance alliance)
 		{
-			return Collections2.filter(Demigods.mythos().getDeities(), new Predicate<Deity>()
+			return Collections2.filter(Demigods.getMythos().getDeities(), new Predicate<Deity>()
 			{
 				@Override
 				public boolean apply(Deity d)

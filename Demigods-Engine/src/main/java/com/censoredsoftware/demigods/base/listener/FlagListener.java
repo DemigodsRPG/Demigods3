@@ -1,8 +1,14 @@
 package com.censoredsoftware.demigods.base.listener;
 
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
+import com.censoredsoftware.demigods.engine.DemigodsPlugin;
+import com.censoredsoftware.demigods.engine.data.Data;
+import com.censoredsoftware.demigods.engine.data.serializable.StructureSave;
+import com.censoredsoftware.demigods.engine.entity.player.DemigodsPlayer;
+import com.censoredsoftware.demigods.engine.language.English;
+import com.censoredsoftware.demigods.engine.mythos.DivineItem;
+import com.censoredsoftware.demigods.engine.mythos.StructureType;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.google.common.collect.Lists;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -15,30 +21,22 @@ import org.bukkit.event.block.*;
 import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.DemigodsPlugin;
-import com.censoredsoftware.demigods.engine.data.Data;
-import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
-import com.censoredsoftware.demigods.engine.data.serializable.StructureSave;
-import com.censoredsoftware.demigods.engine.language.English;
-import com.censoredsoftware.demigods.engine.mythos.DivineItem;
-import com.censoredsoftware.demigods.engine.mythos.Structure;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.google.common.collect.Lists;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class FlagListener implements Listener
 {
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onEnchantEvent(EnchantItemEvent event)
 	{
-		if(Demigods.mythos().itemHasFlag(event.getItem(), DivineItem.Flag.UNENCHANTABLE)) event.setCancelled(true);
+		if(Demigods.getMythos().itemHasFlag(event.getItem(), DivineItem.Flag.UNENCHANTABLE)) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockPlace(BlockPlaceEvent event)
 	{
 		if(event.isCancelled() || Zones.inNoDemigodsZone(event.getBlock().getLocation())) return;
-		if(Structure.Util.partOfStructureWithFlag(event.getBlock().getLocation(), Structure.Flag.PROTECTED_BLOCKS, Structure.Flag.DESTRUCT_ON_BREAK))
+		if(StructureType.Util.partOfStructureWithFlag(event.getBlock().getLocation(), StructureType.Flag.PROTECTED_BLOCKS, StructureType.Flag.DESTRUCT_ON_BREAK))
 		{
 			event.setCancelled(true);
 			event.getPlayer().sendMessage(ChatColor.YELLOW + English.PROTECTED_BLOCK.getLine());
@@ -50,7 +48,7 @@ public class FlagListener implements Listener
 	{
 		Location location = event.getBlock().getLocation();
 		if(event.isCancelled() || Zones.inNoDemigodsZone(location)) return;
-		if(Structure.Util.partOfStructureWithFlag(location, Structure.Flag.PROTECTED_BLOCKS, Structure.Flag.DESTRUCT_ON_BREAK))
+		if(StructureType.Util.partOfStructureWithFlag(location, StructureType.Flag.PROTECTED_BLOCKS, StructureType.Flag.DESTRUCT_ON_BREAK))
 		{
 			event.setCancelled(true);
 			event.getPlayer().sendMessage(ChatColor.YELLOW + English.PROTECTED_BLOCK.getLine());
@@ -61,7 +59,7 @@ public class FlagListener implements Listener
 	public void onBlockIgnite(BlockIgniteEvent event)
 	{
 		if(event.isCancelled() || Zones.inNoDemigodsZone(event.getBlock().getLocation())) return;
-		if(Structure.Util.partOfStructureWithFlag(event.getBlock().getLocation(), Structure.Flag.PROTECTED_BLOCKS, Structure.Flag.DESTRUCT_ON_BREAK)) event.setCancelled(true);
+		if(StructureType.Util.partOfStructureWithFlag(event.getBlock().getLocation(), StructureType.Flag.PROTECTED_BLOCKS, StructureType.Flag.DESTRUCT_ON_BREAK)) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -69,8 +67,8 @@ public class FlagListener implements Listener
 	{
 		Location location = event.getBlock().getLocation();
 		if(event.isCancelled() || Zones.inNoDemigodsZone(location)) return;
-		if(Structure.Util.partOfStructureWithFlag(location, Structure.Flag.PROTECTED_BLOCKS, Structure.Flag.DESTRUCT_ON_BREAK)) event.setCancelled(true);
-		if(DPlayer.Util.getPlayer(event.getPlayer()).getCurrent() != null && Structure.Util.partOfStructureWithFlag(location, Structure.Flag.DESTRUCT_ON_BREAK)) Structure.Util.getStructureRegional(location).corrupt(DPlayer.Util.getPlayer(event.getPlayer()).getCurrent(), 1F);
+		if(StructureType.Util.partOfStructureWithFlag(location, StructureType.Flag.PROTECTED_BLOCKS, StructureType.Flag.DESTRUCT_ON_BREAK)) event.setCancelled(true);
+		if(DemigodsPlayer.Util.getPlayer(event.getPlayer()).getCurrent() != null && StructureType.Util.partOfStructureWithFlag(location, StructureType.Flag.DESTRUCT_ON_BREAK)) StructureType.Util.getStructureRegional(location).corrupt(DemigodsPlayer.Util.getPlayer(event.getPlayer()).getCurrent(), 1F);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -79,7 +77,7 @@ public class FlagListener implements Listener
 		if(event.isCancelled() || Zones.inNoDemigodsZone(event.getBlock().getLocation())) return;
 		for(Block block : event.getBlocks())
 		{
-			if(Structure.Util.partOfStructureWithFlag(block.getLocation(), Structure.Flag.PROTECTED_BLOCKS, Structure.Flag.DESTRUCT_ON_BREAK))
+			if(StructureType.Util.partOfStructureWithFlag(block.getLocation(), StructureType.Flag.PROTECTED_BLOCKS, StructureType.Flag.DESTRUCT_ON_BREAK))
 			{
 				event.setCancelled(true);
 				return;
@@ -91,16 +89,16 @@ public class FlagListener implements Listener
 	public void onBlockPistonRetract(BlockPistonRetractEvent event)
 	{
 		if(event.isCancelled() || Zones.inNoDemigodsZone(event.getBlock().getLocation())) return;
-		if(Structure.Util.partOfStructureWithFlag(event.getBlock().getRelative(event.getDirection(), 2).getLocation(), Structure.Flag.PROTECTED_BLOCKS, Structure.Flag.DESTRUCT_ON_BREAK) && event.isSticky()) event.setCancelled(true);
+		if(StructureType.Util.partOfStructureWithFlag(event.getBlock().getRelative(event.getDirection(), 2).getLocation(), StructureType.Flag.PROTECTED_BLOCKS, StructureType.Flag.DESTRUCT_ON_BREAK) && event.isSticky()) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onEntityExplode(final EntityExplodeEvent event)
 	{
 		if(event.getEntity() == null || Zones.inNoDemigodsZone(event.getEntity().getLocation())) return;
-		final List<StructureSave> saves = Lists.newArrayList(Structure.Util.getInRadiusWithFlag(event.getLocation(), Structure.Flag.PROTECTED_BLOCKS, Structure.Flag.DESTRUCT_ON_BREAK));
+		final List<StructureSave> saves = Lists.newArrayList(StructureType.Util.getInRadiusWithFlag(event.getLocation(), StructureType.Flag.PROTECTED_BLOCKS, StructureType.Flag.DESTRUCT_ON_BREAK));
 
-		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.plugin(), new Runnable()
+		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.getInst(), new Runnable()
 		{
 			@Override
 			public void run()
@@ -115,7 +113,7 @@ public class FlagListener implements Listener
 		if(Data.TIMED.boolContainsKey("explode-structure")) return;
 		Data.TIMED.setBool("explode-structure", true, 2, TimeUnit.SECONDS);
 
-		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.plugin(), new Runnable()
+		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.getInst(), new Runnable()
 		{
 			@Override
 			public void run()

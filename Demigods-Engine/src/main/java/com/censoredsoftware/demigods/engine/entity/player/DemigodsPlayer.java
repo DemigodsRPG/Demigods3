@@ -1,8 +1,22 @@
-package com.censoredsoftware.demigods.engine.data.serializable;
+package com.censoredsoftware.demigods.engine.entity.player;
 
-import java.util.*;
-import java.util.concurrent.TimeUnit;
-
+import com.censoredsoftware.censoredlib.data.location.Region;
+import com.censoredsoftware.censoredlib.exception.MojangIdNotFoundException;
+import com.censoredsoftware.censoredlib.helper.MojangIdGrabber;
+import com.censoredsoftware.demigods.base.listener.ChatRecorder;
+import com.censoredsoftware.demigods.engine.DemigodsPlugin;
+import com.censoredsoftware.demigods.engine.DemigodsServer;
+import com.censoredsoftware.demigods.engine.battle.Battle;
+import com.censoredsoftware.demigods.engine.data.Data;
+import com.censoredsoftware.demigods.engine.language.English;
+import com.censoredsoftware.demigods.engine.util.Configs;
+import com.censoredsoftware.demigods.engine.util.Messages;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.google.common.base.Function;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Sets;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -15,24 +29,10 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.censoredsoftware.censoredlib.data.location.Region;
-import com.censoredsoftware.censoredlib.exception.MojangIdNotFoundException;
-import com.censoredsoftware.censoredlib.helper.MojangIdGrabber;
-import com.censoredsoftware.demigods.base.listener.ChatRecorder;
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.DemigodsPlugin;
-import com.censoredsoftware.demigods.engine.data.Data;
-import com.censoredsoftware.demigods.engine.language.English;
-import com.censoredsoftware.demigods.engine.util.Configs;
-import com.censoredsoftware.demigods.engine.util.Messages;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Sets;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
-public class DPlayer implements ConfigurationSerializable
+public class DemigodsPlayer implements ConfigurationSerializable
 {
 	private String mojangAccount;
 	private String playerName;
@@ -46,12 +46,12 @@ public class DPlayer implements ConfigurationSerializable
 	private UUID mortalInventory, mortalEnderInventory;
 	private ChatRecorder chatRecording;
 
-	public DPlayer()
+	public DemigodsPlayer()
 	{
 		characterSlots = Configs.getSettingInt("character.default_character_slots");
 	}
 
-	public DPlayer(String mojangAccount, ConfigurationSection conf)
+	public DemigodsPlayer(String mojangAccount, ConfigurationSection conf)
 	{
 		this.mojangAccount = mojangAccount;
 		this.playerName = conf.getString("playerName");
@@ -169,7 +169,7 @@ public class DPlayer implements ConfigurationSerializable
 			int delay = Configs.getSettingInt("zones.pvp_area_delay_time");
 			Data.TIMED.setBool(player.getName() + "pvp_cooldown", true, delay, TimeUnit.SECONDS);
 
-			Bukkit.getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.plugin(), new BukkitRunnable()
+			Bukkit.getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.getInst(), new BukkitRunnable()
 			{
 				@Override
 				public void run()
@@ -249,13 +249,13 @@ public class DPlayer implements ConfigurationSerializable
 		setMortalName(null);
 		setMortalListName(null);
 		applyMortalInventory();
-		Demigods.BOARD.getTeam("Mortal").addPlayer(getOfflinePlayer());
+		DemigodsServer.BOARD.getTeam("Mortal").addPlayer(getOfflinePlayer());
 	}
 
 	public void saveMortalInventory(Player player)
 	{
 		// Player inventory
-		DCharacter.Inventory mortalInventory = new DCharacter.Inventory();
+		DemigodsCharacter.Inventory mortalInventory = new DemigodsCharacter.Inventory();
 		PlayerInventory inventory = player.getInventory();
 		mortalInventory.generateId();
 		if(inventory.getHelmet() != null) mortalInventory.setHelmet(inventory.getHelmet());
@@ -263,15 +263,15 @@ public class DPlayer implements ConfigurationSerializable
 		if(inventory.getLeggings() != null) mortalInventory.setLeggings(inventory.getLeggings());
 		if(inventory.getBoots() != null) mortalInventory.setBoots(inventory.getBoots());
 		mortalInventory.setItems(inventory);
-		DCharacter.Util.saveInventory(mortalInventory);
+		DemigodsCharacter.Util.saveInventory(mortalInventory);
 		this.mortalInventory = mortalInventory.getId();
 
 		// Enderchest
-		DCharacter.EnderInventory enderInventory = new DCharacter.EnderInventory();
+		DemigodsCharacter.EnderInventory enderInventory = new DemigodsCharacter.EnderInventory();
 		Inventory enderChest = player.getEnderChest();
 		enderInventory.generateId();
 		enderInventory.setItems(enderChest);
-		DCharacter.Util.saveInventory(enderInventory);
+		DemigodsCharacter.Util.saveInventory(enderInventory);
 		this.mortalEnderInventory = enderInventory.getId();
 
 		Util.save(this);
@@ -281,7 +281,7 @@ public class DPlayer implements ConfigurationSerializable
 	{
 		// Update the current character
 		final Player player = getOfflinePlayer().getPlayer();
-		final DCharacter character = getCurrent();
+		final DemigodsCharacter character = getCurrent();
 
 		if(character != null)
 		{
@@ -295,7 +295,7 @@ public class DPlayer implements ConfigurationSerializable
 			character.setLevel(player.getLevel());
 			character.setExperience(player.getExp());
 			character.setLocation(player.getLocation());
-			Bukkit.getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.plugin(), new BukkitRunnable()
+			Bukkit.getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.getInst(), new BukkitRunnable()
 			{
 				@Override
 				public void run()
@@ -311,14 +311,14 @@ public class DPlayer implements ConfigurationSerializable
 			DPet.Util.disownPets(character.getName());
 
 			// Remove from their team
-			Demigods.BOARD.getTeam(getCurrent().getAlliance().getName()).removePlayer(getOfflinePlayer());
+			DemigodsServer.BOARD.getTeam(getCurrent().getAlliance().getName()).removePlayer(getOfflinePlayer());
 
 			// Save it
-			DCharacter.Util.save(character);
+			DemigodsCharacter.Util.save(character);
 		}
 	}
 
-	public void switchCharacter(final DCharacter newChar)
+	public void switchCharacter(final DemigodsCharacter newChar)
 	{
 		final Player player = getOfflinePlayer().getPlayer();
 
@@ -350,7 +350,7 @@ public class DPlayer implements ConfigurationSerializable
 
 		// Save instances
 		Util.save(this);
-		DCharacter.Util.save(newChar);
+		DemigodsCharacter.Util.save(newChar);
 	}
 
 	public boolean canPvp()
@@ -384,58 +384,58 @@ public class DPlayer implements ConfigurationSerializable
 		return getCurrent() != null;
 	}
 
-	public DCharacter getCurrent()
+	public DemigodsCharacter getCurrent()
 	{
 		if(this.current == null) return null;
-		DCharacter character = DCharacter.Util.load(this.current);
+		DemigodsCharacter character = DemigodsCharacter.Util.load(this.current);
 		if(character != null && character.isUsable()) return character;
 		return null;
 	}
 
-	public DCharacter getPrevious()
+	public DemigodsCharacter getPrevious()
 	{
 		if(this.previous == null) return null;
-		return DCharacter.Util.load(this.previous);
+		return DemigodsCharacter.Util.load(this.previous);
 	}
 
-	public Set<DCharacter> getCharacters()
+	public Set<DemigodsCharacter> getCharacters()
 	{
-		return Sets.newHashSet(Collections2.filter(DCharacter.Util.loadAll(), new Predicate<DCharacter>()
+		return Sets.newHashSet(Collections2.filter(DemigodsCharacter.Util.loadAll(), new Predicate<DemigodsCharacter>()
 		{
 			@Override
-			public boolean apply(DCharacter character)
+			public boolean apply(DemigodsCharacter character)
 			{
 				return character != null && character.getMojangAccount().equals(mojangAccount) && character.isUsable();
 			}
 		}));
 	}
 
-	public Set<DCharacter> getUsableCharacters()
+	public Set<DemigodsCharacter> getUsableCharacters()
 	{
-		return Sets.filter(getCharacters(), new Predicate<DCharacter>()
+		return Sets.filter(getCharacters(), new Predicate<DemigodsCharacter>()
 		{
 			@Override
-			public boolean apply(DCharacter character)
+			public boolean apply(DemigodsCharacter character)
 			{
 				return character.isUsable();
 			}
 		});
 	}
 
-	public DCharacter.Inventory getMortalInventory()
+	public DemigodsCharacter.Inventory getMortalInventory()
 	{
-		return DCharacter.Util.getInventory(mortalInventory);
+		return DemigodsCharacter.Util.getInventory(mortalInventory);
 	}
 
-	public DCharacter.EnderInventory getMortalEnderInventory()
+	public DemigodsCharacter.EnderInventory getMortalEnderInventory()
 	{
-		return DCharacter.Util.getEnderInventory(mortalEnderInventory);
+		return DemigodsCharacter.Util.getEnderInventory(mortalEnderInventory);
 	}
 
 	public void applyMortalInventory()
 	{
-		if(getMortalInventory() == null) mortalInventory = DCharacter.Util.createEmptyInventory().getId();
-		if(getMortalEnderInventory() == null) mortalEnderInventory = DCharacter.Util.createEmptyEnderInventory().getId();
+		if(getMortalInventory() == null) mortalInventory = DemigodsCharacter.Util.createEmptyInventory().getId();
+		if(getMortalEnderInventory() == null) mortalEnderInventory = DemigodsCharacter.Util.createEmptyEnderInventory().getId();
 		getMortalInventory().setToPlayer(getOfflinePlayer().getPlayer());
 		getMortalEnderInventory().setToPlayer(getOfflinePlayer().getPlayer());
 		mortalInventory = null;
@@ -464,10 +464,10 @@ public class DPlayer implements ConfigurationSerializable
 		if(getOfflinePlayer().isOnline()) getOfflinePlayer().getPlayer().kickPlayer(ChatColor.RED + "Your player save has been cleared.");
 
 		// Remove characters
-		for(DCharacter character : getCharacters())
+		for(DemigodsCharacter character : getCharacters())
 			character.remove();
 
-		// Now we clear the DPlayer save itself
+		// Now we clear the DemigodsPlayer save itself
 		Util.delete(getMojangAccount());
 	}
 
@@ -514,9 +514,9 @@ public class DPlayer implements ConfigurationSerializable
 
 	public static class Util
 	{
-		public static DPlayer create(final OfflinePlayer player)
+		public static DemigodsPlayer create(final OfflinePlayer player)
 		{
-			DPlayer playerSave = new DPlayer();
+			DemigodsPlayer playerSave = new DemigodsPlayer();
 			playerSave.setMojangAccount(MojangIdGrabber.getUUID(player));
 			playerSave.setPlayerName(player.getName());
 			playerSave.setLastLoginTime(player.getLastPlayed());
@@ -529,7 +529,7 @@ public class DPlayer implements ConfigurationSerializable
 			return playerSave;
 		}
 
-		public static void save(DPlayer player)
+		public static void save(DemigodsPlayer player)
 		{
 			Data.PLAYER.put(player.getMojangAccount(), player);
 		}
@@ -539,25 +539,25 @@ public class DPlayer implements ConfigurationSerializable
 			Data.PLAYER.remove(mojangAccount);
 		}
 
-		public static DPlayer getPlayer(final OfflinePlayer player)
+		public static DemigodsPlayer getPlayer(final OfflinePlayer player)
 		{
 			String id = MojangIdGrabber.getUUID(player);
 			if(id == null) throw new MojangIdNotFoundException(player.getName());
-			DPlayer found = getPlayer(id);
+			DemigodsPlayer found = getPlayer(id);
 			if(found == null) return create(player);
 			return found;
 		}
 
-		public static DPlayer getPlayerFromName(final String playerName)
+		public static DemigodsPlayer getPlayerFromName(final String playerName)
 		{
 			try
 			{
-				return Iterables.find(Data.PLAYER.values(), new Predicate<DPlayer>()
+				return Iterables.find(Data.PLAYER.values(), new Predicate<DemigodsPlayer>()
 				{
 					@Override
-					public boolean apply(DPlayer dPlayer)
+					public boolean apply(DemigodsPlayer demigodsPlayer)
 					{
-						return dPlayer.getPlayerName().equals(playerName);
+						return demigodsPlayer.getPlayerName().equals(playerName);
 					}
 				});
 			}
@@ -566,7 +566,7 @@ public class DPlayer implements ConfigurationSerializable
 			return null;
 		}
 
-		public static DPlayer getPlayer(String mojangAccount)
+		public static DemigodsPlayer getPlayer(String mojangAccount)
 		{
 			if(Data.PLAYER.containsKey(mojangAccount)) return Data.PLAYER.get(mojangAccount);
 			return null;
@@ -580,24 +580,24 @@ public class DPlayer implements ConfigurationSerializable
 		 */
 		public static boolean isImmortal(Player player)
 		{
-			DCharacter character = getPlayer(player).getCurrent();
+			DemigodsCharacter character = getPlayer(player).getCurrent();
 			return character != null && character.isUsable() && character.isActive();
 		}
 
 		public static Collection<OfflinePlayer> getMortals()
 		{
-			return Collections2.transform(Collections2.filter(Data.PLAYER.values(), new Predicate<DPlayer>()
+			return Collections2.transform(Collections2.filter(Data.PLAYER.values(), new Predicate<DemigodsPlayer>()
 			{
 				@Override
-				public boolean apply(DPlayer player)
+				public boolean apply(DemigodsPlayer player)
 				{
-					DCharacter character = player.getCurrent();
+					DemigodsCharacter character = player.getCurrent();
 					return character == null || !character.isUsable() || !character.isActive();
 				}
-			}), new Function<DPlayer, OfflinePlayer>()
+			}), new Function<DemigodsPlayer, OfflinePlayer>()
 			{
 				@Override
-				public OfflinePlayer apply(DPlayer player)
+				public OfflinePlayer apply(DemigodsPlayer player)
 				{
 					return player.getOfflinePlayer();
 				}
@@ -611,7 +611,7 @@ public class DPlayer implements ConfigurationSerializable
 				@Override
 				public boolean apply(Player player)
 				{
-					DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+					DemigodsCharacter character = DemigodsPlayer.Util.getPlayer(player).getCurrent();
 					return character == null || !character.isUsable() || !character.isActive();
 				}
 			});
@@ -626,7 +626,7 @@ public class DPlayer implements ConfigurationSerializable
 		 */
 		public static boolean hasCharName(Player player, String charName)
 		{
-			for(DCharacter character : getPlayer(player).getCharacters())
+			for(DemigodsCharacter character : getPlayer(player).getCharacters())
 				if(character.getName().equalsIgnoreCase(charName)) return true;
 			return false;
 		}

@@ -309,12 +309,12 @@ public class WorldCommands extends CommandManager
 
 		public static void enableDemigods(String worldName)
 		{
-			List<String> enabled = DemigodsPlugin.plugin().getConfig().getStringList("restrictions.enabled_worlds");
+			List<String> enabled = DemigodsPlugin.getInst().getConfig().getStringList("restrictions.enabled_worlds");
 			if(!enabled.contains(worldName))
 			{
 				enabled.add(worldName);
-				DemigodsPlugin.plugin().getConfig().set("restrictions.enabled_worlds", enabled);
-				DemigodsPlugin.plugin().saveConfig();
+				DemigodsPlugin.getInst().getConfig().set("restrictions.enabled_worlds", enabled);
+				DemigodsPlugin.getInst().saveConfig();
 			}
 			Zones.enableWorld(worldName);
 		}
@@ -391,12 +391,12 @@ public class WorldCommands extends CommandManager
 		public static void disableWorld(String worldName)
 		{
 			Bukkit.unloadWorld(worldName, true);
-			List<String> enabled = DemigodsPlugin.plugin().getConfig().getStringList("restrictions.enabled_worlds");
+			List<String> enabled = DemigodsPlugin.getInst().getConfig().getStringList("restrictions.enabled_worlds");
 			if(enabled.contains(worldName))
 			{
 				enabled.remove(worldName);
-				DemigodsPlugin.plugin().getConfig().set("restrictions.enabled_worlds", enabled);
-				DemigodsPlugin.plugin().saveConfig();
+				DemigodsPlugin.getInst().getConfig().set("restrictions.enabled_worlds", enabled);
+				DemigodsPlugin.getInst().saveConfig();
 			}
 			Zones.disableWorld(worldName);
 		}

@@ -1,8 +1,8 @@
 package com.censoredsoftware.demigods.engine.data.wrap;
 
 import com.censoredsoftware.censoredlib.data.player.Notification;
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
+import com.censoredsoftware.demigods.engine.DemigodsServer;
+import com.censoredsoftware.demigods.engine.entity.player.DemigodsCharacter;
 import com.censoredsoftware.demigods.engine.language.English;
 import com.google.common.collect.Sets;
 import org.bukkit.entity.Player;
@@ -14,25 +14,25 @@ public class NotificationManager
 {
 	public static void remove(Notification notification)
 	{
-		Demigods.DATA_MANAGER.removeFor(Notification.class, notification.getId());
+		DemigodsServer.DATA_MANAGER.removeFor(Notification.class, notification.getId());
 	}
 
 	public static Set<Notification> loadAll()
 	{
-		return Sets.newHashSet(Demigods.DATA_MANAGER.getAllOf(Notification.class));
+		return Sets.newHashSet(DemigodsServer.DATA_MANAGER.getAllOf(Notification.class));
 	}
 
 	public static void save(Notification notification)
 	{
-		Demigods.DATA_MANAGER.saveFor(Notification.class, notification.getId(), notification);
+		DemigodsServer.DATA_MANAGER.putFor(Notification.class, notification.getId(), notification);
 	}
 
 	public static Notification load(UUID id)
 	{
-		return Demigods.DATA_MANAGER.getFor(Notification.class, id);
+		return DemigodsServer.DATA_MANAGER.getFor(Notification.class, id);
 	}
 
-	public static Notification create(Notification.Sender sender, DCharacter receiver, Notification.Danger danger, String name, String message)
+	public static Notification create(Notification.Sender sender, DemigodsCharacter receiver, Notification.Danger danger, String name, String message)
 	{
 		Notification notification = new Notification();
 		notification.generateId();
@@ -45,7 +45,7 @@ public class NotificationManager
 		return notification;
 	}
 
-	public static Notification create(Notification.Sender sender, DCharacter receiver, Notification.Danger danger, int minutes, String name, String message)
+	public static Notification create(Notification.Sender sender, DemigodsCharacter receiver, Notification.Danger danger, int minutes, String name, String message)
 	{
 		Notification notification = create(sender, receiver, danger, name, message);
 		notification.generateId();
@@ -54,7 +54,7 @@ public class NotificationManager
 		return notification;
 	}
 
-	public static Notification create(DCharacter sender, DCharacter receiver, Notification.Danger danger, String name, String message)
+	public static Notification create(DemigodsCharacter sender, DemigodsCharacter receiver, Notification.Danger danger, String name, String message)
 	{
 		Notification notification = create(Notification.Sender.CHARACTER, receiver, danger, name, message);
 		notification.generateId();
@@ -63,7 +63,7 @@ public class NotificationManager
 		return notification;
 	}
 
-	public static Notification create(DCharacter sender, DCharacter receiver, Notification.Danger danger, int minutes, String name, String message)
+	public static Notification create(DemigodsCharacter sender, DemigodsCharacter receiver, Notification.Danger danger, int minutes, String name, String message)
 	{
 		Notification notification = create(sender, receiver, danger, name, message);
 		notification.generateId();
@@ -79,12 +79,12 @@ public class NotificationManager
 			if(notification.getExpiration() <= System.currentTimeMillis())
 			{
 				remove(notification);
-				DCharacter.Util.load(notification.getReceiverId()).getMeta().removeNotification(notification);
+				DemigodsCharacter.Util.load(notification.getReceiverId()).getMeta().removeNotification(notification);
 			}
 		}
 	}
 
-	public static void sendNotification(DCharacter character, Notification notification)
+	public static void sendNotification(DemigodsCharacter character, Notification notification)
 	{
 		// Add the notification
 		character.getMeta().addNotification(notification);

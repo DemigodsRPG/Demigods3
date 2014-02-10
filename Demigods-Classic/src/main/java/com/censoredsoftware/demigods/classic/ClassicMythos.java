@@ -130,13 +130,13 @@ public class ClassicMythos extends MythosPlugin
 	}
 
 	@Override
-	public ImmutableCollection<Structure> getStructures()
+	public ImmutableCollection<StructureType> getStructures()
 	{
 		return ImmutableSet.of();
 	}
 
 	@Override
-	public Structure getStructure(String structureName)
+	public StructureType getStructure(String structureName)
 	{
 		return null;
 	}

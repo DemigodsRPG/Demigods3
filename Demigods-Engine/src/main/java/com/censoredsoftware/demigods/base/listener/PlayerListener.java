@@ -1,5 +1,16 @@
 package com.censoredsoftware.demigods.base.listener;
 
+import com.censoredsoftware.censoredlib.helper.QuitReasonHandler;
+import com.censoredsoftware.demigods.engine.DemigodsPlugin;
+import com.censoredsoftware.demigods.engine.battle.Battle;
+import com.censoredsoftware.demigods.engine.conversation.Prayer;
+import com.censoredsoftware.demigods.engine.data.Data;
+import com.censoredsoftware.demigods.engine.entity.player.DemigodsCharacter;
+import com.censoredsoftware.demigods.engine.entity.player.DemigodsPlayer;
+import com.censoredsoftware.demigods.engine.language.English;
+import com.censoredsoftware.demigods.engine.util.Configs;
+import com.censoredsoftware.demigods.engine.util.Messages;
+import com.censoredsoftware.demigods.engine.util.Zones;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -10,18 +21,6 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.censoredsoftware.censoredlib.helper.QuitReasonHandler;
-import com.censoredsoftware.demigods.engine.DemigodsPlugin;
-import com.censoredsoftware.demigods.engine.conversation.Prayer;
-import com.censoredsoftware.demigods.engine.data.Data;
-import com.censoredsoftware.demigods.engine.data.serializable.Battle;
-import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
-import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
-import com.censoredsoftware.demigods.engine.language.English;
-import com.censoredsoftware.demigods.engine.util.Configs;
-import com.censoredsoftware.demigods.engine.util.Messages;
-import com.censoredsoftware.demigods.engine.util.Zones;
-
 public class PlayerListener implements Listener
 {
 	@EventHandler
@@ -30,7 +29,7 @@ public class PlayerListener implements Listener
 		Player player = event.getPlayer();
 		try
 		{
-			DPlayer.Util.getPlayer(player);
+			DemigodsPlayer.Util.getPlayer(player);
 		}
 		catch(Exception whoops)
 		{
@@ -46,8 +45,8 @@ public class PlayerListener implements Listener
 
 		// Define variables
 		Player player = event.getPlayer();
-		DPlayer wrapper = DPlayer.Util.getPlayer(player);
-		DCharacter character = wrapper.getCurrent();
+		DemigodsPlayer wrapper = DemigodsPlayer.Util.getPlayer(player);
+		DemigodsCharacter character = wrapper.getCurrent();
 
 		// Set their last login-time
 		Long now = System.currentTimeMillis();
@@ -73,7 +72,7 @@ public class PlayerListener implements Listener
 		// Demigods welcome message
 		if(Configs.getSettingBoolean("misc.welcome_message"))
 		{
-			player.sendMessage(English.RUNNING_DG_VERSION.getLine().replace("{version}", DemigodsPlugin.plugin().getDescription().getVersion()));
+			player.sendMessage(English.RUNNING_DG_VERSION.getLine().replace("{version}", DemigodsPlugin.getInst().getDescription().getVersion()));
 			player.sendMessage(English.DG_FOR_MORE_INFORMATION.getLine());
 		}
 
@@ -137,7 +136,7 @@ public class PlayerListener implements Listener
 		}
 		event.setQuitMessage(message);
 		if(Zones.inNoDemigodsZone(event.getPlayer().getLocation())) return;
-		final DCharacter loggingOff = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
+		final DemigodsCharacter loggingOff = DemigodsPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
 		if(loggingOff != null)
 		{
 			loggingOff.setLocation(event.getPlayer().getLocation());
@@ -146,7 +145,7 @@ public class PlayerListener implements Listener
 				Battle battle = Battle.Util.getBattle(loggingOff);
 				battle.addDeath(loggingOff);
 				Data.saveTemp(name, "quit_during_battle", true);
-				Bukkit.getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.plugin(), new BukkitRunnable()
+				Bukkit.getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.getInst(), new BukkitRunnable()
 				{
 					@Override
 					public void run()
@@ -166,14 +165,14 @@ public class PlayerListener implements Listener
 
 		// Set their last logout-time
 		Long now = System.currentTimeMillis();
-		DPlayer.Util.getPlayer(event.getPlayer()).setLastLogoutTime(now);
+		DemigodsPlayer.Util.getPlayer(event.getPlayer()).setLastLogoutTime(now);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerRespawn(PlayerRespawnEvent event)
 	{
 		if(Zones.inNoDemigodsZone(event.getPlayer().getLocation())) return;
-		DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
+		DemigodsCharacter character = DemigodsPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
 		if(character != null)
 		{
 			character.setAlive(true);
@@ -187,7 +186,7 @@ public class PlayerListener implements Listener
 	public void onPlayerDeath(PlayerDeathEvent event)
 	{
 		if(Zones.inNoDemigodsZone(event.getEntity().getLocation())) return;
-		DCharacter character = DPlayer.Util.getPlayer(event.getEntity()).getCurrent();
+		DemigodsCharacter character = DemigodsPlayer.Util.getPlayer(event.getEntity()).getCurrent();
 		if(character != null) character.setAlive(false);
 	}
 }

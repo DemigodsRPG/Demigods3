@@ -1,9 +1,9 @@
 package com.censoredsoftware.demigods.engine.mythos;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+import com.censoredsoftware.censoredlib.helper.ConfigFile2;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.entity.player.DemigodsCharacter;
+import com.censoredsoftware.demigods.engine.entity.player.DemigodsPlayer;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -11,10 +11,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.material.MaterialData;
 import org.bukkit.permissions.PermissionDefault;
 
-import com.censoredsoftware.censoredlib.helper.ConfigFile2;
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
-import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public interface Deity
 {
@@ -99,12 +98,12 @@ public interface Deity
 
 	class Util
 	{
-		public static boolean canUseDeity(DCharacter character, String deity)
+		public static boolean canUseDeity(DemigodsCharacter character, String deity)
 		{
 			if(character == null) return false;
 			if(!character.getOfflinePlayer().isOnline()) return canUseDeitySilent(character, deity);
 			Player player = character.getOfflinePlayer().getPlayer();
-			if(!player.hasPermission(Demigods.mythos().getDeity(deity).getPermission()))
+			if(!player.hasPermission(Demigods.getMythos().getDeity(deity).getPermission()))
 			{
 				player.sendMessage(ChatColor.RED + "You don't have permission to use " + deity + "!");
 				return false;
@@ -117,14 +116,14 @@ public interface Deity
 			return true;
 		}
 
-		public static boolean canUseDeitySilent(DCharacter character, String deity)
+		public static boolean canUseDeitySilent(DemigodsCharacter character, String deity)
 		{
-			return !(character.getOfflinePlayer().isOnline() && !character.getOfflinePlayer().getPlayer().hasPermission(Demigods.mythos().getDeity(deity).getPermission())) && character != null && character.isDeity(deity);
+			return !(character.getOfflinePlayer().isOnline() && !character.getOfflinePlayer().getPlayer().hasPermission(Demigods.getMythos().getDeity(deity).getPermission())) && character != null && character.isDeity(deity);
 		}
 
 		public static boolean canUseDeitySilent(Player player, String deityName)
 		{
-			String currentDeityName = DPlayer.Util.getPlayer(player).getCurrentDeityName();
+			String currentDeityName = DemigodsPlayer.Util.getPlayer(player).getCurrentDeityName();
 			return deityName.equalsIgnoreCase(currentDeityName);
 		}
 	}

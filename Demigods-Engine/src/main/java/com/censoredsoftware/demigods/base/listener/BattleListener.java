@@ -1,5 +1,11 @@
 package com.censoredsoftware.demigods.base.listener;
 
+import com.censoredsoftware.demigods.engine.battle.Battle;
+import com.censoredsoftware.demigods.engine.battle.Participant;
+import com.censoredsoftware.demigods.engine.data.Data;
+import com.censoredsoftware.demigods.engine.entity.player.DemigodsCharacter;
+import com.censoredsoftware.demigods.engine.util.Configs;
+import com.censoredsoftware.demigods.engine.util.Zones;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.*;
@@ -9,15 +15,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityTeleportEvent;
-
-import com.censoredsoftware.demigods.engine.data.Data;
-import com.censoredsoftware.demigods.engine.data.serializable.Battle;
-import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
-import com.censoredsoftware.demigods.engine.data.serializable.DPet;
-import com.censoredsoftware.demigods.engine.data.serializable.Participant;
-import com.censoredsoftware.demigods.engine.data.wrap.CLocationManager;
-import com.censoredsoftware.demigods.engine.util.Configs;
-import com.censoredsoftware.demigods.engine.util.Zones;
 
 public class BattleListener implements Listener
 {
@@ -60,18 +57,18 @@ public class BattleListener implements Listener
 		Participant damagerParticipant = Battle.Util.defineParticipant(damager);
 
 		// Various things that should cancel the event
-		if(damageeParticipant.equals(damagerParticipant) || DCharacter.Util.areAllied(damageeParticipant.getRelatedCharacter(), damagerParticipant.getRelatedCharacter()) || !damageeParticipant.getRelatedCharacter().canPvp() || !damagerParticipant.getRelatedCharacter().canPvp())
+		if(damageeParticipant.equals(damagerParticipant) || DemigodsCharacter.Util.areAllied(damageeParticipant.getRelatedCharacter(), damagerParticipant.getRelatedCharacter()) || !damageeParticipant.getRelatedCharacter().canPvp() || !damagerParticipant.getRelatedCharacter().canPvp())
 		{
 			event.setCancelled(true);
 			return;
 		}
-		if(damageeParticipant instanceof DCharacter && Data.TIMED.boolContainsKey(damageeParticipant.getId().toString() + "just_finished_battle"))
+		if(damageeParticipant instanceof DemigodsCharacter && Data.TIMED.boolContainsKey(damageeParticipant.getId().toString() + "just_finished_battle"))
 		{
 			((Player) damager).sendMessage(ChatColor.YELLOW + "That player is in cooldown from a recent battle.");
 			event.setCancelled(true);
 			return;
 		}
-		if(damagerParticipant instanceof DCharacter && Data.TIMED.boolContainsKey(damagerParticipant.getId().toString() + "just_finished_battle"))
+		if(damagerParticipant instanceof DemigodsCharacter && Data.TIMED.boolContainsKey(damagerParticipant.getId().toString() + "just_finished_battle"))
 		{
 			((Player) damager).sendMessage(ChatColor.YELLOW + "You are still in cooldown from a recent battle.");
 			event.setCancelled(true);
@@ -146,7 +143,7 @@ public class BattleListener implements Listener
 
 		Participant participant = Battle.Util.defineParticipant(event.getEntity());
 
-		if(participant instanceof DCharacter && Data.TIMED.boolContainsKey(participant.getId().toString() + "just_finished_battle"))
+		if(participant instanceof DemigodsCharacter && Data.TIMED.boolContainsKey(participant.getId().toString() + "just_finished_battle"))
 		{
 			event.setCancelled(true);
 			return;

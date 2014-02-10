@@ -1,5 +1,15 @@
 package com.censoredsoftware.demigods.base.listener;
 
+import com.censoredsoftware.censoredlib.util.Vehicles;
+import com.censoredsoftware.demigods.engine.battle.Battle;
+import com.censoredsoftware.demigods.engine.battle.Participant;
+import com.censoredsoftware.demigods.engine.data.Data;
+import com.censoredsoftware.demigods.engine.data.serializable.StructureSave;
+import com.censoredsoftware.demigods.engine.language.English;
+import com.censoredsoftware.demigods.engine.mythos.StructureType;
+import com.censoredsoftware.demigods.engine.util.Configs;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -9,18 +19,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.vehicle.VehicleMoveEvent;
-
-import com.censoredsoftware.censoredlib.util.Vehicles;
-import com.censoredsoftware.demigods.engine.data.Data;
-import com.censoredsoftware.demigods.engine.data.serializable.Battle;
-import com.censoredsoftware.demigods.engine.data.serializable.Participant;
-import com.censoredsoftware.demigods.engine.data.serializable.StructureSave;
-import com.censoredsoftware.demigods.engine.data.wrap.CLocationManager;
-import com.censoredsoftware.demigods.engine.language.English;
-import com.censoredsoftware.demigods.engine.mythos.Structure;
-import com.censoredsoftware.demigods.engine.util.Configs;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
 
 public class MoveListener implements Listener
 {
@@ -63,12 +61,12 @@ public class MoveListener implements Listener
 	private static void onFlagMoveEvent(Entity entity, final Location to, final Location from)
 	{
 		// Handle invisible wall
-		if(Structure.Util.isInRadiusWithFlag(to, Structure.Flag.RESTRICTED_AREA))
+		if(StructureType.Util.isInRadiusWithFlag(to, StructureType.Flag.RESTRICTED_AREA))
 		{
 			// Immediately return when possible
 			if(!(entity instanceof Player) && !(entity instanceof Vehicle)) return;
 
-			StructureSave save = Structure.Util.closestInRadiusWithFlag(to, Structure.Flag.RESTRICTED_AREA);
+			StructureSave save = StructureType.Util.closestInRadiusWithFlag(to, StructureType.Flag.RESTRICTED_AREA);
 			if(save == null) return;
 
 			boolean collision = Iterables.any(save.getLocations(), new Predicate<Location>()

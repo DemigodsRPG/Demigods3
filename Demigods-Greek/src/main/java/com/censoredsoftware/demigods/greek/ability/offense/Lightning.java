@@ -1,7 +1,13 @@
 package com.censoredsoftware.demigods.greek.ability.offense;
 
-import java.util.List;
-
+import com.censoredsoftware.demigods.engine.battle.Battle;
+import com.censoredsoftware.demigods.engine.entity.player.DemigodsCharacter;
+import com.censoredsoftware.demigods.engine.entity.player.DemigodsPlayer;
+import com.censoredsoftware.demigods.engine.entity.player.attribute.Skill;
+import com.censoredsoftware.demigods.engine.mythos.Ability;
+import com.censoredsoftware.demigods.greek.ability.GreekAbility;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Lists;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -10,14 +16,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 
-import com.censoredsoftware.demigods.engine.data.serializable.Battle;
-import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
-import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
-import com.censoredsoftware.demigods.engine.data.serializable.Skill;
-import com.censoredsoftware.demigods.engine.mythos.Ability;
-import com.censoredsoftware.demigods.greek.ability.GreekAbility;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Lists;
+import java.util.List;
 
 public class Lightning extends GreekAbility
 {
@@ -64,7 +63,7 @@ public class Lightning extends GreekAbility
 	public static boolean strikeLightning(Player player, Location target, boolean notify)
 	{
 		// Set variables
-		DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+		DemigodsCharacter character = DemigodsPlayer.Util.getPlayer(player).getCurrent();
 
 		if(!player.getWorld().equals(target.getWorld())) return false;
 		Location toHit = Ability.Util.adjustedAimLocation(character, target);

@@ -139,13 +139,13 @@ public class GreekMythos extends MythosPlugin
 	}
 
 	@Override
-	public ImmutableCollection<Structure> getStructures()
+	public ImmutableCollection<StructureType> getStructures()
 	{
 		return ImmutableSet.of(Altar.inst(), Obelisk.inst(), Shrine.inst());
 	}
 
 	@Override
-	public Structure getStructure(final String structureName)
+	public StructureType getStructure(final String structureName)
 	{
 		return Mythos.Util.getStructure(this, structureName);
 	}

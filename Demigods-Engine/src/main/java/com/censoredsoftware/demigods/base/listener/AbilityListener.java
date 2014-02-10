@@ -1,18 +1,17 @@
 package com.censoredsoftware.demigods.base.listener;
 
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerInteractEvent;
-
-import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
-import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
+import com.censoredsoftware.demigods.engine.entity.player.DemigodsCharacter;
+import com.censoredsoftware.demigods.engine.entity.player.DemigodsPlayer;
 import com.censoredsoftware.demigods.engine.mythos.Ability;
 import com.censoredsoftware.demigods.engine.mythos.Deity;
 import com.censoredsoftware.demigods.engine.util.Zones;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerInteractEvent;
 
 public class AbilityListener implements Listener
 {
@@ -23,7 +22,7 @@ public class AbilityListener implements Listener
 
 		// Set variables
 		final Player player = interactEvent.getPlayer();
-		final DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+		final DemigodsCharacter character = DemigodsPlayer.Util.getPlayer(player).getCurrent();
 
 		if(character == null || !character.isUsable()) return;
 

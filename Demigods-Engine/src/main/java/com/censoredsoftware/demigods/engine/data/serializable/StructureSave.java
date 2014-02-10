@@ -1,24 +1,22 @@
 package com.censoredsoftware.demigods.engine.data.serializable;
 
-import java.util.*;
-
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-
 import com.censoredsoftware.censoredlib.data.location.CLocation;
 import com.censoredsoftware.censoredlib.data.location.Region;
-import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.data.Data;
-import com.censoredsoftware.demigods.engine.data.wrap.CLocationManager;
-import com.censoredsoftware.demigods.engine.mythos.Structure;
+import com.censoredsoftware.demigods.engine.entity.player.DemigodsCharacter;
+import com.censoredsoftware.demigods.engine.mythos.StructureType;
 import com.google.common.base.Function;
 import com.google.common.base.Objects;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+
+import java.util.*;
 
 public class StructureSave implements ConfigurationSerializable
 {
@@ -140,7 +138,7 @@ public class StructureSave implements ConfigurationSerializable
 		this.sanctity = sanctity;
 	}
 
-	public void corrupt(DCharacter character, float amount)
+	public void corrupt(DemigodsCharacter character, float amount)
 	{
 		if(getType().corrupt(this, character))
 		{
@@ -157,7 +155,7 @@ public class StructureSave implements ConfigurationSerializable
 		save();
 	}
 
-	public void kill(DCharacter character)
+	public void kill(DemigodsCharacter character)
 	{
 		if(getType().kill(this, character)) remove();
 	}
@@ -186,7 +184,7 @@ public class StructureSave implements ConfigurationSerializable
 		addSanctifier(id);
 	}
 
-	public void sanctify(DCharacter character, float amount)
+	public void sanctify(DemigodsCharacter character, float amount)
 	{
 		if(getType().sanctify(this, character))
 		{
@@ -282,10 +280,10 @@ public class StructureSave implements ConfigurationSerializable
 		return getType().getDesign(design).getSchematic(this).getLocations(getReferenceLocation());
 	}
 
-	public Structure getType()
+	public StructureType getType()
 	{
-		for(Structure structure : Demigods.mythos().getStructures())
-			if(type.equals(structure.getName())) return structure;
+		for(StructureType structureType : Demigods.getMythos().getStructures())
+			if(type.equals(structureType.getName())) return structureType;
 		return null;
 	}
 
@@ -360,9 +358,9 @@ public class StructureSave implements ConfigurationSerializable
 		return region;
 	}
 
-	public void addFlags(Set<Structure.Flag> flags)
+	public void addFlags(Set<StructureType.Flag> flags)
 	{
-		for(Structure.Flag flag : flags)
+		for(StructureType.Flag flag : flags)
 			getRawFlags().add(flag.name());
 	}
 

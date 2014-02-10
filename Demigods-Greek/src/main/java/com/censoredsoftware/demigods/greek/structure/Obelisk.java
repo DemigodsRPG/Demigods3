@@ -6,11 +6,11 @@ import com.censoredsoftware.censoredlib.schematic.Selection;
 import com.censoredsoftware.censoredlib.util.Colors;
 import com.censoredsoftware.demigods.engine.conversation.Administration;
 import com.censoredsoftware.demigods.engine.data.Data;
-import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
-import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
 import com.censoredsoftware.demigods.engine.data.serializable.StructureSave;
+import com.censoredsoftware.demigods.engine.entity.player.DemigodsCharacter;
+import com.censoredsoftware.demigods.engine.entity.player.DemigodsPlayer;
 import com.censoredsoftware.demigods.engine.mythos.Deity;
-import com.censoredsoftware.demigods.engine.mythos.Structure;
+import com.censoredsoftware.demigods.engine.mythos.StructureType;
 import com.censoredsoftware.demigods.engine.util.Configs;
 import com.censoredsoftware.demigods.engine.util.Messages;
 import com.censoredsoftware.demigods.engine.util.Zones;
@@ -33,13 +33,13 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-public class Obelisk extends GreekStructure
+public class Obelisk extends GreekStructureType
 {
 	private static final String name = "Obelisk";
-	private static final Function<Location, GreekStructure.Design> getDesign = new Function<Location, Structure.Design>()
+	private static final Function<Location, GreekStructureType.Design> getDesign = new Function<Location, StructureType.Design>()
 	{
 		@Override
-		public Structure.Design apply(Location reference)
+		public StructureType.Design apply(Location reference)
 		{
 			switch(reference.getBlock().getBiome())
 			{
@@ -55,10 +55,10 @@ public class Obelisk extends GreekStructure
 			}
 		}
 	};
-	private static final Function<GreekStructure.Design, StructureSave> createNew = new Function<GreekStructure.Design, StructureSave>()
+	private static final Function<GreekStructureType.Design, StructureSave> createNew = new Function<GreekStructureType.Design, StructureSave>()
 	{
 		@Override
-		public StructureSave apply(GreekStructure.Design design)
+		public StructureSave apply(GreekStructureType.Design design)
 		{
 			StructureSave save = new StructureSave();
 			save.setSanctifiers(new HashMap<String, Long>());
@@ -66,12 +66,12 @@ public class Obelisk extends GreekStructure
 			return save;
 		}
 	};
-	private static final Structure.InteractFunction<Boolean> sanctify = new Structure.InteractFunction<Boolean>()
+	private static final StructureType.InteractFunction<Boolean> sanctify = new StructureType.InteractFunction<Boolean>()
 	{
 		@Override
-		public Boolean apply(StructureSave data, DCharacter character)
+		public Boolean apply(StructureSave data, DemigodsCharacter character)
 		{
-			if(!DCharacter.Util.areAllied(character, Data.CHARACTER.get(data.getOwner())) || !data.getSanctifiers().contains(character.getId())) return false;
+			if(!DemigodsCharacter.Util.areAllied(character, Data.CHARACTER.get(data.getOwner())) || !data.getSanctifiers().contains(character.getId())) return false;
 			Location location = data.getReferenceLocation();
 			location.getWorld().playSound(location, Sound.CAT_PURR, 0.3f, 0.7F);
 			MaterialData colorData = Colors.getMaterial(character.getDeity().getColor());
@@ -79,23 +79,23 @@ public class Obelisk extends GreekStructure
 			return true;
 		}
 	};
-	private static final Structure.InteractFunction<Boolean> corrupt = new Structure.InteractFunction<Boolean>()
+	private static final StructureType.InteractFunction<Boolean> corrupt = new StructureType.InteractFunction<Boolean>()
 	{
 		@Override
-		public Boolean apply(StructureSave data, DCharacter character)
+		public Boolean apply(StructureSave data, DemigodsCharacter character)
 		{
-			if(DCharacter.Util.areAllied(character, Data.CHARACTER.get(data.getOwner()))) return false;
+			if(DemigodsCharacter.Util.areAllied(character, Data.CHARACTER.get(data.getOwner()))) return false;
 			if(Data.CHARACTER.containsKey(data.getOwner()))
 			{
-				DPlayer dPlayer = DPlayer.Util.getPlayer(Data.CHARACTER.get(data.getOwner()).getOfflinePlayer());
-				long lastLogoutTime = dPlayer.getLastLogoutTime();
+				DemigodsPlayer demigodsPlayer = DemigodsPlayer.Util.getPlayer(Data.CHARACTER.get(data.getOwner()).getOfflinePlayer());
+				long lastLogoutTime = demigodsPlayer.getLastLogoutTime();
 				Calendar calendarHalfHour = Calendar.getInstance();
 				calendarHalfHour.add(Calendar.MINUTE, -30);
 				long thirtyMinutesAgo = calendarHalfHour.getTime().getTime();
 				Calendar calendarWeek = Calendar.getInstance();
 				calendarWeek.add(Calendar.WEEK_OF_YEAR, -3);
 				long threeWeeksAgo = calendarWeek.getTime().getTime();
-				if(!dPlayer.getOfflinePlayer().isOnline() && lastLogoutTime != -1 && (lastLogoutTime > System.currentTimeMillis() - thirtyMinutesAgo || lastLogoutTime < threeWeeksAgo))
+				if(!demigodsPlayer.getOfflinePlayer().isOnline() && lastLogoutTime != -1 && (lastLogoutTime > System.currentTimeMillis() - thirtyMinutesAgo || lastLogoutTime < threeWeeksAgo))
 				{
 					character.getOfflinePlayer().getPlayer().sendMessage(ChatColor.YELLOW + "This obelisk currently immune to damage.");
 					return false;
@@ -111,10 +111,10 @@ public class Obelisk extends GreekStructure
 			return true;
 		}
 	};
-	private static final Structure.InteractFunction<Boolean> birth = new Structure.InteractFunction<Boolean>()
+	private static final StructureType.InteractFunction<Boolean> birth = new StructureType.InteractFunction<Boolean>()
 	{
 		@Override
-		public Boolean apply(StructureSave data, DCharacter character)
+		public Boolean apply(StructureSave data, DemigodsCharacter character)
 		{
 			Location location = data.getReferenceLocation();
 			location.getWorld().strikeLightningEffect(location);
@@ -122,10 +122,10 @@ public class Obelisk extends GreekStructure
 			return true;
 		}
 	};
-	private static final Structure.InteractFunction<Boolean> kill = new Structure.InteractFunction<Boolean>()
+	private static final StructureType.InteractFunction<Boolean> kill = new StructureType.InteractFunction<Boolean>()
 	{
 		@Override
-		public Boolean apply(StructureSave data, DCharacter character)
+		public Boolean apply(StructureSave data, DemigodsCharacter character)
 		{
 			Location location = data.getReferenceLocation();
 			location.getWorld().playSound(location, Sound.WITHER_DEATH, 1F, 1.2F);
@@ -134,11 +134,11 @@ public class Obelisk extends GreekStructure
 			return true;
 		}
 	};
-	private static final Set<Structure.Flag> flags = new HashSet<Structure.Flag>()
+	private static final Set<StructureType.Flag> flags = new HashSet<StructureType.Flag>()
 	{
 		{
-			add(Structure.Flag.DESTRUCT_ON_BREAK);
-			add(Structure.Flag.NO_GRIEFING);
+			add(StructureType.Flag.DESTRUCT_ON_BREAK);
+			add(StructureType.Flag.NO_GRIEFING);
 		}
 	};
 	private static final Listener listener = new Listener()
@@ -155,13 +155,13 @@ public class Obelisk extends GreekStructure
 			Location location = clickedBlock.getLocation();
 			Player player = event.getPlayer();
 
-			if(DPlayer.Util.isImmortal(player))
+			if(DemigodsPlayer.Util.isImmortal(player))
 			{
-				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+				DemigodsCharacter character = DemigodsPlayer.Util.getPlayer(player).getCurrent();
 
 				if(event.getAction() == Action.RIGHT_CLICK_BLOCK && !character.getDeity().getFlags().contains(Deity.Flag.NO_OBELISK) && character.getDeity().getClaimItems().keySet().contains(event.getPlayer().getItemInHand().getType()) && Util.validBlockConfiguration(event.getClickedBlock()))
 				{
-					if(Structure.Util.noOverlapStructureNearby(location))
+					if(StructureType.Util.noOverlapStructureNearby(location))
 					{
 						player.sendMessage(ChatColor.YELLOW + "This location is too close to a no-pvp zone, please try again.");
 						return;
@@ -186,12 +186,12 @@ public class Obelisk extends GreekStructure
 				}
 			}
 
-			if(Administration.Util.useWand(player) && Structure.Util.partOfStructureWithType(location, "Obelisk"))
+			if(Administration.Util.useWand(player) && StructureType.Util.partOfStructureWithType(location, "Obelisk"))
 			{
 				event.setCancelled(true);
 
-				StructureSave save = Structure.Util.getStructureRegional(location);
-				DCharacter owner = DCharacter.Util.load(save.getOwner());
+				StructureSave save = StructureType.Util.getStructureRegional(location);
+				DemigodsCharacter owner = DemigodsCharacter.Util.load(save.getOwner());
 
 				if(Data.TIMED.boolContainsKey(player.getName() + "destroy_obelisk"))
 				{
@@ -294,7 +294,7 @@ public class Obelisk extends GreekStructure
 		super(name, ObeliskDesign.values(), getDesign, createNew, sanctify, corrupt, birth, kill, flags, listener, radius, allow, sanctity, sanctityRegen, generationPoints);
 	}
 
-	public static enum ObeliskDesign implements GreekStructure.Design
+	public static enum ObeliskDesign implements GreekStructureType.Design
 	{
 		GENERAL("general", general), DESERT("desert", desert), NETHER("nether", nether);
 
@@ -339,9 +339,9 @@ public class Obelisk extends GreekStructure
 		}
 	}
 
-	private static final Structure INST = new Obelisk();
+	private static final StructureType INST = new Obelisk();
 
-	public static Structure inst()
+	public static StructureType inst()
 	{
 		return INST;
 	}

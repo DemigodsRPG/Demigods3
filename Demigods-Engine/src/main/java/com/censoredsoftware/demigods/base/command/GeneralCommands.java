@@ -5,11 +5,11 @@ import com.censoredsoftware.censoredlib.language.Symbol;
 import com.censoredsoftware.censoredlib.util.Maps2;
 import com.censoredsoftware.censoredlib.util.Strings;
 import com.censoredsoftware.censoredlib.util.Times;
+import com.censoredsoftware.demigods.engine.battle.Battle;
 import com.censoredsoftware.demigods.engine.data.TributeManager;
-import com.censoredsoftware.demigods.engine.data.serializable.Battle;
-import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
-import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
-import com.censoredsoftware.demigods.engine.data.serializable.Skill;
+import com.censoredsoftware.demigods.engine.entity.player.DemigodsCharacter;
+import com.censoredsoftware.demigods.engine.entity.player.DemigodsPlayer;
+import com.censoredsoftware.demigods.engine.entity.player.attribute.Skill;
 import com.censoredsoftware.demigods.engine.language.English;
 import com.censoredsoftware.demigods.engine.mythos.Alliance;
 import com.censoredsoftware.demigods.engine.util.Messages;
@@ -54,7 +54,7 @@ public class GeneralCommands extends CommandManager
 
 		// Define player and (try to define) character
 		Player player = (Player) sender;
-		DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+		DemigodsCharacter character = DemigodsPlayer.Util.getPlayer(player).getCurrent();
 
 		// Basic commands
 		if("owner".equalsIgnoreCase(command.getName())) return !owner(sender, args);
@@ -83,7 +83,7 @@ public class GeneralCommands extends CommandManager
 		return true;
 	}
 
-	private boolean check(Player player, DCharacter character)
+	private boolean check(Player player, DemigodsCharacter character)
 	{
 		// Define variables
 		int kills = character.getKillCount();
@@ -113,7 +113,7 @@ public class GeneralCommands extends CommandManager
 		return true;
 	}
 
-	private boolean skills(Player player, DCharacter character)
+	private boolean skills(Player player, DemigodsCharacter character)
 	{
 		// Tag it
 		Messages.tagged(player, "Skills");
@@ -140,7 +140,7 @@ public class GeneralCommands extends CommandManager
 		}
 
 		// Find the character
-		DCharacter checked = DCharacter.Util.getCharacterByName(args[0]);
+		DemigodsCharacter checked = DemigodsCharacter.Util.getCharacterByName(args[0]);
 
 		// Send the message
 		if(checked == null)
@@ -155,7 +155,7 @@ public class GeneralCommands extends CommandManager
 		return true;
 	}
 
-	private boolean alliance(Player player, DCharacter character, String[] args)
+	private boolean alliance(Player player, DemigodsCharacter character, String[] args)
 	{
 		if(character == null)
 		{
@@ -176,7 +176,7 @@ public class GeneralCommands extends CommandManager
 		return true;
 	}
 
-	private boolean binds(Player player, DCharacter character)
+	private boolean binds(Player player, DemigodsCharacter character)
 	{
 		if(!character.getMeta().getBinds().isEmpty())
 		{
@@ -186,7 +186,7 @@ public class GeneralCommands extends CommandManager
 			// Get the binds and display info
 			for(Map.Entry<String, Object> entry : character.getMeta().getBinds().entrySet())
 			{
-				player.sendMessage(ChatColor.GRAY + "  " + Symbol.RIGHTWARD_ARROW_HOLLOW + ChatColor.YELLOW + " " + StringUtils.capitalize(entry.getKey().toLowerCase()) + ChatColor.GRAY + " is bound to " + (Strings.beginsWithVowel(entry.getValue().toString()) ? "an " : "a ") + ChatColor.ITALIC + Strings.beautify(entry.getValue().toString()).toLowerCase() + ChatColor.GRAY + ". " + (DCharacter.Util.isCooledDown(character, entry.getKey()) ? "(" + ChatColor.GREEN + "ready" + ChatColor.GRAY + ")" : "(" + ChatColor.AQUA + "cooling down... " + Times.getTimeTagged(DCharacter.Util.getCooldown(character, entry.getKey()), true) + ChatColor.GRAY + ")"));
+				player.sendMessage(ChatColor.GRAY + "  " + Symbol.RIGHTWARD_ARROW_HOLLOW + ChatColor.YELLOW + " " + StringUtils.capitalize(entry.getKey().toLowerCase()) + ChatColor.GRAY + " is bound to " + (Strings.beginsWithVowel(entry.getValue().toString()) ? "an " : "a ") + ChatColor.ITALIC + Strings.beautify(entry.getValue().toString()).toLowerCase() + ChatColor.GRAY + ". " + (DemigodsCharacter.Util.isCooledDown(character, entry.getKey()) ? "(" + ChatColor.GREEN + "ready" + ChatColor.GRAY + ")" : "(" + ChatColor.AQUA + "cooling down... " + Times.getTimeTagged(DemigodsCharacter.Util.getCooldown(character, entry.getKey()), true) + ChatColor.GRAY + ")"));
 			}
 
 			player.sendMessage(" ");
@@ -199,9 +199,9 @@ public class GeneralCommands extends CommandManager
 	private boolean leaderboard(CommandSender sender)
 	{
 		// Define variables
-		List<DCharacter> characters = Lists.newArrayList(DCharacter.Util.getAllUsable());
+		List<DemigodsCharacter> characters = Lists.newArrayList(DemigodsCharacter.Util.getAllUsable());
 		Map<UUID, Double> scores = Maps.newLinkedHashMap();
-		for(DCharacter character : characters)
+		for(DemigodsCharacter character : characters)
 		{
 			double score = character.getKillCount() - character.getDeathCount();
 			if(score > 0) scores.put(character.getId(), score);
@@ -226,7 +226,7 @@ public class GeneralCommands extends CommandManager
 			Map.Entry<UUID, Double> entry = list.get(i);
 
 			if(count >= length) break;
-			DCharacter character = DCharacter.Util.load(entry.getKey());
+			DemigodsCharacter character = DemigodsCharacter.Util.load(entry.getKey());
 			sender.sendMessage(ChatColor.GRAY + "    " + ChatColor.RESET + count + ". " + character.getDeity().getColor() + character.getName() + ChatColor.RESET + ChatColor.GRAY + " (" + character.getPlayerName() + ") " + ChatColor.RESET + "Kills: " + ChatColor.GREEN + character.getKillCount() + ChatColor.WHITE + " / Deaths: " + ChatColor.RED + character.getDeathCount());
 		}
 
@@ -282,12 +282,12 @@ public class GeneralCommands extends CommandManager
 		sender.sendMessage(" ");
 
 		// Characters
-		for(DCharacter character : DCharacter.Util.getOnlineCharacters())
+		for(DemigodsCharacter character : DemigodsCharacter.Util.getOnlineCharacters())
 			sender.sendMessage(ChatColor.GRAY + " " + Symbol.RIGHTWARD_ARROW + " " + character.getDeity().getColor() + character.getName() + ChatColor.GRAY + " is owned by " + ChatColor.WHITE + character.getPlayerName() + ChatColor.GRAY + ".");
 
 		sender.sendMessage(" ");
 
-		Set<Player> mortals = DPlayer.Util.getOnlineMortals();
+		Set<Player> mortals = DemigodsPlayer.Util.getOnlineMortals();
 
 		if(mortals.isEmpty()) return true;
 

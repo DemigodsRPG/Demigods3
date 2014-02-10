@@ -1,8 +1,14 @@
 package com.censoredsoftware.demigods.greek.ability.ultimate;
 
-import java.util.List;
-import java.util.Set;
-
+import com.censoredsoftware.censoredlib.util.Spigots;
+import com.censoredsoftware.demigods.engine.DemigodsServer;
+import com.censoredsoftware.demigods.engine.entity.player.DemigodsCharacter;
+import com.censoredsoftware.demigods.engine.entity.player.DemigodsPlayer;
+import com.censoredsoftware.demigods.engine.entity.player.attribute.Skill;
+import com.censoredsoftware.demigods.greek.ability.GreekAbility;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
@@ -13,15 +19,8 @@ import org.bukkit.entity.Zombie;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import com.censoredsoftware.censoredlib.util.Spigots;
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
-import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
-import com.censoredsoftware.demigods.engine.data.serializable.Skill;
-import com.censoredsoftware.demigods.greek.ability.GreekAbility;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
+import java.util.List;
+import java.util.Set;
 
 public class Swarm extends GreekAbility
 {
@@ -38,7 +37,7 @@ public class Swarm extends GreekAbility
 			public boolean apply(Player player)
 			{
 				// Define variables
-				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+				DemigodsCharacter character = DemigodsPlayer.Util.getPlayer(player).getCurrent();
 				Set<LivingEntity> targets = Sets.newHashSet(); /* TODO: Ability.Util.preProcessAbility(player, player.getNearbyEntities(50, 50, 50), NAME); */
 
 				if(targets == null || targets.isEmpty()) return false;
@@ -58,10 +57,10 @@ public class Swarm extends GreekAbility
 		}, null, null);
 	}
 
-	public static boolean spawnZombie(DCharacter character, LivingEntity target)
+	public static boolean spawnZombie(DemigodsCharacter character, LivingEntity target)
 	{
 		Location spawnLocation = character.getCurrentLocation().clone();
-		if(Demigods.Util.isRunningSpigot()) Spigots.playParticle(spawnLocation, Effect.EXPLOSION_HUGE, 1, 1, 1, 1F, 5, 300);
+		if(DemigodsServer.Util.isRunningSpigot()) Spigots.playParticle(spawnLocation, Effect.EXPLOSION_HUGE, 1, 1, 1, 1F, 5, 300);
 		Zombie zombie = (Zombie) spawnLocation.getWorld().spawnEntity(spawnLocation, EntityType.ZOMBIE);
 		zombie.addPotionEffects(Sets.newHashSet(new PotionEffect(PotionEffectType.SPEED, 999, 5, false), new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 999, 5, false), new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 999, 1, false), new PotionEffect(PotionEffectType.JUMP, 999, 5, false), new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 999, 2, false)));
 		zombie.setCustomName(character.getName() + "'s Minion");

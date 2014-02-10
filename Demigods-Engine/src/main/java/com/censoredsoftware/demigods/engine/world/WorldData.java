@@ -1,4 +1,4 @@
-package com.censoredsoftware.demigods.engine.data;
+package com.censoredsoftware.demigods.engine.world;
 
 import com.censoredsoftware.censoredlib.helper.MapDBFile;
 import org.bukkit.Bukkit;

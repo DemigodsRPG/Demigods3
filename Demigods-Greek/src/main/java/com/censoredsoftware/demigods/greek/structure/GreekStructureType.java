@@ -1,8 +1,8 @@
 package com.censoredsoftware.demigods.greek.structure;
 
-import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
 import com.censoredsoftware.demigods.engine.data.serializable.StructureSave;
-import com.censoredsoftware.demigods.engine.mythos.Structure;
+import com.censoredsoftware.demigods.engine.entity.player.DemigodsCharacter;
+import com.censoredsoftware.demigods.engine.mythos.StructureType;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
@@ -16,20 +16,20 @@ import java.util.Collection;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
-public class GreekStructure implements Structure
+public class GreekStructureType implements StructureType
 {
 	private String name;
 	private Design[] designs;
 	private Function<Location, Design> getDesign;
 	private Function<Design, StructureSave> createNew;
 	private InteractFunction<Boolean> sanctify, corrupt, birth, kill;
-	private Set<Structure.Flag> flags;
+	private Set<StructureType.Flag> flags;
 	private Listener listener;
 	private int radius, generationPoints;
 	private Predicate<Player> allowed;
 	private float sanctity, sanctityRegen;
 
-	public GreekStructure(String name, Design[] designs, Function<Location, Design> getDesign, Function<Design, StructureSave> createNew, InteractFunction<Boolean> sanctify, InteractFunction<Boolean> corrupt, InteractFunction<Boolean> birth, InteractFunction<Boolean> kill, Set<Structure.Flag> flags, Listener listener, int radius, Predicate<Player> allowed, float sanctity, float sanctityRegen, int generationPoints)
+	public GreekStructureType(String name, Design[] designs, Function<Location, Design> getDesign, Function<Design, StructureSave> createNew, InteractFunction<Boolean> sanctify, InteractFunction<Boolean> corrupt, InteractFunction<Boolean> birth, InteractFunction<Boolean> kill, Set<StructureType.Flag> flags, Listener listener, int radius, Predicate<Player> allowed, float sanctity, float sanctityRegen, int generationPoints)
 	{
 		this.name = name;
 		this.designs = designs.clone();
@@ -78,7 +78,7 @@ public class GreekStructure implements Structure
 		return Sets.newHashSet(designs);
 	}
 
-	public Set<Structure.Flag> getFlags()
+	public Set<StructureType.Flag> getFlags()
 	{
 		return flags;
 	}
@@ -105,24 +105,24 @@ public class GreekStructure implements Structure
 		return allowed.apply(player);
 	}
 
-	public boolean sanctify(StructureSave data, DCharacter dCharacter)
+	public boolean sanctify(StructureSave data, DemigodsCharacter demigodsCharacter)
 	{
-		return sanctify.apply(data, dCharacter);
+		return sanctify.apply(data, demigodsCharacter);
 	}
 
-	public boolean corrupt(StructureSave data, DCharacter dCharacter)
+	public boolean corrupt(StructureSave data, DemigodsCharacter demigodsCharacter)
 	{
-		return corrupt.apply(data, dCharacter);
+		return corrupt.apply(data, demigodsCharacter);
 	}
 
-	public boolean birth(StructureSave data, DCharacter dCharacter)
+	public boolean birth(StructureSave data, DemigodsCharacter demigodsCharacter)
 	{
-		return birth.apply(data, dCharacter);
+		return birth.apply(data, demigodsCharacter);
 	}
 
-	public boolean kill(StructureSave data, DCharacter dCharacter)
+	public boolean kill(StructureSave data, DemigodsCharacter demigodsCharacter)
 	{
-		return kill.apply(data, dCharacter);
+		return kill.apply(data, demigodsCharacter);
 	}
 
 	public float getDefSanctity()

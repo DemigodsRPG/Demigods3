@@ -1,7 +1,7 @@
 package com.censoredsoftware.demigods.base;
 
 import com.censoredsoftware.demigods.base.structure.RestrictedArea;
-import com.censoredsoftware.demigods.engine.mythos.Structure;
+import com.censoredsoftware.demigods.engine.mythos.StructureType;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableSet;
@@ -12,26 +12,26 @@ public enum DemigodsStructure
 {
 	INVISIBLE_WALL(new RestrictedArea());
 
-	private final Structure structure;
+	private final StructureType structureType;
 
-	private DemigodsStructure(Structure structure)
+	private DemigodsStructure(StructureType structureType)
 	{
-		this.structure = structure;
+		this.structureType = structureType;
 	}
 
-	public Structure getStructure()
+	public StructureType getStructureType()
 	{
-		return structure;
+		return structureType;
 	}
 
-	public static ImmutableSet<Structure> structures()
+	public static ImmutableSet<StructureType> structures()
 	{
-		return ImmutableSet.copyOf(Collections2.transform(Sets.newHashSet(values()), new Function<DemigodsStructure, Structure>()
+		return ImmutableSet.copyOf(Collections2.transform(Sets.newHashSet(values()), new Function<DemigodsStructure, StructureType>()
 		{
 			@Override
-			public Structure apply(DemigodsStructure dStructure)
+			public StructureType apply(DemigodsStructure dStructure)
 			{
-				return dStructure.getStructure();
+				return dStructure.getStructureType();
 			}
 		}));
 	}

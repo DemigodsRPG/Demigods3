@@ -1,9 +1,10 @@
-package com.censoredsoftware.demigods.engine.data.serializable;
+package com.censoredsoftware.demigods.engine.battle;
 
-import java.util.UUID;
-
+import com.censoredsoftware.demigods.engine.entity.player.DemigodsCharacter;
 import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
+
+import java.util.UUID;
 
 public interface Participant
 {
@@ -13,7 +14,7 @@ public interface Participant
 
 	Location getCurrentLocation();
 
-	DCharacter getRelatedCharacter();
+	DemigodsCharacter getRelatedCharacter();
 
 	LivingEntity getEntity();
 }

@@ -1,5 +1,8 @@
 package com.censoredsoftware.demigods.classic.listener;
 
+import com.censoredsoftware.demigods.engine.entity.player.DemigodsCharacter;
+import com.censoredsoftware.demigods.engine.entity.player.DemigodsPlayer;
+import com.censoredsoftware.demigods.engine.util.Zones;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -8,10 +11,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
-
-import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
-import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
-import com.censoredsoftware.demigods.engine.util.Zones;
 
 public class ClassicLevelListener implements Listener
 {
@@ -24,7 +23,7 @@ public class ClassicLevelListener implements Listener
 		if(event.getPlayer() != null)
 		{
 			Player player = event.getPlayer();
-			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+			DemigodsCharacter character = DemigodsPlayer.Util.getPlayer(player).getCurrent();
 			if(event.isCancelled() || Zones.isNoDemigodsWorld(event.getBlock().getWorld()) || Zones.inNoBuildZone(player, event.getBlock().getLocation())) return;
 			if(character == null) return;
 			int value = 0;
@@ -58,7 +57,7 @@ public class ClassicLevelListener implements Listener
 		if(event.getDamager() instanceof Player)
 		{
 			Player player = (Player) event.getDamager();
-			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+			DemigodsCharacter character = DemigodsPlayer.Util.getPlayer(player).getCurrent();
 			if(character == null) return;
 			character.getMeta().addSkillPoints((int) (event.getDamage() * MULTIPLIER));
 		}
@@ -69,7 +68,7 @@ public class ClassicLevelListener implements Listener
 	{
 		if(!(event.getEntity() instanceof Player)) return;
 		Player player = (Player) event.getEntity();
-		DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+		DemigodsCharacter character = DemigodsPlayer.Util.getPlayer(player).getCurrent();
 		if(Zones.isNoDemigodsWorld(event.getEntity().getWorld()) || character == null) return;
 		double reduced = 0.1;
 		int before = character.getMeta().getSkillPoints();

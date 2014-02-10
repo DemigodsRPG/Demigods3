@@ -1,5 +1,14 @@
 package com.censoredsoftware.demigods.classic;
 
+import com.WildAmazing.marinating.Demigods.Deities.Deity;
+import com.censoredsoftware.censoredlib.util.Randoms;
+import com.censoredsoftware.demigods.engine.entity.player.DemigodsCharacter;
+import com.censoredsoftware.demigods.engine.entity.player.DemigodsPlayer;
+import com.censoredsoftware.demigods.engine.util.Messages;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
@@ -8,15 +17,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
-
-import com.WildAmazing.marinating.Demigods.Deities.Deity;
-import com.censoredsoftware.censoredlib.util.Randoms;
-import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
-import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
-import com.censoredsoftware.demigods.engine.util.Messages;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 
 public class ClassicLoader
 {
@@ -144,10 +144,10 @@ public class ClassicLoader
 			String mainDeity = pickOne.get(pickOne.size() < 2 ? 0 : Randoms.generateIntRange(0, pickOne.size() - 1)).getName();
 			deities.remove(mainDeity);
 
-			DPlayer dPlayer = DPlayer.Util.getPlayer(player);
+			DemigodsPlayer demigodsPlayer = DemigodsPlayer.Util.getPlayer(player);
 			try
 			{
-				DCharacter character = DCharacter.Util.create(dPlayer, mainDeity, player);
+				DemigodsCharacter character = DemigodsCharacter.Util.create(demigodsPlayer, mainDeity, player);
 				character.setMinorDeities(deities);
 				character.getMeta().setSkillPoints((int) getDevotion(player));
 			}

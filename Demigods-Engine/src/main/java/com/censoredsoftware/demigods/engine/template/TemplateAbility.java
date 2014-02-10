@@ -1,17 +1,16 @@
 package com.censoredsoftware.demigods.engine.template;
 
-import java.util.List;
-
+import com.censoredsoftware.demigods.engine.entity.player.attribute.Skill;
+import com.censoredsoftware.demigods.engine.mythos.Ability;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Lists;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.material.MaterialData;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.censoredsoftware.demigods.engine.data.serializable.Skill;
-import com.censoredsoftware.demigods.engine.mythos.Ability;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Lists;
+import java.util.List;
 
 public class TemplateAbility implements Ability
 {

@@ -1,14 +1,13 @@
 package com.censoredsoftware.demigods.greek.ability;
 
-import java.util.List;
-
+import com.censoredsoftware.demigods.engine.entity.player.attribute.Skill;
+import com.censoredsoftware.demigods.engine.mythos.Ability;
+import com.google.common.base.Predicate;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.material.MaterialData;
 
-import com.censoredsoftware.demigods.engine.data.serializable.Skill;
-import com.censoredsoftware.demigods.engine.mythos.Ability;
-import com.google.common.base.Predicate;
+import java.util.List;
 
 public class GreekAbility implements Ability
 {

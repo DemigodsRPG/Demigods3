@@ -1,16 +1,15 @@
 package com.censoredsoftware.demigods.greek.ability.passive;
 
-import java.util.List;
-
+import com.censoredsoftware.demigods.engine.entity.player.DemigodsCharacter;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.censoredsoftware.demigods.greek.ability.GreekAbility;
+import com.google.common.collect.Lists;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.censoredsoftware.demigods.greek.ability.GreekAbility;
-import com.google.common.collect.Lists;
+import java.util.List;
 
 public class NoDrown extends GreekAbility.Passive
 {
@@ -25,7 +24,7 @@ public class NoDrown extends GreekAbility.Passive
 			@Override
 			public void run()
 			{
-				for(DCharacter character : DCharacter.Util.getOnlineCharactersWithAbility(NAME))
+				for(DemigodsCharacter character : DemigodsCharacter.Util.getOnlineCharactersWithAbility(NAME))
 				{
 					if(Zones.inNoDemigodsZone(character.getOfflinePlayer().getPlayer().getLocation())) continue;
 					Player player = character.getOfflinePlayer().getPlayer();

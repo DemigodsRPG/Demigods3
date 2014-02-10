@@ -1,15 +1,13 @@
 package com.censoredsoftware.demigods.greek.ability.passive;
 
-import java.util.List;
-
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Horse;
-
 import com.censoredsoftware.censoredlib.util.Randoms;
-import com.censoredsoftware.demigods.engine.data.serializable.DPet;
 import com.censoredsoftware.demigods.engine.util.Zones;
 import com.censoredsoftware.demigods.greek.ability.GreekAbility;
 import com.google.common.collect.Lists;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Horse;
+
+import java.util.List;
 
 public class RainbowHorse extends GreekAbility.Passive
 {

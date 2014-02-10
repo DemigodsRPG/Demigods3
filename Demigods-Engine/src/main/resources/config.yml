@@ -93,5 +93,6 @@ panel:
 
 ## Data ##
 saving:
+    method: file
     freq: 300
     console_alert: true

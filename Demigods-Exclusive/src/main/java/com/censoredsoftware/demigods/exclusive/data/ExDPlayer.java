@@ -1,17 +1,16 @@
 package com.censoredsoftware.demigods.exclusive.data;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import com.censoredsoftware.censoredlib.exception.MojangIdNotFoundException;
+import com.censoredsoftware.censoredlib.helper.MojangIdGrabber;
+import com.censoredsoftware.demigods.engine.data.Data;
+import com.censoredsoftware.demigods.engine.entity.player.DemigodsPlayer;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
-import com.censoredsoftware.censoredlib.exception.MojangIdNotFoundException;
-import com.censoredsoftware.censoredlib.helper.MojangIdGrabber;
-import com.censoredsoftware.demigods.engine.data.Data;
-import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ExDPlayer implements ConfigurationSerializable
 {
@@ -38,19 +37,19 @@ public class ExDPlayer implements ConfigurationSerializable
 		this.mojangAccount = account;
 	}
 
-	public DPlayer getDPlayer()
+	public DemigodsPlayer getDPlayer()
 	{
 		return Data.PLAYER.get(mojangAccount);
 	}
 
 	public void remove()
 	{
-		DPlayer dPlayer = getDPlayer();
+		DemigodsPlayer demigodsPlayer = getDPlayer();
 
 		// First we need to kick the player if they're online
-		if(dPlayer.getOfflinePlayer().isOnline()) dPlayer.getOfflinePlayer().getPlayer().kickPlayer(ChatColor.RED + "Your player save has been cleared.");
+		if(demigodsPlayer.getOfflinePlayer().isOnline()) demigodsPlayer.getOfflinePlayer().getPlayer().kickPlayer(ChatColor.RED + "Your player save has been cleared.");
 
-		// Now we clear the DPlayer save itself
+		// Now we clear the DemigodsPlayer save itself
 		Util.delete(mojangAccount);
 	}
 

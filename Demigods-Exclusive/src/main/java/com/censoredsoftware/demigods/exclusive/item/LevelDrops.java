@@ -33,7 +33,7 @@ public enum LevelDrops
 
 	private static class Config extends ConfigFile2
 	{
-		private static final String SAVE_PATH = DemigodsPlugin.plugin().getDataFolder() + "/config/level_items/";
+		private static final String SAVE_PATH = DemigodsPlugin.getInst().getDataFolder() + "/config/level_items/";
 
 		private final String saveFile;
 		private ImmutableList<ItemStack> list;

@@ -1,17 +1,16 @@
 package com.censoredsoftware.demigods.engine.mythos;
 
-import java.util.NoSuchElementException;
-
-import org.bukkit.event.Listener;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.permissions.Permission;
-
 import com.censoredsoftware.censoredlib.helper.CommandManager;
 import com.censoredsoftware.censoredlib.trigger.Trigger;
 import com.censoredsoftware.censoredlib.util.Items;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.Iterables;
+import org.bukkit.event.Listener;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.permissions.Permission;
+
+import java.util.NoSuchElementException;
 
 public interface Mythos
 {
@@ -45,9 +44,9 @@ public interface Mythos
 
 	Deity getDeity(String deityName);
 
-	ImmutableCollection<Structure> getStructures();
+	ImmutableCollection<StructureType> getStructures();
 
-	Structure getStructure(String structureName);
+	StructureType getStructure(String structureName);
 
 	Boolean levelSeperateSkills();
 
@@ -151,16 +150,16 @@ public interface Mythos
 			return null;
 		}
 
-		public static Structure getStructure(Mythos mythos, final String structureName)
+		public static StructureType getStructure(Mythos mythos, final String structureName)
 		{
 			try
 			{
-				return Iterables.find(mythos.getStructures(), new Predicate<Structure>()
+				return Iterables.find(mythos.getStructures(), new Predicate<StructureType>()
 				{
 					@Override
-					public boolean apply(Structure structure)
+					public boolean apply(StructureType structureType)
 					{
-						return structureName.equals(structure.getName());
+						return structureName.equals(structureType.getName());
 					}
 				});
 			}

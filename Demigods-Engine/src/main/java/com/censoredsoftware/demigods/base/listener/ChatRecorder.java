@@ -1,8 +1,12 @@
 package com.censoredsoftware.demigods.base.listener;
 
-import java.util.List;
-import java.util.Map;
-
+import com.censoredsoftware.censoredlib.util.Times;
+import com.censoredsoftware.demigods.engine.DemigodsPlugin;
+import com.censoredsoftware.demigods.engine.event.DemigodsChatEvent;
+import com.google.common.base.Function;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,13 +15,8 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-import com.censoredsoftware.censoredlib.util.Times;
-import com.censoredsoftware.demigods.engine.DemigodsPlugin;
-import com.censoredsoftware.demigods.engine.event.DemigodsChatEvent;
-import com.google.common.base.Function;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import java.util.List;
+import java.util.Map;
 
 public class ChatRecorder
 {
@@ -64,7 +63,7 @@ public class ChatRecorder
 		{
 			ChatRecorder recorder = new ChatRecorder();
 			recorder.start(player);
-			DemigodsPlugin.plugin().getServer().getPluginManager().registerEvents(recorder.getListener(), DemigodsPlugin.plugin());
+			DemigodsPlugin.getInst().getServer().getPluginManager().registerEvents(recorder.getListener(), DemigodsPlugin.getInst());
 			return recorder;
 		}
 	}

@@ -5,12 +5,11 @@ import com.censoredsoftware.censoredlib.language.Symbol;
 import com.censoredsoftware.censoredlib.util.Strings;
 import com.censoredsoftware.censoredlib.util.Threads;
 import com.censoredsoftware.censoredlib.util.Times;
-import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.DemigodsPlugin;
 import com.censoredsoftware.demigods.engine.conversation.Administration;
 import com.censoredsoftware.demigods.engine.data.Data;
-import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
-import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
+import com.censoredsoftware.demigods.engine.entity.player.DemigodsCharacter;
+import com.censoredsoftware.demigods.engine.entity.player.DemigodsPlayer;
 import com.censoredsoftware.demigods.engine.language.English;
 import com.censoredsoftware.demigods.engine.mythos.Ability;
 import com.censoredsoftware.demigods.engine.mythos.Alliance;
@@ -58,9 +57,9 @@ public class MainCommand extends CommandManager
 		{
 			if(args.length == 2 && "admin".equalsIgnoreCase(args[0]) && "reload".equalsIgnoreCase(args[1]))
 			{
-				PluginManager pluginManager = DemigodsPlugin.plugin().getServer().getPluginManager();
-				pluginManager.disablePlugin(DemigodsPlugin.plugin());
-				pluginManager.enablePlugin(DemigodsPlugin.plugin());
+				PluginManager pluginManager = DemigodsPlugin.getInst().getServer().getPluginManager();
+				pluginManager.disablePlugin(DemigodsPlugin.getInst());
+				pluginManager.enablePlugin(DemigodsPlugin.getInst());
 				sender.sendMessage(ChatColor.GREEN + English.RELOAD_COMPLETE.getLine());
 				return false;
 			}
@@ -87,9 +86,9 @@ public class MainCommand extends CommandManager
 		// Check Permissions
 		if(!player.hasPermission("demigods.basic")) return !Messages.noPermission(player);
 
-		if("deity".equals(command.getName()) && DPlayer.Util.getPlayer(player).getCurrent() != null && DPlayer.Util.getPlayer(player).getCurrent().isUsable())
+		if("deity".equals(command.getName()) && DemigodsPlayer.Util.getPlayer(player).getCurrent() != null && DemigodsPlayer.Util.getPlayer(player).getCurrent().isUsable())
 		{
-			Deity deity = DPlayer.Util.getPlayer(player).getCurrent().getDeity();
+			Deity deity = DemigodsPlayer.Util.getPlayer(player).getCurrent().getDeity();
 			player.chat("/dg " + deity.getAlliance().getName().toLowerCase() + " " + deity.getName().toLowerCase());
 			return false;
 		}
@@ -100,7 +99,7 @@ public class MainCommand extends CommandManager
 		}
 
 		Messages.tagged(sender, "Documentation");
-		for(Alliance alliance : Demigods.mythos().getAlliances())
+		for(Alliance alliance : Demigods.getMythos().getAlliances())
 			if(sender.hasPermission(alliance.getPermission())) sender.sendMessage(ChatColor.GRAY + " /dg " + alliance.getName().toLowerCase());
 		sender.sendMessage(ChatColor.GRAY + " /dg info");
 		if(player.hasPermission("demigods.admin")) sender.sendMessage(ChatColor.RED + " /dg admin");
@@ -179,7 +178,7 @@ public class MainCommand extends CommandManager
 			return true;
 		}
 
-		for(Alliance alliance : Demigods.mythos().getAlliances())
+		for(Alliance alliance : Demigods.getMythos().getAlliances())
 		{
 			if(!player.hasPermission(alliance.getPermission())) continue;
 
@@ -381,7 +380,7 @@ public class MainCommand extends CommandManager
 			if("player".equalsIgnoreCase(args[2]))
 			{
 				// Define the player
-				DPlayer player = DPlayer.Util.getPlayer(Bukkit.getOfflinePlayer(args[3]));
+				DemigodsPlayer player = DemigodsPlayer.Util.getPlayer(Bukkit.getOfflinePlayer(args[3]));
 
 				// Display the information
 				if(player != null)
@@ -395,7 +394,7 @@ public class MainCommand extends CommandManager
 					if(player.getCharacters() != null && !player.getCharacters().isEmpty())
 					{
 						sender.sendMessage(ChatColor.GRAY + " " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.RESET + "Characters:");
-						for(DCharacter character : player.getCharacters())
+						for(DemigodsCharacter character : player.getCharacters())
 							sender.sendMessage(ChatColor.GRAY + "   - " + ChatColor.WHITE + character.getName() + ChatColor.RESET + " (" + character.getDeity().getColor() + character.getDeity().getName() + ChatColor.RESET + ")");
 					}
 				}
@@ -407,7 +406,7 @@ public class MainCommand extends CommandManager
 			else if("character".equalsIgnoreCase(args[2]))
 			{
 				// Define the character
-				DCharacter character = DCharacter.Util.getCharacterByName(args[3]);
+				DemigodsCharacter character = DemigodsCharacter.Util.getCharacterByName(args[3]);
 
 				// Display the information
 				if(character != null)
@@ -462,7 +461,7 @@ public class MainCommand extends CommandManager
 			if("player".equalsIgnoreCase(args[2]))
 			{
 				// Define the player
-				DPlayer player = DPlayer.Util.getPlayer(Bukkit.getOfflinePlayer(args[3]));
+				DemigodsPlayer player = DemigodsPlayer.Util.getPlayer(Bukkit.getOfflinePlayer(args[3]));
 
 				// Remove their data if not null
 				if(player != null)
@@ -481,7 +480,7 @@ public class MainCommand extends CommandManager
 			else if("character".equalsIgnoreCase(args[2]))
 			{
 				// Define the character
-				DCharacter character = DCharacter.Util.getCharacterByName(args[3]);
+				DemigodsCharacter character = DemigodsCharacter.Util.getCharacterByName(args[3]);
 
 				// Remove their data if not null
 				if(character != null)
@@ -526,7 +525,7 @@ public class MainCommand extends CommandManager
 				return true;
 			}
 
-			DCharacter character = DCharacter.Util.getCharacterByName(args[3]);
+			DemigodsCharacter character = DemigodsCharacter.Util.getCharacterByName(args[3]);
 			int amount = Integer.parseInt(args[4]);
 			String updatedValue;
 
@@ -608,7 +607,7 @@ public class MainCommand extends CommandManager
 				return true;
 			}
 
-			DCharacter character = DCharacter.Util.getCharacterByName(args[3]);
+			DemigodsCharacter character = DemigodsCharacter.Util.getCharacterByName(args[3]);
 			int amount = Integer.parseInt(args[4]);
 			String updatedValue = null;
 
@@ -689,7 +688,7 @@ public class MainCommand extends CommandManager
 				return true;
 			}
 
-			DCharacter character = DCharacter.Util.getCharacterByName(args[3]);
+			DemigodsCharacter character = DemigodsCharacter.Util.getCharacterByName(args[3]);
 			int amount = Integer.parseInt(args[4]);
 			String updatedValue = null;
 

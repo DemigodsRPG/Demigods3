@@ -5,11 +5,11 @@ import com.censoredsoftware.censoredlib.schematic.Selection;
 import com.censoredsoftware.censoredlib.util.Colors;
 import com.censoredsoftware.demigods.engine.conversation.Administration;
 import com.censoredsoftware.demigods.engine.data.Data;
-import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
-import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
 import com.censoredsoftware.demigods.engine.data.serializable.StructureSave;
+import com.censoredsoftware.demigods.engine.entity.player.DemigodsCharacter;
+import com.censoredsoftware.demigods.engine.entity.player.DemigodsPlayer;
 import com.censoredsoftware.demigods.engine.mythos.Deity;
-import com.censoredsoftware.demigods.engine.mythos.Structure;
+import com.censoredsoftware.demigods.engine.mythos.StructureType;
 import com.censoredsoftware.demigods.engine.util.Configs;
 import com.censoredsoftware.demigods.engine.util.Messages;
 import com.censoredsoftware.demigods.engine.util.Zones;
@@ -32,13 +32,13 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-public class Shrine extends GreekStructure
+public class Shrine extends GreekStructureType
 {
 	private static final String name = "Shrine";
-	private static final Function<Location, GreekStructure.Design> getDesign = new Function<Location, GreekStructure.Design>()
+	private static final Function<Location, GreekStructureType.Design> getDesign = new Function<Location, GreekStructureType.Design>()
 	{
 		@Override
-		public GreekStructure.Design apply(Location reference)
+		public GreekStructureType.Design apply(Location reference)
 		{
 			switch(reference.getBlock().getBiome())
 			{
@@ -49,10 +49,10 @@ public class Shrine extends GreekStructure
 			}
 		}
 	};
-	private static final Function<GreekStructure.Design, StructureSave> createNew = new Function<GreekStructure.Design, StructureSave>()
+	private static final Function<GreekStructureType.Design, StructureSave> createNew = new Function<GreekStructureType.Design, StructureSave>()
 	{
 		@Override
-		public StructureSave apply(GreekStructure.Design design)
+		public StructureSave apply(GreekStructureType.Design design)
 		{
 			StructureSave save = new StructureSave();
 			save.setSanctifiers(new HashMap<String, Long>());
@@ -60,12 +60,12 @@ public class Shrine extends GreekStructure
 			return save;
 		}
 	};
-	private static final Structure.InteractFunction<Boolean> sanctify = new Structure.InteractFunction<Boolean>()
+	private static final StructureType.InteractFunction<Boolean> sanctify = new StructureType.InteractFunction<Boolean>()
 	{
 		@Override
-		public Boolean apply(StructureSave data, DCharacter character)
+		public Boolean apply(StructureSave data, DemigodsCharacter character)
 		{
-			if(!DCharacter.Util.areAllied(character, Data.CHARACTER.get(data.getOwner()))) return false;
+			if(!DemigodsCharacter.Util.areAllied(character, Data.CHARACTER.get(data.getOwner()))) return false;
 			Location location = data.getReferenceLocation();
 			location.getWorld().playSound(location, Sound.CAT_PURREOW, 0.7F, 0.9F);
 			MaterialData colorData = Colors.getMaterial(character.getDeity().getColor());
@@ -73,12 +73,12 @@ public class Shrine extends GreekStructure
 			return true;
 		}
 	};
-	private static final Structure.InteractFunction<Boolean> corrupt = new Structure.InteractFunction<Boolean>()
+	private static final StructureType.InteractFunction<Boolean> corrupt = new StructureType.InteractFunction<Boolean>()
 	{
 		@Override
-		public Boolean apply(StructureSave data, DCharacter character)
+		public Boolean apply(StructureSave data, DemigodsCharacter character)
 		{
-			if(DCharacter.Util.areAllied(character, Data.CHARACTER.get(data.getOwner()))) return false;
+			if(DemigodsCharacter.Util.areAllied(character, Data.CHARACTER.get(data.getOwner()))) return false;
 			Location location = data.getReferenceLocation();
 			location.getWorld().playSound(location, Sound.WITHER_HURT, 0.4F, 1.5F);
 			location.getWorld().playEffect(location.clone().add(0, 1, 0), Effect.STEP_SOUND, Material.REDSTONE_BLOCK.getId());
@@ -86,10 +86,10 @@ public class Shrine extends GreekStructure
 			return true;
 		}
 	};
-	private static final Structure.InteractFunction<Boolean> birth = new Structure.InteractFunction<Boolean>()
+	private static final StructureType.InteractFunction<Boolean> birth = new StructureType.InteractFunction<Boolean>()
 	{
 		@Override
-		public Boolean apply(StructureSave data, DCharacter character)
+		public Boolean apply(StructureSave data, DemigodsCharacter character)
 		{
 			Location location = data.getReferenceLocation();
 			location.getWorld().strikeLightningEffect(location);
@@ -97,10 +97,10 @@ public class Shrine extends GreekStructure
 			return true;
 		}
 	};
-	private static final Structure.InteractFunction<Boolean> kill = new Structure.InteractFunction<Boolean>()
+	private static final StructureType.InteractFunction<Boolean> kill = new StructureType.InteractFunction<Boolean>()
 	{
 		@Override
-		public Boolean apply(StructureSave data, DCharacter character)
+		public Boolean apply(StructureSave data, DemigodsCharacter character)
 		{
 			Location location = data.getReferenceLocation();
 			location.getWorld().playSound(location, Sound.WITHER_DEATH, 1F, 1.2F);
@@ -109,12 +109,12 @@ public class Shrine extends GreekStructure
 			return true;
 		}
 	};
-	private static final Set<Structure.Flag> flags = new HashSet<Structure.Flag>()
+	private static final Set<StructureType.Flag> flags = new HashSet<StructureType.Flag>()
 	{
 		{
-			add(Structure.Flag.DELETE_WITH_OWNER);
-			add(Structure.Flag.DESTRUCT_ON_BREAK);
-			add(Structure.Flag.TRIBUTE_LOCATION);
+			add(StructureType.Flag.DELETE_WITH_OWNER);
+			add(StructureType.Flag.DESTRUCT_ON_BREAK);
+			add(StructureType.Flag.TRIBUTE_LOCATION);
 		}
 	};
 	private static final Listener listener = new Listener()
@@ -131,9 +131,9 @@ public class Shrine extends GreekStructure
 			Location location = clickedBlock.getLocation();
 			Player player = event.getPlayer();
 
-			if(DPlayer.Util.isImmortal(player))
+			if(DemigodsPlayer.Util.isImmortal(player))
 			{
-				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+				DemigodsCharacter character = DemigodsPlayer.Util.getPlayer(player).getCurrent();
 
 				if(event.getAction() == Action.RIGHT_CLICK_BLOCK && !character.getDeity().getFlags().contains(Deity.Flag.NO_SHRINE) && character.getDeity().getClaimItems().keySet().contains(event.getPlayer().getItemInHand().getType()) && Util.validBlockConfiguration(event.getClickedBlock()))
 				{
@@ -170,12 +170,12 @@ public class Shrine extends GreekStructure
 				}
 			}
 
-			if(Administration.Util.useWand(player) && Structure.Util.partOfStructureWithType(location, "Shrine"))
+			if(Administration.Util.useWand(player) && StructureType.Util.partOfStructureWithType(location, "Shrine"))
 			{
 				event.setCancelled(true);
 
-				StructureSave save = Structure.Util.getStructureRegional(location);
-				DCharacter owner = DCharacter.Util.load(save.getOwner());
+				StructureSave save = StructureType.Util.getStructureRegional(location);
+				DemigodsCharacter owner = DemigodsCharacter.Util.load(save.getOwner());
 
 				if(Data.TIMED.boolContainsKey(player.getName() + "destroy_shrine"))
 				{
@@ -250,7 +250,7 @@ public class Shrine extends GreekStructure
 		super(name, ShrineDesign.values(), getDesign, createNew, sanctify, corrupt, birth, kill, flags, listener, radius, allow, sanctity, sanctityRegen, generationPoints);
 	}
 
-	public static enum ShrineDesign implements GreekStructure.Design
+	public static enum ShrineDesign implements GreekStructureType.Design
 	{
 		GENERAL("general", general, new Selection(0, 1, 0)), NETHER("nether", nether, new Selection(0, 1, 0));
 
@@ -297,9 +297,9 @@ public class Shrine extends GreekStructure
 		}
 	}
 
-	private static final Structure INST = new Shrine();
+	private static final StructureType INST = new Shrine();
 
-	public static Structure inst()
+	public static StructureType inst()
 	{
 		return INST;
 	}

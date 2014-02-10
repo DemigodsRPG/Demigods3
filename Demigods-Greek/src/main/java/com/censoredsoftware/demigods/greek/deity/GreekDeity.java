@@ -210,7 +210,7 @@ public class GreekDeity implements Deity, Deity.MoodManager
 		@Override
 		public String getSavePath()
 		{
-			return DemigodsPlugin.plugin().getDataFolder() + "/config/deity/" + alliance.getName().toLowerCase() + "/"; // Don't change this.
+			return DemigodsPlugin.getInst().getDataFolder() + "/config/deity/" + alliance.getName().toLowerCase() + "/"; // Don't change this.
 		}
 
 		@Override

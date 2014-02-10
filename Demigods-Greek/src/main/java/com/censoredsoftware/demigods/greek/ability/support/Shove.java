@@ -1,19 +1,18 @@
 package com.censoredsoftware.demigods.greek.ability.support;
 
-import java.util.List;
-
+import com.censoredsoftware.demigods.engine.entity.player.DemigodsCharacter;
+import com.censoredsoftware.demigods.engine.entity.player.DemigodsPlayer;
+import com.censoredsoftware.demigods.engine.entity.player.attribute.Skill;
+import com.censoredsoftware.demigods.engine.mythos.Ability;
+import com.censoredsoftware.demigods.greek.ability.GreekAbility;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Lists;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.util.Vector;
 
-import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
-import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
-import com.censoredsoftware.demigods.engine.data.serializable.Skill;
-import com.censoredsoftware.demigods.engine.mythos.Ability;
-import com.censoredsoftware.demigods.greek.ability.GreekAbility;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Lists;
+import java.util.List;
 
 public class Shove extends GreekAbility
 {
@@ -34,7 +33,7 @@ public class Shove extends GreekAbility
 				if(!Ability.Util.target(player, target.getLocation(), true)) return false;
 
 				// Define variables
-				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+				DemigodsCharacter character = DemigodsPlayer.Util.getPlayer(player).getCurrent();
 				int ascensions = character.getMeta().getAscensions();
 				double multiply = 0.1753 * Math.pow(ascensions, 0.322917);
 

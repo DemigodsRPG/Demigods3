@@ -1,17 +1,16 @@
 package com.censoredsoftware.demigods.engine;
 
-import java.io.File;
-import java.util.Collection;
-import java.util.List;
-
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
-
 import com.censoredsoftware.censoredlib.CensoredLibPlugin;
 import com.censoredsoftware.censoredlib.helper.CensoredJavaPlugin;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
+
+import java.io.File;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Class for all plugins of demigods.
@@ -22,7 +21,7 @@ public class DemigodsPlugin extends CensoredJavaPlugin
 	static DemigodsPlugin INST;
 	static boolean ready = false;
 
-	public static CensoredJavaPlugin plugin()
+	public static CensoredJavaPlugin getInst()
 	{
 		return INST;
 	}
@@ -44,7 +43,7 @@ public class DemigodsPlugin extends CensoredJavaPlugin
 		loadAddons();
 
 		// Load the game engine.
-		if(!Demigods.init())
+		if(!DemigodsServer.init())
 		{
 			getPluginLoader().disablePlugin(this);
 			return;
@@ -61,7 +60,7 @@ public class DemigodsPlugin extends CensoredJavaPlugin
 	@Override
 	public void onDisable()
 	{
-		Demigods.uninit();
+		DemigodsServer.uninit();
 
 		message("disabled");
 	}
@@ -118,6 +117,7 @@ public class DemigodsPlugin extends CensoredJavaPlugin
 		return false;
 	}
 
+	// FIXME Integrate zml2008's libcomponents (https://github.com/zml2008/libcomponents/tree/bukkit-pure) instead of this messy loading
 	private void loadAddons()
 	{
 		// Unload all incorrectly installed plugins

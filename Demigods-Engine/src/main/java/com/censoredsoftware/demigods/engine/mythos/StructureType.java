@@ -3,8 +3,8 @@ package com.censoredsoftware.demigods.engine.mythos;
 import com.censoredsoftware.censoredlib.data.location.CLocation;
 import com.censoredsoftware.censoredlib.data.location.Region;
 import com.censoredsoftware.censoredlib.schematic.Schematic;
-import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
 import com.censoredsoftware.demigods.engine.data.serializable.StructureSave;
+import com.censoredsoftware.demigods.engine.entity.player.DemigodsCharacter;
 import com.censoredsoftware.shaded.org.jgrapht.graph.DefaultWeightedEdge;
 import com.censoredsoftware.shaded.org.jgrapht.graph.SimpleWeightedGraph;
 import com.google.common.base.Function;
@@ -19,7 +19,7 @@ import org.bukkit.event.Listener;
 import javax.annotation.Nullable;
 import java.util.*;
 
-public interface Structure
+public interface StructureType
 {
 	String getName();
 
@@ -31,13 +31,13 @@ public interface Structure
 
 	Listener getUniqueListener();
 
-	boolean sanctify(StructureSave data, DCharacter character);
+	boolean sanctify(StructureSave data, DemigodsCharacter character);
 
-	boolean corrupt(StructureSave data, DCharacter character);
+	boolean corrupt(StructureSave data, DemigodsCharacter character);
 
-	boolean birth(StructureSave data, DCharacter character);
+	boolean birth(StructureSave data, DemigodsCharacter character);
 
-	boolean kill(StructureSave data, DCharacter character);
+	boolean kill(StructureSave data, DemigodsCharacter character);
 
 	float getDefSanctity();
 
@@ -62,7 +62,7 @@ public interface Structure
 
 	public interface InteractFunction<T>
 	{
-		T apply(@Nullable StructureSave data, @Nullable DCharacter character);
+		T apply(@Nullable StructureSave data, @Nullable DemigodsCharacter character);
 	}
 
 	public enum Flag
@@ -352,7 +352,7 @@ public interface Structure
 			return true;
 		}
 
-		public static SimpleWeightedGraph<UUID, DefaultWeightedEdge> getGraphOfStructuresWithType(final Structure type)
+		public static SimpleWeightedGraph<UUID, DefaultWeightedEdge> getGraphOfStructuresWithType(final StructureType type)
 		{
 			return getGraphOfStructuresWithPredicate(new Predicate<StructureSave>()
 			{

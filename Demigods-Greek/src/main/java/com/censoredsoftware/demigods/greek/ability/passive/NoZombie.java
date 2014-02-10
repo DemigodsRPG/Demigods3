@@ -1,7 +1,11 @@
 package com.censoredsoftware.demigods.greek.ability.passive;
 
-import java.util.List;
-
+import com.censoredsoftware.demigods.engine.entity.player.DemigodsCharacter;
+import com.censoredsoftware.demigods.engine.entity.player.DemigodsPlayer;
+import com.censoredsoftware.demigods.engine.mythos.Deity;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.censoredsoftware.demigods.greek.ability.GreekAbility;
+import com.google.common.collect.Lists;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
@@ -11,12 +15,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 
-import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
-import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
-import com.censoredsoftware.demigods.engine.mythos.Deity;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.censoredsoftware.demigods.greek.ability.GreekAbility;
-import com.google.common.collect.Lists;
+import java.util.List;
 
 public class NoZombie extends GreekAbility.Passive
 {
@@ -46,14 +45,14 @@ public class NoZombie extends GreekAbility.Passive
 			public void onEntityTargetEntity(EntityTargetLivingEntityEvent targetEvent)
 			{
 				if(Zones.inNoDemigodsZone(targetEvent.getEntity().getLocation()) || !(targetEvent.getTarget() instanceof Player)) return;
-				if(targetEvent.getEntity() instanceof Zombie && Deity.Util.canUseDeitySilent(DPlayer.Util.getPlayer((Player) targetEvent.getTarget()).getCurrent(), deity)) targetEvent.setCancelled(true);
+				if(targetEvent.getEntity() instanceof Zombie && Deity.Util.canUseDeitySilent(DemigodsPlayer.Util.getPlayer((Player) targetEvent.getTarget()).getCurrent(), deity)) targetEvent.setCancelled(true);
 			}
 		}, new Runnable()
 		{
 			@Override
 			public void run()
 			{
-				for(DCharacter character : DCharacter.Util.getOnlineCharactersWithDeity(deity))
+				for(DemigodsCharacter character : DemigodsCharacter.Util.getOnlineCharactersWithDeity(deity))
 				{
 					Player player = character.getOfflinePlayer().getPlayer();
 					for(Entity entity : player.getNearbyEntities(15, 15, 15))

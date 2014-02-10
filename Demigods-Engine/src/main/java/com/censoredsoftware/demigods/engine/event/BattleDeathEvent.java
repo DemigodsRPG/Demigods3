@@ -1,15 +1,14 @@
 package com.censoredsoftware.demigods.engine.event;
 
-import java.util.UUID;
-
+import com.censoredsoftware.demigods.engine.battle.Battle;
+import com.censoredsoftware.demigods.engine.battle.Participant;
+import com.censoredsoftware.demigods.engine.data.Data;
+import com.censoredsoftware.demigods.engine.entity.player.DemigodsCharacter;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-import com.censoredsoftware.demigods.engine.data.Data;
-import com.censoredsoftware.demigods.engine.data.serializable.Battle;
-import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
-import com.censoredsoftware.demigods.engine.data.serializable.Participant;
+import java.util.UUID;
 
 public class BattleDeathEvent extends Event implements Cancellable
 {
@@ -46,9 +45,9 @@ public class BattleDeathEvent extends Event implements Cancellable
 		return null;
 	}
 
-	public DCharacter getCharacter()
+	public DemigodsCharacter getCharacter()
 	{
-		if(Data.CHARACTER.containsKey(character)) return DCharacter.Util.load(character);
+		if(Data.CHARACTER.containsKey(character)) return DemigodsCharacter.Util.load(character);
 		return null;
 	}
 
@@ -57,9 +56,9 @@ public class BattleDeathEvent extends Event implements Cancellable
 		return getKiller() != null;
 	}
 
-	public DCharacter getKiller()
+	public DemigodsCharacter getKiller()
 	{
-		if(killer != null && Data.CHARACTER.containsKey(killer)) return DCharacter.Util.load(killer);
+		if(killer != null && Data.CHARACTER.containsKey(killer)) return DemigodsCharacter.Util.load(killer);
 		return null;
 	}
 

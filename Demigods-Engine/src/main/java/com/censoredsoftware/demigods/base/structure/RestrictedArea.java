@@ -1,25 +1,24 @@
 package com.censoredsoftware.demigods.base.structure;
 
-import java.util.Collection;
-import java.util.Set;
-
+import com.censoredsoftware.censoredlib.schematic.Schematic;
+import com.censoredsoftware.censoredlib.schematic.Selection;
+import com.censoredsoftware.demigods.engine.DemigodsPlugin;
+import com.censoredsoftware.demigods.engine.data.serializable.StructureSave;
+import com.censoredsoftware.demigods.engine.entity.player.DemigodsCharacter;
+import com.censoredsoftware.demigods.engine.entity.player.DemigodsPlayer;
+import com.censoredsoftware.demigods.engine.mythos.StructureType;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Sets;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
-import com.censoredsoftware.censoredlib.schematic.Schematic;
-import com.censoredsoftware.censoredlib.schematic.Selection;
-import com.censoredsoftware.demigods.engine.DemigodsPlugin;
-import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
-import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
-import com.censoredsoftware.demigods.engine.data.serializable.StructureSave;
-import com.censoredsoftware.demigods.engine.mythos.Structure;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Sets;
+import java.util.Collection;
+import java.util.Set;
 
-public class RestrictedArea implements Structure, Structure.Design
+public class RestrictedArea implements StructureType, StructureType.Design
 {
 	@Override
 	public String getName()
@@ -74,25 +73,25 @@ public class RestrictedArea implements Structure, Structure.Design
 	}
 
 	@Override
-	public boolean sanctify(StructureSave data, DCharacter character)
+	public boolean sanctify(StructureSave data, DemigodsCharacter character)
 	{
 		return false;
 	}
 
 	@Override
-	public boolean corrupt(StructureSave data, DCharacter character)
+	public boolean corrupt(StructureSave data, DemigodsCharacter character)
 	{
 		return false;
 	}
 
 	@Override
-	public boolean birth(StructureSave data, DCharacter character)
+	public boolean birth(StructureSave data, DemigodsCharacter character)
 	{
 		return false;
 	}
 
 	@Override
-	public boolean kill(StructureSave data, DCharacter character)
+	public boolean kill(StructureSave data, DemigodsCharacter character)
 	{
 		return false;
 	}
@@ -123,7 +122,7 @@ public class RestrictedArea implements Structure, Structure.Design
 			@Override
 			public boolean apply(Player player)
 			{
-				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+				DemigodsCharacter character = DemigodsPlayer.Util.getPlayer(player).getCurrent();
 				return data.getPermission() != null && player.hasPermission(data.getPermission()) || character != null && data.getRequiredAscensions() != null && character.getMeta().getAscensions() >= data.getRequiredAscensions();
 			}
 		};
@@ -164,13 +163,13 @@ public class RestrictedArea implements Structure, Structure.Design
 			if(option)
 			{
 				// Create a sync delayed task to avoid asynchronous block update issues
-				Bukkit.getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.plugin(), new Runnable()
+				Bukkit.getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.getInst(), new Runnable()
 				{
 					@Override
 					public void run()
 					{
 						// Loop through all invisible wall structures
-						for(StructureSave save : Structure.Util.getStructuresWithFlag(Flag.RESTRICTED_AREA))
+						for(StructureSave save : StructureType.Util.getStructuresWithFlag(Flag.RESTRICTED_AREA))
 						{
 							for(Location location : save.getType().getDesign("Restricted Area").getSchematic(save).getLocations(save.getReferenceLocation()))
 							{
@@ -183,13 +182,13 @@ public class RestrictedArea implements Structure, Structure.Design
 			else
 			{
 				// Create a sync delayed task to avoid asynchronous block update issues
-				Bukkit.getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.plugin(), new Runnable()
+				Bukkit.getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.getInst(), new Runnable()
 				{
 					@Override
 					public void run()
 					{
 						// Loop through all invisible wall structures
-						for(StructureSave save : Structure.Util.getStructuresWithFlag(Flag.RESTRICTED_AREA))
+						for(StructureSave save : StructureType.Util.getStructuresWithFlag(Flag.RESTRICTED_AREA))
 						{
 							for(Location location : save.getType().getDesign("Restricted Area").getSchematic(save).getLocations(save.getReferenceLocation()))
 							{

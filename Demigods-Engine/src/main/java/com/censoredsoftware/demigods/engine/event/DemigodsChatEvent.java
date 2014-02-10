@@ -1,22 +1,20 @@
 package com.censoredsoftware.demigods.engine.event;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Set;
-
-import javax.annotation.Nullable;
-
+import com.censoredsoftware.demigods.engine.entity.player.DemigodsCharacter;
+import com.google.common.base.Function;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Sets;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Sets;
+import javax.annotation.Nullable;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Set;
 
 public class DemigodsChatEvent extends Event implements Cancellable
 {
@@ -31,13 +29,13 @@ public class DemigodsChatEvent extends Event implements Cancellable
 		this.recipients = Collections.synchronizedSet(Sets.newHashSet(Bukkit.getServer().getOnlinePlayers()));
 	}
 
-	public DemigodsChatEvent(String message, Collection<DCharacter> recipients)
+	public DemigodsChatEvent(String message, Collection<DemigodsCharacter> recipients)
 	{
 		this.message = message;
-		this.recipients = Sets.newHashSet(Collections2.filter(Collections2.transform(recipients, new Function<DCharacter, Player>()
+		this.recipients = Sets.newHashSet(Collections2.filter(Collections2.transform(recipients, new Function<DemigodsCharacter, Player>()
 		{
 			@Override
-			public Player apply(DCharacter character)
+			public Player apply(DemigodsCharacter character)
 			{
 				return character.getOfflinePlayer().isOnline() ? character.getOfflinePlayer().getPlayer() : null;
 			}

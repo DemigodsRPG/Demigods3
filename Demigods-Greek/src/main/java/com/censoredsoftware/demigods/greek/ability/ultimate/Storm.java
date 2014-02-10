@@ -1,7 +1,14 @@
 package com.censoredsoftware.demigods.greek.ability.ultimate;
 
-import java.util.List;
-
+import com.censoredsoftware.demigods.engine.DemigodsPlugin;
+import com.censoredsoftware.demigods.engine.battle.Battle;
+import com.censoredsoftware.demigods.engine.entity.player.DemigodsCharacter;
+import com.censoredsoftware.demigods.engine.entity.player.DemigodsPlayer;
+import com.censoredsoftware.demigods.engine.entity.player.attribute.Skill;
+import com.censoredsoftware.demigods.engine.mythos.Ability;
+import com.censoredsoftware.demigods.greek.ability.GreekAbility;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Lists;
 import org.bukkit.Bukkit;
 import org.bukkit.WeatherType;
 import org.bukkit.entity.Entity;
@@ -10,15 +17,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.censoredsoftware.demigods.engine.DemigodsPlugin;
-import com.censoredsoftware.demigods.engine.data.serializable.Battle;
-import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
-import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
-import com.censoredsoftware.demigods.engine.data.serializable.Skill;
-import com.censoredsoftware.demigods.engine.mythos.Ability;
-import com.censoredsoftware.demigods.greek.ability.GreekAbility;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Lists;
+import java.util.List;
 
 public class Storm extends GreekAbility
 {
@@ -35,7 +34,7 @@ public class Storm extends GreekAbility
 			public boolean apply(final Player player)
 			{
 				// Define variables
-				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+				DemigodsCharacter character = DemigodsPlayer.Util.getPlayer(player).getCurrent();
 
 				// Define variables
 				final int ultimateSkillLevel = character.getMeta().getSkill(Skill.Type.ULTIMATE).getLevel();
@@ -52,8 +51,8 @@ public class Storm extends GreekAbility
 					if(!(entity instanceof LivingEntity)) continue;
 					if(entity instanceof Player)
 					{
-						DCharacter opponent = DPlayer.Util.getPlayer((Player) entity).getCurrent();
-						if(opponent != null && DCharacter.Util.areAllied(character, opponent)) continue;
+						DemigodsCharacter opponent = DemigodsPlayer.Util.getPlayer((Player) entity).getCurrent();
+						if(opponent != null && DemigodsCharacter.Util.areAllied(character, opponent)) continue;
 					}
 					if(Battle.Util.canParticipate(entity) && !Battle.Util.canTarget(Battle.Util.defineParticipant(entity))) continue;
 
@@ -61,7 +60,7 @@ public class Storm extends GreekAbility
 					if(entity instanceof Player) setWeather((Player) entity, 100);
 
 					// Strike them with a small delay
-					Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.plugin(), new BukkitRunnable()
+					Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.getInst(), new BukkitRunnable()
 					{
 						@Override
 						public void run()
@@ -86,7 +85,7 @@ public class Storm extends GreekAbility
 		player.setPlayerWeather(WeatherType.DOWNFALL);
 
 		// Create the runnable to switch back
-		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.plugin(), new BukkitRunnable()
+		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.getInst(), new BukkitRunnable()
 		{
 			@Override
 			public void run()

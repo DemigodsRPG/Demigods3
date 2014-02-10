@@ -4,10 +4,10 @@ import com.censoredsoftware.censoredlib.helper.CommandManager;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.DemigodsPlugin;
 import com.censoredsoftware.demigods.engine.data.Data;
-import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
-import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
 import com.censoredsoftware.demigods.engine.data.serializable.StructureSave;
-import com.censoredsoftware.demigods.engine.mythos.Structure;
+import com.censoredsoftware.demigods.engine.entity.player.DemigodsCharacter;
+import com.censoredsoftware.demigods.engine.entity.player.DemigodsPlayer;
+import com.censoredsoftware.demigods.engine.mythos.StructureType;
 import com.censoredsoftware.shaded.org.jgrapht.ext.DOTExporter;
 import com.censoredsoftware.shaded.org.jgrapht.ext.EdgeNameProvider;
 import com.censoredsoftware.shaded.org.jgrapht.ext.VertexNameProvider;
@@ -64,7 +64,7 @@ public class DevelopmentCommands extends CommandManager
 
 		try
 		{
-			File file = new File(DemigodsPlugin.plugin().getDataFolder() + "/obelisks.dot");
+			File file = new File(DemigodsPlugin.getInst().getDataFolder() + "/obelisks.dot");
 			PrintWriter write = new PrintWriter(file);
 			DOTExporter<UUID, DefaultWeightedEdge> exporter = new DOTExporter<>(new VertexNameProvider<UUID>()
 			{
@@ -88,7 +88,7 @@ public class DevelopmentCommands extends CommandManager
 					return defaultWeightedEdge.toString();
 				}
 			});
-			exporter.export(write, Structure.Util.getGraphOfStructuresWithType(Demigods.mythos().getStructure("Obelisk")));
+			exporter.export(write, StructureType.Util.getGraphOfStructuresWithType(Demigods.getMythos().getStructure("Obelisk")));
 			write.close();
 			player.sendMessage("Success!");
 			return true;
@@ -115,14 +115,14 @@ public class DevelopmentCommands extends CommandManager
 
 	private static boolean test3(CommandSender sender, final String[] args)
 	{
-        Player player = (Player) sender;
+		Player player = (Player) sender;
 
-        // TODO Remove all Greek stuff from here, for testng only!
+		// TODO Remove all Greek stuff from here, for testng only!
 
-		StructureSave save = Iterables.getFirst(Structure.Util.getInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_GRIEFING), null);
+		StructureSave save = Iterables.getFirst(StructureType.Util.getInRadiusWithFlag(player.getLocation(), StructureType.Flag.NO_GRIEFING), null);
 		if(save != null)
 		{
-			SimpleWeightedGraph<UUID, DefaultWeightedEdge> graph = Structure.Util.getGraphOfStructuresWithType(Demigods.mythos().getStructure("Obelisk"));
+			SimpleWeightedGraph<UUID, DefaultWeightedEdge> graph = StructureType.Util.getGraphOfStructuresWithType(Demigods.getMythos().getStructure("Obelisk"));
 
 			Set<DefaultWeightedEdge> test = graph.edgeSet();
 			if(!test.isEmpty()) for(DefaultEdge found : test)
@@ -146,17 +146,17 @@ public class DevelopmentCommands extends CommandManager
 			return false;
 		}
 
-		StructureSave obelisk = Iterables.getFirst(Structure.Util.getInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_GRIEFING), null);
+		StructureSave obelisk = Iterables.getFirst(StructureType.Util.getInRadiusWithFlag(player.getLocation(), StructureType.Flag.NO_GRIEFING), null);
 		if(obelisk != null)
 		{
-			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+			DemigodsCharacter character = DemigodsPlayer.Util.getPlayer(player).getCurrent();
 			if(!obelisk.getOwner().equals(character.getId()))
 			{
 				player.sendMessage(ChatColor.RED + "You don't control this Obelisk.");
 				return true;
 			}
 
-			DCharacter workWith = obeliskGetCharacter(args[1], args[2]);
+			DemigodsCharacter workWith = obeliskGetCharacter(args[1], args[2]);
 
 			if(workWith == null)
 			{
@@ -164,7 +164,7 @@ public class DevelopmentCommands extends CommandManager
 				return true;
 			}
 
-			if(!DCharacter.Util.areAllied(workWith, character))
+			if(!DemigodsCharacter.Util.areAllied(workWith, character))
 			{
 				player.sendMessage(ChatColor.RED + "You are not allied with " + workWith.getDeity().getColor() + character.getName() + ChatColor.RED + ".");
 				return true;
@@ -194,18 +194,18 @@ public class DevelopmentCommands extends CommandManager
 		return true;
 	}
 
-	private static DCharacter obeliskGetCharacter(String type, final String name)
+	private static DemigodsCharacter obeliskGetCharacter(String type, final String name)
 	{
-		if("character".equalsIgnoreCase(type)) return DCharacter.Util.getCharacterByName(name);
+		if("character".equalsIgnoreCase(type)) return DemigodsCharacter.Util.getCharacterByName(name);
 		if(!"player".equalsIgnoreCase(type)) return null;
 		try
 		{
-			return Iterators.find(Data.PLAYER.values().iterator(), new Predicate<DPlayer>()
+			return Iterators.find(Data.PLAYER.values().iterator(), new Predicate<DemigodsPlayer>()
 			{
 				@Override
-				public boolean apply(DPlayer dPlayer)
+				public boolean apply(DemigodsPlayer demigodsPlayer)
 				{
-					return dPlayer.getPlayerName().equals(name);
+					return demigodsPlayer.getPlayerName().equals(name);
 				}
 			}).getCurrent();
 		}

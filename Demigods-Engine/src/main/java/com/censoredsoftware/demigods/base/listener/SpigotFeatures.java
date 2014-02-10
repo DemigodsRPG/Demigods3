@@ -1,25 +1,24 @@
 package com.censoredsoftware.demigods.base.listener;
 
+import com.censoredsoftware.censoredlib.trigger.Trigger;
+import com.censoredsoftware.censoredlib.util.Threads;
+import com.censoredsoftware.demigods.engine.DemigodsPlugin;
+import com.censoredsoftware.demigods.engine.data.serializable.StructureSave;
+import com.censoredsoftware.demigods.engine.entity.player.DemigodsCharacter;
+import com.censoredsoftware.demigods.engine.entity.player.DemigodsPlayer;
+import com.censoredsoftware.demigods.engine.mythos.StructureType;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.google.common.collect.Iterables;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
-import com.censoredsoftware.censoredlib.trigger.Trigger;
-import com.censoredsoftware.censoredlib.util.Threads;
-import com.censoredsoftware.demigods.engine.DemigodsPlugin;
-import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
-import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
-import com.censoredsoftware.demigods.engine.data.serializable.StructureSave;
-import com.censoredsoftware.demigods.engine.mythos.Structure;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.google.common.collect.Iterables;
-
 public class SpigotFeatures implements Listener
 {
 	public SpigotFeatures()
 	{
-		Threads.registerTrigger(DemigodsPlugin.plugin(), new Trigger()
+		Threads.registerTrigger(DemigodsPlugin.getInst(), new Trigger()
 		{
 			@Override
 			public void processSync()
@@ -27,13 +26,13 @@ public class SpigotFeatures implements Listener
 				for(Player online : Bukkit.getOnlinePlayers())
 				{
 					Location location = online.getLocation();
-					DCharacter character = DPlayer.Util.getPlayer(online).getCurrent();
-					if(Zones.inNoDemigodsZone(location) || character == null || !Structure.Util.isInRadiusWithFlag(location, Structure.Flag.NO_GRIEFING))
+					DemigodsCharacter character = DemigodsPlayer.Util.getPlayer(online).getCurrent();
+					if(Zones.inNoDemigodsZone(location) || character == null || !StructureType.Util.isInRadiusWithFlag(location, StructureType.Flag.NO_GRIEFING))
 					{
 						online.spigot().setCollidesWithEntities(true);
 						continue;
 					}
-					StructureSave save = Iterables.getFirst(Structure.Util.getInRadiusWithFlag(location, Structure.Flag.NO_GRIEFING), null);
+					StructureSave save = Iterables.getFirst(StructureType.Util.getInRadiusWithFlag(location, StructureType.Flag.NO_GRIEFING), null);
 					if(save == null || save.getOwner().equals(character.getId()))
 					{
 						online.spigot().setCollidesWithEntities(true);

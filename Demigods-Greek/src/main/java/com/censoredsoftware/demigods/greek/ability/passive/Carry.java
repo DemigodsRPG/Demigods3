@@ -1,7 +1,11 @@
 package com.censoredsoftware.demigods.greek.ability.passive;
 
-import java.util.List;
-
+import com.censoredsoftware.demigods.engine.entity.player.DemigodsCharacter;
+import com.censoredsoftware.demigods.engine.entity.player.DemigodsPlayer;
+import com.censoredsoftware.demigods.engine.mythos.Deity;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.censoredsoftware.demigods.greek.ability.GreekAbility;
+import com.google.common.collect.Lists;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -10,12 +14,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 
-import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
-import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
-import com.censoredsoftware.demigods.engine.mythos.Deity;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.censoredsoftware.demigods.greek.ability.GreekAbility;
-import com.google.common.collect.Lists;
+import java.util.List;
 
 public class Carry extends GreekAbility.Passive
 {
@@ -36,9 +35,9 @@ public class Carry extends GreekAbility.Passive
 
 				if(Deity.Util.canUseDeitySilent(clicked, deity) && (!needsLead || clicked.getItemInHand().getType().equals(Material.LEASH)) && clicked.getPassenger() == null)
 				{
-					DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
-					DCharacter clickedChar = DPlayer.Util.getPlayer(clicked).getCurrent();
-					if(character == null || clickedChar == null || !DCharacter.Util.areAllied(character, clickedChar)) return;
+					DemigodsCharacter character = DemigodsPlayer.Util.getPlayer(player).getCurrent();
+					DemigodsCharacter clickedChar = DemigodsPlayer.Util.getPlayer(clicked).getCurrent();
+					if(character == null || clickedChar == null || !DemigodsCharacter.Util.areAllied(character, clickedChar)) return;
 
 					clicked.setPassenger(player);
 				}
