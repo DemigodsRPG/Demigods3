@@ -7,7 +7,7 @@ import com.google.common.collect.Tables;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class TempDataSource
+public class TempDataManager
 {
 	// -- TEMP DATA -- //
 

@@ -87,7 +87,7 @@ public class TaskManager
 				public void run()
 				{
 					// Update Timed Data
-					FileDataSource.TIMED.clearExpired();
+					FileDataManager.TIMED.clearExpired();
 
 					// Update Notifications
 					NotificationManager.updateNotifications();
@@ -102,10 +102,10 @@ public class TaskManager
 					long time = System.currentTimeMillis();
 
 					// Save data
-					FileDataSource.save();
+					Demigods.DATA_MANAGER.save();
 
 					// Send the save message to the console
-					if(SAVE_ALERT) Messages.info(Bukkit.getOnlinePlayers().length + " of " + FileDataSource.PLAYER.keySet().size() + " total players saved in " + Times.getSeconds(time) + " seconds.");
+					if(SAVE_ALERT) Messages.info(Bukkit.getOnlinePlayers().length + " of " + Demigods.DATA_MANAGER.getMapFor(DPlayer.class).keySet().size() + " total players saved in " + Times.getSeconds(time) + " seconds.");
 				}
 			};
 			FAVOR = new BukkitRunnable()

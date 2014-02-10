@@ -1,14 +1,13 @@
-package com.censoredsoftware.demigods.engine.data.wrap;
+package com.censoredsoftware.demigods.engine.data;
+
+import com.censoredsoftware.censoredlib.util.Randoms;
+import com.censoredsoftware.demigods.engine.data.serializable.TributeData;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
-
-import com.censoredsoftware.censoredlib.util.Randoms;
-import com.censoredsoftware.demigods.engine.data.serializable.TributeData;
 
 public class TributeManager
 {

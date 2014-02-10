@@ -1,36 +1,35 @@
 package com.censoredsoftware.demigods.engine.data.wrap;
 
-import java.util.Set;
-import java.util.UUID;
-
-import org.bukkit.entity.Player;
-
 import com.censoredsoftware.censoredlib.data.player.Notification;
-import com.censoredsoftware.demigods.engine.data.Data;
+import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
 import com.censoredsoftware.demigods.engine.language.English;
 import com.google.common.collect.Sets;
+import org.bukkit.entity.Player;
+
+import java.util.Set;
+import java.util.UUID;
 
 public class NotificationManager
 {
 	public static void remove(Notification notification)
 	{
-		Data.NOTIFICATION.remove(notification.getId());
+		Demigods.DATA_MANAGER.removeFor(Notification.class, notification.getId());
 	}
 
 	public static Set<Notification> loadAll()
 	{
-		return Sets.newHashSet(Data.NOTIFICATION.values());
+		return Sets.newHashSet(Demigods.DATA_MANAGER.getAllOf(Notification.class));
 	}
 
 	public static void save(Notification notification)
 	{
-		Data.NOTIFICATION.put(notification.getId(), notification);
+		Demigods.DATA_MANAGER.saveFor(Notification.class, notification.getId(), notification);
 	}
 
 	public static Notification load(UUID id)
 	{
-		return Data.NOTIFICATION.get(id);
+		return Demigods.DATA_MANAGER.getFor(Notification.class, id);
 	}
 
 	public static Notification create(Notification.Sender sender, DCharacter receiver, Notification.Danger danger, String name, String message)

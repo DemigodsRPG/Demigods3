@@ -7,7 +7,8 @@ import com.censoredsoftware.demigods.base.listener.ChatListener;
 import com.censoredsoftware.demigods.base.listener.SpigotFeatures;
 import com.censoredsoftware.demigods.engine.conversation.Administration;
 import com.censoredsoftware.demigods.engine.conversation.Prayer;
-import com.censoredsoftware.demigods.engine.data.Data;
+import com.censoredsoftware.demigods.engine.data.DataManager;
+import com.censoredsoftware.demigods.engine.data.FileDataManager;
 import com.censoredsoftware.demigods.engine.data.TaskManager;
 import com.censoredsoftware.demigods.engine.data.serializable.DCharacter;
 import com.censoredsoftware.demigods.engine.data.serializable.DPlayer;
@@ -47,6 +48,7 @@ public class Demigods extends CensoredCentralizedClass
 	// Public Static Access
 	public static final ConversationFactory CONVERSATION_FACTORY;
 	public static final ScoreboardManager SCOREBOARD_MANAGER;
+	public static final DataManager DATA_MANAGER;
 
 	// Mythos
 	private final Mythos enabledMythos;
@@ -71,6 +73,10 @@ public class Demigods extends CensoredCentralizedClass
 
 		// Load the Mythos.
 		INST = new Demigods();
+
+		// Load the data.
+		// TODO For now we just do file data, we'll add bungee stuff soon.
+		DATA_MANAGER = new FileDataManager();
 	}
 
 	public static Mythos mythos()
@@ -122,7 +128,7 @@ public class Demigods extends CensoredCentralizedClass
 			INST.loadScoreboard();
 
 			// Load the data
-			Data.init();
+			DATA_MANAGER.init();
 
 			// Update usable characters
 			DCharacter.Util.updateUsableCharacters();
@@ -355,7 +361,7 @@ public class Demigods extends CensoredCentralizedClass
 		if(DemigodsPlugin.getReady())
 		{
 			// Save all the data.
-			Data.save();
+			DATA_MANAGER.save();
 
 			// Handle online characters
 			for(DCharacter character : DCharacter.Util.getOnlineCharacters())

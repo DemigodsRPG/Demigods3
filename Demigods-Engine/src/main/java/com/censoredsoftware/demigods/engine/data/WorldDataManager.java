@@ -5,7 +5,7 @@ import org.bukkit.World;
 
 import java.util.concurrent.ConcurrentMap;
 
-public class WorldDataSource
+public class WorldDataManager
 {
 	// -- WORLD DATA -- //
 

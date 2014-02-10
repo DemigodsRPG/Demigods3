@@ -22,7 +22,7 @@ public class WorldData extends MapDBFile
 	@Override
 	public boolean delete()
 	{
-		WorldDataSource.removeWorld(worldName);
+		WorldDataManager.removeWorld(worldName);
 		return super.delete();
 	}
 }
