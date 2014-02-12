@@ -14,8 +14,7 @@ public class TimedData extends DataAccess<UUID, TimedData>
 	private UUID id;
 	private String key;
 	private String subKey;
-	private String data;
-	private String type;
+	private Object data;
 	private long expiration;
 
 	public TimedData()
@@ -26,8 +25,7 @@ public class TimedData extends DataAccess<UUID, TimedData>
 		this.id = id;
 		key = conf.getString("key");
 		subKey = conf.getString("subKey");
-		data = conf.getString("data");
-		type = conf.getString("type");
+		data = conf.get("data");
 		expiration = conf.getLong("expiration");
 	}
 
@@ -38,7 +36,6 @@ public class TimedData extends DataAccess<UUID, TimedData>
 		map.put("key", key);
 		map.put("subKey", subKey);
 		map.put("data", data);
-		map.put("type", type);
 		map.put("expiration", expiration);
 		return map;
 	}
@@ -60,8 +57,9 @@ public class TimedData extends DataAccess<UUID, TimedData>
 
 	public void setData(Object data)
 	{
-		this.data = data.toString();
-		this.type = data.getClass().getName();
+		if(data instanceof String || data instanceof Integer || data instanceof Boolean || data instanceof Double || data instanceof Map || data instanceof List) this.data = data;
+		else if(data == null) this.data = "null";
+		else this.data = data.toString();
 	}
 
 	public void setMilliSeconds(long millis)
@@ -86,9 +84,6 @@ public class TimedData extends DataAccess<UUID, TimedData>
 
 	public Object getData()
 	{
-		if(this.type.equalsIgnoreCase("string")) return this.data;
-		if(this.type.equalsIgnoreCase("integer")) return Integer.parseInt(this.data);
-		if(this.type.equalsIgnoreCase("boolean")) return Boolean.parseBoolean(this.data);
 		return this.data;
 	}
 
@@ -138,7 +133,7 @@ public class TimedData extends DataAccess<UUID, TimedData>
 		timedData.generateId();
 		timedData.setKey(key);
 		timedData.setSubKey(subKey);
-		timedData.setData(data.toString());
+		timedData.setData(data);
 		timedData.setMilliSeconds(unit.toMillis(time));
 		timedData.save();
 	}
