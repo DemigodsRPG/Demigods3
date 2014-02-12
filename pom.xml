@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.censoredsoftware</groupId>
+    <groupId>com.demigodsrpg</groupId>
     <artifactId>Demigods-Parent</artifactId>
     <packaging>pom</packaging>
     <version>3.0.0</version>
@@ -12,9 +12,6 @@
         <module>Demigods-Engine</module>
         <module>Demigods-Greek</module>
         <module>Demigods-Exclusive</module>
-        <module>Demigods-Classic</module>
-        <module>Demigods-Panel/Bukkit</module>
-        <module>Demigods-Panel</module>
     </modules>
 
     <name>Demigods</name>
@@ -38,8 +35,10 @@
 
     <properties> <!-- It is important to keep up to date manually. -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <censoredLib.version>1.0.0-SNAPSHOT</censoredLib.version>
         <spigot.version>1.7.2-R0.2-SNAPSHOT</spigot.version>
+        <censoredLib.version>1.0.0-SNAPSHOT</censoredLib.version>
+        <dagger.version>1.2.0</dagger.version>
+        <javawriter.version>2.4.0</javawriter.version>
     </properties>
 
     <developers>
@@ -92,6 +91,24 @@
             <groupId>com.censoredsoftware</groupId>
             <artifactId>CensoredLib-Core</artifactId>
             <version>${censoredLib.version}</version>
+        </dependency>
+        <!-- Dagger -->
+        <dependency>
+            <groupId>com.squareup.dagger</groupId>
+            <artifactId>dagger</artifactId>
+            <version>${dagger.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.dagger</groupId>
+            <artifactId>dagger-compiler</artifactId>
+            <version>${dagger.version}</version>
+            <optional>true</optional>
+        </dependency>
+        <!-- JavaWriter -->
+        <dependency>
+            <groupId>com.squareup</groupId>
+            <artifactId>javawriter</artifactId>
+            <version>${javawriter.version}</version>
         </dependency>
     </dependencies>
 

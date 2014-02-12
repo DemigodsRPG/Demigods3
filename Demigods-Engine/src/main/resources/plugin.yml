@@ -1,6 +1,6 @@
 name: Demigods
 description: The official Demigods RPG experience for survival/PvP Minecraft servers.
-main: com.censoredsoftware.demigods.engine.DemigodsPlugin
+main: com.demigodsrpg.demigods.engine.DemigodsPlugin
 load: POSTWORLD
 version: ${project.parent.version}
 authors: [_Alex, HmmmQuestionMark]
