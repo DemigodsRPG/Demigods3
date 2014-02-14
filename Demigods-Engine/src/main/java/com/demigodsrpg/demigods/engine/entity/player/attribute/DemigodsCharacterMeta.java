@@ -406,7 +406,7 @@ public class DemigodsCharacterMeta extends DataAccess<UUID, DemigodsCharacterMet
 
 	public static Collection<DemigodsCharacterMeta> all()
 	{
-		return DATA_ACCESS.getAll();
+		return DATA_ACCESS.allDirect();
 	}
 
 	public static DemigodsCharacterMeta create(DemigodsCharacter character)

@@ -34,10 +34,10 @@ public class DemigodsLocation extends WorldDataAccess<UUID, DemigodsLocation>
 	DemigodsLocation()
 	{}
 
-	public DemigodsLocation(String world, UUID id, ConfigurationSection conf)
+	public DemigodsLocation(UUID id, ConfigurationSection conf, String... args)
 	{
 		this.id = id;
-		this.world = world;
+		this.world = args[0];
 		seed = conf.getLong("seed");
 		X = conf.getDouble("X");
 		Y = conf.getDouble("Y");
@@ -351,9 +351,9 @@ public class DemigodsLocation extends WorldDataAccess<UUID, DemigodsLocation>
 		return of(location.getWorld().getName(), location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
 	}
 
-    public static DemigodsLocation track(DemigodsLocation location)
-    {
-        location.generateId();
+	public static DemigodsLocation track(DemigodsLocation location)
+	{
+		location.generateId();
 		location.save();
 		return location;
 	}

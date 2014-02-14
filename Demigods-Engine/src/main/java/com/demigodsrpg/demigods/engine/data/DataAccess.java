@@ -13,45 +13,57 @@ public abstract class DataAccess<K, V extends DataAccess<K, V>> implements Confi
 	@SuppressWarnings("RedundantCast")
 	private final Class<V> clazz = (Class<V>) ((V) this).getClass();
 
+	/*
+	 * Access to Data Object Classes from Data Manager.
+	 */
+
+	protected abstract K getId();
+
+	/*
+	 * Direct access to Data Manager from Data Object Classes.
+	 */
+
 	public V getDirect(K key)
 	{
 		return DataManager.DATA_MANAGER.getFor(clazz, key);
 	}
 
-	public Collection<V> getAll()
+	public Collection<V> allDirect()
 	{
 		return DataManager.DATA_MANAGER.getAllOf(clazz);
 	}
 
-	public Collection<V> getAllWith(Predicate<V> predicate)
+	public Collection<V> allDirectWith(Predicate<V> predicate)
 	{
-		return Collections2.filter(getAll(), predicate);
+		return Collections2.filter(allDirect(), predicate);
 	}
 
-	public ConcurrentMap<K, V> getMap()
+	public ConcurrentMap<K, V> mapDirect()
 	{
 		return DataManager.DATA_MANAGER.getMapFor(clazz);
 	}
 
-	public void put(K key, V value)
+	public void putDirect(K key, V value)
 	{
 		DataManager.DATA_MANAGER.putFor(clazz, key, value);
 	}
 
-	public void save()
-	{
-		put(getId(), (V) this);
-	}
-
-	public void remove(K key)
+	public void removeDirect(K key)
 	{
 		DataManager.DATA_MANAGER.removeFor(clazz, key);
 	}
 
-	public void remove()
+    /*
+	 * Convenience methods for Data Object Classes.
+	 */
+
+	public void save()
 	{
-		remove(getId());
+		putDirect(getId(), (V) this);
 	}
 
-	protected abstract K getId();
+	public void remove()
+	{
+		removeDirect(getId());
+	}
 }

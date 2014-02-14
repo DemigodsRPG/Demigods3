@@ -90,7 +90,7 @@ public class Death extends DataAccess<UUID, Death>
 
 	public static Collection<Death> all()
 	{
-		return DATA_ACCESS.getAll();
+		return DATA_ACCESS.allDirect();
 	}
 
 	public static Set<Death> getRecentDeaths(int seconds)

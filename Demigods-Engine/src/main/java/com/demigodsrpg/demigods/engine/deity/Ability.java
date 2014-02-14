@@ -4,7 +4,7 @@ import com.censoredsoftware.censoredlib.util.Strings;
 import com.demigodsrpg.demigods.engine.Demigods;
 import com.demigodsrpg.demigods.engine.battle.Battle;
 import com.demigodsrpg.demigods.engine.battle.Participant;
-import com.demigodsrpg.demigods.engine.entity.DemigodsPet;
+import com.demigodsrpg.demigods.engine.entity.DemigodsTameable;
 import com.demigodsrpg.demigods.engine.entity.player.DemigodsCharacter;
 import com.demigodsrpg.demigods.engine.entity.player.DemigodsPlayer;
 import com.demigodsrpg.demigods.engine.entity.player.attribute.Skill;
@@ -204,9 +204,9 @@ public interface Ability
 					{
 						if(entity instanceof LivingEntity && entity.getLocation().distance(block.getLocation()) <= correction)
 						{
-							if(entity instanceof Tameable && ((Tameable) entity).isTamed() && DemigodsPet.getPet((LivingEntity) entity) != null)
+							if(entity instanceof Tameable && ((Tameable) entity).isTamed() && DemigodsTameable.of((LivingEntity) entity) != null)
 							{
-								DemigodsPet wrapper = DemigodsPet.getPet((LivingEntity) entity);
+								DemigodsTameable wrapper = DemigodsTameable.of((LivingEntity) entity);
 								if(looking.alliedTo(wrapper)) return false;
 							}
 							else if(entity instanceof Player && DemigodsPlayer.of(((Player) entity)).isACharacter())

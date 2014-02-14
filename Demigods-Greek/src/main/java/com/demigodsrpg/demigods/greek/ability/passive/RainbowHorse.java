@@ -1,7 +1,7 @@
 package com.demigodsrpg.demigods.greek.ability.passive;
 
 import com.censoredsoftware.censoredlib.util.Randoms;
-import com.demigodsrpg.demigods.engine.entity.DemigodsPet;
+import com.demigodsrpg.demigods.engine.entity.DemigodsTameable;
 import com.demigodsrpg.demigods.engine.util.Zones;
 import com.demigodsrpg.demigods.greek.ability.GreekAbility;
 import com.google.common.collect.Lists;
@@ -23,7 +23,7 @@ public class RainbowHorse extends GreekAbility.Passive
 			@Override
 			public void run()
 			{
-				for(DemigodsPet horse : DemigodsPet.findByType(EntityType.HORSE))
+				for(DemigodsTameable horse : DemigodsTameable.findByType(EntityType.HORSE))
 				{
 					if(horse.getCurrentLocation() == null || Zones.inNoDemigodsZone(horse.getCurrentLocation())) return;
 					if(horse.getDeity().getName().equals(deity) && horse.getEntity() != null && !horse.getEntity().isDead()) ((Horse) horse.getEntity()).setColor(getRandomHorseColor());

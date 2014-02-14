@@ -1,7 +1,7 @@
 package com.demigodsrpg.demigods.base.listener;
 
 import com.demigodsrpg.demigods.engine.battle.Battle;
-import com.demigodsrpg.demigods.engine.entity.DemigodsPet;
+import com.demigodsrpg.demigods.engine.entity.DemigodsTameable;
 import com.demigodsrpg.demigods.engine.entity.player.DemigodsCharacter;
 import com.demigodsrpg.demigods.engine.entity.player.DemigodsPlayer;
 import com.demigodsrpg.demigods.engine.language.English;
@@ -47,7 +47,7 @@ public class EntityListener implements Listener
 				return;
 			}
 
-			if(attacked instanceof Tameable && ((Tameable) attacked).isTamed() && DemigodsPet.getPet((LivingEntity) attacked) != null && DemigodsCharacter.of(hitting) != null && DemigodsCharacter.of(hitting).alliedTo(DemigodsPet.getPet((LivingEntity) attacked))) event.setCancelled(true);
+			if(attacked instanceof Tameable && ((Tameable) attacked).isTamed() && DemigodsTameable.of((LivingEntity) attacked) != null && DemigodsCharacter.of(hitting) != null && DemigodsCharacter.of(hitting).alliedTo(DemigodsTameable.of((LivingEntity) attacked))) event.setCancelled(true);
 		}
 	}
 
@@ -65,7 +65,7 @@ public class EntityListener implements Listener
 		else if(event.getEntity() instanceof Tameable && ((Tameable) event.getEntity()).isTamed())
 		{
 			LivingEntity entity = event.getEntity();
-			DemigodsPet wrapper = DemigodsPet.getPet(entity);
+			DemigodsTameable wrapper = DemigodsTameable.of(entity);
 			if(wrapper == null) return;
 			DemigodsCharacter owner = wrapper.getOwner();
 			if(owner == null) return;
@@ -89,7 +89,7 @@ public class EntityListener implements Listener
 		LivingEntity entity = event.getEntity();
 		AnimalTamer owner = event.getOwner();
 		DemigodsCharacter character = DemigodsCharacter.of(Bukkit.getOfflinePlayer(owner.getName()));
-		if(character != null) DemigodsPet.create((Tameable) entity, DemigodsCharacter.of((Player) owner));
+		if(character != null) DemigodsTameable.create((Tameable) entity, DemigodsCharacter.of((Player) owner));
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)

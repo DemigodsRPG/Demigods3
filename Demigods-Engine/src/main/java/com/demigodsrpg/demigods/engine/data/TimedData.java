@@ -117,7 +117,7 @@ public class TimedData extends DataAccess<UUID, TimedData>
 
 	public static Collection<TimedData> all()
 	{
-		return DATA_ACCESS.getAll();
+		return DATA_ACCESS.allDirect();
 	}
 
 	/*

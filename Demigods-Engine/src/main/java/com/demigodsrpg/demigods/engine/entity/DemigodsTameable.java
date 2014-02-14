@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class DemigodsPet extends DataAccess<UUID, DemigodsPet> implements Participant
+public class DemigodsTameable extends DataAccess<UUID, DemigodsTameable> implements Participant
 {
 	private UUID id;
 	private String entityType;
@@ -27,10 +27,10 @@ public class DemigodsPet extends DataAccess<UUID, DemigodsPet> implements Partic
 	private UUID entityUUID;
 	private UUID owner;
 
-	public DemigodsPet()
+	public DemigodsTameable()
 	{}
 
-	public DemigodsPet(UUID id, ConfigurationSection conf)
+	public DemigodsTameable(UUID id, ConfigurationSection conf)
 	{
 		this.id = id;
 		entityType = conf.getString("entityType");
@@ -132,7 +132,7 @@ public class DemigodsPet extends DataAccess<UUID, DemigodsPet> implements Partic
 		return null;
 	}
 
-	public void disownPet()
+	public void disown()
 	{
 		if(this.getEntity() == null) return;
 		((Tameable) this.getEntity()).setOwner(new AnimalTamer()
@@ -155,7 +155,7 @@ public class DemigodsPet extends DataAccess<UUID, DemigodsPet> implements Partic
 		DemigodsCharacter owner = DemigodsCharacter.get(getOwnerId());
 		if(owner == null)
 		{
-			disownPet();
+			disown();
 			remove();
 			return null;
 		}
@@ -167,7 +167,7 @@ public class DemigodsPet extends DataAccess<UUID, DemigodsPet> implements Partic
 	{
 		if(getOwner() == null)
 		{
-			disownPet();
+			disown();
 			remove();
 			return null;
 		}
@@ -181,23 +181,23 @@ public class DemigodsPet extends DataAccess<UUID, DemigodsPet> implements Partic
 		return getOwner();
 	}
 
-	private static final DataAccess<UUID, DemigodsPet> DATA_ACCESS = new DemigodsPet();
+	private static final DataAccess<UUID, DemigodsTameable> DATA_ACCESS = new DemigodsTameable();
 
-	public static DemigodsPet get(UUID id)
+	public static DemigodsTameable get(UUID id)
 	{
 		return DATA_ACCESS.getDirect(id);
 	}
 
-	public static Collection<DemigodsPet> all()
+	public static Collection<DemigodsTameable> all()
 	{
-		return DATA_ACCESS.getAll();
+		return DATA_ACCESS.allDirect();
 	}
 
-	public static DemigodsPet create(Tameable tameable, DemigodsCharacter owner)
+	public static DemigodsTameable create(Tameable tameable, DemigodsCharacter owner)
 	{
 		if(owner == null) throw new IllegalArgumentException("Owner cannot be null.");
 		if(!(tameable instanceof LivingEntity)) throw new IllegalArgumentException("Pet must be alive.");
-		DemigodsPet wrapper = new DemigodsPet();
+		DemigodsTameable wrapper = new DemigodsTameable();
 		wrapper.generateId();
 		wrapper.setTamable((LivingEntity) tameable);
 		wrapper.setOwner(owner);
@@ -205,55 +205,55 @@ public class DemigodsPet extends DataAccess<UUID, DemigodsPet> implements Partic
 		return wrapper;
 	}
 
-	public static Collection<DemigodsPet> findByType(final EntityType type)
+	public static Collection<DemigodsTameable> findByType(final EntityType type)
 	{
-		return Collections2.filter(all(), new Predicate<DemigodsPet>()
+		return Collections2.filter(all(), new Predicate<DemigodsTameable>()
 		{
 			@Override
-			public boolean apply(DemigodsPet pet)
+			public boolean apply(DemigodsTameable pet)
 			{
 				return pet.getEntityType().equals(type.name());
 			}
 		});
 	}
 
-	public static Collection<DemigodsPet> findByTamer(final String animalTamer)
+	public static Collection<DemigodsTameable> findByTamer(final String animalTamer)
 	{
-		return Collections2.filter(all(), new Predicate<DemigodsPet>()
+		return Collections2.filter(all(), new Predicate<DemigodsTameable>()
 		{
 			@Override
-			public boolean apply(DemigodsPet pet)
+			public boolean apply(DemigodsTameable pet)
 			{
 				return pet.getAnimalTamer().equals(animalTamer);
 			}
 		});
 	}
 
-	public static Collection<DemigodsPet> findByUUID(final UUID uniqueId)
+	public static Collection<DemigodsTameable> findByUUID(final UUID uniqueId)
 	{
-		return Collections2.filter(all(), new Predicate<DemigodsPet>()
+		return Collections2.filter(all(), new Predicate<DemigodsTameable>()
 		{
 			@Override
-			public boolean apply(DemigodsPet pet)
+			public boolean apply(DemigodsTameable pet)
 			{
 				return pet.getEntityUUID().equals(uniqueId);
 			}
 		});
 	}
 
-	public static Collection<DemigodsPet> findByOwner(final UUID ownerId)
+	public static Collection<DemigodsTameable> findByOwner(final UUID ownerId)
 	{
-		return Collections2.filter(all(), new Predicate<DemigodsPet>()
+		return Collections2.filter(all(), new Predicate<DemigodsTameable>()
 		{
 			@Override
-			public boolean apply(DemigodsPet pet)
+			public boolean apply(DemigodsTameable pet)
 			{
 				return pet.getOwnerId().equals(ownerId);
 			}
 		});
 	}
 
-	public static DemigodsPet getPet(LivingEntity tameable)
+	public static DemigodsTameable of(LivingEntity tameable)
 	{
 		if(!(tameable instanceof Tameable)) throw new IllegalArgumentException("LivingEntity not tamable.");
 		return Iterables.getFirst(findByUUID(tameable.getUniqueId()), null);
@@ -261,7 +261,7 @@ public class DemigodsPet extends DataAccess<UUID, DemigodsPet> implements Partic
 
 	public static void disownPets(String animalTamer)
 	{
-		for(DemigodsPet wrapper : findByTamer(animalTamer))
+		for(DemigodsTameable wrapper : findByTamer(animalTamer))
 		{
 			if(wrapper.getEntity() == null) continue;
 			((Tameable) wrapper.getEntity()).setOwner(new AnimalTamer()
@@ -277,7 +277,7 @@ public class DemigodsPet extends DataAccess<UUID, DemigodsPet> implements Partic
 
 	public static void reownPets(AnimalTamer tamer, DemigodsCharacter character)
 	{
-		for(DemigodsPet wrapper : findByTamer(character.getName()))
+		for(DemigodsTameable wrapper : findByTamer(character.getName()))
 			if(wrapper.getEntity() != null) ((Tameable) wrapper.getEntity()).setOwner(tamer);
 	}
 }

@@ -92,6 +92,12 @@
             <artifactId>CensoredLib-Core</artifactId>
             <version>${censoredLib.version}</version>
         </dependency>
+        <!-- PostgreSQL JBDC -->
+        <dependency>
+            <groupId>postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>9.1-901.jdbc4</version>
+        </dependency>
         <!-- Dagger -->
         <dependency>
             <groupId>com.squareup.dagger</groupId>

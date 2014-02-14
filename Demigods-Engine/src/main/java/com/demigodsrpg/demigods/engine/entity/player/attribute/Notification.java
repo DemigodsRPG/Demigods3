@@ -155,7 +155,7 @@ public class Notification extends DataAccess<UUID, Notification>
 
 	public static Collection<Notification> all()
 	{
-		return DATA_ACCESS.getAll();
+		return DATA_ACCESS.allDirect();
 	}
 
 	public static Notification create(Notification.Sender sender, DemigodsCharacter receiver, Notification.Danger danger, String name, String message)

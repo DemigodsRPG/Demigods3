@@ -7,7 +7,7 @@ import com.demigodsrpg.demigods.engine.DemigodsPlugin;
 import com.demigodsrpg.demigods.engine.battle.Battle;
 import com.demigodsrpg.demigods.engine.data.DataAccess;
 import com.demigodsrpg.demigods.engine.data.TimedData;
-import com.demigodsrpg.demigods.engine.entity.DemigodsPet;
+import com.demigodsrpg.demigods.engine.entity.DemigodsTameable;
 import com.demigodsrpg.demigods.engine.inventory.DemigodsEnderInventory;
 import com.demigodsrpg.demigods.engine.inventory.DemigodsPlayerInventory;
 import com.demigodsrpg.demigods.engine.language.English;
@@ -308,7 +308,7 @@ public class DemigodsPlayer extends DataAccess<String, DemigodsPlayer>
 			character.saveInventory();
 
 			// Disown pets
-			DemigodsPet.disownPets(character.getName());
+			DemigodsTameable.disownPets(character.getName());
 
 			// Save it
 			character.save();
@@ -566,7 +566,7 @@ public class DemigodsPlayer extends DataAccess<String, DemigodsPlayer>
 
 	public static Collection<DemigodsPlayer> all()
 	{
-		return DATA_ACCESS.getAll();
+		return DATA_ACCESS.allDirect();
 	}
 
 	/**

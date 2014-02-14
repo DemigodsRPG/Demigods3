@@ -2,6 +2,7 @@ package com.demigodsrpg.demigods.engine.data;
 
 import com.demigodsrpg.demigods.engine.DemigodsPlugin;
 import com.demigodsrpg.demigods.engine.data.file.FileDataManager;
+import com.demigodsrpg.demigods.engine.data.sql.PostgreSQLDataManager;
 
 import java.nio.file.AccessDeniedException;
 import java.util.Collection;
@@ -9,10 +10,11 @@ import java.util.concurrent.ConcurrentMap;
 
 public abstract class DataManager
 {
-	// TODO Let people register these as a service, just like Mythos.
+	// TODO Should we let people register these as a service, just like Mythos?
 
-	static final DataManager DATA_MANAGER;
-	static
+	static final DataManager DATA_MANAGER = findManager();
+
+	private static DataManager findManager()
 	{
 		// Get the correct data manager.
 		String saveMethod = DemigodsPlugin.getInst().getConfig().getString("saving.method", "file");
@@ -20,24 +22,26 @@ public abstract class DataManager
 		{
 			case "file":
 			{
-				DATA_MANAGER = trainManager(FileDataManager.class);
-				break;
+				DemigodsPlugin.getInst().getLogger().info("Enabling file save method.");
+				return trainManager(FileDataManager.class);
 			}
-			default:
+			case "postgresql":
 			{
-				DemigodsPlugin.getInst().getLogger().severe("\"" + saveMethod + "\" is not a valid save method.");
-				DemigodsPlugin.getInst().getLogger().severe("Defaulting to file save method.");
-				DATA_MANAGER = trainManager(FileDataManager.class);
-				break;
+				DemigodsPlugin.getInst().getLogger().info("Enabling PostgreSQL save method.");
+				DataManager manager = trainManager(PostgreSQLDataManager.class);
+				if(manager.preInit()) return manager;
 			}
 		}
+		DemigodsPlugin.getInst().getLogger().severe("\"" + saveMethod + "\" is not a valid save method.");
+		DemigodsPlugin.getInst().getLogger().severe("Defaulting to file save method.");
+		return trainManager(FileDataManager.class);
 	}
 
 	private static DataManager trainManager(Class<? extends DataManager> manager)
 	{
 		try
 		{
-			return manager.newInstance();
+			manager.newInstance();
 		}
 		catch(Exception e)
 		{
@@ -47,6 +51,8 @@ public abstract class DataManager
 	}
 
 	static final WorldDataManager WORLD_DATA_MANAGER = new WorldDataManager();
+
+	protected abstract boolean preInit();
 
 	protected abstract void init();
 

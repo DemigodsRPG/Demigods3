@@ -1,7 +1,7 @@
 package com.demigodsrpg.demigods.engine.data.file;
 
 import com.censoredsoftware.censoredlib.helper.ConfigFile;
-import com.demigodsrpg.demigods.engine.data.DataAccess;
+import com.demigodsrpg.demigods.engine.data.WorldDataAccess;
 import com.google.common.collect.Maps;
 
 import java.util.Collection;
@@ -15,12 +15,12 @@ import java.util.concurrent.ConcurrentMap;
  * @param <K> The id type.
  * @param <V> The data type.
  */
-public abstract class DemigodsFile<K, V extends DataAccess<K, V>> extends ConfigFile<K, V>
+public abstract class DemigodsWorldFile<K, V extends WorldDataAccess<K, V>> extends ConfigFile<K, V>
 {
 	private final String fileName, fileType, savePath;
 	ConcurrentMap<K, V> dataStore = Maps.newConcurrentMap();
 
-	public DemigodsFile(String fileName, String fileType, String savePath)
+	public DemigodsWorldFile(String fileName, String fileType, String savePath)
 	{
 		this.fileName = fileName;
 		this.fileType = fileType;

@@ -9,7 +9,7 @@ import com.demigodsrpg.demigods.engine.data.TimedData;
 import com.demigodsrpg.demigods.engine.deity.Ability;
 import com.demigodsrpg.demigods.engine.deity.Alliance;
 import com.demigodsrpg.demigods.engine.deity.Deity;
-import com.demigodsrpg.demigods.engine.entity.DemigodsPet;
+import com.demigodsrpg.demigods.engine.entity.DemigodsTameable;
 import com.demigodsrpg.demigods.engine.entity.player.attribute.Death;
 import com.demigodsrpg.demigods.engine.entity.player.attribute.DemigodsCharacterMeta;
 import com.demigodsrpg.demigods.engine.entity.player.attribute.DemigodsPotionEffect;
@@ -560,9 +560,9 @@ public class DemigodsCharacter extends DataAccess<UUID, DemigodsCharacter> imple
 		return getAlliance().equals(participant.getRelatedCharacter().getAlliance());
 	}
 
-	public Collection<DemigodsPet> getPets()
+	public Collection<DemigodsTameable> getPets()
 	{
-		return DemigodsPet.findByOwner(id);
+		return DemigodsTameable.findByOwner(id);
 	}
 
 	@Override
@@ -659,7 +659,7 @@ public class DemigodsCharacter extends DataAccess<UUID, DemigodsCharacter> imple
 		player.setPlayerListName(getDeity().getColor() + getName());
 
 		// Re-own pets
-		DemigodsPet.reownPets(player, this);
+		DemigodsTameable.reownPets(player, this);
 	}
 
 	// -- STATIC GETTERS/SETTERS -- //
@@ -673,7 +673,7 @@ public class DemigodsCharacter extends DataAccess<UUID, DemigodsCharacter> imple
 
 	public static Collection<DemigodsCharacter> all()
 	{
-		return DATA_ACCESS.getAll();
+		return DATA_ACCESS.allDirect();
 	}
 
 	// -- UTILITY METHODS -- //

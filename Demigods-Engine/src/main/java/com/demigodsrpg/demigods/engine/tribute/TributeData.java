@@ -99,7 +99,7 @@ public class TributeData extends DataAccess<UUID, TributeData>
 
 	public static Collection<TributeData> all()
 	{
-		return DATA_ACCESS.getAll();
+		return DATA_ACCESS.allDirect();
 	}
 
 	public static void save(String category, Material material, int amount)

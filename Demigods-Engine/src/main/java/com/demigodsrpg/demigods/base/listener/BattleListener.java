@@ -3,7 +3,7 @@ package com.demigodsrpg.demigods.base.listener;
 import com.demigodsrpg.demigods.engine.battle.Battle;
 import com.demigodsrpg.demigods.engine.battle.Participant;
 import com.demigodsrpg.demigods.engine.data.TimedData;
-import com.demigodsrpg.demigods.engine.entity.DemigodsPet;
+import com.demigodsrpg.demigods.engine.entity.DemigodsTameable;
 import com.demigodsrpg.demigods.engine.entity.player.DemigodsCharacter;
 import com.demigodsrpg.demigods.engine.location.DemigodsLocation;
 import com.demigodsrpg.demigods.engine.util.Configs;
@@ -130,7 +130,7 @@ public class BattleListener implements Listener
 		}
 
 		// Pets
-		if(damager instanceof LivingEntity) for(DemigodsPet pet : damageeParticipant.getRelatedCharacter().getPets())
+		if(damager instanceof LivingEntity) for(DemigodsTameable pet : damageeParticipant.getRelatedCharacter().getPets())
 		{
 			LivingEntity entity = pet.getEntity();
 			if(entity != null && entity instanceof Monster) ((Monster) entity).setTarget((LivingEntity) damager);

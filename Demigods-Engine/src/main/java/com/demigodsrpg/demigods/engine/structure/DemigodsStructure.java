@@ -37,10 +37,10 @@ public class DemigodsStructure extends WorldDataAccess<UUID, DemigodsStructure>
 	public DemigodsStructure()
 	{}
 
-	public DemigodsStructure(String world, UUID id, ConfigurationSection conf)
+	public DemigodsStructure(UUID id, ConfigurationSection conf, String... args)
 	{
 		this.id = id;
-		this.world = world;
+		this.world = args[0];
 		type = conf.getString("type");
 		referenceLocation = UUID.fromString(conf.getString("referenceLocation"));
 		if(conf.isSet("optionalLocation")) optionalLocation = UUID.fromString(conf.getString("optionalLocation"));

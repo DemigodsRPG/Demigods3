@@ -11,7 +11,7 @@ import com.demigodsrpg.demigods.engine.data.TimedData;
 import com.demigodsrpg.demigods.engine.data.WorldDataManager;
 import com.demigodsrpg.demigods.engine.deity.Alliance;
 import com.demigodsrpg.demigods.engine.deity.Deity;
-import com.demigodsrpg.demigods.engine.entity.DemigodsPet;
+import com.demigodsrpg.demigods.engine.entity.DemigodsTameable;
 import com.demigodsrpg.demigods.engine.entity.player.DemigodsCharacter;
 import com.demigodsrpg.demigods.engine.entity.player.attribute.Skill;
 import com.demigodsrpg.demigods.engine.event.BattleDeathEvent;
@@ -251,7 +251,7 @@ public class Battle extends DataAccess<UUID, Battle>
 			@Override
 			public Participant apply(String tamable)
 			{
-				return DemigodsPet.get(UUID.fromString(tamable));
+				return DemigodsTameable.get(UUID.fromString(tamable));
 			}
 		}))), new Predicate<Participant>()
 		{
@@ -483,7 +483,7 @@ public class Battle extends DataAccess<UUID, Battle>
 
 	public static Collection<Battle> all()
 	{
-		return DATA_ACCESS.getAll();
+		return DATA_ACCESS.allDirect();
 	}
 
 	// -- UTIL METHODS -- //
@@ -686,14 +686,14 @@ public class Battle extends DataAccess<UUID, Battle>
 			DemigodsCharacter character = DemigodsCharacter.of((Player) entity);
 			return character != null && !character.getDeity().getFlags().contains(Deity.Flag.NO_BATTLE);
 		}
-		return entity instanceof Tameable && DemigodsPet.getPet((LivingEntity) entity) != null && isInBattle(DemigodsPet.getPet((LivingEntity) entity).getRelatedCharacter());
+		return entity instanceof Tameable && DemigodsTameable.of((LivingEntity) entity) != null && isInBattle(DemigodsTameable.of((LivingEntity) entity).getRelatedCharacter());
 	}
 
 	public static Participant defineParticipant(Entity entity)
 	{
 		if(!canParticipate(entity)) return null;
 		if(entity instanceof Player) return DemigodsCharacter.of((Player) entity);
-		return DemigodsPet.getPet((LivingEntity) entity);
+		return DemigodsTameable.of((LivingEntity) entity);
 	}
 
 	public static void battleDeath(Participant damager, Participant damagee, Battle battle)
