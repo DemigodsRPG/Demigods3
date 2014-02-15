@@ -98,24 +98,6 @@
             <artifactId>postgresql</artifactId>
             <version>9.1-901.jdbc4</version>
         </dependency>
-        <!-- Dagger -->
-        <dependency>
-            <groupId>com.squareup.dagger</groupId>
-            <artifactId>dagger</artifactId>
-            <version>${dagger.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.squareup.dagger</groupId>
-            <artifactId>dagger-compiler</artifactId>
-            <version>${dagger.version}</version>
-            <optional>true</optional>
-        </dependency>
-        <!-- JavaWriter -->
-        <dependency>
-            <groupId>com.squareup</groupId>
-            <artifactId>javawriter</artifactId>
-            <version>${javawriter.version}</version>
-        </dependency>
     </dependencies>
 
     <build>

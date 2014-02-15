@@ -17,9 +17,19 @@ import java.util.concurrent.ConcurrentMap;
  */
 public abstract class DemigodsWorldFile<K, V extends WorldDataAccess<K, V>> extends ConfigFile<K, V>
 {
+	// Special variables that will be accessed pretty often.
 	private final String fileName, fileType, savePath;
+
+	// This is where all the magic happens: All data is accessed from this exact map.
 	ConcurrentMap<K, V> dataStore = Maps.newConcurrentMap();
 
+	/**
+	 * Create a DemigodsWorldFile from the file name, file extension, and file directory path.
+	 * 
+	 * @param fileName The name of the file.
+	 * @param fileType The extension of the file.
+	 * @param savePath The file directory path.
+	 */
 	public DemigodsWorldFile(String fileName, String fileType, String savePath)
 	{
 		this.fileName = fileName;
