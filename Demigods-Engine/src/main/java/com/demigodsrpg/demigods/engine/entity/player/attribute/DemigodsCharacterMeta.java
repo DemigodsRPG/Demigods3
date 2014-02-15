@@ -2,6 +2,8 @@ package com.demigodsrpg.demigods.engine.entity.player.attribute;
 
 import com.demigodsrpg.demigods.engine.Demigods;
 import com.demigodsrpg.demigods.engine.data.DataAccess;
+import com.demigodsrpg.demigods.engine.data.IdType;
+import com.demigodsrpg.demigods.engine.data.Register;
 import com.demigodsrpg.demigods.engine.deity.Ability;
 import com.demigodsrpg.demigods.engine.entity.player.DemigodsCharacter;
 import com.demigodsrpg.demigods.engine.location.DemigodsLocation;
@@ -37,6 +39,7 @@ public class DemigodsCharacterMeta extends DataAccess<UUID, DemigodsCharacterMet
 	public DemigodsCharacterMeta()
 	{}
 
+	@Register(idType = IdType.UUID)
 	public DemigodsCharacterMeta(UUID id, ConfigurationSection conf)
 	{
 		this.id = id;

@@ -1,6 +1,6 @@
 package com.demigodsrpg.demigods.engine.data.file;
 
-import com.censoredsoftware.censoredlib.helper.ConfigFile;
+import com.censoredsoftware.censoredlib.helper.ConfigFile6;
 import com.demigodsrpg.demigods.engine.data.DataAccess;
 import com.google.common.collect.Maps;
 
@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentMap;
  * @param <K> The id type.
  * @param <V> The data type.
  */
-public abstract class DemigodsFile<K, V extends DataAccess<K, V>> extends ConfigFile<K, V>
+public abstract class DemigodsFile<K, V extends DataAccess<K, V>> extends ConfigFile6<K, V>
 {
 	private final String fileName, fileType, savePath;
 	ConcurrentMap<K, V> dataStore = Maps.newConcurrentMap();

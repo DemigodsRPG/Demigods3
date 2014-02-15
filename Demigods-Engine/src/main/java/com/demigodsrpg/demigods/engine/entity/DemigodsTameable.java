@@ -2,6 +2,8 @@ package com.demigodsrpg.demigods.engine.entity;
 
 import com.demigodsrpg.demigods.engine.battle.Participant;
 import com.demigodsrpg.demigods.engine.data.DataAccess;
+import com.demigodsrpg.demigods.engine.data.IdType;
+import com.demigodsrpg.demigods.engine.data.Register;
 import com.demigodsrpg.demigods.engine.deity.Deity;
 import com.demigodsrpg.demigods.engine.entity.player.DemigodsCharacter;
 import com.google.common.base.Predicate;
@@ -30,6 +32,7 @@ public class DemigodsTameable extends DataAccess<UUID, DemigodsTameable> impleme
 	public DemigodsTameable()
 	{}
 
+	@Register(idType = IdType.UUID)
 	public DemigodsTameable(UUID id, ConfigurationSection conf)
 	{
 		this.id = id;

@@ -5,6 +5,8 @@ import com.demigodsrpg.demigods.engine.Demigods;
 import com.demigodsrpg.demigods.engine.DemigodsPlugin;
 import com.demigodsrpg.demigods.engine.battle.Participant;
 import com.demigodsrpg.demigods.engine.data.DataAccess;
+import com.demigodsrpg.demigods.engine.data.IdType;
+import com.demigodsrpg.demigods.engine.data.Register;
 import com.demigodsrpg.demigods.engine.data.TimedData;
 import com.demigodsrpg.demigods.engine.deity.Ability;
 import com.demigodsrpg.demigods.engine.deity.Alliance;
@@ -72,6 +74,7 @@ public class DemigodsCharacter extends DataAccess<UUID, DemigodsCharacter> imple
 		minorDeities = Sets.newHashSet();
 	}
 
+	@Register(idType = IdType.UUID)
 	public DemigodsCharacter(UUID id, ConfigurationSection conf)
 	{
 		this.id = id;

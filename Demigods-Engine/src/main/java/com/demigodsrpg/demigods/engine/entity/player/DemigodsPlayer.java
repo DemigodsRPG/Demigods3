@@ -6,6 +6,8 @@ import com.demigodsrpg.demigods.base.listener.ChatRecorder;
 import com.demigodsrpg.demigods.engine.DemigodsPlugin;
 import com.demigodsrpg.demigods.engine.battle.Battle;
 import com.demigodsrpg.demigods.engine.data.DataAccess;
+import com.demigodsrpg.demigods.engine.data.IdType;
+import com.demigodsrpg.demigods.engine.data.Register;
 import com.demigodsrpg.demigods.engine.data.TimedData;
 import com.demigodsrpg.demigods.engine.entity.DemigodsTameable;
 import com.demigodsrpg.demigods.engine.inventory.DemigodsEnderInventory;
@@ -52,6 +54,7 @@ public class DemigodsPlayer extends DataAccess<String, DemigodsPlayer>
 		characterSlots = Configs.getSettingInt("character.default_character_slots");
 	}
 
+	@Register(idType = IdType.STRING)
 	public DemigodsPlayer(String mojangAccount, ConfigurationSection conf)
 	{
 		this.mojangAccount = mojangAccount;

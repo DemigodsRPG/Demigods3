@@ -3,6 +3,8 @@ package com.demigodsrpg.demigods.engine.entity.player.attribute;
 import com.demigodsrpg.demigods.engine.battle.Battle;
 import com.demigodsrpg.demigods.engine.battle.Participant;
 import com.demigodsrpg.demigods.engine.data.DataAccess;
+import com.demigodsrpg.demigods.engine.data.IdType;
+import com.demigodsrpg.demigods.engine.data.Register;
 import com.demigodsrpg.demigods.engine.entity.player.DemigodsCharacter;
 import com.demigodsrpg.demigods.engine.language.English;
 import com.demigodsrpg.demigods.engine.util.Configs;
@@ -92,6 +94,7 @@ public class Skill extends DataAccess<UUID, Skill>
 	public Skill()
 	{}
 
+	@Register(idType = IdType.UUID)
 	public Skill(UUID id, ConfigurationSection conf)
 	{
 		this.id = id;

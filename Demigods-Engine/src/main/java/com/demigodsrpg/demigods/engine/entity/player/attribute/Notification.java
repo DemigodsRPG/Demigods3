@@ -1,6 +1,8 @@
 package com.demigodsrpg.demigods.engine.entity.player.attribute;
 
 import com.demigodsrpg.demigods.engine.data.DataAccess;
+import com.demigodsrpg.demigods.engine.data.IdType;
+import com.demigodsrpg.demigods.engine.data.Register;
 import com.demigodsrpg.demigods.engine.entity.player.DemigodsCharacter;
 import com.demigodsrpg.demigods.engine.language.English;
 import org.bukkit.configuration.ConfigurationSection;
@@ -25,6 +27,7 @@ public class Notification extends DataAccess<UUID, Notification>
 	public Notification()
 	{}
 
+	@Register(idType = IdType.UUID)
 	public Notification(UUID id, ConfigurationSection conf)
 	{
 		this.id = id;

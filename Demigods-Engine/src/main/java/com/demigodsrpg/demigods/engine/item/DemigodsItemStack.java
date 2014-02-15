@@ -1,6 +1,8 @@
 package com.demigodsrpg.demigods.engine.item;
 
 import com.demigodsrpg.demigods.engine.data.DataAccess;
+import com.demigodsrpg.demigods.engine.data.IdType;
+import com.demigodsrpg.demigods.engine.data.Register;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 
@@ -15,6 +17,7 @@ public class DemigodsItemStack extends DataAccess<UUID, DemigodsItemStack>
 	public DemigodsItemStack()
 	{}
 
+	@Register(idType = IdType.UUID)
 	public DemigodsItemStack(UUID id, ConfigurationSection conf)
 	{
 		this.id = id;

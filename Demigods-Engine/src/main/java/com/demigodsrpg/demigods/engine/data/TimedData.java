@@ -20,6 +20,7 @@ public class TimedData extends DataAccess<UUID, TimedData>
 	public TimedData()
 	{}
 
+	@Register(idType = IdType.UUID)
 	public TimedData(UUID id, ConfigurationSection conf)
 	{
 		this.id = id;

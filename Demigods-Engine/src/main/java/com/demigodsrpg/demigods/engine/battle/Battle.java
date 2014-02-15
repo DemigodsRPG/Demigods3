@@ -6,9 +6,7 @@ import com.censoredsoftware.censoredlib.util.Randoms;
 import com.censoredsoftware.censoredlib.util.Vehicles;
 import com.demigodsrpg.demigods.engine.DemigodsPlugin;
 import com.demigodsrpg.demigods.engine.DemigodsServer;
-import com.demigodsrpg.demigods.engine.data.DataAccess;
-import com.demigodsrpg.demigods.engine.data.TimedData;
-import com.demigodsrpg.demigods.engine.data.WorldDataManager;
+import com.demigodsrpg.demigods.engine.data.*;
 import com.demigodsrpg.demigods.engine.deity.Alliance;
 import com.demigodsrpg.demigods.engine.deity.Deity;
 import com.demigodsrpg.demigods.engine.entity.DemigodsTameable;
@@ -69,6 +67,7 @@ public class Battle extends DataAccess<UUID, Battle>
 		this.killCounter = 0;
 	}
 
+	@Register(idType = IdType.UUID)
 	public Battle(UUID id, ConfigurationSection conf)
 	{
 		this.id = id;

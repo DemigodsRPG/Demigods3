@@ -3,6 +3,8 @@ package com.demigodsrpg.demigods.engine.entity.player.attribute;
 import com.demigodsrpg.demigods.engine.Demigods;
 import com.demigodsrpg.demigods.engine.battle.Participant;
 import com.demigodsrpg.demigods.engine.data.DataAccess;
+import com.demigodsrpg.demigods.engine.data.IdType;
+import com.demigodsrpg.demigods.engine.data.Register;
 import com.demigodsrpg.demigods.engine.entity.player.DemigodsCharacter;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
@@ -43,6 +45,7 @@ public class Death extends DataAccess<UUID, Death>
 		return death;
 	}
 
+	@Register(idType = IdType.UUID)
 	public Death(UUID id, ConfigurationSection conf)
 	{
 		this.id = id;

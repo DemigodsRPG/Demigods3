@@ -1,6 +1,8 @@
 package com.demigodsrpg.demigods.engine.inventory;
 
 import com.demigodsrpg.demigods.engine.data.DataAccess;
+import com.demigodsrpg.demigods.engine.data.IdType;
+import com.demigodsrpg.demigods.engine.data.Register;
 import com.demigodsrpg.demigods.engine.entity.player.DemigodsCharacter;
 import com.demigodsrpg.demigods.engine.item.DemigodsItemStack;
 import com.google.common.collect.Lists;
@@ -27,6 +29,7 @@ public class DemigodsPlayerInventory extends DataAccess<UUID, DemigodsPlayerInve
 	public DemigodsPlayerInventory()
 	{}
 
+	@Register(idType = IdType.UUID)
 	public DemigodsPlayerInventory(UUID id, ConfigurationSection conf)
 	{
 		this.id = id;

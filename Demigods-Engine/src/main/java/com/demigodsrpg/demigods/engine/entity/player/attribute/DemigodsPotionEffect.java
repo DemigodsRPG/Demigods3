@@ -1,6 +1,8 @@
 package com.demigodsrpg.demigods.engine.entity.player.attribute;
 
 import com.demigodsrpg.demigods.engine.data.DataAccess;
+import com.demigodsrpg.demigods.engine.data.IdType;
+import com.demigodsrpg.demigods.engine.data.Register;
 import com.google.common.collect.Maps;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.potion.PotionEffect;
@@ -20,6 +22,7 @@ public class DemigodsPotionEffect extends DataAccess<UUID, DemigodsPotionEffect>
 	private DemigodsPotionEffect()
 	{}
 
+	@Register(idType = IdType.UUID)
 	public DemigodsPotionEffect(UUID id, ConfigurationSection conf)
 	{
 		this.id = id;

@@ -30,8 +30,6 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Sets;
-import com.squareup.otto.Bus;
-import com.squareup.otto.ThreadEnforcer;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -50,28 +48,15 @@ public class DemigodsServer extends CensoredCentralizedClass
 {
 	// Mythos
 	private final Mythos mythos;
-	private final Bus syncBus, asyncBus;
 
 	DemigodsServer()
 	{
 		mythos = loadMythos();
-		syncBus = new Bus(ThreadEnforcer.MAIN);
-		asyncBus = new Bus(ThreadEnforcer.ANY);
 	}
 
 	public Mythos getMythos()
 	{
 		return mythos;
-	}
-
-	public Bus getSyncBus()
-	{
-		return syncBus;
-	}
-
-	public Bus getAsyncBus()
-	{
-		return asyncBus;
 	}
 
 	// Load everything else.

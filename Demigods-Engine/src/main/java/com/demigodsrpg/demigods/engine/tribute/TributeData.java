@@ -1,6 +1,8 @@
 package com.demigodsrpg.demigods.engine.tribute;
 
 import com.demigodsrpg.demigods.engine.data.DataAccess;
+import com.demigodsrpg.demigods.engine.data.IdType;
+import com.demigodsrpg.demigods.engine.data.Register;
 import com.google.common.base.Objects;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
@@ -25,6 +27,7 @@ public class TributeData extends DataAccess<UUID, TributeData>
 		id = UUID.randomUUID();
 	}
 
+	@Register(idType = IdType.UUID)
 	public TributeData(UUID id, ConfigurationSection conf)
 	{
 		this.id = id;
