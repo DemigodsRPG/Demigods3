@@ -46,14 +46,15 @@ public class FileDataManager extends DataManager
 		// Check if init has happened already...
 		if(didInit) throw new RuntimeException("Data tried to initialize more than once.");
 
-		// Create YAML files.
+		// Create/Load YAML files.
 		yamlFiles = Maps.newConcurrentMap();
 		for(Class clazz : DataType.classes())
-			yamlFiles.put(clazz, (DemigodsFile) DemigodsFileFactory.create(DataType.typeFromClass(clazz), SAVE_PATH));
-
-		// Load YAML files.
-		for(DemigodsFile data : yamlFiles.values())
-			data.loadToData();
+		{
+			DemigodsFile file = DemigodsFileFactory.create(DataType.typeFromClass(clazz), SAVE_PATH);
+			if(file == null) continue;
+			file.loadToData();
+			yamlFiles.put(clazz, file);
+		}
 
 		// Let the plugin know that this has finished.
 		didInit = true;

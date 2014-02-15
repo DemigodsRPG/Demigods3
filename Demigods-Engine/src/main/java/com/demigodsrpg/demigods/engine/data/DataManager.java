@@ -41,7 +41,7 @@ public abstract class DataManager
 	{
 		try
 		{
-			manager.newInstance();
+			return manager.newInstance();
 		}
 		catch(Exception e)
 		{
