@@ -52,7 +52,7 @@ public class TaskManager
 			public void run()
 			{
 				// Update Timed Data
-				TimedData.clearExpired();
+				TimedServerData.clearExpired();
 
 				// Update Notifications
 				Notification.updateNotifications();

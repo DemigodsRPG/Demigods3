@@ -2,7 +2,8 @@ package com.demigodsrpg.demigods.exclusive.command;
 
 import com.censoredsoftware.library.helper.CommandManager;
 import com.demigodsrpg.demigods.engine.DemigodsPlugin;
-import com.demigodsrpg.demigods.engine.data.TimedData;
+import com.demigodsrpg.demigods.engine.data.ServerData;
+import com.demigodsrpg.demigods.engine.data.TimedServerData;
 import com.demigodsrpg.demigods.engine.util.Messages;
 import com.demigodsrpg.demigods.engine.util.Zones;
 import com.google.common.collect.ImmutableList;
@@ -15,7 +16,6 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class WorldCommands extends CommandManager
 {
@@ -358,13 +358,14 @@ public class WorldCommands extends CommandManager
 			setHandledWorlds(list);
 		}
 
+		@SuppressWarnings("unchecked")
 		public static List<String> getHandledWorlds()
 		{
 			// TEMP FIX
 			// FIXME SOOON
-			if(TimedData.exists("exclusive", "worlds"))
+			if(TimedServerData.exists("exclusive", "worlds"))
 			{
-				List<String> list = (List) TimedData.value("exclusive", "worlds");
+				List<String> list = (List<String>) ServerData.value("exclusive", "worlds");
 				if(list != null) return list;
 			}
 			return Lists.newArrayList();
@@ -377,7 +378,7 @@ public class WorldCommands extends CommandManager
 
 		private static void setHandledWorlds(List<String> worlds)
 		{
-			TimedData.saveTimed("exclusive", "worlds", worlds, 99999, TimeUnit.DAYS);
+			ServerData.save("exclusive", "worlds", worlds);
 		}
 
 		// -- LOAD WORLD -- //

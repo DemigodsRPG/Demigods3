@@ -2,7 +2,7 @@ package com.demigodsrpg.demigods.base.listener;
 
 import com.demigodsrpg.demigods.engine.battle.Battle;
 import com.demigodsrpg.demigods.engine.battle.Participant;
-import com.demigodsrpg.demigods.engine.data.TimedData;
+import com.demigodsrpg.demigods.engine.data.TimedServerData;
 import com.demigodsrpg.demigods.engine.entity.DemigodsTameable;
 import com.demigodsrpg.demigods.engine.entity.player.DemigodsCharacter;
 import com.demigodsrpg.demigods.engine.location.DemigodsLocation;
@@ -64,13 +64,13 @@ public class BattleListener implements Listener
 			event.setCancelled(true);
 			return;
 		}
-		if(damageeParticipant instanceof DemigodsCharacter && TimedData.exists(damageeParticipant.getId().toString(), "just_finished_battle"))
+		if(damageeParticipant instanceof DemigodsCharacter && TimedServerData.exists(damageeParticipant.getId().toString(), "just_finished_battle"))
 		{
 			((Player) damager).sendMessage(ChatColor.YELLOW + "That player is in cooldown from a recent battle.");
 			event.setCancelled(true);
 			return;
 		}
-		if(damagerParticipant instanceof DemigodsCharacter && TimedData.exists(damagerParticipant.getId().toString(), "just_finished_battle"))
+		if(damagerParticipant instanceof DemigodsCharacter && TimedServerData.exists(damagerParticipant.getId().toString(), "just_finished_battle"))
 		{
 			((Player) damager).sendMessage(ChatColor.YELLOW + "You are still in cooldown from a recent battle.");
 			event.setCancelled(true);
@@ -145,7 +145,7 @@ public class BattleListener implements Listener
 
 		Participant participant = Battle.defineParticipant(event.getEntity());
 
-		if(participant instanceof DemigodsCharacter && TimedData.exists(participant.getId().toString(), "just_finished_battle"))
+		if(participant instanceof DemigodsCharacter && TimedServerData.exists(participant.getId().toString(), "just_finished_battle"))
 		{
 			event.setCancelled(true);
 			return;

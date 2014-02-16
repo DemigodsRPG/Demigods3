@@ -2,7 +2,7 @@ package com.demigodsrpg.demigods.base.listener;
 
 import com.demigodsrpg.demigods.engine.Demigods;
 import com.demigodsrpg.demigods.engine.DemigodsPlugin;
-import com.demigodsrpg.demigods.engine.data.TimedData;
+import com.demigodsrpg.demigods.engine.data.TimedServerData;
 import com.demigodsrpg.demigods.engine.entity.player.DemigodsCharacter;
 import com.demigodsrpg.demigods.engine.entity.player.DemigodsPlayer;
 import com.demigodsrpg.demigods.engine.item.DivineItem;
@@ -112,8 +112,8 @@ public class FlagListener implements Listener
 			}
 		}, 1);
 
-		if(TimedData.exists("explode-structure", "blaam")) return;
-		TimedData.saveTimed("explode-structure", "blaam", true, 2, TimeUnit.SECONDS);
+		if(TimedServerData.exists("explode-structure", "blaam")) return;
+		TimedServerData.saveTimed("explode-structure", "blaam", true, 2, TimeUnit.SECONDS);
 
 		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.getInst(), new Runnable()
 		{

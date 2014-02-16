@@ -59,6 +59,7 @@ public abstract class DemigodsFile<K extends Comparable, V extends DataAccess<K,
 
 	public final boolean containsKey(K key)
 	{
+		if(key == null) return false;
 		return dataStore.containsKey(key);
 	}
 

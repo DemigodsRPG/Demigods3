@@ -4,7 +4,7 @@ import com.censoredsoftware.library.schematic.Schematic;
 import com.censoredsoftware.library.schematic.Selection;
 import com.censoredsoftware.library.util.Colors;
 import com.demigodsrpg.demigods.engine.conversation.Administration;
-import com.demigodsrpg.demigods.engine.data.TimedData;
+import com.demigodsrpg.demigods.engine.data.TimedServerData;
 import com.demigodsrpg.demigods.engine.deity.Deity;
 import com.demigodsrpg.demigods.engine.entity.player.DemigodsCharacter;
 import com.demigodsrpg.demigods.engine.entity.player.DemigodsPlayer;
@@ -177,11 +177,11 @@ public class Shrine extends GreekStructureType
 				DemigodsStructure save = DemigodsStructureType.Util.getStructureRegional(location);
 				DemigodsCharacter owner = DemigodsCharacter.get(save.getOwner());
 
-				if(TimedData.exists(player.getName(), "destroy_shrine"))
+				if(TimedServerData.exists(player.getName(), "destroy_shrine"))
 				{
 					// Remove the Shrine
 					save.remove();
-					TimedData.remove(player.getName(), "destroy_shrine");
+					TimedServerData.remove(player.getName(), "destroy_shrine");
 
 					// Log the generation
 					Messages.info(com.demigodsrpg.demigods.engine.language.English.LOG_STRUCTURE_REMOVED.getLine().replace("{structure}", name + " (" + owner.getDeity() + ")").replace("{locX}", location.getX() + "").replace("{locY}", location.getY() + "").replace("{locZ}", location.getZ() + "").replace("{world}", location.getWorld().getName()).replace("{creator}", player.getName()));
@@ -191,7 +191,7 @@ public class Shrine extends GreekStructureType
 				}
 				else
 				{
-					TimedData.saveTimed(player.getName(), "destroy_shrine", true, 5, TimeUnit.SECONDS);
+					TimedServerData.saveTimed(player.getName(), "destroy_shrine", true, 5, TimeUnit.SECONDS);
 					player.sendMessage(ChatColor.RED + English.ADMIN_WAND_REMOVE_SHRINE.getLine());
 				}
 			}

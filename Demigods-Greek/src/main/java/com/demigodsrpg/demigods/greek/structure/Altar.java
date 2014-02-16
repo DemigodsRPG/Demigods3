@@ -6,7 +6,7 @@ import com.censoredsoftware.library.schematic.Selection;
 import com.censoredsoftware.library.util.Randoms;
 import com.demigodsrpg.demigods.engine.DemigodsPlugin;
 import com.demigodsrpg.demigods.engine.conversation.Administration;
-import com.demigodsrpg.demigods.engine.data.TimedData;
+import com.demigodsrpg.demigods.engine.data.TimedServerData;
 import com.demigodsrpg.demigods.engine.entity.player.DemigodsCharacter;
 import com.demigodsrpg.demigods.engine.location.DemigodsLocation;
 import com.demigodsrpg.demigods.engine.structure.DemigodsStructure;
@@ -169,7 +169,7 @@ public class Altar extends GreekStructureType
 
 				DemigodsStructure altar = DemigodsStructureType.Util.getStructureRegional(location);
 
-				if(TimedData.exists(player.getName(), "destroy_altar"))
+				if(TimedServerData.exists(player.getName(), "destroy_altar"))
 				{
 					// Log the generation
 					Messages.info(com.demigodsrpg.demigods.engine.language.English.LOG_STRUCTURE_REMOVED.getLine().replace("{structure}", name).replace("{locX}", location.getX() + "").replace("{locY}", location.getY() + "").replace("{locZ}", location.getZ() + "").replace("{world}", location.getWorld().getName()).replace("{remover}", player.getName()));
@@ -177,13 +177,13 @@ public class Altar extends GreekStructureType
 					// Remove the Altar
 					altar.remove();
 
-					TimedData.remove(player.getName(), "destroy_altar");
+					TimedServerData.remove(player.getName(), "destroy_altar");
 
 					player.sendMessage(ChatColor.GREEN + English.ADMIN_WAND_REMOVE_ALTAR_COMPLETE.getLine());
 				}
 				else
 				{
-					TimedData.saveTimed(player.getName(), "destroy_altar", true, 5, TimeUnit.SECONDS);
+					TimedServerData.saveTimed(player.getName(), "destroy_altar", true, 5, TimeUnit.SECONDS);
 					player.sendMessage(ChatColor.RED + English.ADMIN_WAND_REMOVE_ALTAR.getLine());
 				}
 			}

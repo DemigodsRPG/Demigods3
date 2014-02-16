@@ -5,7 +5,7 @@ import com.censoredsoftware.library.schematic.Schematic;
 import com.censoredsoftware.library.schematic.Selection;
 import com.censoredsoftware.library.util.Colors;
 import com.demigodsrpg.demigods.engine.conversation.Administration;
-import com.demigodsrpg.demigods.engine.data.TimedData;
+import com.demigodsrpg.demigods.engine.data.TimedServerData;
 import com.demigodsrpg.demigods.engine.deity.Deity;
 import com.demigodsrpg.demigods.engine.entity.player.DemigodsCharacter;
 import com.demigodsrpg.demigods.engine.entity.player.DemigodsPlayer;
@@ -193,11 +193,11 @@ public class Obelisk extends GreekStructureType
 				DemigodsStructure save = DemigodsStructureType.Util.getStructureRegional(location);
 				DemigodsCharacter owner = DemigodsCharacter.get(save.getOwner());
 
-				if(TimedData.exists(player.getName(), "destroy_obelisk"))
+				if(TimedServerData.exists(player.getName(), "destroy_obelisk"))
 				{
 					// Remove the Obelisk
 					save.remove();
-					TimedData.remove(player.getName(), "destroy_obelisk");
+					TimedServerData.remove(player.getName(), "destroy_obelisk");
 
 					Administration.Util.sendDebug(ChatColor.RED + "Obelisk owned by (" + owner.getName() + ") at: " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ() + " removed.");
 
@@ -205,7 +205,7 @@ public class Obelisk extends GreekStructureType
 				}
 				else
 				{
-					TimedData.saveTimed(player.getName(), "destroy_obelisk", true, 5, TimeUnit.SECONDS);
+					TimedServerData.saveTimed(player.getName(), "destroy_obelisk", true, 5, TimeUnit.SECONDS);
 					player.sendMessage(ChatColor.RED + English.ADMIN_WAND_REMOVE_OBELISK.getLine());
 				}
 			}

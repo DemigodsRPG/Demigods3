@@ -1,6 +1,7 @@
 package com.demigodsrpg.demigods.engine.data;
 
 import com.demigodsrpg.demigods.engine.DemigodsPlugin;
+import com.demigodsrpg.demigods.engine.data.file.FileDataManager;
 import com.demigodsrpg.demigods.engine.location.DemigodsLocation;
 import com.demigodsrpg.demigods.engine.structure.DemigodsStructure;
 import com.google.common.collect.Maps;
@@ -30,7 +31,7 @@ public class WorldDataManager implements Listener
 
 	void addWorld(World world)
 	{
-		DemigodsWorld demigodsWorld = new DemigodsWorld(world.getName(), world.getWorldFolder().getPath());
+		DemigodsWorld demigodsWorld = new DemigodsWorld(world.getName(), FileDataManager.SAVE_PATH + "worlds/" + world.getName() + "/");
 		demigodsWorld.loadData();
 		WORLDS.put(world.getName(), demigodsWorld);
 	}

@@ -10,7 +10,7 @@ import com.demigodsrpg.demigods.engine.Demigods;
 import com.demigodsrpg.demigods.engine.DemigodsPlugin;
 import com.demigodsrpg.demigods.engine.DemigodsServer;
 import com.demigodsrpg.demigods.engine.data.TempDataManager;
-import com.demigodsrpg.demigods.engine.data.TimedData;
+import com.demigodsrpg.demigods.engine.data.TimedServerData;
 import com.demigodsrpg.demigods.engine.deity.Alliance;
 import com.demigodsrpg.demigods.engine.deity.Deity;
 import com.demigodsrpg.demigods.engine.entity.player.DemigodsCharacter;
@@ -780,7 +780,7 @@ public class Prayer implements ConversationManager
 		public boolean canUse(ConversationContext context)
 		{
 			DemigodsCharacter character = DemigodsCharacter.of((Player) context.getForWhom());
-			return character != null && ((Player) context.getForWhom()).hasPermission("demigods.basic.forsake") && !TimedData.exists(((Player) context.getForWhom()).getName(), "currently_creating") && !TimedData.exists(((Player) context.getForWhom()).getName(), "currently_forsaking");
+			return character != null && ((Player) context.getForWhom()).hasPermission("demigods.basic.forsake") && !TimedServerData.exists(((Player) context.getForWhom()).getName(), "currently_creating") && !TimedServerData.exists(((Player) context.getForWhom()).getName(), "currently_forsaking");
 		}
 
 		@Override
@@ -835,7 +835,7 @@ public class Prayer implements ConversationManager
 				player.sendRawMessage(" ");
 
 				// Save timed data, end the conversation, and return
-				TimedData.saveTimed(player.getName(), "currently_forsaking", true, 10, TimeUnit.MINUTES);
+				TimedServerData.saveTimed(player.getName(), "currently_forsaking", true, 10, TimeUnit.MINUTES);
 				Util.togglePrayingSilent(player, false, true);
 			}
 			return null;
@@ -848,14 +848,14 @@ public class Prayer implements ConversationManager
 		@Override
 		public String getChatName(ConversationContext context)
 		{
-			return ChatColor.DARK_RED + "Finish Forsaking " + ChatColor.GRAY + "(" + Times.getTimeTagged(TimedData.getExpiration(((Player) context.getForWhom()).getName(), "currently_forsaking"), true) + " remaining)";
+			return ChatColor.DARK_RED + "Finish Forsaking " + ChatColor.GRAY + "(" + Times.getTimeTagged(TimedServerData.getExpiration(((Player) context.getForWhom()).getName(), "currently_forsaking"), true) + " remaining)";
 		}
 
 		@Override
 		public boolean canUse(ConversationContext context)
 		{
 			Player player = (Player) context.getForWhom();
-			return TimedData.exists(player.getName(), "currently_forsaking");
+			return TimedServerData.exists(player.getName(), "currently_forsaking");
 		}
 
 		@Override
@@ -916,7 +916,7 @@ public class Prayer implements ConversationManager
 		public boolean canUse(ConversationContext context)
 		{
 			Player player = (Player) context.getForWhom();
-			return TimedData.exists(player.getName(), "currently_forsaking");
+			return TimedServerData.exists(player.getName(), "currently_forsaking");
 		}
 
 		@Override
@@ -926,7 +926,7 @@ public class Prayer implements ConversationManager
 			Player player = (Player) context.getForWhom();
 
 			// Cancel the timed data
-			TimedData.remove(player.getName(), "currently_forsaking");
+			TimedServerData.remove(player.getName(), "currently_forsaking");
 
 			return "";
 		}
@@ -950,7 +950,7 @@ public class Prayer implements ConversationManager
 		@Override
 		public boolean canUse(ConversationContext context)
 		{
-			return ((Player) context.getForWhom()).hasPermission("demigods.basic.create") && !TimedData.exists(((Player) context.getForWhom()).getName(), "currently_creating") && !TimedData.exists(((Player) context.getForWhom()).getName(), "currently_forsaking") && DemigodsPlayer.of((Player) context.getForWhom()).canMakeCharacter();
+			return ((Player) context.getForWhom()).hasPermission("demigods.basic.create") && !TimedServerData.exists(((Player) context.getForWhom()).getName(), "currently_creating") && !TimedServerData.exists(((Player) context.getForWhom()).getName(), "currently_forsaking") && DemigodsPlayer.of((Player) context.getForWhom()).canMakeCharacter();
 		}
 
 		@Override
@@ -1215,7 +1215,7 @@ public class Prayer implements ConversationManager
 					player.sendRawMessage(" ");
 
 					// Save temporary data, end the CONVERSATION_FACTORY, and return
-					TimedData.saveTimed(player.getName(), "currently_creating", true, 10, TimeUnit.MINUTES);
+					TimedServerData.saveTimed(player.getName(), "currently_creating", true, 10, TimeUnit.MINUTES);
 					Util.togglePrayingSilent(player, false, true);
 					return null;
 				}
@@ -1234,14 +1234,14 @@ public class Prayer implements ConversationManager
 		@Override
 		public String getChatName(ConversationContext context)
 		{
-			return ChatColor.GREEN + "Confirm Character " + ChatColor.GRAY + "(" + Times.getTimeTagged(TimedData.getExpiration(((Player) context.getForWhom()).getName(), "currently_creating"), true) + " remaining)";
+			return ChatColor.GREEN + "Confirm Character " + ChatColor.GRAY + "(" + Times.getTimeTagged(TimedServerData.getExpiration(((Player) context.getForWhom()).getName(), "currently_creating"), true) + " remaining)";
 		}
 
 		@Override
 		public boolean canUse(ConversationContext context)
 		{
 			Player player = (Player) context.getForWhom();
-			return TimedData.exists(player.getName(), "currently_creating");
+			return TimedServerData.exists(player.getName(), "currently_creating");
 		}
 
 		@Override
@@ -1300,7 +1300,7 @@ public class Prayer implements ConversationManager
 		public boolean canUse(ConversationContext context)
 		{
 			Player player = (Player) context.getForWhom();
-			return TimedData.exists(player.getName(), "currently_creating");
+			return TimedServerData.exists(player.getName(), "currently_creating");
 		}
 
 		@Override
@@ -1310,7 +1310,7 @@ public class Prayer implements ConversationManager
 			Player player = (Player) context.getForWhom();
 
 			// Cancel the temp data
-			TimedData.exists(player.getName(), "currently_creating");
+			TimedServerData.exists(player.getName(), "currently_creating");
 
 			return "";
 		}
@@ -1417,7 +1417,7 @@ public class Prayer implements ConversationManager
 							DemigodsCharacter.create(DemigodsPlayer.of(offlinePlayer), deity.getName(), chosenName, true);
 
 							// Remove temp and data
-							TimedData.exists(offlinePlayer.getName(), "currently_creating");
+							TimedServerData.exists(offlinePlayer.getName(), "currently_creating");
 
 							// If the player is online, let them know
 							if(offlinePlayer.isOnline())
@@ -1596,8 +1596,8 @@ public class Prayer implements ConversationManager
 			TempDataManager.removeTemp(player.getName(), "prayer_conversation");
 			TempDataManager.removeTemp(player.getName(), "prayer_context");
 			TempDataManager.removeTemp(player.getName(), "prayer_location");
-			TimedData.remove(player.getName(), "currently_creating");
-			TimedData.remove(player.getName(), "currently_forsaking");
+			TimedServerData.remove(player.getName(), "currently_creating");
+			TimedServerData.remove(player.getName(), "currently_forsaking");
 		}
 
 		/**

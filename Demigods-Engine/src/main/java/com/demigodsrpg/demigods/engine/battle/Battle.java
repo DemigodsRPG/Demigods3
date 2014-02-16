@@ -375,7 +375,7 @@ public class Battle extends DataAccess<UUID, Battle>
 	public void end() // TODO Make this specify that it was a pet that won/lost a duel
 	{
 		for(String stringId : involvedPlayers)
-			TimedData.saveTimed(stringId, "just_finished_battle", true, 1, TimeUnit.MINUTES);
+			TimedServerData.saveTimed(stringId, "just_finished_battle", true, 1, TimeUnit.MINUTES);
 
 		Map<UUID, Integer> scores = getScores();
 		List<UUID> participants = Lists.newArrayList(scores.keySet());

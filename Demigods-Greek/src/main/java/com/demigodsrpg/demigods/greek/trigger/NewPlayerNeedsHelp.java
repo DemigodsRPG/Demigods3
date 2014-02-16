@@ -3,7 +3,7 @@ package com.demigodsrpg.demigods.greek.trigger;
 import com.censoredsoftware.library.language.Symbol;
 import com.censoredsoftware.library.trigger.Trigger;
 import com.demigodsrpg.demigods.engine.Demigods;
-import com.demigodsrpg.demigods.engine.data.TimedData;
+import com.demigodsrpg.demigods.engine.data.TimedServerData;
 import com.demigodsrpg.demigods.engine.entity.player.DemigodsCharacter;
 import com.demigodsrpg.demigods.engine.entity.player.attribute.Death;
 import com.demigodsrpg.demigods.engine.util.Zones;
@@ -33,7 +33,7 @@ public class NewPlayerNeedsHelp implements Trigger
 			@Override
 			public boolean apply(DemigodsCharacter character)
 			{
-				return Death.getRecentDeaths(character, focusTime).size() >= deathsNeeded && !TimedData.exists(character.getName(), "needsHelpTrigger");
+				return Death.getRecentDeaths(character, focusTime).size() >= deathsNeeded && !TimedServerData.exists(character.getName(), "needsHelpTrigger");
 			}
 		});
 		if(characters.isEmpty()) return;
@@ -41,7 +41,7 @@ public class NewPlayerNeedsHelp implements Trigger
 		{
 			if(Zones.inNoDemigodsZone(character.getLocation())) continue;
 			character.sendAllianceMessage(ChatColor.YELLOW + " " + Symbol.CAUTION + " " + character.getDeity().getColor() + character.getName() + ChatColor.YELLOW + " needs help!");
-			TimedData.saveTimed(character.getName(), "needsHelpTrigger", true, focusTime, TimeUnit.MINUTES);
+			TimedServerData.saveTimed(character.getName(), "needsHelpTrigger", true, focusTime, TimeUnit.MINUTES);
 		}
 	}
 

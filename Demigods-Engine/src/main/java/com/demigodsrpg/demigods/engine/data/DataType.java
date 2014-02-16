@@ -4,10 +4,7 @@ import com.demigodsrpg.demigods.engine.battle.Battle;
 import com.demigodsrpg.demigods.engine.entity.DemigodsTameable;
 import com.demigodsrpg.demigods.engine.entity.player.DemigodsCharacter;
 import com.demigodsrpg.demigods.engine.entity.player.DemigodsPlayer;
-import com.demigodsrpg.demigods.engine.entity.player.attribute.Death;
-import com.demigodsrpg.demigods.engine.entity.player.attribute.DemigodsCharacterMeta;
-import com.demigodsrpg.demigods.engine.entity.player.attribute.Notification;
-import com.demigodsrpg.demigods.engine.entity.player.attribute.Skill;
+import com.demigodsrpg.demigods.engine.entity.player.attribute.*;
 import com.demigodsrpg.demigods.engine.inventory.DemigodsEnderInventory;
 import com.demigodsrpg.demigods.engine.inventory.DemigodsPlayerInventory;
 import com.demigodsrpg.demigods.engine.item.DemigodsItemStack;
@@ -65,6 +62,10 @@ public enum DataType
 	 */
 	ITEM_STACK(DemigodsItemStack.class, IdType.UUID, "it"),
 	/**
+	 * DemigodsPotionEffect.
+	 */
+	POTION_EFFECT(DemigodsPotionEffect.class, IdType.UUID, "po"),
+	/**
 	 * Battle.
 	 */
 	BATTLE(Battle.class, IdType.UUID, "b"),
@@ -73,9 +74,13 @@ public enum DataType
 	 */
 	TRIBUTE(TributeData.class, IdType.UUID, "tr"),
 	/**
-	 * TimedData.
+	 * TimedServerData.
 	 */
-	TIMED(TimedData.class, IdType.UUID, "ti"),
+	TIMED(TimedServerData.class, IdType.UUID, "ti"),
+	/**
+	 * ServerData.
+	 */
+	SERVER(ServerData.class, IdType.UUID, "srv"),
 	/**
 	 * Returned when no valid type can be found.
 	 */

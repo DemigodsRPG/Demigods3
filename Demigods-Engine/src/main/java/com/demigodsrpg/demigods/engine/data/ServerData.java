@@ -7,27 +7,24 @@ import com.google.common.collect.Sets;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
-public class TimedData extends DataAccess<UUID, TimedData>
+public class ServerData extends DataAccess<UUID, ServerData>
 {
 	private UUID id;
 	private String key;
 	private String subKey;
 	private Object data;
-	private long expiration;
 
-	public TimedData()
+	public ServerData()
 	{}
 
 	@Register(idType = IdType.UUID)
-	public TimedData(UUID id, ConfigurationSection conf)
+	public ServerData(UUID id, ConfigurationSection conf)
 	{
 		this.id = id;
 		key = conf.getString("key");
 		subKey = conf.getString("subKey");
 		data = conf.get("data");
-		expiration = conf.getLong("expiration");
 	}
 
 	@Override
@@ -37,7 +34,6 @@ public class TimedData extends DataAccess<UUID, TimedData>
 		map.put("key", key);
 		map.put("subKey", subKey);
 		map.put("data", data);
-		map.put("expiration", expiration);
 		return map;
 	}
 
@@ -63,11 +59,6 @@ public class TimedData extends DataAccess<UUID, TimedData>
 		else this.data = data.toString();
 	}
 
-	public void setMilliSeconds(long millis)
-	{
-		this.expiration = System.currentTimeMillis() + millis;
-	}
-
 	public UUID getId()
 	{
 		return this.id;
@@ -88,17 +79,12 @@ public class TimedData extends DataAccess<UUID, TimedData>
 		return this.data;
 	}
 
-	public long getExpiration()
-	{
-		return this.expiration;
-	}
-
 	@Override
 	public boolean equals(final Object obj)
 	{
 		if(this == obj) return true;
 		if(obj == null || getClass() != obj.getClass()) return false;
-		final TimedData other = (TimedData) obj;
+		final ServerData other = (ServerData) obj;
 		return Objects.equal(this.id, other.id) && Objects.equal(this.key, other.key) && Objects.equal(this.subKey, other.subKey) && Objects.equal(this.data, other.data);
 	}
 
@@ -114,9 +100,9 @@ public class TimedData extends DataAccess<UUID, TimedData>
 		return Objects.toStringHelper(this).add("id", this.id).add("key", this.key).add("subkey", this.subKey).add("data", this.data).toString();
 	}
 
-	private static final DataAccess<UUID, TimedData> DATA_ACCESS = new TimedData();
+	private static final DataAccess<UUID, ServerData> DATA_ACCESS = new ServerData();
 
-	public static Collection<TimedData> all()
+	public static Collection<ServerData> all()
 	{
 		return DATA_ACCESS.allDirect();
 	}
@@ -124,18 +110,17 @@ public class TimedData extends DataAccess<UUID, TimedData>
 	/*
 	 * Timed data
 	 */
-	public static void saveTimed(String key, String subKey, Object data, long time, TimeUnit unit)
+	public static void save(String key, String subKey, Object data)
 	{
 		// Remove the data if it exists already
 		remove(key, subKey);
 
 		// Create and save the timed data
-		TimedData timedData = new TimedData();
+		ServerData timedData = new ServerData();
 		timedData.generateId();
 		timedData.setKey(key);
 		timedData.setSubKey(subKey);
 		timedData.setData(data);
-		timedData.setMilliSeconds(unit.toMillis(time));
 		timedData.save();
 	}
 
@@ -149,27 +134,22 @@ public class TimedData extends DataAccess<UUID, TimedData>
 		return find(key, subKey).getData();
 	}
 
-	public static long getExpiration(String key, String subKey)
-	{
-		return find(key, subKey).getExpiration();
-	}
-
-	public static TimedData find(String key, String subKey)
+	public static ServerData find(String key, String subKey)
 	{
 		if(findByKey(key) == null) return null;
 
-		for(TimedData data : findByKey(key))
+		for(ServerData data : findByKey(key))
 			if(data.getSubKey().equals(subKey)) return data;
 
 		return null;
 	}
 
-	public static Set<TimedData> findByKey(final String key)
+	public static Set<ServerData> findByKey(final String key)
 	{
-		return Sets.newHashSet(Collections2.filter(all(), new Predicate<TimedData>()
+		return Sets.newHashSet(Collections2.filter(all(), new Predicate<ServerData>()
 		{
 			@Override
-			public boolean apply(TimedData serverData)
+			public boolean apply(ServerData serverData)
 			{
 				return serverData.getKey().equals(key);
 			}
@@ -179,21 +159,5 @@ public class TimedData extends DataAccess<UUID, TimedData>
 	public static void remove(String key, String subKey)
 	{
 		if(find(key, subKey) != null) find(key, subKey).remove();
-	}
-
-	/**
-	 * Clears all expired timed data.
-	 */
-	public static void clearExpired()
-	{
-		for(TimedData data : Collections2.filter(all(), new Predicate<TimedData>()
-		{
-			@Override
-			public boolean apply(TimedData data)
-			{
-				return data.getExpiration() <= System.currentTimeMillis();
-			}
-		}))
-			data.remove();
 	}
 }

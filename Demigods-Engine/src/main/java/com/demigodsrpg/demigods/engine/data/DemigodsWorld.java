@@ -16,16 +16,16 @@ import java.util.UUID;
 @SuppressWarnings("unchecked")
 public class DemigodsWorld extends SimpleYamlFile<DemigodsWorld>
 {
-	private final String worldName, worldFolder;
+	private final String worldName, worldDataFolder;
 	private final DemigodsWorldFile<UUID, DemigodsLocation> location;
 	private final DemigodsWorldFile<UUID, DemigodsStructure> structure;
 
-	DemigodsWorld(final String worldName, String worldFolder)
+	DemigodsWorld(final String worldName, String worldDataFolder)
 	{
 		this.worldName = worldName;
-		this.worldFolder = worldFolder + "/demigods/";
+		this.worldDataFolder = worldDataFolder;
 
-		location = new DemigodsWorldFile<UUID, DemigodsLocation>("l", ".demi", this.worldFolder)
+		location = new DemigodsWorldFile<UUID, DemigodsLocation>("l", ".demi", this.worldDataFolder)
 		{
 			@Override
 			public DemigodsLocation valueFromData(UUID uuid, ConfigurationSection conf)
@@ -40,7 +40,7 @@ public class DemigodsWorld extends SimpleYamlFile<DemigodsWorld>
 			}
 		};
 
-		structure = new DemigodsWorldFile<UUID, DemigodsStructure>("s", ".demi", this.worldFolder)
+		structure = new DemigodsWorldFile<UUID, DemigodsStructure>("s", ".demi", this.worldDataFolder)
 		{
 			@Override
 			public DemigodsStructure valueFromData(UUID uuid, ConfigurationSection conf)
@@ -75,7 +75,7 @@ public class DemigodsWorld extends SimpleYamlFile<DemigodsWorld>
 	@Override
 	public String getDirectoryPath()
 	{
-		return worldFolder;
+		return worldDataFolder;
 	}
 
 	@Override

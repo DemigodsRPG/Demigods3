@@ -8,7 +8,7 @@ import com.demigodsrpg.demigods.engine.battle.Battle;
 import com.demigodsrpg.demigods.engine.data.DataAccess;
 import com.demigodsrpg.demigods.engine.data.IdType;
 import com.demigodsrpg.demigods.engine.data.Register;
-import com.demigodsrpg.demigods.engine.data.TimedData;
+import com.demigodsrpg.demigods.engine.data.TimedServerData;
 import com.demigodsrpg.demigods.engine.entity.DemigodsTameable;
 import com.demigodsrpg.demigods.engine.inventory.DemigodsEnderInventory;
 import com.demigodsrpg.demigods.engine.inventory.DemigodsPlayerInventory;
@@ -166,12 +166,12 @@ public class DemigodsPlayer extends DataAccess<String, DemigodsPlayer>
 		else if(!inNoPvpZone)
 		{
 			setCanPvp(true);
-			TimedData.remove(player.getName(), "pvp_cooldown");
+			TimedServerData.remove(player.getName(), "pvp_cooldown");
 		}
-		else if(canPvp() && !TimedData.exists(player.getName(), "pvp_cooldown"))
+		else if(canPvp() && !TimedServerData.exists(player.getName(), "pvp_cooldown"))
 		{
 			int delay = Configs.getSettingInt("zones.pvp_area_delay_time");
-			TimedData.saveTimed(player.getName(), "pvp_cooldown", true, delay, TimeUnit.SECONDS);
+			TimedServerData.saveTimed(player.getName(), "pvp_cooldown", true, delay, TimeUnit.SECONDS);
 
 			Bukkit.getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.getInst(), new BukkitRunnable()
 			{

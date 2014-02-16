@@ -7,7 +7,7 @@ import com.demigodsrpg.demigods.engine.battle.Participant;
 import com.demigodsrpg.demigods.engine.data.DataAccess;
 import com.demigodsrpg.demigods.engine.data.IdType;
 import com.demigodsrpg.demigods.engine.data.Register;
-import com.demigodsrpg.demigods.engine.data.TimedData;
+import com.demigodsrpg.demigods.engine.data.TimedServerData;
 import com.demigodsrpg.demigods.engine.deity.Ability;
 import com.demigodsrpg.demigods.engine.deity.Alliance;
 import com.demigodsrpg.demigods.engine.deity.Deity;
@@ -742,17 +742,17 @@ public class DemigodsCharacter extends DataAccess<UUID, DemigodsCharacter> imple
 
 	public static boolean isCooledDown(DemigodsCharacter character, String abilityName)
 	{
-		return !TimedData.exists(character.getName(), abilityName + "_cooldown");
+		return !TimedServerData.exists(character.getName(), abilityName + "_cooldown");
 	}
 
 	public static void setCooldown(DemigodsCharacter character, String abilityName, int cooldown)
 	{
-		TimedData.saveTimed(character.getName(), abilityName + "_cooldown", true, cooldown, TimeUnit.SECONDS);
+		TimedServerData.saveTimed(character.getName(), abilityName + "_cooldown", true, cooldown, TimeUnit.SECONDS);
 	}
 
 	public static Long getCooldown(DemigodsCharacter character, String abilityName)
 	{
-		return TimedData.getExpiration(character.getName(), abilityName + "_cooldown");
+		return TimedServerData.getExpiration(character.getName(), abilityName + "_cooldown");
 	}
 
 	/**
