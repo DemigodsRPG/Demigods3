@@ -1,9 +1,9 @@
 package com.demigodsrpg.demigods.engine.battle;
 
-import com.censoredsoftware.censoredlib.exception.SpigotNotFoundException;
-import com.censoredsoftware.censoredlib.language.Symbol;
-import com.censoredsoftware.censoredlib.util.Randoms;
-import com.censoredsoftware.censoredlib.util.Vehicles;
+import com.censoredsoftware.library.exception.SpigotNotFoundException;
+import com.censoredsoftware.library.language.Symbol;
+import com.censoredsoftware.library.util.Randoms;
+import com.censoredsoftware.library.util.Vehicles;
 import com.demigodsrpg.demigods.engine.DemigodsPlugin;
 import com.demigodsrpg.demigods.engine.DemigodsServer;
 import com.demigodsrpg.demigods.engine.data.*;

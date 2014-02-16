@@ -1,6 +1,6 @@
 package com.demigodsrpg.demigods.engine.tribute;
 
-import com.censoredsoftware.censoredlib.util.Randoms;
+import com.censoredsoftware.library.util.Randoms;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 

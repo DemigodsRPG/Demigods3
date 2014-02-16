@@ -120,7 +120,7 @@ public enum DataType
 		return abbr;
 	}
 
-	public <K, V extends DataAccess<K, V>> V cast(Object o)
+	public <K extends Comparable, V extends DataAccess<K, V>> V cast(Object o)
 	{
 		return (V) clazz.cast(o);
 	}

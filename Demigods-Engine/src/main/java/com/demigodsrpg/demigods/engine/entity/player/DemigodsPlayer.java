@@ -1,7 +1,7 @@
 package com.demigodsrpg.demigods.engine.entity.player;
 
-import com.censoredsoftware.censoredlib.exception.MojangIdNotFoundException;
-import com.censoredsoftware.censoredlib.helper.MojangIdGrabber;
+import com.censoredsoftware.library.exception.MojangIdNotFoundException;
+import com.censoredsoftware.library.helper.MojangIdGrabber;
 import com.demigodsrpg.demigods.base.listener.ChatRecorder;
 import com.demigodsrpg.demigods.engine.DemigodsPlugin;
 import com.demigodsrpg.demigods.engine.battle.Battle;

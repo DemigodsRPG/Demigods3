@@ -1,6 +1,6 @@
 package com.demigodsrpg.demigods.engine.data.file;
 
-import com.censoredsoftware.censoredlib.helper.ConfigFile;
+import com.censoredsoftware.library.serializable.yaml.TieredGenericYamlFile;
 import com.demigodsrpg.demigods.engine.data.WorldDataAccess;
 import com.google.common.collect.Maps;
 
@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentMap;
  * @param <K> The id type.
  * @param <V> The data type.
  */
-public abstract class DemigodsWorldFile<K, V extends WorldDataAccess<K, V>> extends ConfigFile<K, V>
+public abstract class DemigodsWorldFile<K extends Comparable, V extends WorldDataAccess<K, V>> extends TieredGenericYamlFile<K, V>
 {
 	// Special variables that will be accessed pretty often.
 	private final String fileName, fileType, savePath;
@@ -50,26 +50,21 @@ public abstract class DemigodsWorldFile<K, V extends WorldDataAccess<K, V>> exte
 	}
 
 	@Override
-	public String getSavePath()
+	public String getDirectoryPath()
 	{
 		return savePath;
 	}
 
-	public final String getFileName()
-	{
-		return fileName;
-	}
-
 	@Override
-	public final String getSaveFile()
+	public final String getFullFileName()
 	{
 		return fileName + fileType;
 	}
 
 	@Override
-	public final void loadToData()
+	public final void loadDataFromFile()
 	{
-		dataStore = loadFromFile();
+		dataStore = getCurrentFileData();
 	}
 
 	public final boolean containsKey(K key)

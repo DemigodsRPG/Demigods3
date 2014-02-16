@@ -1,4 +1,4 @@
-package com.censoredsoftware.censoredlib.helper;
+package com.censoredsoftware.library.helper;
 
 import org.bukkit.plugin.java.JavaPlugin;
 

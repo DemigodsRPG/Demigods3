@@ -1,8 +1,8 @@
 package com.demigodsrpg.demigods.engine.mythos;
 
-import com.censoredsoftware.censoredlib.helper.CommandManager;
-import com.censoredsoftware.censoredlib.trigger.Trigger;
-import com.censoredsoftware.censoredlib.util.Items;
+import com.censoredsoftware.library.helper.CommandManager;
+import com.censoredsoftware.library.trigger.Trigger;
+import com.censoredsoftware.library.util.Items;
 import com.demigodsrpg.demigods.engine.deity.Alliance;
 import com.demigodsrpg.demigods.engine.deity.Deity;
 import com.demigodsrpg.demigods.engine.item.DivineItem;

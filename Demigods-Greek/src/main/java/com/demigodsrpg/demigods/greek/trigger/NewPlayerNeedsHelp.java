@@ -1,7 +1,7 @@
 package com.demigodsrpg.demigods.greek.trigger;
 
-import com.censoredsoftware.censoredlib.language.Symbol;
-import com.censoredsoftware.censoredlib.trigger.Trigger;
+import com.censoredsoftware.library.language.Symbol;
+import com.censoredsoftware.library.trigger.Trigger;
 import com.demigodsrpg.demigods.engine.Demigods;
 import com.demigodsrpg.demigods.engine.data.TimedData;
 import com.demigodsrpg.demigods.engine.entity.player.DemigodsCharacter;

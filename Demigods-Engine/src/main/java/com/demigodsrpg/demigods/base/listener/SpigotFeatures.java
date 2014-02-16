@@ -1,7 +1,7 @@
 package com.demigodsrpg.demigods.base.listener;
 
-import com.censoredsoftware.censoredlib.trigger.Trigger;
-import com.censoredsoftware.censoredlib.util.Threads;
+import com.censoredsoftware.library.trigger.Trigger;
+import com.censoredsoftware.library.util.Threads;
 import com.demigodsrpg.demigods.engine.DemigodsPlugin;
 import com.demigodsrpg.demigods.engine.entity.player.DemigodsCharacter;
 import com.demigodsrpg.demigods.engine.structure.DemigodsStructure;

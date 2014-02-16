@@ -1,6 +1,6 @@
 package com.demigodsrpg.demigods.engine.util;
 
-import com.censoredsoftware.censoredlib.util.WorldGuards;
+import com.censoredsoftware.library.util.WorldGuards;
 import com.demigodsrpg.demigods.base.listener.ZoneListener;
 import com.demigodsrpg.demigods.engine.DemigodsPlugin;
 import com.demigodsrpg.demigods.engine.entity.player.DemigodsCharacter;

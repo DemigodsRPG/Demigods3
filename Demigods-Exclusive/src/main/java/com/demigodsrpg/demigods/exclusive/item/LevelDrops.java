@@ -1,6 +1,6 @@
 package com.demigodsrpg.demigods.exclusive.item;
 
-import com.censoredsoftware.censoredlib.helper.ConfigFile2;
+import com.censoredsoftware.library.serializable.yaml.SimpleYamlFile;
 import com.demigodsrpg.demigods.engine.DemigodsPlugin;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
@@ -31,7 +31,7 @@ public enum LevelDrops
 		return new ItemStack(material, amount);
 	}
 
-	private static class Config extends ConfigFile2
+	private static class Config extends SimpleYamlFile
 	{
 		private static final String SAVE_PATH = DemigodsPlugin.getInst().getDataFolder() + "/config/level_items/";
 
@@ -49,7 +49,7 @@ public enum LevelDrops
 		}
 
 		@Override
-		public Config unserialize(ConfigurationSection conf)
+		public Config valueFromData(ConfigurationSection conf)
 		{
 			ImmutableList.Builder<ItemStack> builder = ImmutableList.builder();
 			for(Map.Entry<String, Object> entry : conf.getValues(false).entrySet())
@@ -62,15 +62,21 @@ public enum LevelDrops
 		}
 
 		@Override
-		public String getSavePath()
+		public String getDirectoryPath()
 		{
 			return SAVE_PATH;
 		}
 
 		@Override
-		public String getSaveFile()
+		public String getFullFileName()
 		{
 			return saveFile;
+		}
+
+		@Override
+		public void loadDataFromFile()
+		{
+			getCurrentFileData();
 		}
 
 		@Override

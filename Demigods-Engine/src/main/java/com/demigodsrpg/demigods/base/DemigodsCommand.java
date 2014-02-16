@@ -1,6 +1,6 @@
 package com.demigodsrpg.demigods.base;
 
-import com.censoredsoftware.censoredlib.helper.CommandManager;
+import com.censoredsoftware.library.helper.CommandManager;
 import com.demigodsrpg.demigods.base.command.DevelopmentCommands;
 import com.demigodsrpg.demigods.base.command.GeneralCommands;
 import com.demigodsrpg.demigods.base.command.MainCommand;

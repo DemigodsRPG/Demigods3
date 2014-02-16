@@ -1,7 +1,7 @@
 package com.demigodsrpg.demigods.base.structure;
 
-import com.censoredsoftware.censoredlib.schematic.Schematic;
-import com.censoredsoftware.censoredlib.schematic.Selection;
+import com.censoredsoftware.library.schematic.Schematic;
+import com.censoredsoftware.library.schematic.Selection;
 import com.demigodsrpg.demigods.engine.DemigodsPlugin;
 import com.demigodsrpg.demigods.engine.entity.player.DemigodsCharacter;
 import com.demigodsrpg.demigods.engine.structure.DemigodsStructure;
@@ -173,7 +173,7 @@ public class RestrictedArea implements DemigodsStructureType, DemigodsStructureT
 						{
 							for(Location location : save.getType().getDesign("Restricted Area").getSchematic(save).getLocations(save.getBukkitLocation()))
 							{
-							player.sendBlockChange(location, Material.GLASS, (byte) 0);
+								player.sendBlockChange(location, Material.GLASS, (byte) 0);
 							}
 						}
 					}
@@ -192,7 +192,7 @@ public class RestrictedArea implements DemigodsStructureType, DemigodsStructureT
 						{
 							for(Location location : save.getType().getDesign("Restricted Area").getSchematic(save).getLocations(save.getBukkitLocation()))
 							{
-					player.sendBlockChange(location, location.getBlock().getType(), location.getBlock().getData());
+								player.sendBlockChange(location, location.getBlock().getType(), location.getBlock().getData());
 							}
 						}
 					}

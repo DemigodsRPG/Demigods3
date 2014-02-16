@@ -1,6 +1,6 @@
 package com.demigodsrpg.demigods.engine.location;
 
-import com.censoredsoftware.censoredlib.util.Randoms;
+import com.censoredsoftware.library.util.Randoms;
 import com.demigodsrpg.demigods.engine.data.DemigodsWorld;
 import com.demigodsrpg.demigods.engine.data.WorldDataAccess;
 import com.demigodsrpg.demigods.engine.data.WorldDataManager;

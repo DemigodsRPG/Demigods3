@@ -1,6 +1,6 @@
 package com.demigodsrpg.demigods.base;
 
-import com.censoredsoftware.censoredlib.helper.ConversationManager;
+import com.censoredsoftware.library.helper.ConversationManager;
 import com.demigodsrpg.demigods.engine.conversation.Administration;
 import com.demigodsrpg.demigods.engine.conversation.Prayer;
 import org.bukkit.conversations.ConversationContext;

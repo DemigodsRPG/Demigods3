@@ -1,6 +1,6 @@
 package com.demigodsrpg.demigods.exclusive.command;
 
-import com.censoredsoftware.censoredlib.helper.CommandManager;
+import com.censoredsoftware.library.helper.CommandManager;
 import com.demigodsrpg.demigods.engine.DemigodsPlugin;
 import com.demigodsrpg.demigods.engine.data.TimedData;
 import com.demigodsrpg.demigods.engine.util.Messages;

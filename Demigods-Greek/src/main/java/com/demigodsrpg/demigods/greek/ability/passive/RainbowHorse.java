@@ -1,6 +1,6 @@
 package com.demigodsrpg.demigods.greek.ability.passive;
 
-import com.censoredsoftware.censoredlib.util.Randoms;
+import com.censoredsoftware.library.util.Randoms;
 import com.demigodsrpg.demigods.engine.entity.DemigodsTameable;
 import com.demigodsrpg.demigods.engine.util.Zones;
 import com.demigodsrpg.demigods.greek.ability.GreekAbility;

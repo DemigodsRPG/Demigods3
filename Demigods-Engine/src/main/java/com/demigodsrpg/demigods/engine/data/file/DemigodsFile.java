@@ -1,6 +1,6 @@
 package com.demigodsrpg.demigods.engine.data.file;
 
-import com.censoredsoftware.censoredlib.helper.ConfigFile6;
+import com.censoredsoftware.library.serializable.yaml.TieredStringConvertableGenericYamlFile;
 import com.demigodsrpg.demigods.engine.data.DataAccess;
 import com.google.common.collect.Maps;
 
@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentMap;
  * @param <K> The id type.
  * @param <V> The data type.
  */
-public abstract class DemigodsFile<K, V extends DataAccess<K, V>> extends ConfigFile6<K, V>
+public abstract class DemigodsFile<K extends Comparable, V extends DataAccess<K, V>> extends TieredStringConvertableGenericYamlFile<K, V>
 {
 	private final String fileName, fileType, savePath;
 	ConcurrentMap<K, V> dataStore = Maps.newConcurrentMap();
@@ -40,26 +40,21 @@ public abstract class DemigodsFile<K, V extends DataAccess<K, V>> extends Config
 	}
 
 	@Override
-	public String getSavePath()
+	public String getDirectoryPath()
 	{
 		return savePath;
 	}
 
-	public final String getFileName()
-	{
-		return fileName;
-	}
-
 	@Override
-	public final String getSaveFile()
+	public final String getFullFileName()
 	{
 		return fileName + fileType;
 	}
 
 	@Override
-	public final void loadToData()
+	public final void loadDataFromFile()
 	{
-		dataStore = loadFromFile();
+		dataStore = getCurrentFileData();
 	}
 
 	public final boolean containsKey(K key)
@@ -80,11 +75,6 @@ public abstract class DemigodsFile<K, V extends DataAccess<K, V>> extends Config
 	public final void remove(K key)
 	{
 		dataStore.remove(key);
-	}
-
-	public final Set<K> keySet()
-	{
-		return dataStore.keySet();
 	}
 
 	public final Set<Map.Entry<K, V>> entrySet()

@@ -52,7 +52,7 @@ public class FileDataManager extends DataManager
 		{
 			DemigodsFile file = DemigodsFileFactory.create(DataType.typeFromClass(clazz), SAVE_PATH);
 			if(file == null) continue;
-			file.loadToData();
+			file.loadDataFromFile();
 			yamlFiles.put(clazz, file);
 		}
 
@@ -64,7 +64,7 @@ public class FileDataManager extends DataManager
 	public void save()
 	{
 		for(DemigodsFile data : yamlFiles.values())
-			data.saveToFile();
+			data.saveDataToFile();
 	}
 
 	@Override
@@ -88,7 +88,7 @@ public class FileDataManager extends DataManager
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <V extends DataAccess<K, V>, K> V getFor(final Class<V> clazz, final K key)
+	public <K extends Comparable, V extends DataAccess<K, V>> V getFor(final Class<V> clazz, final K key)
 	{
 		if(getFile(clazz).containsKey(key)) return getFile(clazz).get(key);
 		return null;
@@ -96,34 +96,33 @@ public class FileDataManager extends DataManager
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <K, V extends DataAccess<K, V>> Collection<V> getAllOf(final Class<V> clazz)
+	public <K extends Comparable, V extends DataAccess<K, V>> Collection<V> getAllOf(final Class<V> clazz)
 	{
 		return getFile(clazz).values();
 	}
 
 	@Override
-	public <K, V extends DataAccess<K, V>> ConcurrentMap<K, V> getMapFor(final Class<V> clazz)
+	public <K extends Comparable, V extends DataAccess<K, V>> ConcurrentMap<K, V> getMapFor(final Class<V> clazz)
 	{
 		return getFile(clazz).getLoadedData();
 	}
 
 	@Override
-	public <K, V extends DataAccess<K, V>> void putFor(final Class<V> clazz, final K key, final V value)
+	public <K extends Comparable, V extends DataAccess<K, V>> void putFor(final Class<V> clazz, final K key, final V value)
 	{
 		getFile(clazz).put(key, value);
 	}
 
 	@Override
-	public <K, V extends DataAccess<K, V>> void removeFor(final Class<V> clazz, final K key)
+	public <K extends Comparable, V extends DataAccess<K, V>> void removeFor(final Class<V> clazz, final K key)
 	{
 		getFile(clazz).remove(key);
 	}
 
-    @SuppressWarnings("unchecked")
-	private <K, V extends DataAccess<K, V>> DemigodsFile<K, V> getFile(Class<V> clazz)
+	@SuppressWarnings("unchecked")
+	private <K extends Comparable, V extends DataAccess<K, V>> DemigodsFile<K, V> getFile(Class<V> clazz)
 	{
-        if(yamlFiles.containsKey(clazz))
- return (DemigodsFile<K, V>) yamlFiles.get(clazz);
+		if(yamlFiles.containsKey(clazz)) return (DemigodsFile<K, V>) yamlFiles.get(clazz);
 		throw new UnsupportedOperationException("Demigods wants a data type that does not exist.");
 	}
 }

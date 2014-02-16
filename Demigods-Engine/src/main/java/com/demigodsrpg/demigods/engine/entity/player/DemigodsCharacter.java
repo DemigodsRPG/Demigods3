@@ -1,6 +1,6 @@
 package com.demigodsrpg.demigods.engine.entity.player;
 
-import com.censoredsoftware.censoredlib.language.Symbol;
+import com.censoredsoftware.library.language.Symbol;
 import com.demigodsrpg.demigods.engine.Demigods;
 import com.demigodsrpg.demigods.engine.DemigodsPlugin;
 import com.demigodsrpg.demigods.engine.battle.Participant;

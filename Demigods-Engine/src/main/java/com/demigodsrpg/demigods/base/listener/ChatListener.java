@@ -1,6 +1,6 @@
 package com.demigodsrpg.demigods.base.listener;
 
-import com.censoredsoftware.censoredlib.helper.CommandManager;
+import com.censoredsoftware.library.helper.CommandManager;
 import com.demigodsrpg.demigods.base.DemigodsCommand;
 import com.demigodsrpg.demigods.engine.Demigods;
 import com.demigodsrpg.demigods.engine.DemigodsPlugin;

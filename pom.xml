@@ -35,10 +35,8 @@
 
     <properties> <!-- It is important to keep up to date manually. -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spigot.version>1.7.2-R0.2-SNAPSHOT</spigot.version>
+        <spigot.version>1.7.2-R0.4-SNAPSHOT</spigot.version>
         <censoredLib.version>1.0.0-SNAPSHOT</censoredLib.version>
-        <dagger.version>1.2.0</dagger.version>
-        <javawriter.version>2.4.0</javawriter.version>
     </properties>
 
     <developers>

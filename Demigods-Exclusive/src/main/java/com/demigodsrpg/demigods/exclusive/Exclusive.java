@@ -1,6 +1,6 @@
 package com.demigodsrpg.demigods.exclusive;
 
-import com.censoredsoftware.censoredlib.helper.CommandManager;
+import com.censoredsoftware.library.helper.CommandManager;
 import com.demigodsrpg.demigods.engine.DemigodsPlugin;
 import com.demigodsrpg.demigods.engine.mythos.Mythos;
 import com.demigodsrpg.demigods.exclusive.command.WorldCommands;

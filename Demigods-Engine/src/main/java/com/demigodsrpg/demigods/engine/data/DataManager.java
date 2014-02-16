@@ -60,15 +60,15 @@ public abstract class DataManager
 
 	protected abstract void flushData() throws AccessDeniedException;
 
-	protected abstract <V extends DataAccess<K, V>, K> V getFor(Class<V> clazz, K key);
+	protected abstract <K extends Comparable, V extends DataAccess<K, V>> V getFor(Class<V> clazz, K key);
 
-	protected abstract <K, V extends DataAccess<K, V>> Collection<V> getAllOf(Class<V> clazz);
+	protected abstract <K extends Comparable, V extends DataAccess<K, V>> Collection<V> getAllOf(Class<V> clazz);
 
-	protected abstract <K, V extends DataAccess<K, V>> ConcurrentMap<K, V> getMapFor(Class<V> clazz);
+	protected abstract <K extends Comparable, V extends DataAccess<K, V>> ConcurrentMap<K, V> getMapFor(Class<V> clazz);
 
-	protected abstract <K, V extends DataAccess<K, V>> void putFor(Class<V> clazz, K key, V value);
+	protected abstract <K extends Comparable, V extends DataAccess<K, V>> void putFor(Class<V> clazz, K key, V value);
 
-	protected abstract <K, V extends DataAccess<K, V>> void removeFor(Class<V> clazz, K key);
+	protected abstract <K extends Comparable, V extends DataAccess<K, V>> void removeFor(Class<V> clazz, K key);
 
 	public static void initAllData()
 	{

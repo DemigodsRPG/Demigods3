@@ -1,6 +1,6 @@
 package com.demigodsrpg.demigods.base.command;
 
-import com.censoredsoftware.censoredlib.helper.CommandManager;
+import com.censoredsoftware.library.helper.CommandManager;
 import com.censoredsoftware.shaded.org.jgrapht.ext.DOTExporter;
 import com.censoredsoftware.shaded.org.jgrapht.ext.EdgeNameProvider;
 import com.censoredsoftware.shaded.org.jgrapht.ext.VertexNameProvider;

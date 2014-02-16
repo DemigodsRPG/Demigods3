@@ -1,8 +1,8 @@
 package com.demigodsrpg.demigods.engine.deity.template;
 
-import com.censoredsoftware.censoredlib.helper.ConfigFile2;
-import com.censoredsoftware.censoredlib.language.Symbol;
-import com.censoredsoftware.censoredlib.util.Strings;
+import com.censoredsoftware.library.language.Symbol;
+import com.censoredsoftware.library.serializable.yaml.SimpleYamlFile;
+import com.censoredsoftware.library.util.Strings;
 import com.demigodsrpg.demigods.engine.DemigodsPlugin;
 import com.demigodsrpg.demigods.engine.deity.Ability;
 import com.demigodsrpg.demigods.engine.deity.Alliance;
@@ -197,12 +197,12 @@ public class TemplateDeity implements Deity
 	}
 
 	@Override
-	public ConfigFile2 getConfig()
+	public SimpleYamlFile getConfig()
 	{
-		return new ConfigFile2()
+		return new SimpleYamlFile()
 		{
 			@Override
-			public ConfigFile2 unserialize(ConfigurationSection conf)
+			public SimpleYamlFile valueFromData(ConfigurationSection conf)
 			{
 				if(conf.isString("name")) name = conf.getString("name");
 				if(conf.isString("permission")) permission = conf.getString("permission");
@@ -219,15 +219,21 @@ public class TemplateDeity implements Deity
 			}
 
 			@Override
-			public String getSavePath()
+			public String getDirectoryPath()
 			{
 				return DemigodsPlugin.getInst().getDataFolder() + "/config/deity/" + alliance.getName().toLowerCase() + "/"; // Don't change this.
 			}
 
 			@Override
-			public String getSaveFile()
+			public String getFullFileName()
 			{
 				return name.toLowerCase() + ".yml";
+			}
+
+			@Override
+			public void loadDataFromFile()
+			{
+				getCurrentFileData();
 			}
 
 			@Override

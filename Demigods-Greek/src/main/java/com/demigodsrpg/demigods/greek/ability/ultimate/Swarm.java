@@ -1,6 +1,6 @@
 package com.demigodsrpg.demigods.greek.ability.ultimate;
 
-import com.censoredsoftware.censoredlib.util.Spigots;
+import com.censoredsoftware.library.util.Spigots;
 import com.demigodsrpg.demigods.engine.DemigodsServer;
 import com.demigodsrpg.demigods.engine.entity.player.DemigodsCharacter;
 import com.demigodsrpg.demigods.engine.entity.player.attribute.Skill;

@@ -1,7 +1,7 @@
 package com.demigodsrpg.demigods.engine;
 
-import com.censoredsoftware.censoredlib.helper.CensoredCentralizedClass;
-import com.censoredsoftware.censoredlib.helper.ConversationManager;
+import com.censoredsoftware.library.helper.CensoredCentralizedClass;
+import com.censoredsoftware.library.helper.ConversationManager;
 import com.censoredsoftware.shaded.org.mcstats.MetricsLite;
 import com.demigodsrpg.demigods.base.DemigodsConversation;
 import com.demigodsrpg.demigods.base.listener.ChatListener;

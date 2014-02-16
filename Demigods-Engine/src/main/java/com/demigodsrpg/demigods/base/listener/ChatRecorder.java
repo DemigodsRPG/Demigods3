@@ -1,6 +1,6 @@
 package com.demigodsrpg.demigods.base.listener;
 
-import com.censoredsoftware.censoredlib.util.Times;
+import com.censoredsoftware.library.util.Times;
 import com.demigodsrpg.demigods.engine.DemigodsPlugin;
 import com.demigodsrpg.demigods.engine.event.DemigodsChatEvent;
 import com.google.common.base.Function;

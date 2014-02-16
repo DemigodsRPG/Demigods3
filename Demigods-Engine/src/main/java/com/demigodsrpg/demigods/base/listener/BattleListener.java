@@ -26,7 +26,7 @@ public class BattleListener implements Listener
 		if(event.isCancelled()) return;
 		if(Zones.inNoDemigodsZone(event.getEntity().getLocation())) return;
 		Entity damager = event.getDamager();
-		if(damager instanceof Projectile) damager = ((Projectile) damager).getShooter();
+		if(damager instanceof Projectile && ((Projectile) damager).getShooter() instanceof LivingEntity) damager = (LivingEntity) ((Projectile) damager).getShooter();
 		if(!Battle.canParticipate(event.getEntity()))
 		{
 			if(Zones.inNoPvpZone(damager.getLocation()) || Zones.inNoPvpZone(damager.getLocation())) event.setCancelled(true);

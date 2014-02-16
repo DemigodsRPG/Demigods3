@@ -1,6 +1,6 @@
 package com.demigodsrpg.demigods.engine.structure;
 
-import com.censoredsoftware.censoredlib.schematic.Schematic;
+import com.censoredsoftware.library.schematic.Schematic;
 import com.censoredsoftware.shaded.org.jgrapht.graph.DefaultWeightedEdge;
 import com.censoredsoftware.shaded.org.jgrapht.graph.SimpleWeightedGraph;
 import com.demigodsrpg.demigods.engine.data.DemigodsWorld;

@@ -1,6 +1,6 @@
 package com.demigodsrpg.demigods.engine.language;
 
-import com.censoredsoftware.censoredlib.language.Symbol;
+import com.censoredsoftware.library.language.Symbol;
 import com.google.common.collect.Lists;
 import org.bukkit.ChatColor;
 

@@ -1,6 +1,6 @@
 package com.demigodsrpg.demigods.greek.item.weapon;
 
-import com.censoredsoftware.censoredlib.util.Items;
+import com.censoredsoftware.library.util.Items;
 import com.demigodsrpg.demigods.engine.item.DivineItem;
 import com.demigodsrpg.demigods.engine.util.Zones;
 import com.demigodsrpg.demigods.greek.item.GreekItem;

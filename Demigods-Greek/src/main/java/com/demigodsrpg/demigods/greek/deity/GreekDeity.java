@@ -1,6 +1,6 @@
 package com.demigodsrpg.demigods.greek.deity;
 
-import com.censoredsoftware.censoredlib.helper.ConfigFile2;
+import com.censoredsoftware.library.serializable.yaml.SimpleYamlFile;
 import com.demigodsrpg.demigods.engine.DemigodsPlugin;
 import com.demigodsrpg.demigods.engine.deity.Ability;
 import com.demigodsrpg.demigods.engine.deity.Alliance;
@@ -40,7 +40,7 @@ public class GreekDeity implements Deity, Deity.MoodManager
 	private EnumMap<Mood, MoodPack> moodPacks;
 
 	// Config File
-	private ConfigFile2 configFile;
+	private SimpleYamlFile<Config> configFile;
 
 	public GreekDeity(String name, String permission, PermissionDefault permissionDefault, Alliance alliance, ChatColor color, Map<Material, Integer> claimItems, Map<Material, Integer> forsakeItems, String shortDescription, List<String> lore, Set<Flag> flags, List<Ability> abilities, int accuracy, int favorRegen, int maxFavor, double maxHealth, int favorBank, EnumMap<Deity.Mood, Deity.MoodPack> moodPacks)
 	{
@@ -64,7 +64,7 @@ public class GreekDeity implements Deity, Deity.MoodManager
 
 		configFile = new Config();
 
-		getConfig().loadFromFile();
+		getConfig().loadDataFromFile();
 	}
 
 	@Override
@@ -166,7 +166,7 @@ public class GreekDeity implements Deity, Deity.MoodManager
 		return favorBank;
 	}
 
-	public ConfigFile2 getConfig()
+	public SimpleYamlFile getConfig()
 	{
 		return configFile;
 	}
@@ -187,10 +187,10 @@ public class GreekDeity implements Deity, Deity.MoodManager
 		return null;
 	}
 
-	public class Config extends ConfigFile2
+	public class Config extends SimpleYamlFile<Config>
 	{
 		@Override
-		public ConfigFile2 unserialize(ConfigurationSection conf)
+		public Config valueFromData(ConfigurationSection conf)
 		{
 			if(conf.isString("name")) name = conf.getString("name");
 			if(conf.isString("permission")) permission = conf.getString("permission");
@@ -208,15 +208,21 @@ public class GreekDeity implements Deity, Deity.MoodManager
 		}
 
 		@Override
-		public String getSavePath()
+		public String getDirectoryPath()
 		{
 			return DemigodsPlugin.getInst().getDataFolder() + "/config/deity/" + alliance.getName().toLowerCase() + "/"; // Don't change this.
 		}
 
 		@Override
-		public String getSaveFile()
+		public String getFullFileName()
 		{
 			return name.toLowerCase() + ".yml";
+		}
+
+		@Override
+		public void loadDataFromFile()
+		{
+			getCurrentFileData();
 		}
 
 		@Override

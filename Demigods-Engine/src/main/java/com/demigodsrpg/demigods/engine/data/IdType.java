@@ -31,14 +31,14 @@ public enum IdType
 	/**
 	 * Void (invalid).
 	 */
-	VOID(new Function<String, Void>()
+	VOID(new Function<String, Comparable>()
 	{
 		@Override
-		public Void apply(@Nullable String s)
+		public Comparable apply(@Nullable String s)
 		{
 			return null;
 		}
-	}, java.lang.Void.class);
+	}, Comparable.class);
 
 	private Function<String, ?> fromString;
 	private Class cast;

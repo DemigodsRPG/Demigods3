@@ -1,6 +1,6 @@
 package com.demigodsrpg.demigods.engine.deity;
 
-import com.censoredsoftware.censoredlib.util.Strings;
+import com.censoredsoftware.library.util.Strings;
 import com.demigodsrpg.demigods.engine.Demigods;
 import com.demigodsrpg.demigods.engine.battle.Battle;
 import com.demigodsrpg.demigods.engine.battle.Participant;

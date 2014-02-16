@@ -1,9 +1,9 @@
 package com.demigodsrpg.demigods.greek.structure;
 
-import com.censoredsoftware.censoredlib.schematic.BlockData;
-import com.censoredsoftware.censoredlib.schematic.Schematic;
-import com.censoredsoftware.censoredlib.schematic.Selection;
-import com.censoredsoftware.censoredlib.util.Colors;
+import com.censoredsoftware.library.schematic.BlockData;
+import com.censoredsoftware.library.schematic.Schematic;
+import com.censoredsoftware.library.schematic.Selection;
+import com.censoredsoftware.library.util.Colors;
 import com.demigodsrpg.demigods.engine.conversation.Administration;
 import com.demigodsrpg.demigods.engine.data.TimedData;
 import com.demigodsrpg.demigods.engine.deity.Deity;

@@ -1,6 +1,6 @@
 package com.demigodsrpg.demigods.base.listener;
 
-import com.censoredsoftware.censoredlib.util.Vehicles;
+import com.censoredsoftware.library.util.Vehicles;
 import com.demigodsrpg.demigods.engine.battle.Battle;
 import com.demigodsrpg.demigods.engine.battle.Participant;
 import com.demigodsrpg.demigods.engine.data.TempDataManager;

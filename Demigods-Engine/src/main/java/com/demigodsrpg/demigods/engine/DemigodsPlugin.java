@@ -1,7 +1,7 @@
 package com.demigodsrpg.demigods.engine;
 
-import com.censoredsoftware.censoredlib.CensoredLibPlugin;
-import com.censoredsoftware.censoredlib.helper.CensoredJavaPlugin;
+import com.censoredsoftware.library.helper.CensoredJavaPlugin;
+import com.censoredsoftware.plugin.CensoredLibPlugin;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;

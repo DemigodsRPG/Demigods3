@@ -2,10 +2,10 @@ package com.demigodsrpg.demigods.engine.data;
 
 import java.util.Map;
 
-public class Invalid extends DataAccess<Void, Invalid>
+public class Invalid extends DataAccess<Comparable, Invalid>
 {
 	@Override
-	protected Void getId()
+	protected Comparable getId()
 	{
 		throw new UnsupportedOperationException("Plugin tried accessing non-existent data type.");
 	}

@@ -1,6 +1,6 @@
 package com.demigodsrpg.demigods.engine.deity;
 
-import com.censoredsoftware.censoredlib.helper.ConfigFile2;
+import com.censoredsoftware.library.serializable.yaml.SimpleYamlFile;
 import com.demigodsrpg.demigods.engine.Demigods;
 import com.demigodsrpg.demigods.engine.entity.player.DemigodsCharacter;
 import com.demigodsrpg.demigods.engine.entity.player.DemigodsPlayer;
@@ -58,7 +58,7 @@ public interface Deity
 
 	void updateMood();
 
-	ConfigFile2 getConfig();
+	SimpleYamlFile getConfig();
 
 	enum Flag
 	{

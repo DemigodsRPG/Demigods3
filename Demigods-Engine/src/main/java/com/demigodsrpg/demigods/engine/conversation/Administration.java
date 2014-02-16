@@ -1,8 +1,8 @@
 package com.demigodsrpg.demigods.engine.conversation;
 
-import com.censoredsoftware.censoredlib.helper.ConversationManager;
-import com.censoredsoftware.censoredlib.util.Strings;
-import com.censoredsoftware.censoredlib.util.Titles;
+import com.censoredsoftware.library.helper.ConversationManager;
+import com.censoredsoftware.library.util.Strings;
+import com.censoredsoftware.library.util.Titles;
 import com.demigodsrpg.demigods.base.DemigodsConversation;
 import com.demigodsrpg.demigods.base.structure.RestrictedArea;
 import com.demigodsrpg.demigods.engine.Demigods;

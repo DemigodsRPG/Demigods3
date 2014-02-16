@@ -1,14 +1,14 @@
 package com.demigodsrpg.demigods.engine.data;
 
+import com.censoredsoftware.library.serializable.DataSerializable;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
 import java.util.Collection;
 import java.util.concurrent.ConcurrentMap;
 
 @SuppressWarnings("unchecked")
-public abstract class DataAccess<K, V extends DataAccess<K, V>> implements ConfigurationSerializable
+public abstract class DataAccess<K extends Comparable, V extends DataAccess<K, V>> implements DataSerializable
 {
 	@SuppressWarnings("RedundantCast")
 	private final Class<V> clazz = (Class<V>) ((V) this).getClass();
@@ -53,7 +53,7 @@ public abstract class DataAccess<K, V extends DataAccess<K, V>> implements Confi
 		DataManager.DATA_MANAGER.removeFor(clazz, key);
 	}
 
-    /*
+	/*
 	 * Convenience methods for Data Object Classes.
 	 */
 

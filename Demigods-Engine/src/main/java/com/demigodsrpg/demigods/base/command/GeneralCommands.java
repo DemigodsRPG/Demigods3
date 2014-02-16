@@ -1,10 +1,10 @@
 package com.demigodsrpg.demigods.base.command;
 
-import com.censoredsoftware.censoredlib.helper.CommandManager;
-import com.censoredsoftware.censoredlib.language.Symbol;
-import com.censoredsoftware.censoredlib.util.Maps2;
-import com.censoredsoftware.censoredlib.util.Strings;
-import com.censoredsoftware.censoredlib.util.Times;
+import com.censoredsoftware.library.helper.CommandManager;
+import com.censoredsoftware.library.language.Symbol;
+import com.censoredsoftware.library.util.Maps2;
+import com.censoredsoftware.library.util.Strings;
+import com.censoredsoftware.library.util.Times;
 import com.demigodsrpg.demigods.engine.Demigods;
 import com.demigodsrpg.demigods.engine.battle.Battle;
 import com.demigodsrpg.demigods.engine.deity.Alliance;

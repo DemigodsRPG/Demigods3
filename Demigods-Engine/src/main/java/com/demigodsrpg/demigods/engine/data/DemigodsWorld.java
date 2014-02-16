@@ -1,6 +1,6 @@
 package com.demigodsrpg.demigods.engine.data;
 
-import com.censoredsoftware.censoredlib.helper.ConfigFile2;
+import com.censoredsoftware.library.serializable.yaml.SimpleYamlFile;
 import com.demigodsrpg.demigods.engine.data.file.DemigodsWorldFile;
 import com.demigodsrpg.demigods.engine.location.DemigodsLocation;
 import com.demigodsrpg.demigods.engine.structure.DemigodsStructure;
@@ -13,7 +13,8 @@ import org.bukkit.configuration.ConfigurationSection;
 import java.util.Map;
 import java.util.UUID;
 
-public class DemigodsWorld extends ConfigFile2
+@SuppressWarnings("unchecked")
+public class DemigodsWorld extends SimpleYamlFile<DemigodsWorld>
 {
 	private final String worldName, worldFolder;
 	private final DemigodsWorldFile<UUID, DemigodsLocation> location;
@@ -27,13 +28,13 @@ public class DemigodsWorld extends ConfigFile2
 		location = new DemigodsWorldFile<UUID, DemigodsLocation>("l", ".demi", this.worldFolder)
 		{
 			@Override
-			public DemigodsLocation create(UUID uuid, ConfigurationSection conf, String... args)
+			public DemigodsLocation valueFromData(UUID uuid, ConfigurationSection conf)
 			{
 				return new DemigodsLocation(uuid, conf, worldName);
 			}
 
 			@Override
-			public UUID convertFromString(String stringId)
+			public UUID keyFromString(String stringId)
 			{
 				return UUID.fromString(stringId);
 			}
@@ -42,13 +43,13 @@ public class DemigodsWorld extends ConfigFile2
 		structure = new DemigodsWorldFile<UUID, DemigodsStructure>("s", ".demi", this.worldFolder)
 		{
 			@Override
-			public DemigodsStructure create(UUID uuid, ConfigurationSection conf, String... args)
+			public DemigodsStructure valueFromData(UUID uuid, ConfigurationSection conf)
 			{
 				return new DemigodsStructure(uuid, conf, worldName);
 			}
 
 			@Override
-			public UUID convertFromString(String stringId)
+			public UUID keyFromString(String stringId)
 			{
 				return UUID.fromString(stringId);
 			}
@@ -65,22 +66,28 @@ public class DemigodsWorld extends ConfigFile2
 		return worldName;
 	}
 
-	public DemigodsWorld unserialize(ConfigurationSection conf)
+	public DemigodsWorld valueFromData(ConfigurationSection conf)
 	{
 		// TODO
 		return this;
 	}
 
 	@Override
-	public String getSavePath()
+	public String getDirectoryPath()
 	{
 		return worldFolder;
 	}
 
 	@Override
-	public String getSaveFile()
+	public String getFullFileName()
 	{
 		return "b.demi";
+	}
+
+	@Override
+	public void loadDataFromFile() // TODO Put this in the parent class.
+	{
+		getCurrentFileData();
 	}
 
 	public Map<String, Object> serialize()
@@ -103,18 +110,18 @@ public class DemigodsWorld extends ConfigFile2
 
 	// -- DATA TYPES -- //
 
-	void loadData()
+	public void loadData()
 	{
-		loadFromFile();
-		location.loadToData();
-		structure.loadToData();
+		loadDataFromFile();
+		location.loadDataFromFile();
+		structure.loadDataFromFile();
 	}
 
-	void saveData()
+	public boolean saveData()
 	{
-		saveToFile();
-		location.saveToFile();
-		structure.saveToFile();
+		location.saveDataToFile();
+		structure.saveDataToFile();
+		return saveDataToFile();
 	}
 
 	DemigodsWorldFile<UUID, DemigodsLocation> locations()

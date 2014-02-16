@@ -1,17 +1,17 @@
 package com.demigodsrpg.demigods.engine.data;
 
+import com.censoredsoftware.library.serializable.DataSerializable;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
 import java.util.Collection;
 import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
 
 @SuppressWarnings("unchecked")
-public abstract class WorldDataAccess<K, V extends WorldDataAccess<K, V>> implements ConfigurationSerializable
+public abstract class WorldDataAccess<K, V extends WorldDataAccess<K, V>> implements DataSerializable
 {
 	@SuppressWarnings("RedundantCast")
 	private final Class<V> clazz = (Class<V>) ((V) this).getClass();

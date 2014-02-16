@@ -1,7 +1,7 @@
 package com.demigodsrpg.demigods.engine.data;
 
-import com.censoredsoftware.censoredlib.util.Threads;
-import com.censoredsoftware.censoredlib.util.Times;
+import com.censoredsoftware.library.util.Threads;
+import com.censoredsoftware.library.util.Times;
 import com.demigodsrpg.demigods.engine.Demigods;
 import com.demigodsrpg.demigods.engine.DemigodsPlugin;
 import com.demigodsrpg.demigods.engine.battle.Battle;
