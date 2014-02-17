@@ -11,7 +11,7 @@
 
     <artifactId>Demigods-Exclusive</artifactId>
 
-    <name>Demigods: Official Server Exclusive</name>
+    <name>Demigods - Official Server Exclusives</name>
     <description>The exclusive enhancements for the official Demigods RPG server.</description>
 
     <dependencies>
@@ -69,21 +69,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>2.4</version>
-                <configuration>
-                    <archive>
-                        <manifestEntries>
-                            <sealed>true</sealed>
-                        </manifestEntries>
-                        <manifestSections>
-                            <manifestSection>
-                                <name>com/censoredsoftware</name>
-                                <manifestEntries>
-                                    <sealed>true</sealed>
-                                </manifestEntries>
-                            </manifestSection>
-                        </manifestSections>
-                    </archive>
-                </configuration>
             </plugin>
         </plugins>
     </build>

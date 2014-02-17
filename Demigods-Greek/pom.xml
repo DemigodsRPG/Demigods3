@@ -11,7 +11,7 @@
 
     <artifactId>Demigods-Greek</artifactId>
 
-    <name>Demigods: Greek Mythos</name>
+    <name>Demigods - Greek Mythos</name>
     <description>The Greek Mythos for Demigods RPG.</description>
 
     <dependencies>

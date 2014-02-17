@@ -11,7 +11,7 @@
 
     <artifactId>Demigods-Engine</artifactId>
 
-    <name>Demigods: Base Engine</name>
+    <name>Demigods - Game Engine</name>
     <description>The engine for Demigods RPG.</description>
 
     <build>
