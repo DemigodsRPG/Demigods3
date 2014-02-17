@@ -1,6 +1,0 @@
-name: Demigods-Panel
-description: A web panel for Demigods that provides quick stat access, administrative functions, and more!
-main: com.censoredsoftware.demigods.panel.DemigodsPanelPlugin
-version: ${project.parent.version}
-authors: [_Alex, HmmmQuestionMark]
-depend: [Demigods]

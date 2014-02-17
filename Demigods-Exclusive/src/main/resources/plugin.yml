@@ -1,6 +1,6 @@
 name: Demigods-Exclusive
 description: The exclusive addon for official Demigods RPG server.
-main: com.censoredsoftware.demigods.exclusive.ExclusiveMythos
+main: com.demigodsrpg.demigods.exclusive.ExclusiveMythos
 version: ${project.parent.version}
 authors: [_Alex, HmmmQuestionMark]
 depend: [Demigods]
