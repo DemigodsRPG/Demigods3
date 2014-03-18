@@ -5,7 +5,7 @@
     <parent>
         <artifactId>Demigods-Parent</artifactId>
         <groupId>com.demigodsrpg</groupId>
-        <version>3.0.0</version>
+        <version>dev-y14m3d18r1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -42,14 +42,29 @@
                         <configuration>
                             <artifactSet>
                                 <includes>
-                                    <include>com.squareup.dagger:dagger</include>
-                                    <include>com.squareup.javawriter:javawriter</include>
+                                    <include>org.mcstats.bukkit:metrics-lite</include>
+                                    <include>org.atteo:evo-inflector</include>
+                                    <include>org.jgrapht:jgrapht-core</include>
+                                    <include>org.jgrapht:jgrapht-ext</include>
+                                    <include>com.mojang:AccountsClient</include>
                                 </includes>
                             </artifactSet>
                             <relocations>
                                 <relocation>
-                                    <pattern>com.squareup</pattern>
-                                    <shadedPattern>com.demigodsrpg.shaded.com.squareup</shadedPattern>
+                                    <pattern>org.mcstats</pattern>
+                                    <shadedPattern>com.censoredsoftware.shaded.org.mcstats</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.atteo</pattern>
+                                    <shadedPattern>com.censoredsoftware.shaded.org.atteo</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.jgrapht</pattern>
+                                    <shadedPattern>com.censoredsoftware.shaded.org.jgrapht</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>com.mojang</pattern>
+                                    <shadedPattern>com.censoredsoftware.shaded.com.mojang</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>

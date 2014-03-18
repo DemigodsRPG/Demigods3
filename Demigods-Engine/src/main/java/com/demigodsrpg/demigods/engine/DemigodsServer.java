@@ -2,7 +2,6 @@ package com.demigodsrpg.demigods.engine;
 
 import com.censoredsoftware.library.helper.CensoredCentralizedClass;
 import com.censoredsoftware.library.helper.ConversationManager;
-import com.censoredsoftware.shaded.org.mcstats.MetricsLite;
 import com.demigodsrpg.demigods.base.DemigodsConversation;
 import com.demigodsrpg.demigods.base.listener.ChatListener;
 import com.demigodsrpg.demigods.base.listener.SpigotFeatures;
@@ -41,6 +40,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicesManager;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.mcstats.MetricsLite;
 
 import java.util.*;
 

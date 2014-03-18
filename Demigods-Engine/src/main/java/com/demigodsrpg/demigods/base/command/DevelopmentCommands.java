@@ -1,15 +1,7 @@
 package com.demigodsrpg.demigods.base.command;
 
 import com.censoredsoftware.library.helper.CommandManager;
-import com.censoredsoftware.shaded.org.jgrapht.ext.DOTExporter;
-import com.censoredsoftware.shaded.org.jgrapht.ext.EdgeNameProvider;
-import com.censoredsoftware.shaded.org.jgrapht.ext.VertexNameProvider;
-import com.censoredsoftware.shaded.org.jgrapht.graph.DefaultEdge;
-import com.censoredsoftware.shaded.org.jgrapht.graph.DefaultWeightedEdge;
-import com.censoredsoftware.shaded.org.jgrapht.graph.SimpleWeightedGraph;
 import com.demigodsrpg.demigods.engine.Demigods;
-import com.demigodsrpg.demigods.engine.DemigodsPlugin;
-import com.demigodsrpg.demigods.engine.data.DemigodsWorld;
 import com.demigodsrpg.demigods.engine.entity.player.DemigodsCharacter;
 import com.demigodsrpg.demigods.engine.entity.player.DemigodsPlayer;
 import com.demigodsrpg.demigods.engine.structure.DemigodsStructure;
@@ -21,12 +13,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.util.Set;
-import java.util.UUID;
 
 // TODO Convert this over to the sub-command format.
 
@@ -57,49 +43,6 @@ public class DevelopmentCommands extends CommandManager
 	{
 		final Player player = (Player) sender;
 
-		// TODO Remove all Greek stuff from here, for testng only!
-
-		try
-		{
-			File file = new File(DemigodsPlugin.getInst().getDataFolder() + "/obelisks.dot");
-			PrintWriter write = new PrintWriter(file);
-			DOTExporter<UUID, DefaultWeightedEdge> exporter = new DOTExporter<>(new VertexNameProvider<UUID>()
-			{
-				@Override
-				public String getVertexName(UUID uuid)
-				{
-					return "U" + uuid.toString().replaceAll("-", "_");
-				}
-			}, new VertexNameProvider<UUID>()
-			{
-				@Override
-				public String getVertexName(UUID uuid)
-				{
-					return DemigodsStructure.get(DemigodsWorld.of(player.getWorld()), uuid).getBukkitLocation().toString();
-				}
-			}, new EdgeNameProvider<DefaultWeightedEdge>()
-			{
-				@Override
-				public String getEdgeName(DefaultWeightedEdge defaultWeightedEdge)
-				{
-					return defaultWeightedEdge.toString();
-				}
-			});
-			exporter.export(write, DemigodsStructureType.Util.getGraphOfStructuresWithType(Demigods.getMythos().getStructure("Obelisk")));
-			write.close();
-			player.sendMessage("Success!");
-			return true;
-		}
-		catch(FileNotFoundException e)
-		{
-			e.printStackTrace();
-		}
-
-		player.sendMessage("Failure.");
-
-		// for(Battle battle : Battle.Util.getAllActive())
-		// battle.end();
-
 		return true;
 	}
 
@@ -113,19 +56,6 @@ public class DevelopmentCommands extends CommandManager
 	private static boolean test3(CommandSender sender, final String[] args)
 	{
 		Player player = (Player) sender;
-
-		// TODO Remove all Greek stuff from here, for testng only!
-
-		DemigodsStructure save = Iterables.getFirst(DemigodsStructureType.Util.getInRadiusWithFlag(player.getLocation(), DemigodsStructureType.Flag.NO_GRIEFING), null);
-		if(save != null)
-		{
-			SimpleWeightedGraph<UUID, DefaultWeightedEdge> graph = DemigodsStructureType.Util.getGraphOfStructuresWithType(Demigods.getMythos().getStructure("Obelisk"));
-
-			Set<DefaultWeightedEdge> test = graph.edgeSet();
-			if(!test.isEmpty()) for(DefaultEdge found : test)
-				player.sendMessage(found.toString());
-			else player.sendMessage("Nope.");
-		}
 
 		return true;
 	}

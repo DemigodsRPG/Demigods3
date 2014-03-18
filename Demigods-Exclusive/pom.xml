@@ -5,7 +5,7 @@
     <parent>
         <artifactId>Demigods-Parent</artifactId>
         <groupId>com.demigodsrpg</groupId>
-        <version>3.0.0</version>
+        <version>dev-y14m3d18r1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 

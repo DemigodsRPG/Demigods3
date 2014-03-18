@@ -1,8 +1,6 @@
 package com.demigodsrpg.demigods.engine.structure;
 
 import com.censoredsoftware.library.schematic.Schematic;
-import com.censoredsoftware.shaded.org.jgrapht.graph.DefaultWeightedEdge;
-import com.censoredsoftware.shaded.org.jgrapht.graph.SimpleWeightedGraph;
 import com.demigodsrpg.demigods.engine.data.DemigodsWorld;
 import com.demigodsrpg.demigods.engine.data.WorldDataManager;
 import com.demigodsrpg.demigods.engine.entity.player.DemigodsCharacter;
@@ -16,6 +14,8 @@ import com.google.common.collect.Sets;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import org.jgrapht.graph.DefaultWeightedEdge;
+import org.jgrapht.graph.SimpleWeightedGraph;
 
 import javax.annotation.Nullable;
 import java.util.*;

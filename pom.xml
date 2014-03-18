@@ -7,7 +7,7 @@
     <groupId>com.demigodsrpg</groupId>
     <artifactId>Demigods-Parent</artifactId>
     <packaging>pom</packaging>
-    <version>3.0.0</version>
+    <version>dev-y14m3d18r1</version>
     <modules>
         <module>Demigods-Engine</module>
         <module>Demigods-Greek</module>
@@ -36,7 +36,8 @@
     <properties> <!-- It is important to keep up to date manually. -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spigot.version>1.7.2-R0.4-SNAPSHOT</spigot.version>
-        <censoredLib.version>1.0.0-SNAPSHOT</censoredLib.version>
+        <mcstats.version>R7</mcstats.version>
+        <worldguard.version>5.8.1-SNAPSHOT</worldguard.version>
     </properties>
 
     <developers>
@@ -68,12 +69,20 @@
 
     <repositories>
         <repository>
-            <id>md5-repo</id>
-            <url>http://repo.md-5.net/content/repositories/snapshots/</url>
+            <id>censored-software</id>
+            <url>http://repo.censoredsoftware.com</url>
         </repository>
         <repository>
-            <id>censored-software</id>
-            <url>http://repo.censoredsoftware.com/</url>
+            <id>md_5-releases</id>
+            <url>http://repo.md-5.net/content/repositories/snapshots</url>
+        </repository>
+        <repository>
+            <id>Plugin Metrics</id>
+            <url>http://repo.mcstats.org/content/repositories/public</url>
+        </repository>
+        <repository>
+            <id>sk89q-repo</id>
+            <url>http://maven.sk89q.com/repo</url>
         </repository>
     </repositories>
 
@@ -84,17 +93,113 @@
             <artifactId>spigot-api</artifactId>
             <version>${spigot.version}</version>
         </dependency>
-        <!-- CensoredLib -->
-        <dependency>
-            <groupId>com.censoredsoftware</groupId>
-            <artifactId>CensoredLib-Core</artifactId>
-            <version>${censoredLib.version}</version>
-        </dependency>
         <!-- PostgreSQL JBDC -->
         <dependency>
             <groupId>postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>9.1-901.jdbc4</version>
+        </dependency>
+        <!-- MCStats -->
+        <dependency>
+            <groupId>org.mcstats.bukkit</groupId>
+            <artifactId>metrics-lite</artifactId>
+            <version>${mcstats.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.bukkit</groupId>
+                    <artifactId>bukkit</artifactId>
+                </exclusion>
+            </exclusions>
+            <scope>compile</scope>
+            <optional>false</optional>
+        </dependency>
+        <!-- English Inflector -->
+        <dependency>
+            <groupId>org.atteo</groupId>
+            <artifactId>evo-inflector</artifactId>
+            <version>1.0.1</version>
+        </dependency>
+        <!-- JGraphT -->
+        <dependency>
+            <groupId>org.jgrapht</groupId>
+            <artifactId>jgrapht-core</artifactId>
+            <version>0.9.0</version>
+        </dependency>
+        <!-- JGraphT Extend -->
+        <dependency>
+            <groupId>org.jgrapht</groupId>
+            <artifactId>jgrapht-ext</artifactId>
+            <version>0.9.0</version>
+        </dependency>
+        <!-- WorldGuard -->
+        <dependency>
+            <groupId>com.sk89q</groupId>
+            <artifactId>worldguard</artifactId>
+            <version>${worldguard.version}</version>
+            <scope>compile</scope>
+            <type>jar</type>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.bukkit</groupId>
+                    <artifactId>bukkit</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.spout</groupId>
+                    <artifactId>spoutapi</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>de.schlichtherle</groupId>
+                    <artifactId>truezip</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>rhino</groupId>
+                    <artifactId>js</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.sk89q</groupId>
+                    <artifactId>jchronic</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.sk89q</groupId>
+                    <artifactId>dummypermscompat</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.bukkit</groupId>
+                    <artifactId>craftbukkit</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.mockito</groupId>
+                    <artifactId>mockito-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.sk89q</groupId>
+                    <artifactId>commandbook</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.nijikokun</groupId>
+                    <artifactId>iconomy</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.khelekore</groupId>
+                    <artifactId>prtree</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>net.sf.opencsv</groupId>
+                    <artifactId>opencsv</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>junit</groupId>
+                    <artifactId>junit</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!-- Mojang Accounts -->
+        <dependency>
+            <groupId>com.mojang</groupId>
+            <artifactId>AccountsClient</artifactId>
+            <version>latest</version>
+            <scope>compile</scope>
+            <optional>false</optional>
         </dependency>
     </dependencies>
 

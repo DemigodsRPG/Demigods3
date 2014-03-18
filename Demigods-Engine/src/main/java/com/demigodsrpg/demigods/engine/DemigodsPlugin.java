@@ -1,7 +1,6 @@
 package com.demigodsrpg.demigods.engine;
 
 import com.censoredsoftware.library.helper.CensoredJavaPlugin;
-import com.censoredsoftware.plugin.CensoredLibPlugin;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
@@ -34,11 +33,11 @@ public class DemigodsPlugin extends CensoredJavaPlugin
 	{
 		INST = this;
 
-		if(!checkForCensoredLib())
-		{
-			getPluginLoader().disablePlugin(this);
-			return;
-		}
+		// if(!checkForCensoredLib())
+		// {
+		// getPluginLoader().disablePlugin(this);
+		// return;
+		// }
 
 		loadAddons();
 
@@ -86,11 +85,11 @@ public class DemigodsPlugin extends CensoredJavaPlugin
 		// Check for CensoredLib
 		boolean messageOption = true;
 		Plugin check = Bukkit.getPluginManager().getPlugin("CensoredLib");
-		if(check instanceof CensoredLibPlugin)
-		{
-			if(check.getDescription().getVersion().startsWith(CENSORED_LIBRARY_VERSION)) return true;
-			messageOption = false;
-		}
+		// if(check instanceof CensoredLibPlugin)
+		// {
+		// if(check.getDescription().getVersion().startsWith(CENSORED_LIBRARY_VERSION)) return true;
+		// messageOption = false;
+		// }
 		getLogger().severe("  ");
 		getLogger().severe("                  888        d8b   888");
 		getLogger().severe("                  888              888");

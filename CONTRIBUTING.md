@@ -59,4 +59,4 @@ Anyone wishing to contribute to the **[CensoredSoftware/Demigods](https://github
 
   The Demigods team may recommend adjustments to your code. Part of interacting with a healthy open-source community requires you to be open to learning new techniques and strategies; *don't get discouraged!* Remember: if the Demigods team suggest changes to your code, **they care enough about your work that they want to include it**, and hope that you can assist by implementing those revisions on your own.
 
-[f]: http://forum.demigodsrpg.com/category/demigods-rpg-discussion/demigods-development
+[f]: http://forum.demigodsrpg.com/
