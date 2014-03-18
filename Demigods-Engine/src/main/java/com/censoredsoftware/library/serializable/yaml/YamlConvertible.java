@@ -1,5 +1,7 @@
 package com.censoredsoftware.library.serializable.yaml;
 
+import org.bukkit.configuration.ConfigurationSection;
+
 /**
  * A yaml file that has convertible key-value types.
  * 
@@ -19,8 +21,9 @@ public abstract class YamlConvertible<K, V>
 	/**
 	 * Convert to a value from a number of objects representing the data.
 	 * 
-	 * @param data The provided data objects.
+	 * @param stringKey The string key for the data.
+	 * @param data The provided data object.
 	 * @return The converted value.
 	 */
-	public abstract V valueFromData(Object... data);
+	public abstract V valueFromData(String stringKey, ConfigurationSection data);
 }

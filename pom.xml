@@ -7,7 +7,7 @@
     <groupId>com.demigodsrpg</groupId>
     <artifactId>Demigods-Parent</artifactId>
     <packaging>pom</packaging>
-    <version>dev-y14m3d18r1</version>
+    <version>ea-14.3.18.1</version>
     <modules>
         <module>Demigods-Engine</module>
         <module>Demigods-Greek</module>

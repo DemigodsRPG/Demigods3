@@ -67,9 +67,8 @@ public abstract class SimpleYamlFile<V extends SimpleYamlFile> extends KeylessYa
 	}
 
 	@Override
-	public final V valueFromData(Object... data)
+	public final V valueFromData(String ignored, ConfigurationSection conf)
 	{
-		if(data == null || data.length < 1 || !(data[0] instanceof ConfigurationSection)) return null;
-		return valueFromData((ConfigurationSection) data[0]);
+		return valueFromData(conf);
 	}
 }

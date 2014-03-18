@@ -3,7 +3,6 @@ package com.censoredsoftware.library.serializable.yaml;
 import com.censoredsoftware.library.serializable.DataSerializable;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.Map;
@@ -28,7 +27,7 @@ import java.util.concurrent.ConcurrentMap;
  * @param <V> Value type.
  */
 @SuppressWarnings({ "unchecked", "SuspiciousMethodCalls" })
-public abstract class TieredStringConvertableGenericYamlFile<K extends Comparable, V extends DataSerializable> extends YamlConvertible implements YamlFile
+public abstract class TieredStringConvertableGenericYamlFile<K extends Comparable, V extends DataSerializable> extends YamlConvertible<K, V> implements YamlFile
 {
 	/**
 	 * Serialize the data for a specific key (from the loaded data).
@@ -45,15 +44,6 @@ public abstract class TieredStringConvertableGenericYamlFile<K extends Comparabl
 	 */
 	public abstract ConcurrentMap<K, V> getLoadedData();
 
-	/**
-	 * Convert a single bit of the data (with a given string of the key) to the DataSerializable child class.
-	 * 
-	 * @param stringKey The string of the key.
-	 * @param conf A configuration section to be converted.
-	 * @return The converted value.
-	 */
-	public abstract V valueFromData(String stringKey, ConfigurationSection conf);
-
 	@Override
 	public ConcurrentMap<K, V> getCurrentFileData()
 	{
@@ -66,10 +56,12 @@ public abstract class TieredStringConvertableGenericYamlFile<K extends Comparabl
 		{
 			try
 			{
-				map.put((K) keyFromString(stringId), valueFromData(keyFromString(stringId), data.getConfigurationSection(stringId)));
+				map.put(keyFromString(stringId), valueFromData(stringId, data.getConfigurationSection(stringId)));
 			}
 			catch(Exception ignored)
-			{}
+			{
+				ignored.printStackTrace();
+			}
 		}
 		return map;
 	}
@@ -105,12 +97,5 @@ public abstract class TieredStringConvertableGenericYamlFile<K extends Comparabl
 
 		// Save the file!
 		return YamlFileUtil.saveFile(getDirectoryPath(), getFullFileName(), currentFile);
-	}
-
-	@Override
-	public final V valueFromData(Object... data)
-	{
-		if(data == null || data.length < 3 || !String.class.isInstance(data[0]) || !ConfigurationSection.class.isInstance(data[1])) return null;
-		return valueFromData((String) data[0], (ConfigurationSection) data[1]);
 	}
 }

@@ -28,7 +28,7 @@ import java.util.concurrent.ConcurrentMap;
  * @param <V> Value type.
  */
 @SuppressWarnings({ "unchecked", "SuspiciousMethodCalls" })
-public abstract class TieredGenericYamlFile<K extends Comparable, V extends DataSerializable> extends YamlConvertible implements YamlFile
+public abstract class TieredGenericYamlFile<K extends Comparable, V extends DataSerializable> extends YamlConvertible<K, V> implements YamlFile
 {
 	/**
 	 * Serialize the data for a specific key (from the loaded data).
@@ -66,7 +66,7 @@ public abstract class TieredGenericYamlFile<K extends Comparable, V extends Data
 		{
 			try
 			{
-				map.put((K) keyFromString(stringId), valueFromData(keyFromString(stringId), data.getConfigurationSection(stringId)));
+				map.put(keyFromString(stringId), valueFromData(stringId, data.getConfigurationSection(stringId)));
 			}
 			catch(Exception ignored)
 			{}
@@ -108,22 +108,8 @@ public abstract class TieredGenericYamlFile<K extends Comparable, V extends Data
 	}
 
 	@Override
-	public final V valueFromData(Object... data)
+	public V valueFromData(String key, ConfigurationSection conf)
 	{
-		if(data == null || data.length < 3 || !isK(data[0]) || !(data[1] instanceof ConfigurationSection)) return null;
-		return valueFromData((K) data[0], (ConfigurationSection) data[1]);
-	}
-
-	private boolean isK(Object o)
-	{
-		// Check if the given object is indeed of type K.
-		try
-		{
-			K k = (K) o;
-			return o.equals(k);
-		}
-		catch(ClassCastException ignored)
-		{}
-		return false;
+		return valueFromData(keyFromString(key), conf);
 	}
 }
