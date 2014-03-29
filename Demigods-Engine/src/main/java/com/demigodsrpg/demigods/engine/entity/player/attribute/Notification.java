@@ -25,7 +25,8 @@ public class Notification extends DataAccess<UUID, Notification>
 	private String message;
 
 	public Notification()
-	{}
+	{
+	}
 
 	@Register(idType = IdType.UUID)
 	public Notification(UUID id, ConfigurationSection conf)

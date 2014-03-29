@@ -18,12 +18,13 @@ public class DemigodsFileFactory
 	 * Private constructor for this factory.
 	 */
 	private DemigodsFileFactory()
-	{}
+	{
+	}
 
 	/**
 	 * Create a Demigods File from just the DataType and file path.
-	 * 
-	 * @param type The DataType this file will be persisting.
+	 *
+	 * @param type     The DataType this file will be persisting.
 	 * @param filePath The path to the file directory.
 	 * @return A new DemigodsFile object.
 	 */
@@ -34,11 +35,11 @@ public class DemigodsFileFactory
 
 	/**
 	 * Create a Demigods File from the IdType, data class, abbreviation, and file path.
-	 * 
-	 * @param idType The IdType this file will be using.
+	 *
+	 * @param idType    The IdType this file will be using.
 	 * @param dataClass The class this file will be persisting data for.
-	 * @param abbr The abbreviation of the data type.
-	 * @param filePath The path to the file directory.
+	 * @param abbr      The abbreviation of the data type.
+	 * @param filePath  The path to the file directory.
 	 * @return A new DemigodsFile object.
 	 */
 	public static <K extends Comparable, V extends DataAccess<K, V>> DemigodsFile<K, V> create(final IdType idType, final Class<V> dataClass, String abbr, String filePath)
@@ -67,8 +68,8 @@ public class DemigodsFileFactory
 						// So far so good, now we double check the params.
 						Class<?>[] params = constructor.getParameterTypes();
 						if(params.length < 2 || !params[0].equals(idType.getCastClass()) || !params[1].equals(ConfigurationSection.class))
-						// No good.
-						throw new RuntimeException("The defined constructor for a data file is invalid.");
+							// No good.
+							throw new RuntimeException("The defined constructor for a data file is invalid.");
 
 						// Everything looks perfect so far. Last thing to do is construct a new instance.
 						return constructor.newInstance(keyFromString(stringId), conf);

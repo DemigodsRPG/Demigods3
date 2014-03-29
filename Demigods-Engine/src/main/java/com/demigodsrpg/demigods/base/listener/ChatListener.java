@@ -58,7 +58,8 @@ public class ChatListener implements Listener
 		catch(Exception errored)
 		{
 			// Not a command
-			errored.printStackTrace();;
+			errored.printStackTrace();
+			;
 		}
 	}
 }

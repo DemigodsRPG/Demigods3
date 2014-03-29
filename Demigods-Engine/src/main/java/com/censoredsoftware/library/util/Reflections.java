@@ -8,7 +8,7 @@ public class Reflections
 {
 	/**
 	 * Set a static value.
-	 * 
+	 *
 	 * @param field The field to manipulate.
 	 * @param value The value being set.
 	 */
@@ -23,15 +23,16 @@ public class Reflections
 			field.set(null, value);
 		}
 		catch(Exception ignored)
-		{}
+		{
+		}
 	}
 
 	/**
 	 * Set a private value.
-	 * 
+	 *
 	 * @param instance The object being manipulated.
-	 * @param name The name of the field being manipulated.
-	 * @param value The value being set.
+	 * @param name     The name of the field being manipulated.
+	 * @param value    The value being set.
 	 */
 	public static void setPrivateValue(Object instance, String name, Object value)
 	{
@@ -42,14 +43,15 @@ public class Reflections
 			field.set(instance, value);
 		}
 		catch(Exception ignored)
-		{}
+		{
+		}
 	}
 
 	/**
 	 * Get a private value.
-	 * 
+	 *
 	 * @param instance The object being manipulated.
-	 * @param name The name of the field being manipulated.
+	 * @param name     The name of the field being manipulated.
 	 * @return The value from the manipulated field.
 	 */
 	public static Object getPrivateValue(Object instance, String name)
@@ -61,7 +63,8 @@ public class Reflections
 			return field.get(instance);
 		}
 		catch(Exception ignored)
-		{}
+		{
+		}
 		return null;
 	}
 
@@ -76,7 +79,8 @@ public class Reflections
 			value = (V) method.invoke(instance, args);
 		}
 		catch(Exception ignored)
-		{}
+		{
+		}
 		return value;
 	}
 }

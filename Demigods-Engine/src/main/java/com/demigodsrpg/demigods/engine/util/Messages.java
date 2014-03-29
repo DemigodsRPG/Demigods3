@@ -23,7 +23,7 @@ public class Messages
 
 	/**
 	 * Constructor for the Messages.
-	 * 
+	 *
 	 * @param instance The current instance of the Plugin running this module.
 	 */
 	static
@@ -36,7 +36,7 @@ public class Messages
 
 	/**
 	 * Sends the message <code>msg</code> as a tagged message to the <code>sender</code>.
-	 * 
+	 *
 	 * @param sender The CommandSender to send the message to (allows console messages).
 	 */
 	public static void tagged(CommandSender sender, String msg)
@@ -52,7 +52,7 @@ public class Messages
 
 	/**
 	 * Sends the console message <code>msg</code> with "info" tag.
-	 * 
+	 *
 	 * @param msg The message to be sent.
 	 */
 	public static void info(String msg)
@@ -68,7 +68,7 @@ public class Messages
 
 	/**
 	 * Sends the console message <code>msg</code> with "warning" tag.
-	 * 
+	 *
 	 * @param msg The message to be sent.
 	 */
 	public static void warning(String msg)
@@ -84,7 +84,7 @@ public class Messages
 
 	/**
 	 * Sends the console message <code>msg</code> with "severe" tag.
-	 * 
+	 *
 	 * @param msg The message to be sent.
 	 */
 	public static void severe(String msg)
@@ -105,7 +105,7 @@ public class Messages
 
 	/**
 	 * Broadcast to the entire server (all players and the console) the message <code>msg</code>.
-	 * 
+	 *
 	 * @param msg The message to be sent.
 	 */
 	public static void broadcast(String msg)
@@ -133,7 +133,7 @@ public class Messages
 
 	/**
 	 * Let the <code>sender</code> know it does not have permission.
-	 * 
+	 *
 	 * @param sender The CommandSender being notified.
 	 * @return True.
 	 */
@@ -145,7 +145,7 @@ public class Messages
 
 	/**
 	 * Let the <code>console</code> know it cannot continue.
-	 * 
+	 *
 	 * @param console The console.
 	 * @return True.
 	 */
@@ -157,7 +157,7 @@ public class Messages
 
 	/**
 	 * Let the <code>player</code> know it cannot continue.
-	 * 
+	 *
 	 * @param player The Player being notified.
 	 * @return True.
 	 */
@@ -169,7 +169,7 @@ public class Messages
 
 	/**
 	 * Clears the chat for <code>player</code> using .sendMessage().
-	 * 
+	 *
 	 * @param player the player whose chat to clear.
 	 */
 	public static void clearChat(Player player)
@@ -180,7 +180,7 @@ public class Messages
 
 	/**
 	 * Clears the chat for <code>player</code> using .sendRawMessage().
-	 * 
+	 *
 	 * @param player the player whose chat to clear.
 	 */
 	public static void clearRawChat(Player player)

@@ -15,6 +15,7 @@ public class Colors
 	 * Linking ChatColor objects to the corresponding Color.
 	 */
 	public static final ImmutableBiMap<ChatColor, Color> CHAT_COLOR;
+
 	static
 	{
 		Map<ChatColor, Color> chatColorColor = Maps.newHashMap();
@@ -41,6 +42,7 @@ public class Colors
 	 * Linking block materials to their corresponding Color.
 	 */
 	public static ImmutableBiMap<MaterialData, Color> BLOCK_COLOR;
+
 	static
 	{
 		Map<MaterialData, Color> blockColor = Maps.newHashMap();
@@ -116,7 +118,7 @@ public class Colors
 
 	/**
 	 * Color distance formula.
-	 * 
+	 *
 	 * @param c1 Color one.
 	 * @param c2 Color two.
 	 * @return The 'distance' between the two colors.
@@ -135,7 +137,7 @@ public class Colors
 
 	/**
 	 * Get a ChatColor that is best related to a given Color.
-	 * 
+	 *
 	 * @param color Color to be matched.
 	 * @return Best ChatColor found.
 	 */
@@ -159,7 +161,7 @@ public class Colors
 
 	/**
 	 * Get a Color that is best related to a given ChatColor.
-	 * 
+	 *
 	 * @param color ChatColor to be matched.
 	 * @return Best Color found.
 	 */
@@ -170,7 +172,7 @@ public class Colors
 
 	/**
 	 * Get MaterialData that is best related to a given ChatColor.
-	 * 
+	 *
 	 * @param color ChatColor to be matched.
 	 * @return Best MaterialData found.
 	 */
@@ -181,7 +183,7 @@ public class Colors
 
 	/**
 	 * Get MaterialData that is best related to a given Color.
-	 * 
+	 *
 	 * @param color Color to be matched.
 	 * @return Best MaterialData found.
 	 */

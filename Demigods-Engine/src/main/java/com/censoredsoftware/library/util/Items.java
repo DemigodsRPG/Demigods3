@@ -18,10 +18,10 @@ public class Items
 {
 	/**
 	 * Creates a new item with the given variables.
-	 * 
-	 * @param material the material that the new item will be.
-	 * @param name the name of the new item.
-	 * @param lore the lore attached to the new item.
+	 *
+	 * @param material     the material that the new item will be.
+	 * @param name         the name of the new item.
+	 * @param lore         the lore attached to the new item.
 	 * @param enchantments the enchantments attached to the new item.
 	 * @return the ItemStack of the newly created item.
 	 */
@@ -44,11 +44,11 @@ public class Items
 
 	/**
 	 * Creates a book with the given variables.
-	 * 
-	 * @param title the title of the new book.
+	 *
+	 * @param title  the title of the new book.
 	 * @param author the author of the new book.
-	 * @param pages the pages of the new book.
-	 * @param lore the lore of the new book.
+	 * @param pages  the pages of the new book.
+	 * @param lore   the lore of the new book.
 	 * @return the ItemStack of the newly created book.
 	 */
 	public static ItemStack createBook(String title, String author, List<String> pages, List<String> lore)
@@ -68,9 +68,9 @@ public class Items
 
 	/**
 	 * Creates a chest at <code>location</code> filled with <code>items</code>.
-	 * 
+	 *
 	 * @param location the location at which to create the chest.
-	 * @param items the ArrayList of items to fill the chest with.
+	 * @param items    the ArrayList of items to fill the chest with.
 	 */
 	public static void createChest(Location location, ArrayList<ItemStack> items)
 	{
@@ -90,7 +90,7 @@ public class Items
 
 	/**
 	 * Checks to see if two items are equal ignoring durability.
-	 * 
+	 *
 	 * @param item1 the first item to check with.
 	 * @param item2 the second item to check with.
 	 * @return true if the items are equal.
@@ -111,7 +111,7 @@ public class Items
 
 	/**
 	 * Checks to see if two items are equal ignoring durability and enchantments.
-	 * 
+	 *
 	 * @param item1 the first item to check with.
 	 * @param item2 the second item to check with.
 	 * @return true if the items are equal.

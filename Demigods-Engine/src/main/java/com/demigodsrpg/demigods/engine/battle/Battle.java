@@ -56,7 +56,8 @@ public class Battle extends DataAccess<UUID, Battle>
 	private UUID startedBy;
 
 	private Battle(Object ignored)
-	{}
+	{
+	}
 
 	public Battle()
 	{
@@ -738,7 +739,7 @@ public class Battle extends DataAccess<UUID, Battle>
 
 	/**
 	 * Returns true if target is allowed for <code>player</code>.
-	 * 
+	 *
 	 * @param participant the player to check.
 	 * @return true/false depending on if target is allowed.
 	 */
@@ -790,7 +791,7 @@ public class Battle extends DataAccess<UUID, Battle>
 
 	/**
 	 * Updates the scoreboard for the given <code>player</code> with information from the <code>battle</code>.
-	 * 
+	 *
 	 * @param player the player to give the scoreboard to.
 	 * @param battle the battle to grab stats from.
 	 */

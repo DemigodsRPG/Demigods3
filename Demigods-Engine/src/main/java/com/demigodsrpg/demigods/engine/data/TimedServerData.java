@@ -18,7 +18,8 @@ public class TimedServerData extends DataAccess<UUID, TimedServerData>
 	private long expiration;
 
 	public TimedServerData()
-	{}
+	{
+	}
 
 	@Register(idType = IdType.UUID)
 	public TimedServerData(UUID id, ConfigurationSection conf)

@@ -14,13 +14,14 @@ class YamlFileUtil
 	 * Private constructor.
 	 */
 	private YamlFileUtil()
-	{}
+	{
+	}
 
 	/**
 	 * Get the FileConfiguration at a given location.
 	 * If no file exists, create one.
-	 * 
-	 * @param path The file directory path.
+	 *
+	 * @param path     The file directory path.
 	 * @param fileName The file name.
 	 * @return The configuration.
 	 */
@@ -33,7 +34,7 @@ class YamlFileUtil
 
 	/**
 	 * Create a new file.
-	 * 
+	 *
 	 * @param dataFile The file object.
 	 */
 	@SuppressWarnings("ResultOfMethodCallIgnored")
@@ -55,10 +56,10 @@ class YamlFileUtil
 
 	/**
 	 * Save the file.
-	 * 
-	 * @param path The file directory path.
+	 *
+	 * @param path     The file directory path.
 	 * @param fileName The file name.
-	 * @param conf The bukkit handled file configuration.
+	 * @param conf     The bukkit handled file configuration.
 	 * @return Saved successfully.
 	 */
 	static boolean saveFile(String path, String fileName, FileConfiguration conf)
@@ -69,7 +70,8 @@ class YamlFileUtil
 			return true;
 		}
 		catch(Exception ignored)
-		{}
+		{
+		}
 		return false;
 	}
 }

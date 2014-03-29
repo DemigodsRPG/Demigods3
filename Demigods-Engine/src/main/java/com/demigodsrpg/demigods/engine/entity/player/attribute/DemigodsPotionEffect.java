@@ -20,7 +20,8 @@ public class DemigodsPotionEffect extends DataAccess<UUID, DemigodsPotionEffect>
 	private boolean ambience;
 
 	private DemigodsPotionEffect()
-	{}
+	{
+	}
 
 	@Register(idType = IdType.UUID)
 	public DemigodsPotionEffect(UUID id, ConfigurationSection conf)

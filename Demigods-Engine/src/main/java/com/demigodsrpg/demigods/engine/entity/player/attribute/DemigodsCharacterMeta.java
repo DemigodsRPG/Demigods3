@@ -37,7 +37,8 @@ public class DemigodsCharacterMeta extends DataAccess<UUID, DemigodsCharacterMet
 	private Map<String, Object> invites;
 
 	public DemigodsCharacterMeta()
-	{}
+	{
+	}
 
 	@Register(idType = IdType.UUID)
 	public DemigodsCharacterMeta(UUID id, ConfigurationSection conf)

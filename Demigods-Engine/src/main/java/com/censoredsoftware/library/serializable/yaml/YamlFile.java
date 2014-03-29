@@ -7,14 +7,14 @@ public interface YamlFile
 {
 	/**
 	 * Method to find the directory this file is located in.
-	 * 
+	 *
 	 * @return The directory path.
 	 */
 	String getDirectoryPath();
 
 	/**
 	 * Method to find the entire name of this file, including the extension.
-	 * 
+	 *
 	 * @return The full file name.
 	 */
 	String getFullFileName();
@@ -26,7 +26,7 @@ public interface YamlFile
 
 	/**
 	 * This method returns the data from the file in certain way.
-	 * 
+	 *
 	 * @param <V> Some value that the file returns.
 	 * @return The file's data.
 	 */
@@ -34,7 +34,7 @@ public interface YamlFile
 
 	/**
 	 * Save all relevant data to the file.
-	 * 
+	 *
 	 * @return Save was successful.
 	 */
 	boolean saveDataToFile();

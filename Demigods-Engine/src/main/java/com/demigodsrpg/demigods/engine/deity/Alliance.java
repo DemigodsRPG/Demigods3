@@ -11,8 +11,7 @@ import java.util.Collection;
 
 public interface Alliance
 {
-	@Override
-	String toString();
+	@Override String toString();
 
 	String getName();
 

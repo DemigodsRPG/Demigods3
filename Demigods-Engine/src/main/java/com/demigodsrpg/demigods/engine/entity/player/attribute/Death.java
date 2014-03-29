@@ -22,7 +22,8 @@ public class Death extends DataAccess<UUID, Death>
 	private UUID killed, attacking;
 
 	private Death()
-	{}
+	{
+	}
 
 	public static Death create(Participant killed)
 	{
@@ -109,7 +110,8 @@ public class Death extends DataAccess<UUID, Death>
 					return character.getDeaths();
 				}
 				catch(java.lang.Exception ignored)
-				{}
+				{
+				}
 				return null;
 			}
 		})), new Predicate<Death>()

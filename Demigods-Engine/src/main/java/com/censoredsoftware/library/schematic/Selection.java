@@ -24,7 +24,7 @@ public class Selection
 
 	/**
 	 * Constructor for a Selection (non-cuboid), useful for getting 1 location back.
-	 * 
+	 *
 	 * @param X The relative X coordinate of the schematic from the reference location.
 	 * @param Y The relative Y coordinate of the schematic from the reference location.
 	 * @param Z The relative Z coordinate of the schematic from the reference location.
@@ -42,10 +42,10 @@ public class Selection
 
 	/**
 	 * Constructor for a Selection (cuboid), useful for getting only locations back.
-	 * 
-	 * @param X The relative X coordinate of the schematic from the reference location.
-	 * @param Y The relative Y coordinate of the schematic from the reference location.
-	 * @param Z The relative Z coordinate of the schematic from the reference location.
+	 *
+	 * @param X  The relative X coordinate of the schematic from the reference location.
+	 * @param Y  The relative Y coordinate of the schematic from the reference location.
+	 * @param Z  The relative Z coordinate of the schematic from the reference location.
 	 * @param XX The second relative X coordinate of the schematic from the reference location, creating a cuboid.
 	 * @param YY The second relative Y coordinate of the schematic from the reference location, creating a cuboid.
 	 * @param ZZ The second relative Z coordinate of the schematic from the reference location, creating a cuboid.
@@ -66,10 +66,10 @@ public class Selection
 
 	/**
 	 * Constructor for a Selection (non-cuboid).
-	 * 
-	 * @param X The relative X coordinate of the schematic from the reference location.
-	 * @param Y The relative Y coordinate of the schematic from the reference location.
-	 * @param Z The relative Z coordinate of the schematic from the reference location.
+	 *
+	 * @param X        The relative X coordinate of the schematic from the reference location.
+	 * @param Y        The relative Y coordinate of the schematic from the reference location.
+	 * @param Z        The relative Z coordinate of the schematic from the reference location.
 	 * @param material The BlockData objects of this schematic.
 	 */
 	public Selection(int X, int Y, int Z, Material material)
@@ -85,13 +85,13 @@ public class Selection
 
 	/**
 	 * Constructor for a Selection (cuboid).
-	 * 
-	 * @param X The relative X coordinate of the schematic from the reference location.
-	 * @param Y The relative Y coordinate of the schematic from the reference location.
-	 * @param Z The relative Z coordinate of the schematic from the reference location.
-	 * @param XX The second relative X coordinate of the schematic from the reference location, creating a cuboid.
-	 * @param YY The second relative Y coordinate of the schematic from the reference location, creating a cuboid.
-	 * @param ZZ The second relative Z coordinate of the schematic from the reference location, creating a cuboid.
+	 *
+	 * @param X        The relative X coordinate of the schematic from the reference location.
+	 * @param Y        The relative Y coordinate of the schematic from the reference location.
+	 * @param Z        The relative Z coordinate of the schematic from the reference location.
+	 * @param XX       The second relative X coordinate of the schematic from the reference location, creating a cuboid.
+	 * @param YY       The second relative Y coordinate of the schematic from the reference location, creating a cuboid.
+	 * @param ZZ       The second relative Z coordinate of the schematic from the reference location, creating a cuboid.
 	 * @param material The BlockData objects of this schematic.
 	 */
 	public Selection(int X, int Y, int Z, int XX, int YY, int ZZ, Material material)
@@ -110,10 +110,10 @@ public class Selection
 
 	/**
 	 * Constructor for a Selection (non-cuboid).
-	 * 
-	 * @param X The relative X coordinate of the schematic from the reference location.
-	 * @param Y The relative Y coordinate of the schematic from the reference location.
-	 * @param Z The relative Z coordinate of the schematic from the reference location.
+	 *
+	 * @param X        The relative X coordinate of the schematic from the reference location.
+	 * @param Y        The relative Y coordinate of the schematic from the reference location.
+	 * @param Z        The relative Z coordinate of the schematic from the reference location.
 	 * @param material The BlockData objects of this schematic.
 	 */
 	public Selection(int X, int Y, int Z, Material material, byte data)
@@ -129,13 +129,13 @@ public class Selection
 
 	/**
 	 * Constructor for a Selection (cuboid).
-	 * 
-	 * @param X The relative X coordinate of the schematic from the reference location.
-	 * @param Y The relative Y coordinate of the schematic from the reference location.
-	 * @param Z The relative Z coordinate of the schematic from the reference location.
-	 * @param XX The second relative X coordinate of the schematic from the reference location, creating a cuboid.
-	 * @param YY The second relative Y coordinate of the schematic from the reference location, creating a cuboid.
-	 * @param ZZ The second relative Z coordinate of the schematic from the reference location, creating a cuboid.
+	 *
+	 * @param X        The relative X coordinate of the schematic from the reference location.
+	 * @param Y        The relative Y coordinate of the schematic from the reference location.
+	 * @param Z        The relative Z coordinate of the schematic from the reference location.
+	 * @param XX       The second relative X coordinate of the schematic from the reference location, creating a cuboid.
+	 * @param YY       The second relative Y coordinate of the schematic from the reference location, creating a cuboid.
+	 * @param ZZ       The second relative Z coordinate of the schematic from the reference location, creating a cuboid.
 	 * @param material The BlockData objects of this schematic.
 	 */
 	public Selection(int X, int Y, int Z, int XX, int YY, int ZZ, Material material, byte data)
@@ -154,10 +154,10 @@ public class Selection
 
 	/**
 	 * Constructor for a Selection (non-cuboid).
-	 * 
-	 * @param X The relative X coordinate of the schematic from the reference location.
-	 * @param Y The relative Y coordinate of the schematic from the reference location.
-	 * @param Z The relative Z coordinate of the schematic from the reference location.
+	 *
+	 * @param X         The relative X coordinate of the schematic from the reference location.
+	 * @param Y         The relative Y coordinate of the schematic from the reference location.
+	 * @param Z         The relative Z coordinate of the schematic from the reference location.
 	 * @param blockData The BlockData objects of this schematic.
 	 */
 	public Selection(int X, int Y, int Z, BlockData blockData)
@@ -173,13 +173,13 @@ public class Selection
 
 	/**
 	 * Constructor for a Selection (cuboid).
-	 * 
-	 * @param X The relative X coordinate of the schematic from the reference location.
-	 * @param Y The relative Y coordinate of the schematic from the reference location.
-	 * @param Z The relative Z coordinate of the schematic from the reference location.
-	 * @param XX The second relative X coordinate of the schematic from the reference location, creating a cuboid.
-	 * @param YY The second relative Y coordinate of the schematic from the reference location, creating a cuboid.
-	 * @param ZZ The second relative Z coordinate of the schematic from the reference location, creating a cuboid.
+	 *
+	 * @param X         The relative X coordinate of the schematic from the reference location.
+	 * @param Y         The relative Y coordinate of the schematic from the reference location.
+	 * @param Z         The relative Z coordinate of the schematic from the reference location.
+	 * @param XX        The second relative X coordinate of the schematic from the reference location, creating a cuboid.
+	 * @param YY        The second relative Y coordinate of the schematic from the reference location, creating a cuboid.
+	 * @param ZZ        The second relative Z coordinate of the schematic from the reference location, creating a cuboid.
 	 * @param blockData The BlockData objects of this schematic.
 	 */
 	public Selection(int X, int Y, int Z, int XX, int YY, int ZZ, BlockData blockData)
@@ -198,10 +198,10 @@ public class Selection
 
 	/**
 	 * Constructor for a Selection (non-cuboid).
-	 * 
-	 * @param X The relative X coordinate of the schematic from the reference location.
-	 * @param Y The relative Y coordinate of the schematic from the reference location.
-	 * @param Z The relative Z coordinate of the schematic from the reference location.
+	 *
+	 * @param X         The relative X coordinate of the schematic from the reference location.
+	 * @param Y         The relative Y coordinate of the schematic from the reference location.
+	 * @param Z         The relative Z coordinate of the schematic from the reference location.
 	 * @param blockData The BlockData objects of this schematic.
 	 */
 	public Selection(int X, int Y, int Z, List<BlockData> blockData)
@@ -217,13 +217,13 @@ public class Selection
 
 	/**
 	 * Constructor for a Selection (cuboid).
-	 * 
-	 * @param X The relative X coordinate of the schematic from the reference location.
-	 * @param Y The relative Y coordinate of the schematic from the reference location.
-	 * @param Z The relative Z coordinate of the schematic from the reference location.
-	 * @param XX The second relative X coordinate of the schematic from the reference location, creating a cuboid.
-	 * @param YY The second relative Y coordinate of the schematic from the reference location, creating a cuboid.
-	 * @param ZZ The second relative Z coordinate of the schematic from the reference location, creating a cuboid.
+	 *
+	 * @param X         The relative X coordinate of the schematic from the reference location.
+	 * @param Y         The relative Y coordinate of the schematic from the reference location.
+	 * @param Z         The relative Z coordinate of the schematic from the reference location.
+	 * @param XX        The second relative X coordinate of the schematic from the reference location, creating a cuboid.
+	 * @param YY        The second relative Y coordinate of the schematic from the reference location, creating a cuboid.
+	 * @param ZZ        The second relative Z coordinate of the schematic from the reference location, creating a cuboid.
 	 * @param blockData The BlockData objects of this schematic.
 	 */
 	public Selection(int X, int Y, int Z, int XX, int YY, int ZZ, List<BlockData> blockData)
@@ -242,10 +242,10 @@ public class Selection
 
 	/**
 	 * Constructor for a Selection (non-cuboid).
-	 * 
-	 * @param X The relative X coordinate of the schematic from the reference location.
-	 * @param Y The relative Y coordinate of the schematic from the reference location.
-	 * @param Z The relative Z coordinate of the schematic from the reference location.
+	 *
+	 * @param X        The relative X coordinate of the schematic from the reference location.
+	 * @param Y        The relative Y coordinate of the schematic from the reference location.
+	 * @param Z        The relative Z coordinate of the schematic from the reference location.
 	 * @param material The BlockData objects of this schematic.
 	 */
 	public Selection(int X, int Y, int Z, BlockData.Preset material)
@@ -261,13 +261,13 @@ public class Selection
 
 	/**
 	 * Constructor for a Selection (cuboid).
-	 * 
-	 * @param X The relative X coordinate of the schematic from the reference location.
-	 * @param Y The relative Y coordinate of the schematic from the reference location.
-	 * @param Z The relative Z coordinate of the schematic from the reference location.
-	 * @param XX The second relative X coordinate of the schematic from the reference location, creating a cuboid.
-	 * @param YY The second relative Y coordinate of the schematic from the reference location, creating a cuboid.
-	 * @param ZZ The second relative Z coordinate of the schematic from the reference location, creating a cuboid.
+	 *
+	 * @param X        The relative X coordinate of the schematic from the reference location.
+	 * @param Y        The relative Y coordinate of the schematic from the reference location.
+	 * @param Z        The relative Z coordinate of the schematic from the reference location.
+	 * @param XX       The second relative X coordinate of the schematic from the reference location, creating a cuboid.
+	 * @param YY       The second relative Y coordinate of the schematic from the reference location, creating a cuboid.
+	 * @param ZZ       The second relative Z coordinate of the schematic from the reference location, creating a cuboid.
 	 * @param material The BlockData objects of this schematic.
 	 */
 	public Selection(int X, int Y, int Z, int XX, int YY, int ZZ, BlockData.Preset material)
@@ -286,7 +286,7 @@ public class Selection
 
 	/**
 	 * Excluding for a Selection (non-cuboid).
-	 * 
+	 *
 	 * @param X The relative X coordinate of the schematic from the reference location.
 	 * @param Y The relative Y coordinate of the schematic from the reference location.
 	 * @param Z The relative Z coordinate of the schematic from the reference location.
@@ -303,10 +303,10 @@ public class Selection
 
 	/**
 	 * Excluding for a Selection (cuboid).
-	 * 
-	 * @param X The relative X coordinate of the schematic from the reference location.
-	 * @param Y The relative Y coordinate of the schematic from the reference location.
-	 * @param Z The relative Z coordinate of the schematic from the reference location.
+	 *
+	 * @param X  The relative X coordinate of the schematic from the reference location.
+	 * @param Y  The relative Y coordinate of the schematic from the reference location.
+	 * @param Z  The relative Z coordinate of the schematic from the reference location.
 	 * @param XX The second relative X coordinate of the schematic from the reference location, creating a cuboid.
 	 * @param YY The second relative Y coordinate of the schematic from the reference location, creating a cuboid.
 	 * @param ZZ The second relative Z coordinate of the schematic from the reference location, creating a cuboid.
@@ -329,7 +329,7 @@ public class Selection
 	 * Get the material of the object (a random material is chosen based on the configured odds).
 	 * <p/>
 	 * TODO This method needs work, I'm not sure this is the more efficient way to do what we want.
-	 * 
+	 *
 	 * @return A material.
 	 */
 	public BlockData getStructureBlockData()
@@ -349,7 +349,7 @@ public class Selection
 
 	/**
 	 * Get the block locations in this object.
-	 * 
+	 *
 	 * @param reference The reference location.
 	 * @return A set of locations.
 	 */
@@ -369,7 +369,7 @@ public class Selection
 
 	/**
 	 * Generate this schematic.
-	 * 
+	 *
 	 * @param reference The reference Location.
 	 */
 	public void generate(Location reference)
@@ -384,7 +384,7 @@ public class Selection
 
 	/**
 	 * Get a relative location, based on the <code>X</code>, <code>Y</code>, <code>Z</code> coordinates relative to the object's central location.
-	 * 
+	 *
 	 * @param X Relative X coordinate.
 	 * @param Y Relative Y coordinate.
 	 * @param Z Relative Z coordinate.
@@ -397,14 +397,14 @@ public class Selection
 
 	/**
 	 * Get a cuboid selection as a HashSet.
-	 * 
+	 *
 	 * @param reference The reference location.
-	 * @param X The relative X coordinate.
-	 * @param XX The second relative X coordinate.
-	 * @param Y The relative Y coordinate.
-	 * @param YY The second relative Y coordinate.
-	 * @param Z The relative Z coordinate.
-	 * @param ZZ The second relative Z coordinate.
+	 * @param X         The relative X coordinate.
+	 * @param XX        The second relative X coordinate.
+	 * @param Y         The relative Y coordinate.
+	 * @param YY        The second relative Y coordinate.
+	 * @param Z         The relative Z coordinate.
+	 * @param ZZ        The second relative Z coordinate.
 	 * @return The HashSet collection of a cuboid selection.
 	 */
 	public Set<Location> rangeLoop(final Location reference, final int X, final int XX, final int Y, final int YY, final int Z, final int ZZ)
@@ -449,16 +449,17 @@ public class Selection
 			return new Selection(Integer.valueOf(args[0]), Integer.valueOf(args[1]), Integer.valueOf(args[2]), Material.valueOf(args[3]));
 		}
 		catch(Exception ignored)
-		{}
+		{
+		}
 		return null;
 	}
 
 	/**
 	 * Collect a cuboid of selections from the point of view of referenceA, centered around referenceB.
-	 * 
+	 *
 	 * @param referenceA Point of view for the selections.
 	 * @param referenceB Center of the cuboid.
-	 * @param radius Radius of cuboid.
+	 * @param radius     Radius of cuboid.
 	 * @return List of Selections.
 	 */
 	public static List<Selection> getCuboid(Location referenceA, Location referenceB, int radius)

@@ -1571,7 +1571,7 @@ public class Prayer implements ConversationManager
 	{
 		/**
 		 * Returns true if the <code>player</code> is currently praying.
-		 * 
+		 *
 		 * @param player the player to check.
 		 * @return boolean
 		 */
@@ -1582,13 +1582,14 @@ public class Prayer implements ConversationManager
 				return TempDataManager.hasKeyTemp(player.getName(), "prayer_conversation");
 			}
 			catch(Exception ignored)
-			{}
+			{
+			}
 			return false;
 		}
 
 		/**
 		 * Removes all temp data related to prayer for the <code>player</code>.
-		 * 
+		 *
 		 * @param player the player to clean.
 		 */
 		public static void clearPrayerSession(OfflinePlayer player)
@@ -1602,7 +1603,7 @@ public class Prayer implements ConversationManager
 
 		/**
 		 * Returns the context for the <code>player</code>'s prayer conversation.
-		 * 
+		 *
 		 * @param player the player whose context to return.
 		 * @return ConversationContext
 		 */
@@ -1614,7 +1615,7 @@ public class Prayer implements ConversationManager
 
 		/**
 		 * Changes prayer status for <code>player</code> to <code>option</code> and tells them.
-		 * 
+		 *
 		 * @param player the player the manipulate.
 		 * @param option the boolean to set to.
 		 */
@@ -1639,9 +1640,9 @@ public class Prayer implements ConversationManager
 
 		/**
 		 * Changes prayer status for <code>player</code> to <code>option</code> silently.
-		 * 
-		 * @param player the player the manipulate.
-		 * @param option the boolean to set to.
+		 *
+		 * @param player     the player the manipulate.
+		 * @param option     the boolean to set to.
 		 * @param recordChat whether or not the chat should be recorded.
 		 */
 		public static void togglePrayingSilent(Player player, boolean option, boolean recordChat)

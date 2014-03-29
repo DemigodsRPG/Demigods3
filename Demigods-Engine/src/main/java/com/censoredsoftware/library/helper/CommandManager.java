@@ -31,7 +31,7 @@ public abstract class CommandManager implements CommandExecutor
 
 		/**
 		 * Register some managers, and store the command names and aliases for future retrieval.
-		 * 
+		 *
 		 * @param managers The manager being registered.
 		 */
 		public void registerNamesOnly(Collection<CommandManager> managers)
@@ -46,7 +46,7 @@ public abstract class CommandManager implements CommandExecutor
 
 		/**
 		 * Register a manager, and store the command names and aliases for future retrieval.
-		 * 
+		 *
 		 * @param manager The manager being registered.
 		 */
 		public void registerManager(CommandManager manager)
@@ -62,7 +62,7 @@ public abstract class CommandManager implements CommandExecutor
 
 		/**
 		 * Register some managers, and store the command names and aliases for future retrieval.
-		 * 
+		 *
 		 * @param managers The manager being registered.
 		 */
 		public void registerManager(Collection<CommandManager> managers)
@@ -81,7 +81,7 @@ public abstract class CommandManager implements CommandExecutor
 
 		/**
 		 * Return an immutable set of the names of all commands and aliases registered.
-		 * 
+		 *
 		 * @return Said set.
 		 */
 		public ImmutableSet<String> getCommandsAndAliases()
@@ -185,14 +185,14 @@ public abstract class CommandManager implements CommandExecutor
 
 		/**
 		 * The name of this sub-command.
-		 * 
+		 *
 		 * @return Said name.
 		 */
 		public abstract String getName();
 
 		/**
 		 * The usage information for this sub-command.
-		 * 
+		 *
 		 * @return Said info.
 		 */
 		public String getUsage()
@@ -202,21 +202,21 @@ public abstract class CommandManager implements CommandExecutor
 
 		/**
 		 * Get the parent command to this sub-command.
-		 * 
+		 *
 		 * @return Said parent command.
 		 */
 		public abstract String getParentCommand();
 
 		/**
 		 * Get the minimum required arguments for this sub-command.
-		 * 
+		 *
 		 * @return Said minimum.
 		 */
 		public abstract int getMinArgs();
 
 		/**
 		 * Return the lazy fail message.
-		 * 
+		 *
 		 * @return Said message.
 		 */
 		public String getFailMessage()
@@ -226,7 +226,7 @@ public abstract class CommandManager implements CommandExecutor
 
 		/**
 		 * Check if the sender is allowed to use this command.
-		 * 
+		 *
 		 * @param sender The sender being checked.
 		 * @return Allow setting.
 		 */
@@ -237,12 +237,12 @@ public abstract class CommandManager implements CommandExecutor
 
 		/**
 		 * Check if the sub command matches the requirements.
-		 * 
+		 * <p/>
 		 * If multiple commands match, the first one in the list will be executed.
-		 * 
+		 *
 		 * @param command The command.
-		 * @param label The label/alias in use.
-		 * @param args The arguments of this command.
+		 * @param label   The label/alias in use.
+		 * @param args    The arguments of this command.
 		 * @return This sub-command is a match.
 		 */
 		public boolean matches(Command command, String label, String[] args)
@@ -252,10 +252,10 @@ public abstract class CommandManager implements CommandExecutor
 
 		/**
 		 * Execute the sub-command.
-		 * 
+		 *
 		 * @param sender The sender of this command.
-		 * @param label The label/alias in use.
-		 * @param args The arguments of this command.
+		 * @param label  The label/alias in use.
+		 * @param args   The arguments of this command.
 		 * @return The end status of the command (pass/fail).
 		 */
 		public abstract boolean execute(CommandSender sender, String label, String[] args);

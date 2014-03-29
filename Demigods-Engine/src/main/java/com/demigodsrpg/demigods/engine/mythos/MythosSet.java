@@ -224,11 +224,13 @@ public class MythosSet implements Mythos
 
 	@Override
 	public void setSecondary()
-	{}
+	{
+	}
 
 	@Override
 	public void lock()
-	{}
+	{
+	}
 
 	public boolean contains(final String mythosTitle)
 	{

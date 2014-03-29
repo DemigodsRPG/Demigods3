@@ -9,7 +9,7 @@ public interface DataSerializable
 {
 	/**
 	 * Serialize the data held in the child class.
-	 * 
+	 *
 	 * @return Map of serialized data for the child class's current instance.
 	 */
 	Map<String, Object> serialize();

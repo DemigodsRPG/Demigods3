@@ -51,7 +51,8 @@ public class GreekMythos extends MythosPlugin
 	 */
 	@Override
 	public void onDisable()
-	{}
+	{
+	}
 
 	@Override
 	public String getTitle()
@@ -86,7 +87,7 @@ public class GreekMythos extends MythosPlugin
 	@Override
 	public String[] getIncompatible()
 	{
-		return new String[] {};
+		return new String[] { };
 	}
 
 	@Override

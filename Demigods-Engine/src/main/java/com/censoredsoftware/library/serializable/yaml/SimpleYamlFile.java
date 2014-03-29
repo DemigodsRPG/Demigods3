@@ -10,7 +10,7 @@ import java.io.File;
 /**
  * A simple yaml file intended to be extended by the same class that holds the data.
  * <strong>IMPORTANT:</strong> All SimpleYamlFile child classes should have default data for the serialize method to digest.
- * 
+ *
  * @param <V> The type of the child class.
  */
 @SuppressWarnings("unchecked")
@@ -18,7 +18,7 @@ public abstract class SimpleYamlFile<V extends SimpleYamlFile> extends KeylessYa
 {
 	/**
 	 * Create a new instance of the child class from a configuration section.
-	 * 
+	 *
 	 * @param conf A ConfigurationSection.
 	 * @return A new instance made from provided data.
 	 */
@@ -62,7 +62,8 @@ public abstract class SimpleYamlFile<V extends SimpleYamlFile> extends KeylessYa
 			return true;
 		}
 		catch(Exception ignored)
-		{}
+		{
+		}
 		return false;
 	}
 

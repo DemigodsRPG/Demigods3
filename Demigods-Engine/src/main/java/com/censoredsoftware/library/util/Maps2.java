@@ -8,8 +8,8 @@ public class Maps2
 {
 	/**
 	 * Sort a Map from smallest to largest, or in <code>reverse</code>.
-	 * 
-	 * @param map The Map object to be sorted.
+	 *
+	 * @param map     The Map object to be sorted.
 	 * @param reverse Reverse the ordering.
 	 * @return A sorted version of <code>map</code>.
 	 */

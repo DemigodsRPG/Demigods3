@@ -9,7 +9,7 @@ public class Times
 {
 	/**
 	 * Return the seconds since the provided time.
-	 * 
+	 *
 	 * @param time The provided time.
 	 * @return Seconds.
 	 */
@@ -20,7 +20,7 @@ public class Times
 
 	/**
 	 * Return the minutes since the provided time.
-	 * 
+	 *
 	 * @param time The provided time.
 	 * @return Minutes.
 	 */
@@ -31,7 +31,7 @@ public class Times
 
 	/**
 	 * Return the hours since the provided time.
-	 * 
+	 *
 	 * @param time The provided time.
 	 * @return Hours.
 	 */
@@ -42,8 +42,8 @@ public class Times
 
 	/**
 	 * Return a readable String of the amount of time since a provided time.
-	 * 
-	 * @param time The provided time.
+	 *
+	 * @param time  The provided time.
 	 * @param round Round to an int.
 	 * @return The readable String.
 	 */

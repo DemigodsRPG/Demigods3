@@ -25,9 +25,9 @@ public class Threads
 
 	/**
 	 * Start a new timed repeating task for the CensoredRunnable.
-	 * 
-	 * @param runnable Special Runnable for use with this class.
-	 * @param delay Delay before starting the task.
+	 *
+	 * @param runnable     Special Runnable for use with this class.
+	 * @param delay        Delay before starting the task.
 	 * @param milliseconds Time between each run.
 	 * @return The CensoredRunnable's assigned UUID.
 	 */
@@ -41,9 +41,9 @@ public class Threads
 
 	/**
 	 * Start a new timed delayed task for the CensoredRunnable.
-	 * 
+	 *
 	 * @param runnable Special Runnable for use with this class.
-	 * @param delay Delay before starting the task.
+	 * @param delay    Delay before starting the task.
 	 * @return The CensoredRunnable's assigned UUID.
 	 */
 	public static UUID newTimedTask(CensoredRunnable runnable, long delay)
@@ -56,7 +56,7 @@ public class Threads
 
 	/**
 	 * Get the CensoredRunnable back.
-	 * 
+	 *
 	 * @param id The CensoredRunnable's id.
 	 * @return The CensoredRunnable.
 	 */
@@ -70,7 +70,7 @@ public class Threads
 
 	/**
 	 * Get the Hooker for a plugin.
-	 * 
+	 *
 	 * @param plugin The plugin.
 	 * @return The Hooker.
 	 */
@@ -83,8 +83,8 @@ public class Threads
 
 	/**
 	 * Register a trigger with the plugin's Hooker.
-	 * 
-	 * @param plugin The plugin.
+	 *
+	 * @param plugin  The plugin.
 	 * @param trigger The trigger.
 	 */
 	public static void registerTrigger(Plugin plugin, Trigger trigger)
@@ -94,8 +94,8 @@ public class Threads
 
 	/**
 	 * Register a collection of triggers with the plugin's Hooker.
-	 * 
-	 * @param plugin The plugin.
+	 *
+	 * @param plugin   The plugin.
 	 * @param triggers The triggers.
 	 */
 	public static void registerTriggers(Plugin plugin, Collection<Trigger> triggers)
@@ -106,8 +106,8 @@ public class Threads
 
 	/**
 	 * Unregister a trigger with the plugin's Hooker.
-	 * 
-	 * @param plugin The plugin.
+	 *
+	 * @param plugin  The plugin.
 	 * @param trigger The trigger.
 	 */
 	public static void unregisterTrigger(Plugin plugin, Trigger trigger)
@@ -117,8 +117,8 @@ public class Threads
 
 	/**
 	 * Unregister a collection of triggers with the plugin's Hooker.
-	 * 
-	 * @param plugin The plugin.
+	 *
+	 * @param plugin   The plugin.
 	 * @param triggers The triggers.
 	 */
 	public static void unregisterTriggers(Plugin plugin, Collection<Trigger> triggers)
@@ -129,7 +129,7 @@ public class Threads
 
 	/**
 	 * Stop the Hooker for a plugin.
-	 * 
+	 *
 	 * @param plugin The plugin.
 	 */
 	public static void stopHooker(Plugin plugin)
@@ -150,7 +150,7 @@ public class Threads
 
 		/**
 		 * Add a trigger.
-		 * 
+		 *
 		 * @param trigger The trigger.
 		 */
 		public void addTrigger(Trigger trigger)
@@ -161,7 +161,7 @@ public class Threads
 
 		/**
 		 * Remove a trigger.
-		 * 
+		 *
 		 * @param trigger The trigger.
 		 */
 		public void removeTrigger(Trigger trigger)
@@ -208,7 +208,7 @@ public class Threads
 	 * According to the JavaDocs for Thread, nobody should ever use the stop() method.
 	 * It is instead recommended that everybody simply return from the run method.
 	 * To deal with this, the CensoredRunnable class was created.
-	 * 
+	 * <p/>
 	 * Create a new Thread with the newThread() method, passing in one of these, and you're done.
 	 */
 	public static abstract class CensoredRunnable implements Runnable
@@ -250,7 +250,7 @@ public class Threads
 
 		/**
 		 * "Stops" the Thread related to this Runnable.
-		 * 
+		 *
 		 * @return Success.
 		 */
 		public final boolean cancel()

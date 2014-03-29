@@ -44,7 +44,8 @@ public class SpigotFeatures implements Listener
 
 			@Override
 			public void processAsync()
-			{}
+			{
+			}
 		});
 	}
 }

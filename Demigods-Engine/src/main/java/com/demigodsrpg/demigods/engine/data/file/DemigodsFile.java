@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentMap;
 
 /**
  * Abstract class extending ConfigFile for easy yaml file creation inside of Demigods.
- * 
+ *
  * @param <K> The id type.
  * @param <V> The data type.
  */

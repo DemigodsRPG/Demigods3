@@ -422,7 +422,8 @@ public class DemigodsServer extends CensoredCentralizedClass
 			});
 		}
 		catch(Exception ignored)
-		{}
+		{
+		}
 		return null;
 	}
 

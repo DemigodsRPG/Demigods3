@@ -41,7 +41,8 @@ public class ExclusiveMythos extends MythosPlugin
 	 */
 	@Override
 	public void onDisable()
-	{}
+	{
+	}
 
 	@Override
 	public String getTitle()
@@ -76,7 +77,7 @@ public class ExclusiveMythos extends MythosPlugin
 	@Override
 	public String[] getIncompatible()
 	{
-		return new String[] {};
+		return new String[] { };
 	}
 
 	@Override
@@ -173,9 +174,11 @@ public class ExclusiveMythos extends MythosPlugin
 
 	@Override
 	public void setSecondary()
-	{}
+	{
+	}
 
 	@Override
 	public void lock()
-	{}
+	{
+	}
 }

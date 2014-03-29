@@ -15,7 +15,7 @@ public class BlockData
 
 	/**
 	 * Constructor for BlockData with only Material given.
-	 * 
+	 *
 	 * @param material Material of the block.
 	 */
 	public BlockData(Material material)
@@ -28,7 +28,7 @@ public class BlockData
 
 	/**
 	 * Constructor for BlockData with only Material given.
-	 * 
+	 *
 	 * @param material Material of the block.
 	 */
 	public BlockData(Material material, boolean physics)
@@ -41,9 +41,9 @@ public class BlockData
 
 	/**
 	 * Constructor for BlockData with only Material given and odds given.
-	 * 
+	 *
 	 * @param material Material of the block.
-	 * @param odds The odds of this object being generated.
+	 * @param odds     The odds of this object being generated.
 	 */
 	public BlockData(Material material, int odds)
 	{
@@ -56,9 +56,9 @@ public class BlockData
 
 	/**
 	 * Constructor for BlockData with only Material given and odds given.
-	 * 
+	 *
 	 * @param material Material of the block.
-	 * @param odds The odds of this object being generated.
+	 * @param odds     The odds of this object being generated.
 	 */
 	public BlockData(Material material, int odds, boolean physics)
 	{
@@ -71,9 +71,9 @@ public class BlockData
 
 	/**
 	 * Constructor for BlockData with only Material and byte data given.
-	 * 
+	 *
 	 * @param material Material of the block.
-	 * @param data Byte data of the block.
+	 * @param data     Byte data of the block.
 	 */
 	public BlockData(Material material, byte data)
 	{
@@ -85,9 +85,9 @@ public class BlockData
 
 	/**
 	 * Constructor for BlockData with only Material and byte data given.
-	 * 
+	 *
 	 * @param material Material of the block.
-	 * @param data Byte data of the block.
+	 * @param data     Byte data of the block.
 	 */
 	public BlockData(Material material, byte data, boolean physics)
 	{
@@ -99,10 +99,10 @@ public class BlockData
 
 	/**
 	 * Constructor for BlockData with Material, byte data, and odds given.
-	 * 
+	 *
 	 * @param material Material of the block.
-	 * @param data Byte data of the block.
-	 * @param odds The odds of this object being generated.
+	 * @param data     Byte data of the block.
+	 * @param odds     The odds of this object being generated.
 	 */
 	public BlockData(Material material, byte data, int odds)
 	{
@@ -115,10 +115,10 @@ public class BlockData
 
 	/**
 	 * Constructor for BlockData with Material, byte data, and odds given.
-	 * 
+	 *
 	 * @param material Material of the block.
-	 * @param data Byte data of the block.
-	 * @param odds The odds of this object being generated.
+	 * @param data     Byte data of the block.
+	 * @param odds     The odds of this object being generated.
 	 */
 	public BlockData(Material material, byte data, int odds, boolean physics)
 	{
@@ -131,7 +131,7 @@ public class BlockData
 
 	/**
 	 * Get the Material of this object.
-	 * 
+	 *
 	 * @return A Material.
 	 */
 	public Material getMaterial()
@@ -141,7 +141,7 @@ public class BlockData
 
 	/**
 	 * Get the byte data of this object.
-	 * 
+	 *
 	 * @return Byte data.
 	 */
 	public byte getData()
@@ -151,7 +151,7 @@ public class BlockData
 
 	/**
 	 * Get the odds of this object generating.
-	 * 
+	 *
 	 * @return Odds (as an integer, out of 5).
 	 */
 	public int getOdds()
@@ -161,7 +161,7 @@ public class BlockData
 
 	/**
 	 * Get the physics boolean.
-	 * 
+	 *
 	 * @return If physics should apply on generation.
 	 */
 	public boolean getPhysics()
@@ -179,32 +179,32 @@ public class BlockData
 				add(new BlockData(Material.SMOOTH_BRICK, (byte) 2, 10));
 			}
 		}), SANDY_GRASS(new ArrayList<BlockData>(2)
+	{
 		{
-			{
-				add(new BlockData(Material.SAND, 65));
-				add(new BlockData(Material.GRASS, 35));
-			}
-		}), PRETTY_FLOWERS_AND_GRASS(new ArrayList<BlockData>(4)
+			add(new BlockData(Material.SAND, 65));
+			add(new BlockData(Material.GRASS, 35));
+		}
+	}), PRETTY_FLOWERS_AND_GRASS(new ArrayList<BlockData>(4)
+	{
 		{
-			{
-				add(new BlockData(Material.AIR, 50));
-				add(new BlockData(Material.LONG_GRASS, (byte) 1, 35, true));
-				add(new BlockData(Material.YELLOW_FLOWER, 9, true));
-				add(new BlockData(Material.RED_ROSE, 6, true));
-			}
-		}), VINE_1(new ArrayList<BlockData>(2)
+			add(new BlockData(Material.AIR, 50));
+			add(new BlockData(Material.LONG_GRASS, (byte) 1, 35, true));
+			add(new BlockData(Material.YELLOW_FLOWER, 9, true));
+			add(new BlockData(Material.RED_ROSE, 6, true));
+		}
+	}), VINE_1(new ArrayList<BlockData>(2)
+	{
 		{
-			{
-				add(new BlockData(Material.VINE, (byte) 1, 40));
-				add(new BlockData(Material.AIR, 60));
-			}
-		}), VINE_4(new ArrayList<BlockData>(2)
+			add(new BlockData(Material.VINE, (byte) 1, 40));
+			add(new BlockData(Material.AIR, 60));
+		}
+	}), VINE_4(new ArrayList<BlockData>(2)
+	{
 		{
-			{
-				add(new BlockData(Material.VINE, (byte) 4, 40));
-				add(new BlockData(Material.AIR, 60));
-			}
-		});
+			add(new BlockData(Material.VINE, (byte) 4, 40));
+			add(new BlockData(Material.AIR, 60));
+		}
+	});
 
 		private List<BlockData> data;
 

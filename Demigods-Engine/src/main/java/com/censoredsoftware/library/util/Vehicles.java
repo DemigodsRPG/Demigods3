@@ -9,9 +9,9 @@ public class Vehicles
 {
 	/**
 	 * Teleport an entity and the vehicle it is inside of, or vice versa.
-	 * 
+	 *
 	 * @param entity The entity/vehicle to be teleported.
-	 * @param to The destination.
+	 * @param to     The destination.
 	 */
 	public static void teleport(final Entity entity, final Location to)
 	{

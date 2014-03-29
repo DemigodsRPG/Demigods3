@@ -12,7 +12,7 @@ public class Strings
 {
 	/**
 	 * Returns true if the <code>string</code> starts with a vowel.
-	 * 
+	 *
 	 * @param string the string to check.
 	 */
 	public static boolean beginsWithVowel(String string)
@@ -23,7 +23,7 @@ public class Strings
 
 	/**
 	 * Returns true if the <code>string</code> starts with a consonant.
-	 * 
+	 *
 	 * @param string the string to check.
 	 */
 	public static boolean beginsWithConsonant(String string)
@@ -33,8 +33,8 @@ public class Strings
 
 	/**
 	 * Returns true if the <code>string</code> contains any of the strings held in the <code>collection</code>.
-	 * 
-	 * @param check the string to check.
+	 *
+	 * @param check      the string to check.
 	 * @param collection the collection given.
 	 */
 	public static boolean containsAnyInCollection(final String check, Collection<String> collection)
@@ -51,9 +51,9 @@ public class Strings
 
 	/**
 	 * Checks the <code>string</code> for <code>max</code> capital letters.
-	 * 
+	 *
 	 * @param string the string to check.
-	 * @param max the maximum allowed capital letters.
+	 * @param max    the maximum allowed capital letters.
 	 */
 	public static boolean hasCapitalLetters(String string, int max)
 	{
@@ -71,9 +71,9 @@ public class Strings
 
 	/**
 	 * Returns a color (red, yellow, green) based on the <code>value</code> and <code>max</code> passed in.
-	 * 
+	 *
 	 * @param value the actual value.
-	 * @param max the maximum value possible.
+	 * @param max   the maximum value possible.
 	 */
 	public static ChatColor getColor(double value, double max)
 	{
@@ -91,7 +91,7 @@ public class Strings
 
 	/**
 	 * Automatically removes underscores and returns a capitalized version of the given <code>string</code>.
-	 * 
+	 *
 	 * @param string the string the beautify.
 	 */
 	public static String beautify(String string)

@@ -27,7 +27,8 @@ public class WorldCommands extends CommandManager
 	}
 
 	private WorldCommands()
-	{}
+	{
+	}
 
 	private static final Sub createWorld, importWorld, editWorld, disableWorld, teleport, list;
 
@@ -291,7 +292,8 @@ public class WorldCommands extends CommandManager
 	public static class Util
 	{
 		private Util()
-		{}
+		{
+		}
 
 		// -- PLUGIN LOAD -- //
 

@@ -8,7 +8,7 @@ public class Randoms
 
 	/**
 	 * Generates a random string with a length of <code>length</code>.
-	 * 
+	 *
 	 * @param length the length of the generated string.
 	 * @return String
 	 */
@@ -27,7 +27,7 @@ public class Randoms
 
 	/**
 	 * Generates a random integer with a length of <code>length</code>.
-	 * 
+	 *
 	 * @param length the length of the generated integer.
 	 * @return Integer
 	 */
@@ -46,7 +46,7 @@ public class Randoms
 
 	/**
 	 * Generates an integer with a value between <code>min</code> and <code>max</code>.
-	 * 
+	 *
 	 * @param min the minimum value of the integer.
 	 * @param max the maximum value of the integer.
 	 * @return Integer
@@ -58,7 +58,7 @@ public class Randoms
 
 	/**
 	 * Generates a double with a value between <code>min</code> and <code>max</code>.
-	 * 
+	 *
 	 * @param min the minimum value of the integer.
 	 * @param max the maximum value of the integer.
 	 * @return Integer
@@ -70,7 +70,7 @@ public class Randoms
 
 	/**
 	 * Returns a boolean whose value is based on the given <code>percent</code>.
-	 * 
+	 *
 	 * @param percent the percent chance for true.
 	 * @return Boolean
 	 */

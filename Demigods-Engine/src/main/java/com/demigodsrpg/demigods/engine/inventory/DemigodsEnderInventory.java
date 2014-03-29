@@ -23,7 +23,8 @@ public class DemigodsEnderInventory extends DataAccess<UUID, DemigodsEnderInvent
 	private String[] items;
 
 	public DemigodsEnderInventory()
-	{}
+	{
+	}
 
 	@Register(idType = IdType.UUID)
 	public DemigodsEnderInventory(UUID id, ConfigurationSection conf)
@@ -68,7 +69,7 @@ public class DemigodsEnderInventory extends DataAccess<UUID, DemigodsEnderInvent
 
 	/**
 	 * Applies this inventory to the given <code>player</code>.
-	 * 
+	 *
 	 * @param player the player for whom apply the inventory.
 	 */
 	public void setToPlayer(Player player)

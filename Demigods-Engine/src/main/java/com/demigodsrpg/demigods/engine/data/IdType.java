@@ -45,7 +45,7 @@ public enum IdType
 
 	/**
 	 * Id data for a data type.
-	 * 
+	 *
 	 * @param fromString Convert the id from a string.
 	 */
 	private <K> IdType(Function<String, K> fromString, Class<K> cast)

@@ -20,7 +20,8 @@ public class TributeData extends DataAccess<UUID, TributeData>
 	private int amount;
 
 	private TributeData(Object ignored)
-	{}
+	{
+	}
 
 	public TributeData()
 	{

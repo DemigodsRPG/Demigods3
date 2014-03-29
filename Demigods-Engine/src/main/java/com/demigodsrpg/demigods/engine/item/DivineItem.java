@@ -8,8 +8,7 @@ import java.util.Set;
 
 public interface DivineItem
 {
-	@Override
-	String toString();
+	@Override String toString();
 
 	String getName();
 

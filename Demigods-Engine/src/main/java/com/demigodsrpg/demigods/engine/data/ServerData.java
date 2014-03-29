@@ -16,7 +16,8 @@ public class ServerData extends DataAccess<UUID, ServerData>
 	private Object data;
 
 	public ServerData()
-	{}
+	{
+	}
 
 	@Register(idType = IdType.UUID)
 	public ServerData(UUID id, ConfigurationSection conf)

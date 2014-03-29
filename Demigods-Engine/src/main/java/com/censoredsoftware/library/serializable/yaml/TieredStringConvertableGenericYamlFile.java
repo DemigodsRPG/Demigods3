@@ -22,7 +22,7 @@ import java.util.concurrent.ConcurrentMap;
  * 4:
  * - another_value_data
  * --------------------------------
- * 
+ *
  * @param <K> Key type.
  * @param <V> Value type.
  */
@@ -31,7 +31,7 @@ public abstract class TieredStringConvertableGenericYamlFile<K extends Comparabl
 {
 	/**
 	 * Serialize the data for a specific key (from the loaded data).
-	 * 
+	 *
 	 * @param key The key.
 	 * @return Map of the data from the value.
 	 */
@@ -39,7 +39,7 @@ public abstract class TieredStringConvertableGenericYamlFile<K extends Comparabl
 
 	/**
 	 * Get the data being held in the child class extending TieredGenericYamlFile.
-	 * 
+	 *
 	 * @return A ConcurrentMap of the data.
 	 */
 	public abstract ConcurrentMap<K, V> getLoadedData();

@@ -87,7 +87,8 @@ public interface DemigodsStructureType
 				});
 			}
 			catch(NoSuchElementException ignored)
-			{}
+			{
+			}
 			return null;
 		}
 
@@ -105,7 +106,8 @@ public interface DemigodsStructureType
 				});
 			}
 			catch(NoSuchElementException ignored)
-			{}
+			{
+			}
 			return null;
 		}
 
@@ -308,9 +310,9 @@ public interface DemigodsStructureType
 		/**
 		 * Strictly checks the <code>reference</code> location to validate if the area is safe
 		 * for automated generation.
-		 * 
+		 *
 		 * @param reference the location to be checked
-		 * @param area how big of an area (in blocks) to validate
+		 * @param area      how big of an area (in blocks) to validate
 		 * @return Boolean
 		 */
 		public static boolean canGenerateStrict(Location reference, int area)

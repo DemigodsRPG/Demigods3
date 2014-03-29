@@ -92,10 +92,10 @@ public enum DataType
 
 	/**
 	 * Meta data for a data type.
-	 * 
-	 * @param clazz The object class that holds the data.
+	 *
+	 * @param clazz  The object class that holds the data.
 	 * @param idType The id type this data type uses.
-	 * @param abbr The abbreviation for use in certain data managers.
+	 * @param abbr   The abbreviation for use in certain data managers.
 	 */
 	private <V extends DataAccess<?, V>> DataType(Class<V> clazz, IdType idType, String abbr)
 	{

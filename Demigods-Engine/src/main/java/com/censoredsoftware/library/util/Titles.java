@@ -6,7 +6,7 @@ public class Titles
 {
 	/**
 	 * Returns a formatted title ready for the chat.
-	 * 
+	 *
 	 * @param title the title to format
 	 * @return the formatted title
 	 */

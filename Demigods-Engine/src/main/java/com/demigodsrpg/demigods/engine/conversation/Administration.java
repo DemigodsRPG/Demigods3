@@ -584,7 +584,7 @@ public class Administration implements ConversationManager
 	{
 		/**
 		 * Listens for the PlayerInteract event and uses it strictly for the structure wand.
-		 * 
+		 *
 		 * @param event the PlayerInteractEvent to monitor
 		 */
 		@EventHandler(priority = EventPriority.MONITOR)
@@ -639,7 +639,7 @@ public class Administration implements ConversationManager
 	{
 		/**
 		 * Returns true if the <code>player</code> is currently praying.
-		 * 
+		 *
 		 * @param player the player to check.
 		 * @return boolean
 		 */
@@ -650,13 +650,14 @@ public class Administration implements ConversationManager
 				return TempDataManager.hasKeyTemp(player.getName(), "administration_conversation");
 			}
 			catch(Exception ignored)
-			{}
+			{
+			}
 			return false;
 		}
 
 		/**
 		 * Removes all temp data related to administration for the <code>player</code>.
-		 * 
+		 *
 		 * @param player the player to clean.
 		 */
 		public static void clearAdministrationSession(OfflinePlayer player)
@@ -667,8 +668,8 @@ public class Administration implements ConversationManager
 
 		/**
 		 * Saves the context for the <code>player</code>'s administration conversation.
-		 * 
-		 * @param player the player to save for.
+		 *
+		 * @param player  the player to save for.
 		 * @param context the context to save.
 		 * @return ConversationContext
 		 */
@@ -679,7 +680,7 @@ public class Administration implements ConversationManager
 
 		/**
 		 * Returns the context for the <code>player</code>'s administration conversation.
-		 * 
+		 *
 		 * @param player the player whose context to return.
 		 * @return ConversationContext
 		 */
@@ -691,9 +692,9 @@ public class Administration implements ConversationManager
 
 		/**
 		 * Changes administration status for <code>player</code> to <code>option</code>.
-		 * 
-		 * @param player the player the manipulate.
-		 * @param option the boolean to set to.
+		 *
+		 * @param player     the player the manipulate.
+		 * @param option     the boolean to set to.
 		 * @param recordChat whether or not the chat should be recorded.
 		 */
 		public static void toggleAdministration(Player player, boolean option, boolean recordChat)
@@ -745,7 +746,7 @@ public class Administration implements ConversationManager
 
 		/**
 		 * Returns true if the <code>player</code> is an admin and has their admin wand enabled.
-		 * 
+		 *
 		 * @param player the player to check.
 		 * @return boolean
 		 */
@@ -756,7 +757,7 @@ public class Administration implements ConversationManager
 
 		/**
 		 * Returns true if the <code>player</code>'s admin wand is enabled and in their hand.
-		 * 
+		 *
 		 * @param player the player to check.
 		 * @return boolean
 		 */
@@ -767,7 +768,7 @@ public class Administration implements ConversationManager
 
 		/**
 		 * Toggles the admin wand for the <code>player</code> to <code>option</code>.
-		 * 
+		 *
 		 * @param player the player to toggle for.
 		 * @param option the option to toggle to.
 		 */
@@ -785,7 +786,7 @@ public class Administration implements ConversationManager
 
 		/**
 		 * Returns true if the <code>player</code> is an admin and has their structure wand enabled.
-		 * 
+		 *
 		 * @param player the player to check.
 		 * @return boolean
 		 */
@@ -796,7 +797,7 @@ public class Administration implements ConversationManager
 
 		/**
 		 * Returns true if the <code>player</code>'s structure wand is enabled and in their hand.
-		 * 
+		 *
 		 * @param player the player to check.
 		 * @return boolean
 		 */
@@ -807,7 +808,7 @@ public class Administration implements ConversationManager
 
 		/**
 		 * Toggles the structure wand for the <code>player</code> to <code>option</code>.
-		 * 
+		 *
 		 * @param player the player to toggle for.
 		 * @param option the option to toggle to.
 		 */
@@ -825,7 +826,7 @@ public class Administration implements ConversationManager
 
 		/**
 		 * Toggles the debugging for the <code>player</code> to <code>option</code>.
-		 * 
+		 *
 		 * @param player the player to toggle for.
 		 * @param option the option to toggle to.
 		 */
@@ -843,7 +844,7 @@ public class Administration implements ConversationManager
 
 		/**
 		 * Returns true if <code>player</code>'s demigods debugging is enabled.
-		 * 
+		 *
 		 * @param player the player to check.
 		 * @return boolean
 		 */
@@ -854,7 +855,7 @@ public class Administration implements ConversationManager
 
 		/**
 		 * Returns true if console debugging is enabled in the config.
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public static boolean consoleDebugEnabled()
@@ -864,7 +865,7 @@ public class Administration implements ConversationManager
 
 		/**
 		 * Sends the <code>message</code> to all applicable recipients.
-		 * 
+		 *
 		 * @param message the message to send.
 		 */
 		public static void sendDebug(String message)
@@ -881,7 +882,7 @@ public class Administration implements ConversationManager
 
 		/**
 		 * Returns an ArrayList of all online admins.
-		 * 
+		 *
 		 * @return ArrayList
 		 */
 		public static ArrayList<Player> getOnlineAdmins()

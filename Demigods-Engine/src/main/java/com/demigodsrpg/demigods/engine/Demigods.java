@@ -20,7 +20,8 @@ public class Demigods
 	// -- CONSTRUCTOR -- //
 
 	private Demigods()
-	{}
+	{
+	}
 
 	// -- GETTERS FOR OTHER MANAGERS/HANDLERS/HOLDERS -- //
 

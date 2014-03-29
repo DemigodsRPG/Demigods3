@@ -67,8 +67,7 @@ public class WorldGuards implements Listener
 		}
 	}
 
-	@EventHandler(priority = EventPriority.MONITOR)
-	void onPluginEnable(PluginEnableEvent event)
+	@EventHandler(priority = EventPriority.MONITOR) void onPluginEnable(PluginEnableEvent event)
 	{
 		if(ENABLED || !event.getPlugin().getName().equals("WorldGuard")) return;
 		try
@@ -82,11 +81,11 @@ public class WorldGuards implements Listener
 			}
 		}
 		catch(Exception ignored)
-		{}
+		{
+		}
 	}
 
-	@EventHandler(priority = EventPriority.MONITOR)
-	void onPluginDisable(PluginDisableEvent event)
+	@EventHandler(priority = EventPriority.MONITOR) void onPluginDisable(PluginDisableEvent event)
 	{
 		if(!ENABLED || event.getPlugin().getName().equals("WorldGuard")) return;
 		try
@@ -95,7 +94,8 @@ public class WorldGuards implements Listener
 			ENABLED = false;
 		}
 		catch(Exception ignored)
-		{}
+		{
+		}
 	}
 
 	static
@@ -176,8 +176,8 @@ public class WorldGuards implements Listener
 
 	/**
 	 * Check that a ProtectedRegion exists at a Location.
-	 * 
-	 * @param name The name of the region.
+	 *
+	 * @param name     The name of the region.
 	 * @param location The location being checked.
 	 * @return The region does exist at the provided location.
 	 */
@@ -195,8 +195,8 @@ public class WorldGuards implements Listener
 
 	/**
 	 * Check for a flag at a given location.
-	 * 
-	 * @param flag The flag being checked.
+	 *
+	 * @param flag     The flag being checked.
 	 * @param location The location being checked.
 	 * @return The flag does exist at the provided location.
 	 */
@@ -212,7 +212,8 @@ public class WorldGuards implements Listener
 					return region.getFlags().containsKey(flag);
 				}
 				catch(Exception ignored)
-				{}
+				{
+				}
 				return false;
 			}
 		});
@@ -220,8 +221,8 @@ public class WorldGuards implements Listener
 
 	/**
 	 * Check if a StateFlag is enabled at a given location.
-	 * 
-	 * @param flag The flag being checked.
+	 *
+	 * @param flag     The flag being checked.
 	 * @param location The location being checked.
 	 * @return The flag is enabled.
 	 */
@@ -232,9 +233,9 @@ public class WorldGuards implements Listener
 
 	/**
 	 * Check for a flag-value at a given location.
-	 * 
-	 * @param flag The flag being checked.
-	 * @param value The value (marshalled) as a String.
+	 *
+	 * @param flag     The flag being checked.
+	 * @param value    The value (marshalled) as a String.
 	 * @param location The location being checked.
 	 * @return The flag-value does exist at the provided location.
 	 */
@@ -250,14 +251,15 @@ public class WorldGuards implements Listener
 					return flag.marshal(region.getFlag(flag)).equals(value);
 				}
 				catch(Exception ignored)
-				{}
+				{
+				}
 				return false;
 			}
 		});
 	}
 
 	/**
-	 * @param player Given player.
+	 * @param player   Given player.
 	 * @param location Given location.
 	 * @return The player can build here.
 	 */
@@ -277,13 +279,13 @@ public class WorldGuards implements Listener
 
 	/**
 	 * Create a custom flag for WorldGuard.
-	 * 
-	 * @param type The type of flag.
-	 * @param id The name/id of the flag.
-	 * @param value The default value of the flag.
+	 *
+	 * @param type        The type of flag.
+	 * @param id          The name/id of the flag.
+	 * @param value       The default value of the flag.
 	 * @param regionGroup The default region-group of the flag.
-	 * @deprecated Currently only supports 'STATE' flags.
 	 * @return The creation status.
+	 * @deprecated Currently only supports 'STATE' flags.
 	 */
 	public static Status createFlag(String type, String id, Object value, String regionGroup)
 	{
@@ -298,13 +300,14 @@ public class WorldGuards implements Listener
 			return Status.SUCCESS;
 		}
 		catch(Exception ignored)
-		{}
+		{
+		}
 		return Status.FAILED;
 	}
 
 	/**
 	 * Register a created flag with WorldGuard.
-	 * 
+	 *
 	 * @param id The name/id of the previously created flag.
 	 * @return The registration status.
 	 */
@@ -326,7 +329,7 @@ public class WorldGuards implements Listener
 
 	/**
 	 * Register a flag with WorldGuard.
-	 * 
+	 *
 	 * @param flag The flag to be registered.
 	 * @return The registration status.
 	 */
@@ -420,7 +423,8 @@ public class WorldGuards implements Listener
 				return flag;
 			}
 			catch(Exception ignored)
-			{}
+			{
+			}
 			return null;
 		}
 	}
@@ -452,8 +456,7 @@ public class WorldGuards implements Listener
 			Bukkit.getPluginManager().registerEvents(this, plugin);
 		}
 
-		@EventHandler(priority = EventPriority.LOWEST)
-		void onDisallowedPVP(DisallowedPVPEvent event)
+		@EventHandler(priority = EventPriority.LOWEST) void onDisallowedPVP(DisallowedPVPEvent event)
 		{
 			if(checkPVP.apply(event.getCause())) event.setCancelled(true);
 		}
@@ -476,7 +479,8 @@ public class WorldGuards implements Listener
 					return new StateFlag(protoFlag.getId(), Boolean.valueOf(protoFlag.getValue().toString()), RegionGroup.valueOf(protoFlag.getRegionGroup().toUpperCase()));
 				}
 				catch(Exception ignored)
-				{}
+				{
+				}
 				return null;
 			}
 		});
@@ -514,7 +518,8 @@ public class WorldGuards implements Listener
 					if(WorldGuards.flags.containsKey(flag.getName())) this.flags.put(flag.getName(), flag.marshal(region.getFlag(flag)));
 			}
 			catch(Exception ignored)
-			{}
+			{
+			}
 		}
 
 		RegionCustomFlags(String regionId, String world, ConfigurationSection conf)
@@ -547,7 +552,8 @@ public class WorldGuards implements Listener
 				return flag.unmarshal(flags.get(flag.getName()));
 			}
 			catch(Exception ignored)
-			{}
+			{
+			}
 			return null;
 		}
 

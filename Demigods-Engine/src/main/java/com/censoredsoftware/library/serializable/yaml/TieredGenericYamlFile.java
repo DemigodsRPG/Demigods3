@@ -23,7 +23,7 @@ import java.util.concurrent.ConcurrentMap;
  * 4:
  * - another_value_data
  * --------------------------------
- * 
+ *
  * @param <K> Key type.
  * @param <V> Value type.
  */
@@ -32,7 +32,7 @@ public abstract class TieredGenericYamlFile<K extends Comparable, V extends Data
 {
 	/**
 	 * Serialize the data for a specific key (from the loaded data).
-	 * 
+	 *
 	 * @param key The key.
 	 * @return Map of the data from the value.
 	 */
@@ -40,15 +40,15 @@ public abstract class TieredGenericYamlFile<K extends Comparable, V extends Data
 
 	/**
 	 * Get the data being held in the child class extending TieredGenericYamlFile.
-	 * 
+	 *
 	 * @return A ConcurrentMap of the data.
 	 */
 	public abstract ConcurrentMap<K, V> getLoadedData();
 
 	/**
 	 * Convert a single bit of the data (with a given key) to the DataSerializable child class.
-	 * 
-	 * @param key The key.
+	 *
+	 * @param key  The key.
 	 * @param conf A configuration section to be converted.
 	 * @return The converted value.
 	 */
@@ -69,7 +69,8 @@ public abstract class TieredGenericYamlFile<K extends Comparable, V extends Data
 				map.put(keyFromString(stringId), valueFromData(stringId, data.getConfigurationSection(stringId)));
 			}
 			catch(Exception ignored)
-			{}
+			{
+			}
 		}
 		return map;
 	}

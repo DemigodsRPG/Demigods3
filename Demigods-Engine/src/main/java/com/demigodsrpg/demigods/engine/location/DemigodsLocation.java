@@ -32,7 +32,8 @@ public class DemigodsLocation extends WorldDataAccess<UUID, DemigodsLocation>
 	private String region;
 
 	DemigodsLocation()
-	{}
+	{
+	}
 
 	public DemigodsLocation(UUID id, ConfigurationSection conf, String... args)
 	{
@@ -207,10 +208,10 @@ public class DemigodsLocation extends WorldDataAccess<UUID, DemigodsLocation>
 	/**
 	 * Randoms a random location with the center being <code>reference</code>.
 	 * Must be at least <code>min</code> blocks from the center and no more than <code>max</code> blocks away.
-	 * 
+	 *
 	 * @param reference the location used as the center for reference.
-	 * @param min the minimum number of blocks away.
-	 * @param max the maximum number of blocks away.
+	 * @param min       the minimum number of blocks away.
+	 * @param max       the maximum number of blocks away.
 	 * @return the random location generated.
 	 */
 	public static Location randomLocation(Location reference, int min, int max)
@@ -226,7 +227,7 @@ public class DemigodsLocation extends WorldDataAccess<UUID, DemigodsLocation>
 
 	/**
 	 * Returns a random location within the <code>chunk</code> passed in.
-	 * 
+	 *
 	 * @param chunk the chunk that we will obtain the location from.
 	 * @return the random location generated.
 	 */
@@ -241,9 +242,9 @@ public class DemigodsLocation extends WorldDataAccess<UUID, DemigodsLocation>
 
 	/**
 	 * Returns a set of blocks in a radius of <code>radius</code> at the provided <code>location</code>.
-	 * 
+	 *
 	 * @param location the center location to getDesign the blocks from.
-	 * @param radius the radius around the center block from which to getDesign the blocks.
+	 * @param radius   the radius around the center block from which to getDesign the blocks.
 	 * @return Set<Block>
 	 */
 	public static Set<Block> getBlocks(Location location, int radius)
@@ -322,7 +323,8 @@ public class DemigodsLocation extends WorldDataAccess<UUID, DemigodsLocation>
 			return location.getBukkitLocation();
 		}
 		catch(Exception ignored)
-		{}
+		{
+		}
 		return null;
 	}
 

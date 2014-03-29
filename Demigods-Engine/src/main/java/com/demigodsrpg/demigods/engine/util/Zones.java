@@ -53,7 +53,7 @@ public class Zones
 
 	/**
 	 * Returns true if <code>location</code> is within a no-PVP zone.
-	 * 
+	 *
 	 * @param location the location to check.
 	 * @return true/false depending on if it's a no-PVP zone or not.
 	 */
@@ -67,8 +67,8 @@ public class Zones
 	/**
 	 * Returns true if <code>location</code> is within a no-build zone
 	 * for <code>player</code>.
-	 * 
-	 * @param player the player to check.
+	 *
+	 * @param player   the player to check.
 	 * @param location the location to check.
 	 * @return true/false depending on the position of the <code>player</code>.
 	 */

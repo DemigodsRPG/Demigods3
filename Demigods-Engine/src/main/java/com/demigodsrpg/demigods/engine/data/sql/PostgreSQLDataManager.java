@@ -4,8 +4,7 @@ import com.demigodsrpg.demigods.engine.util.Messages;
 
 public class PostgreSQLDataManager extends SQLDataManager
 {
-	@Override
-	boolean loadDriver()
+	@Override boolean loadDriver()
 	{
 		try
 		{
@@ -19,20 +18,17 @@ public class PostgreSQLDataManager extends SQLDataManager
 		return true;
 	}
 
-	@Override
-	String getDriverClassPath()
+	@Override String getDriverClassPath()
 	{
 		return "org.postgresql.Driver";
 	}
 
-	@Override
-	int getDefaultPort()
+	@Override int getDefaultPort()
 	{
 		return 5432;
 	}
 
-	@Override
-	String buildURL(String host, int port, String database)
+	@Override String buildURL(String host, int port, String database)
 	{
 		return String.format("jbdc:postgresql://%s:%d/%s", host, port, database);
 	}

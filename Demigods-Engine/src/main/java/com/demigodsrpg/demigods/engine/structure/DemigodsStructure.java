@@ -35,7 +35,8 @@ public class DemigodsStructure extends WorldDataAccess<UUID, DemigodsStructure>
 	private Integer ascensions;
 
 	public DemigodsStructure()
-	{}
+	{
+	}
 
 	public DemigodsStructure(UUID id, ConfigurationSection conf, String... args)
 	{
@@ -54,7 +55,8 @@ public class DemigodsStructure extends WorldDataAccess<UUID, DemigodsStructure>
 				corruption = Float.valueOf(conf.getString("corruption"));
 			}
 			catch(Exception ignored)
-			{}
+			{
+			}
 		}
 		if(conf.contains("sanctity"))
 		{
@@ -63,7 +65,8 @@ public class DemigodsStructure extends WorldDataAccess<UUID, DemigodsStructure>
 				sanctity = Float.valueOf(conf.getString("sanctity"));
 			}
 			catch(Exception ignored)
-			{}
+			{
+			}
 		}
 		if(conf.isString("permission")) permission = conf.getString("permission");
 		if(conf.isInt("ascensions")) ascensions = conf.getInt("ascensions");
@@ -81,7 +84,8 @@ public class DemigodsStructure extends WorldDataAccess<UUID, DemigodsStructure>
 						return Long.parseLong(o.toString());
 					}
 					catch(Exception ignored)
-					{}
+					{
+					}
 					return null;
 				}
 			}));
@@ -98,7 +102,8 @@ public class DemigodsStructure extends WorldDataAccess<UUID, DemigodsStructure>
 						return Long.parseLong(o.toString());
 					}
 					catch(Exception ignored)
-					{}
+					{
+					}
 					return null;
 				}
 			}));
