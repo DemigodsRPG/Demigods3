@@ -1,7 +1,7 @@
 package com.demigodsrpg.demigods.engine.entity.player;
 
 import com.censoredsoftware.library.exception.MojangIdNotFoundException;
-import com.censoredsoftware.library.helper.MojangIdGrabber;
+import com.censoredsoftware.library.helper.MojangIdProvider;
 import com.demigodsrpg.demigods.base.listener.ChatRecorder;
 import com.demigodsrpg.demigods.engine.DemigodsPlugin;
 import com.demigodsrpg.demigods.engine.battle.Battle;
@@ -88,7 +88,8 @@ public class DemigodsPlayer extends DataAccess<String, DemigodsPlayer>
 			map.put("lastLogoutTime", lastLogoutTime);
 		}
 		catch(Exception ignored)
-		{}
+		{
+		}
 		if(mortalName != null) map.put("mortalName", mortalName);
 		if(mortalListName != null) map.put("mortalListName", mortalListName);
 		if(currentDeityName != null) map.put("currentDeityName", currentDeityName);
@@ -487,7 +488,7 @@ public class DemigodsPlayer extends DataAccess<String, DemigodsPlayer>
 
 	/**
 	 * Stops recording and sends all messages that have been recorded thus far to the player.
-	 * 
+	 *
 	 * @param display if true, the chat will be sent to the player
 	 */
 	public List<String> stopRecording(boolean display)
@@ -521,21 +522,21 @@ public class DemigodsPlayer extends DataAccess<String, DemigodsPlayer>
 	public static DemigodsPlayer create(final OfflinePlayer player)
 	{
 		DemigodsPlayer playerSave = new DemigodsPlayer();
-		playerSave.setMojangAccount(MojangIdGrabber.getUUID(player));
+		playerSave.setMojangAccount(MojangIdProvider.getUUID(player));
 		playerSave.setPlayerName(player.getName());
 		playerSave.setLastLoginTime(player.getLastPlayed());
 		playerSave.setCanPvp(true);
 		playerSave.save();
 
 		// Log the creation
-		Messages.info(English.LOG_PLAYER_CREATED.getLine().replace("{player}", player.getName()).replace("{id}", MojangIdGrabber.getUUID(player)));
+		Messages.info(English.LOG_PLAYER_CREATED.getLine().replace("{player}", player.getName()).replace("{id}", MojangIdProvider.getUUID(player)));
 
 		return playerSave;
 	}
 
 	public static DemigodsPlayer of(final OfflinePlayer player)
 	{
-		String id = MojangIdGrabber.getUUID(player);
+		String id = MojangIdProvider.getUUID(player);
 		if(id == null) throw new MojangIdNotFoundException(player.getName());
 		DemigodsPlayer found = get(id);
 		if(found == null) return create(player);
@@ -556,7 +557,8 @@ public class DemigodsPlayer extends DataAccess<String, DemigodsPlayer>
 			});
 		}
 		catch(NoSuchElementException ignored)
-		{}
+		{
+		}
 		return null;
 	}
 
@@ -574,7 +576,7 @@ public class DemigodsPlayer extends DataAccess<String, DemigodsPlayer>
 
 	/**
 	 * Returns true if the <code>player</code> is currently immortal.
-	 * 
+	 *
 	 * @param player the player to check.
 	 * @return boolean
 	 */
@@ -586,8 +588,8 @@ public class DemigodsPlayer extends DataAccess<String, DemigodsPlayer>
 
 	/**
 	 * Returns true if <code>player</code> has a character with the name <code>charName</code>.
-	 * 
-	 * @param player the player to check.
+	 *
+	 * @param player   the player to check.
 	 * @param charName the charName to check with.
 	 * @return boolean
 	 */

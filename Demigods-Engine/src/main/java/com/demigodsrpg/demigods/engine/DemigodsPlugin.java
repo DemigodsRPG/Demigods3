@@ -77,7 +77,7 @@ public class DemigodsPlugin extends CensoredJavaPlugin
 		getLogger().info("    |____/|___|_|_|_|_|_  |___|___|___|");
 		getLogger().info("        Battle of the |___| Chosen");
 		getLogger().info("  ");
-		getLogger().info(" ...version " + getDescription().getVersion() + " has " + status + " successfully!");
+		getLogger().info(" ver. " + getDescription().getVersion() + status + "!");
 	}
 
 	private boolean checkForCensoredLib()

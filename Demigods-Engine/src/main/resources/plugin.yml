@@ -50,7 +50,7 @@ commands:
         permission: demigods.basic
 # Development Commands
     obelisk:
-        usage: /obelisk [add|remove] [player|character] [mame]
+        usage: /obelisk [add|remove] [player|character] [name]
     test1:
         usage: /test1
         permission: demigods.admin

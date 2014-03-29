@@ -7,7 +7,7 @@
     <groupId>com.demigodsrpg</groupId>
     <artifactId>Demigods-Parent</artifactId>
     <packaging>pom</packaging>
-    <version>ea-14.3.18.1</version>
+    <version>DEV.2014.March.29.R1</version>
     <modules>
         <module>Demigods-Engine</module>
         <module>Demigods-Greek</module>
@@ -35,9 +35,9 @@
 
     <properties> <!-- It is important to keep up to date manually. -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spigot.version>1.7.2-R0.4-SNAPSHOT</spigot.version>
+        <spigot.version>1.7.5-R0.1-SNAPSHOT</spigot.version>
         <mcstats.version>R7</mcstats.version>
-        <worldguard.version>5.8.1-SNAPSHOT</worldguard.version>
+        <worldguard.version>5.9.1-SNAPSHOT</worldguard.version>
     </properties>
 
     <developers>
