@@ -21,6 +21,7 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
+import net.minecraft.util.io.netty.util.concurrent.BlockingOperationException;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -190,9 +191,10 @@ public class DemigodsPlayer extends DataAccess<String, DemigodsPlayer>
 		}
 	}
 
-	public OfflinePlayer getBukkitOfflinePlayer()
+	// TODO Fix this so it doesn't run on the main thread.
+	public OfflinePlayer getBukkitOfflinePlayer() throws BlockingOperationException
 	{
-		return Bukkit.getOfflinePlayer(playerName);
+		return Bukkit.getOfflinePlayer(MojangIdProvider.toUUID(mojangAccount));
 	}
 
 	public void setLastLoginTime(Long time)
