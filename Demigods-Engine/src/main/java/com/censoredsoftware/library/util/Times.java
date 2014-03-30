@@ -15,7 +15,7 @@ public class Times
 	 */
 	public static double getSeconds(long time)
 	{
-		return (double) TimeUnit.MILLISECONDS.toSeconds(time - System.currentTimeMillis());
+		return (double) TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - time);
 	}
 
 	/**
@@ -26,7 +26,7 @@ public class Times
 	 */
 	public static double getMinutes(long time)
 	{
-		return (double) TimeUnit.MILLISECONDS.toMinutes(time - System.currentTimeMillis());
+		return (double) TimeUnit.MILLISECONDS.toMinutes(System.currentTimeMillis() - time);
 	}
 
 	/**
@@ -37,7 +37,7 @@ public class Times
 	 */
 	public static double getHours(long time)
 	{
-		return (double) TimeUnit.MILLISECONDS.toHours(time - System.currentTimeMillis());
+		return (double) TimeUnit.MILLISECONDS.toHours(System.currentTimeMillis() - time);
 	}
 
 	/**
