@@ -334,8 +334,7 @@ public class Obelisk extends GreekStructureType
 			if(!block.getRelative(1, 0, 0).getType().equals(Material.STONE)) return false;
 			if(!block.getRelative(-1, 0, 0).getType().equals(Material.STONE)) return false;
 			if(!block.getRelative(0, 0, 1).getType().equals(Material.STONE)) return false;
-			if(!block.getRelative(0, 0, -1).getType().equals(Material.STONE)) return false;
-			return !block.getRelative(1, 0, 1).getType().isSolid() && !block.getRelative(1, 0, -1).getType().isSolid() && !block.getRelative(-1, 0, 1).getType().isSolid() && !block.getRelative(-1, 0, -1).getType().isSolid();
+			return block.getRelative(0, 0, -1).getType().equals(Material.STONE) && !block.getRelative(1, 0, 1).getType().isSolid() && !block.getRelative(1, 0, -1).getType().isSolid() && !block.getRelative(-1, 0, 1).getType().isSolid() && !block.getRelative(-1, 0, -1).getType().isSolid();
 		}
 	}
 

@@ -292,8 +292,7 @@ public class Shrine extends GreekStructureType
 			if(!block.getRelative(1, 0, 0).getType().equals(Material.COBBLESTONE)) return false;
 			if(!block.getRelative(-1, 0, 0).getType().equals(Material.COBBLESTONE)) return false;
 			if(!block.getRelative(0, 0, 1).getType().equals(Material.COBBLESTONE)) return false;
-			if(!block.getRelative(0, 0, -1).getType().equals(Material.COBBLESTONE)) return false;
-			return !block.getRelative(1, 0, 1).getType().isSolid() && !block.getRelative(1, 0, -1).getType().isSolid() && !block.getRelative(-1, 0, 1).getType().isSolid() && !block.getRelative(-1, 0, -1).getType().isSolid();
+			return block.getRelative(0, 0, -1).getType().equals(Material.COBBLESTONE) && !block.getRelative(1, 0, 1).getType().isSolid() && !block.getRelative(1, 0, -1).getType().isSolid() && !block.getRelative(-1, 0, 1).getType().isSolid() && !block.getRelative(-1, 0, -1).getType().isSolid();
 		}
 	}
 

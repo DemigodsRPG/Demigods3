@@ -271,7 +271,7 @@ public class DemigodsLocation extends WorldDataAccess<UUID, DemigodsLocation>
 		final double X = center.getX();
 		final double Y = center.getY();
 		final double Z = center.getZ();
-		List<Location> list = new ArrayList<Location>();
+		List<Location> list = new ArrayList<>();
 		for(int i = 0; i < points; i++)
 		{
 			double x = X + radius * Math.cos((2 * Math.PI * i) / points);

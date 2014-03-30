@@ -522,21 +522,21 @@ public class DemigodsPlayer extends DataAccess<String, DemigodsPlayer>
 	public static DemigodsPlayer create(final OfflinePlayer player)
 	{
 		DemigodsPlayer playerSave = new DemigodsPlayer();
-		playerSave.setMojangAccount(MojangIdProvider.getUUID(player));
+		playerSave.setMojangAccount(MojangIdProvider.getId(player));
 		playerSave.setPlayerName(player.getName());
 		playerSave.setLastLoginTime(player.getLastPlayed());
 		playerSave.setCanPvp(true);
 		playerSave.save();
 
 		// Log the creation
-		Messages.info(English.LOG_PLAYER_CREATED.getLine().replace("{player}", player.getName()).replace("{id}", MojangIdProvider.getUUID(player)));
+		Messages.info(English.LOG_PLAYER_CREATED.getLine().replace("{player}", player.getName()).replace("{id}", MojangIdProvider.getId(player)));
 
 		return playerSave;
 	}
 
 	public static DemigodsPlayer of(final OfflinePlayer player)
 	{
-		String id = MojangIdProvider.getUUID(player);
+		String id = MojangIdProvider.getId(player);
 		if(id == null) throw new MojangIdNotFoundException(player.getName());
 		DemigodsPlayer found = get(id);
 		if(found == null) return create(player);

@@ -59,7 +59,6 @@ public class ChatListener implements Listener
 		{
 			// Not a command
 			errored.printStackTrace();
-			;
 		}
 	}
 }

@@ -58,7 +58,7 @@ public class Death extends DataAccess<UUID, Death>
 	@Override
 	public Map<String, Object> serialize()
 	{
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>();
 		map.put("deathTime", deathTime);
 		map.put("killed", killed.toString());
 		if(attacking != null) map.put("attacking", attacking.toString());

@@ -31,7 +31,7 @@ public class ServerData extends DataAccess<UUID, ServerData>
 	@Override
 	public Map<String, Object> serialize()
 	{
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>();
 		map.put("key", key);
 		map.put("subKey", subKey);
 		map.put("data", data);

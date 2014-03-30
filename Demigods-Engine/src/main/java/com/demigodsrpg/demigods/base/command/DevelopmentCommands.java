@@ -1,7 +1,9 @@
 package com.demigodsrpg.demigods.base.command;
 
 import com.censoredsoftware.library.helper.CommandManager;
+import com.censoredsoftware.library.helper.MojangIdProvider;
 import com.demigodsrpg.demigods.engine.Demigods;
+import com.demigodsrpg.demigods.engine.DemigodsPlugin;
 import com.demigodsrpg.demigods.engine.entity.player.DemigodsCharacter;
 import com.demigodsrpg.demigods.engine.entity.player.DemigodsPlayer;
 import com.demigodsrpg.demigods.engine.structure.DemigodsStructure;
@@ -9,10 +11,14 @@ import com.demigodsrpg.demigods.engine.structure.DemigodsStructureType;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.UUID;
 
 // TODO Convert this over to the sub-command format.
 
@@ -42,6 +48,20 @@ public class DevelopmentCommands extends CommandManager
 	private static boolean test1(CommandSender sender, final String[] args)
 	{
 		final Player player = (Player) sender;
+
+		String id = DemigodsPlayer.of(player).getMojangAccount();
+
+		final UUID uuid = MojangIdProvider.toUUID(id);
+
+		Bukkit.getScheduler().scheduleAsyncDelayedTask(DemigodsPlugin.getInst(), new Runnable()
+		{
+			@Override public void run()
+			{
+				OfflinePlayer offline = Bukkit.getServer().getOfflinePlayer(uuid);
+
+				player.sendMessage(offline.isOnline() ? "Success!" : "Failure.");
+			}
+		});
 
 		return true;
 	}

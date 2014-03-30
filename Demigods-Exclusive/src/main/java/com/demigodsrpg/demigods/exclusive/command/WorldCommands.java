@@ -3,7 +3,6 @@ package com.demigodsrpg.demigods.exclusive.command;
 import com.censoredsoftware.library.helper.CommandManager;
 import com.demigodsrpg.demigods.engine.DemigodsPlugin;
 import com.demigodsrpg.demigods.engine.data.ServerData;
-import com.demigodsrpg.demigods.engine.data.TimedServerData;
 import com.demigodsrpg.demigods.engine.util.Messages;
 import com.demigodsrpg.demigods.engine.util.Zones;
 import com.google.common.collect.ImmutableList;
@@ -363,9 +362,7 @@ public class WorldCommands extends CommandManager
 		@SuppressWarnings("unchecked")
 		public static List<String> getHandledWorlds()
 		{
-			// TEMP FIX
-			// FIXME SOOON
-			if(TimedServerData.exists("exclusive", "worlds"))
+			if(ServerData.exists("exclusive", "worlds"))
 			{
 				List<String> list = (List<String>) ServerData.value("exclusive", "worlds");
 				if(list != null) return list;

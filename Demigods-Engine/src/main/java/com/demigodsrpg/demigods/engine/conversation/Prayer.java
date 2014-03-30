@@ -480,7 +480,7 @@ public class Prayer implements ConversationManager
 					{
 						return true;
 					}
-					else if(skill != null ? skill.hasMetCap() : false)
+					else if(skill != null && skill.hasMetCap())
 					{
 						notifications.add(English.NOTIFICATION_ERROR_SKILL_MAX_LEVEL);
 						return false;

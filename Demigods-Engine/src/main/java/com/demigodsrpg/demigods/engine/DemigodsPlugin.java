@@ -50,7 +50,7 @@ public class DemigodsPlugin extends CensoredJavaPlugin
 		else ready = true;
 
 		// Print success!
-		message("enabled");
+		message(" enabled");
 	}
 
 	/**
@@ -61,7 +61,7 @@ public class DemigodsPlugin extends CensoredJavaPlugin
 	{
 		Demigods.getServer().uninit();
 
-		message("disabled");
+		message(" disabled");
 	}
 
 	public static boolean getReady()

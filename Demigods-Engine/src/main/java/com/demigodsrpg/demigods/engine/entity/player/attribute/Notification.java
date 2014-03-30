@@ -44,7 +44,7 @@ public class Notification extends DataAccess<UUID, Notification>
 	@Override
 	public Map<String, Object> serialize()
 	{
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>();
 		map.put("expiration", expiration);
 		map.put("receiver", receiver.toString());
 		map.put("sender", sender.toString());
