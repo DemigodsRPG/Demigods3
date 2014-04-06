@@ -1,4 +1,4 @@
-![Demigods Logo](http://www.demigodsrpg.com/demigods_logo.png)
+![Demigods Logo](http://www.censoredsoftware.com/projects/demigods/logo.png)
 
 Overview [![Build Status](https://travis-ci.org/CensoredSoftware/Demigods.png?branch=master)](https://travis-ci.org/CensoredSoftware/Demigods)
 ========
@@ -23,7 +23,4 @@ Developers
 ==========
 
 Demigods 3 is being developed by The Demigods Team, defined in [**AUTHORS.md**](AUTHORS.md).
-
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/CensoredSoftware/demigods/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
