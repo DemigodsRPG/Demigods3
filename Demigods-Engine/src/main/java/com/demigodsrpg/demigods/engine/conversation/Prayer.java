@@ -585,7 +585,7 @@ public class Prayer implements ConversationManager
 				Notification notification = Notification.get(UUID.fromString(string));
 				// Determine color
 				ChatColor color;
-				switch(notification.getDanger())
+				switch(notification.getAlert())
 				{
 					case GOOD:
 						color = ChatColor.GREEN;
@@ -595,7 +595,7 @@ public class Prayer implements ConversationManager
 						break;
 					case NEUTRAL:
 					default:
-						color = ChatColor.YELLOW;
+						color = ChatColor.AQUA;
 						break;
 				}
 
@@ -1414,7 +1414,7 @@ public class Prayer implements ConversationManager
 						if(neededItems == finalItems)
 						{
 							// Accepted, finish everything up!
-							DemigodsCharacter.create(DemigodsPlayer.of(offlinePlayer), deity.getName(), chosenName, true);
+							DemigodsCharacter character = DemigodsCharacter.create(DemigodsPlayer.of(offlinePlayer), deity.getName(), chosenName, true);
 
 							// Remove temp and data
 							TimedServerData.exists(offlinePlayer.getName(), "currently_creating");
@@ -1435,6 +1435,14 @@ public class Prayer implements ConversationManager
 								// Fancy particles
 								for(int i = 0; i < 20; i++)
 									player.getWorld().spawn(player.getLocation(), ExperienceOrb.class);
+
+								// Welcome notification
+								Notification welcome = Notification.create(Notification.SenderType.SERVER,
+										character, Notification.Alert.GOOD, "Happy Birthday!", chosenName +
+												", today you take your first steps toward destiny--make your kin both proud and strong by vanquishing the foes of "
+												+ deityName + "."
+								);
+								DemigodsPlayer.of(player).sendNotification(welcome);
 							}
 						}
 						else if(offlinePlayer.isOnline())

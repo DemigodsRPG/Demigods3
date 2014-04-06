@@ -10,6 +10,7 @@ import com.demigodsrpg.demigods.engine.data.IdType;
 import com.demigodsrpg.demigods.engine.data.Register;
 import com.demigodsrpg.demigods.engine.data.TimedServerData;
 import com.demigodsrpg.demigods.engine.entity.DemigodsTameable;
+import com.demigodsrpg.demigods.engine.entity.player.attribute.Notification;
 import com.demigodsrpg.demigods.engine.inventory.DemigodsEnderInventory;
 import com.demigodsrpg.demigods.engine.inventory.DemigodsPlayerInventory;
 import com.demigodsrpg.demigods.engine.language.English;
@@ -42,7 +43,7 @@ public class DemigodsPlayer extends DataAccess<String, DemigodsPlayer>
 	private String playerName;
 	private String mortalName, mortalListName;
 	private boolean canPvp;
-	private long lastLoginTime, lastLogoutTime;
+	private Long lastLoginTime, lastLogoutTime;
 	private String currentDeityName;
 	private int characterSlots;
 	private UUID current;
@@ -64,9 +65,7 @@ public class DemigodsPlayer extends DataAccess<String, DemigodsPlayer>
 		if(conf.isString("mortalListName")) this.mortalListName = conf.getString("mortalListName");
 		if(conf.isBoolean("canPvp")) canPvp = conf.getBoolean("canPvp");
 		if(conf.isLong("lastLoginTime")) lastLoginTime = conf.getLong("lastLoginTime");
-		else lastLoginTime = -1;
 		if(conf.isLong("lastLogoutTime")) lastLogoutTime = conf.getLong("lastLogoutTime");
-		else lastLogoutTime = -1;
 		if(conf.getString("currentDeityName") != null) currentDeityName = conf.getString("currentDeityName");
 		if(conf.isInt("characterSlots")) characterSlots = conf.getInt("characterSlots");
 		else characterSlots = Configs.getSettingInt("character.default_character_slots");
@@ -194,7 +193,7 @@ public class DemigodsPlayer extends DataAccess<String, DemigodsPlayer>
 	// TODO Fix this so it doesn't run on the main thread.
 	public OfflinePlayer getBukkitOfflinePlayer() throws BlockingOperationException
 	{
-		return Bukkit.getOfflinePlayer(MojangIdProvider.toUUID(mojangAccount));
+		return Bukkit.getOfflinePlayer(playerName);
 	}
 
 	public void setLastLoginTime(Long time)
@@ -203,7 +202,7 @@ public class DemigodsPlayer extends DataAccess<String, DemigodsPlayer>
 		save();
 	}
 
-	public long getLastLoginTime()
+	public Long getLastLoginTime()
 	{
 		return this.lastLoginTime;
 	}
@@ -214,7 +213,7 @@ public class DemigodsPlayer extends DataAccess<String, DemigodsPlayer>
 		save();
 	}
 
-	public long getLastLogoutTime()
+	public Long getLastLogoutTime()
 	{
 		return this.lastLogoutTime;
 	}
@@ -478,6 +477,11 @@ public class DemigodsPlayer extends DataAccess<String, DemigodsPlayer>
 	protected String getId()
 	{
 		return getMojangAccount();
+	}
+
+	public void sendNotification(Notification notification)
+	{
+		if(getCharacter() != null) Notification.sendNotification(getCharacter(), notification);
 	}
 
 	/**

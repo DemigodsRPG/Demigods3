@@ -23,7 +23,6 @@ public class DemigodsLocation extends WorldDataAccess<UUID, DemigodsLocation>
 {
 	private UUID id;
 	private String world;
-	private Long seed;
 	private Double X;
 	private Double Y;
 	private Double Z;
@@ -39,7 +38,6 @@ public class DemigodsLocation extends WorldDataAccess<UUID, DemigodsLocation>
 	{
 		this.id = id;
 		this.world = args[0];
-		seed = conf.getLong("seed");
 		X = conf.getDouble("X");
 		Y = conf.getDouble("Y");
 		Z = conf.getDouble("Z");
@@ -52,7 +50,6 @@ public class DemigodsLocation extends WorldDataAccess<UUID, DemigodsLocation>
 	public Map<String, Object> serialize()
 	{
 		Map<String, Object> map = Maps.newHashMap();
-		map.put("seed", seed);
 		map.put("X", X);
 		map.put("Y", Y);
 		map.put("Z", Z);
@@ -70,11 +67,6 @@ public class DemigodsLocation extends WorldDataAccess<UUID, DemigodsLocation>
 	public void setWorld(String world)
 	{
 		this.world = world;
-	}
-
-	public void setWorldSeed(Long worldSeed)
-	{
-		this.seed = worldSeed;
 	}
 
 	public void setX(Double X)
@@ -362,9 +354,6 @@ public class DemigodsLocation extends WorldDataAccess<UUID, DemigodsLocation>
 
 	public static DemigodsLocation track(Location bukkitLocation)
 	{
-		DemigodsLocation location = of(bukkitLocation);
-		location.generateId();
-		location.save();
-		return location;
+		return track(of(bukkitLocation));
 	}
 }

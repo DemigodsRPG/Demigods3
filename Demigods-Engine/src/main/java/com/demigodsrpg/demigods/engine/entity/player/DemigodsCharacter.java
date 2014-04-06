@@ -333,6 +333,11 @@ public class DemigodsCharacter extends DataAccess<UUID, DemigodsCharacter> imple
 		return Bukkit.getOfflinePlayer(getPlayerName());
 	}
 
+	public DemigodsPlayer getDemigodsPlayer()
+	{
+		return DemigodsPlayer.get(mojangAccount);
+	}
+
 	public Player getBukkitPlayer()
 	{
 		return getBukkitOfflinePlayer().getPlayer();

@@ -20,7 +20,7 @@ public class Notification extends DataAccess<UUID, Notification>
 	private UUID receiver;
 	private UUID sender;
 	private String senderType;
-	private String danger;
+	private String alert;
 	private String name;
 	private String message;
 
@@ -36,7 +36,7 @@ public class Notification extends DataAccess<UUID, Notification>
 		receiver = UUID.fromString(conf.getString("receiver"));
 		sender = UUID.fromString(conf.getString("sender"));
 		senderType = conf.getString("senderType");
-		danger = conf.getString("danger");
+		alert = conf.getString("alert");
 		name = conf.getString("name");
 		message = conf.getString("message");
 	}
@@ -49,7 +49,7 @@ public class Notification extends DataAccess<UUID, Notification>
 		map.put("receiver", receiver.toString());
 		map.put("sender", sender.toString());
 		map.put("senderType", senderType);
-		map.put("danger", danger);
+		map.put("alert", alert);
 		map.put("name", name);
 		map.put("message", message);
 		return map;
@@ -65,12 +65,12 @@ public class Notification extends DataAccess<UUID, Notification>
 		this.expiration = System.currentTimeMillis() + (minutes * 60000);
 	}
 
-	public void setDanger(Danger danger)
+	public void setalert(Alert alert)
 	{
-		this.danger = danger.name();
+		this.alert = alert.name();
 	}
 
-	public void setSenderType(Sender senderType)
+	public void setSenderType(SenderType senderType)
 	{
 		this.senderType = senderType.name();
 	}
@@ -100,14 +100,14 @@ public class Notification extends DataAccess<UUID, Notification>
 		return this.expiration;
 	}
 
-	public Sender getSenderType()
+	public SenderType getSenderType()
 	{
-		return Sender.valueOf(this.senderType);
+		return SenderType.valueOf(this.senderType);
 	}
 
-	public Danger getDanger()
+	public Alert getAlert()
 	{
-		return Danger.valueOf(this.danger);
+		return Alert.valueOf(this.alert);
 	}
 
 	public UUID getReceiverId()
@@ -140,12 +140,12 @@ public class Notification extends DataAccess<UUID, Notification>
 		return this.expiration != 0L;
 	}
 
-	public enum Sender
+	public enum SenderType
 	{
-		PLUGIN, QUEST, CHARACTER
+		SERVER, QUEST, CHARACTER
 	}
 
-	public enum Danger
+	public enum Alert
 	{
 		GOOD, NEUTRAL, BAD
 	}
@@ -162,40 +162,40 @@ public class Notification extends DataAccess<UUID, Notification>
 		return DATA_ACCESS.allDirect();
 	}
 
-	public static Notification create(Notification.Sender sender, DemigodsCharacter receiver, Notification.Danger danger, String name, String message)
+	public static Notification create(SenderType senderType, DemigodsCharacter receiver, Alert alert, String name, String message)
 	{
 		Notification notification = new Notification();
 		notification.generateId();
 		notification.setReceiver(receiver.getId());
-		notification.setDanger(danger);
-		notification.setSenderType(sender);
+		notification.setalert(alert);
+		notification.setSenderType(senderType);
 		notification.setName(name);
 		notification.setMessage(message);
 		notification.save();
 		return notification;
 	}
 
-	public static Notification create(Notification.Sender sender, DemigodsCharacter receiver, Notification.Danger danger, int minutes, String name, String message)
+	public static Notification create(SenderType senderType, DemigodsCharacter receiver, Alert alert, int minutes, String name, String message)
 	{
-		Notification notification = create(sender, receiver, danger, name, message);
+		Notification notification = create(senderType, receiver, alert, name, message);
 		notification.generateId();
 		notification.setExpiration(minutes);
 		notification.save();
 		return notification;
 	}
 
-	public static Notification create(DemigodsCharacter sender, DemigodsCharacter receiver, Notification.Danger danger, String name, String message)
+	public static Notification create(DemigodsCharacter sender, DemigodsCharacter receiver, Alert alert, String name, String message)
 	{
-		Notification notification = create(Notification.Sender.CHARACTER, receiver, danger, name, message);
+		Notification notification = create(SenderType.CHARACTER, receiver, alert, name, message);
 		notification.generateId();
 		notification.setSender(sender.getId());
 		notification.save();
 		return notification;
 	}
 
-	public static Notification create(DemigodsCharacter sender, DemigodsCharacter receiver, Notification.Danger danger, int minutes, String name, String message)
+	public static Notification create(DemigodsCharacter sender, DemigodsCharacter receiver, Alert alert, int minutes, String name, String message)
 	{
-		Notification notification = create(sender, receiver, danger, name, message);
+		Notification notification = create(sender, receiver, alert, name, message);
 		notification.generateId();
 		notification.setExpiration(minutes);
 		notification.save();
@@ -206,7 +206,7 @@ public class Notification extends DataAccess<UUID, Notification>
 	{
 		for(Notification notification : all())
 		{
-			if(notification.getExpiration() <= System.currentTimeMillis())
+			if(notification.hasExpiration() && notification.getExpiration() <= System.currentTimeMillis())
 			{
 				notification.remove();
 				DemigodsCharacter.get(notification.getReceiverId()).getMeta().removeNotification(notification);
@@ -220,13 +220,11 @@ public class Notification extends DataAccess<UUID, Notification>
 		character.getMeta().addNotification(notification);
 
 		// Message them if possible
-		if(character.getBukkitOfflinePlayer().isOnline())
+		if(3000 < character.getDemigodsPlayer().getLastLoginTime() && character.getBukkitOfflinePlayer().isOnline())
 		{
 			Player player = character.getBukkitOfflinePlayer().getPlayer();
 			for(String message : English.NOTIFICATION_RECEIVED.getLines())
-			{
 				player.sendMessage(message);
-			}
 		}
 	}
 }
