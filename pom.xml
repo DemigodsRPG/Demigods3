@@ -87,10 +87,10 @@
     </repositories>
 
     <dependencies>
-        <!-- Spigot API -->
+        <!-- Spigot Server -->
         <dependency>
             <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
+            <artifactId>spigot</artifactId>
             <version>${spigot.version}</version>
         </dependency>
         <!-- PostgreSQL JBDC -->
@@ -192,14 +192,6 @@
                     <artifactId>junit</artifactId>
                 </exclusion>
             </exclusions>
-        </dependency>
-        <!-- Mojang Accounts -->
-        <dependency>
-            <groupId>com.mojang</groupId>
-            <artifactId>AccountsClient</artifactId>
-            <version>latest</version>
-            <scope>compile</scope>
-            <optional>false</optional>
         </dependency>
     </dependencies>
 

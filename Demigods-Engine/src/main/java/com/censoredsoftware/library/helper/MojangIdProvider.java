@@ -1,9 +1,9 @@
 package com.censoredsoftware.library.helper;
 
 import com.google.common.base.Joiner;
-import com.mojang.api.profiles.HttpProfileRepository;
-import com.mojang.api.profiles.Profile;
-import com.mojang.api.profiles.ProfileCriteria;
+import demigods.shaded.com.mojang.api.profiles.HttpProfileRepository;
+import demigods.shaded.com.mojang.api.profiles.Profile;
+import demigods.shaded.com.mojang.api.profiles.ProfileCriteria;
 import org.bukkit.OfflinePlayer;
 
 import java.util.UUID;
