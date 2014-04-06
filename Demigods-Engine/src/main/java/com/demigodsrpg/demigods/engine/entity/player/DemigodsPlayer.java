@@ -1,7 +1,7 @@
 package com.demigodsrpg.demigods.engine.entity.player;
 
 import com.censoredsoftware.library.exception.MojangIdNotFoundException;
-import com.censoredsoftware.library.helper.MojangIdGrabber;
+import com.censoredsoftware.library.helper.MojangIdProvider;
 import com.demigodsrpg.demigods.base.listener.ChatRecorder;
 import com.demigodsrpg.demigods.engine.DemigodsPlugin;
 import com.demigodsrpg.demigods.engine.battle.Battle;
@@ -10,6 +10,7 @@ import com.demigodsrpg.demigods.engine.data.IdType;
 import com.demigodsrpg.demigods.engine.data.Register;
 import com.demigodsrpg.demigods.engine.data.TimedServerData;
 import com.demigodsrpg.demigods.engine.entity.DemigodsTameable;
+import com.demigodsrpg.demigods.engine.entity.player.attribute.Notification;
 import com.demigodsrpg.demigods.engine.inventory.DemigodsEnderInventory;
 import com.demigodsrpg.demigods.engine.inventory.DemigodsPlayerInventory;
 import com.demigodsrpg.demigods.engine.language.English;
@@ -21,6 +22,7 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
+import net.minecraft.util.io.netty.util.concurrent.BlockingOperationException;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -41,7 +43,7 @@ public class DemigodsPlayer extends DataAccess<String, DemigodsPlayer>
 	private String playerName;
 	private String mortalName, mortalListName;
 	private boolean canPvp;
-	private long lastLoginTime, lastLogoutTime;
+	private Long lastLoginTime, lastLogoutTime;
 	private String currentDeityName;
 	private int characterSlots;
 	private UUID current;
@@ -63,9 +65,7 @@ public class DemigodsPlayer extends DataAccess<String, DemigodsPlayer>
 		if(conf.isString("mortalListName")) this.mortalListName = conf.getString("mortalListName");
 		if(conf.isBoolean("canPvp")) canPvp = conf.getBoolean("canPvp");
 		if(conf.isLong("lastLoginTime")) lastLoginTime = conf.getLong("lastLoginTime");
-		else lastLoginTime = -1;
 		if(conf.isLong("lastLogoutTime")) lastLogoutTime = conf.getLong("lastLogoutTime");
-		else lastLogoutTime = -1;
 		if(conf.getString("currentDeityName") != null) currentDeityName = conf.getString("currentDeityName");
 		if(conf.isInt("characterSlots")) characterSlots = conf.getInt("characterSlots");
 		else characterSlots = Configs.getSettingInt("character.default_character_slots");
@@ -88,7 +88,8 @@ public class DemigodsPlayer extends DataAccess<String, DemigodsPlayer>
 			map.put("lastLogoutTime", lastLogoutTime);
 		}
 		catch(Exception ignored)
-		{}
+		{
+		}
 		if(mortalName != null) map.put("mortalName", mortalName);
 		if(mortalListName != null) map.put("mortalListName", mortalListName);
 		if(currentDeityName != null) map.put("currentDeityName", currentDeityName);
@@ -189,7 +190,8 @@ public class DemigodsPlayer extends DataAccess<String, DemigodsPlayer>
 		}
 	}
 
-	public OfflinePlayer getBukkitOfflinePlayer()
+	// TODO Fix this so it doesn't run on the main thread.
+	public OfflinePlayer getBukkitOfflinePlayer() throws BlockingOperationException
 	{
 		return Bukkit.getOfflinePlayer(playerName);
 	}
@@ -200,7 +202,7 @@ public class DemigodsPlayer extends DataAccess<String, DemigodsPlayer>
 		save();
 	}
 
-	public long getLastLoginTime()
+	public Long getLastLoginTime()
 	{
 		return this.lastLoginTime;
 	}
@@ -211,7 +213,7 @@ public class DemigodsPlayer extends DataAccess<String, DemigodsPlayer>
 		save();
 	}
 
-	public long getLastLogoutTime()
+	public Long getLastLogoutTime()
 	{
 		return this.lastLogoutTime;
 	}
@@ -477,6 +479,11 @@ public class DemigodsPlayer extends DataAccess<String, DemigodsPlayer>
 		return getMojangAccount();
 	}
 
+	public void sendNotification(Notification notification)
+	{
+		if(getCharacter() != null) Notification.sendNotification(getCharacter(), notification);
+	}
+
 	/**
 	 * Starts recording recording the <code>player</code>'s chat.
 	 */
@@ -487,7 +494,7 @@ public class DemigodsPlayer extends DataAccess<String, DemigodsPlayer>
 
 	/**
 	 * Stops recording and sends all messages that have been recorded thus far to the player.
-	 * 
+	 *
 	 * @param display if true, the chat will be sent to the player
 	 */
 	public List<String> stopRecording(boolean display)
@@ -521,21 +528,21 @@ public class DemigodsPlayer extends DataAccess<String, DemigodsPlayer>
 	public static DemigodsPlayer create(final OfflinePlayer player)
 	{
 		DemigodsPlayer playerSave = new DemigodsPlayer();
-		playerSave.setMojangAccount(MojangIdGrabber.getUUID(player));
+		playerSave.setMojangAccount(MojangIdProvider.getId(player));
 		playerSave.setPlayerName(player.getName());
 		playerSave.setLastLoginTime(player.getLastPlayed());
 		playerSave.setCanPvp(true);
 		playerSave.save();
 
 		// Log the creation
-		Messages.info(English.LOG_PLAYER_CREATED.getLine().replace("{player}", player.getName()).replace("{id}", MojangIdGrabber.getUUID(player)));
+		Messages.info(English.LOG_PLAYER_CREATED.getLine().replace("{player}", player.getName()).replace("{id}", MojangIdProvider.getId(player)));
 
 		return playerSave;
 	}
 
 	public static DemigodsPlayer of(final OfflinePlayer player)
 	{
-		String id = MojangIdGrabber.getUUID(player);
+		String id = MojangIdProvider.getId(player);
 		if(id == null) throw new MojangIdNotFoundException(player.getName());
 		DemigodsPlayer found = get(id);
 		if(found == null) return create(player);
@@ -556,7 +563,8 @@ public class DemigodsPlayer extends DataAccess<String, DemigodsPlayer>
 			});
 		}
 		catch(NoSuchElementException ignored)
-		{}
+		{
+		}
 		return null;
 	}
 
@@ -574,7 +582,7 @@ public class DemigodsPlayer extends DataAccess<String, DemigodsPlayer>
 
 	/**
 	 * Returns true if the <code>player</code> is currently immortal.
-	 * 
+	 *
 	 * @param player the player to check.
 	 * @return boolean
 	 */
@@ -586,8 +594,8 @@ public class DemigodsPlayer extends DataAccess<String, DemigodsPlayer>
 
 	/**
 	 * Returns true if <code>player</code> has a character with the name <code>charName</code>.
-	 * 
-	 * @param player the player to check.
+	 *
+	 * @param player   the player to check.
 	 * @param charName the charName to check with.
 	 * @return boolean
 	 */

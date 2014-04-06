@@ -480,7 +480,7 @@ public class Prayer implements ConversationManager
 					{
 						return true;
 					}
-					else if(skill != null ? skill.hasMetCap() : false)
+					else if(skill != null && skill.hasMetCap())
 					{
 						notifications.add(English.NOTIFICATION_ERROR_SKILL_MAX_LEVEL);
 						return false;
@@ -585,7 +585,7 @@ public class Prayer implements ConversationManager
 				Notification notification = Notification.get(UUID.fromString(string));
 				// Determine color
 				ChatColor color;
-				switch(notification.getDanger())
+				switch(notification.getAlert())
 				{
 					case GOOD:
 						color = ChatColor.GREEN;
@@ -595,7 +595,7 @@ public class Prayer implements ConversationManager
 						break;
 					case NEUTRAL:
 					default:
-						color = ChatColor.YELLOW;
+						color = ChatColor.AQUA;
 						break;
 				}
 
@@ -1414,7 +1414,7 @@ public class Prayer implements ConversationManager
 						if(neededItems == finalItems)
 						{
 							// Accepted, finish everything up!
-							DemigodsCharacter.create(DemigodsPlayer.of(offlinePlayer), deity.getName(), chosenName, true);
+							DemigodsCharacter character = DemigodsCharacter.create(DemigodsPlayer.of(offlinePlayer), deity.getName(), chosenName, true);
 
 							// Remove temp and data
 							TimedServerData.exists(offlinePlayer.getName(), "currently_creating");
@@ -1435,6 +1435,14 @@ public class Prayer implements ConversationManager
 								// Fancy particles
 								for(int i = 0; i < 20; i++)
 									player.getWorld().spawn(player.getLocation(), ExperienceOrb.class);
+
+								// Welcome notification
+								Notification welcome = Notification.create(Notification.SenderType.SERVER,
+										character, Notification.Alert.GOOD, "Happy Birthday!", chosenName +
+												", today you take your first steps toward destiny--make your kin both proud and strong by vanquishing the foes of "
+												+ deityName + "."
+								);
+								DemigodsPlayer.of(player).sendNotification(welcome);
 							}
 						}
 						else if(offlinePlayer.isOnline())
@@ -1571,7 +1579,7 @@ public class Prayer implements ConversationManager
 	{
 		/**
 		 * Returns true if the <code>player</code> is currently praying.
-		 * 
+		 *
 		 * @param player the player to check.
 		 * @return boolean
 		 */
@@ -1582,13 +1590,14 @@ public class Prayer implements ConversationManager
 				return TempDataManager.hasKeyTemp(player.getName(), "prayer_conversation");
 			}
 			catch(Exception ignored)
-			{}
+			{
+			}
 			return false;
 		}
 
 		/**
 		 * Removes all temp data related to prayer for the <code>player</code>.
-		 * 
+		 *
 		 * @param player the player to clean.
 		 */
 		public static void clearPrayerSession(OfflinePlayer player)
@@ -1602,7 +1611,7 @@ public class Prayer implements ConversationManager
 
 		/**
 		 * Returns the context for the <code>player</code>'s prayer conversation.
-		 * 
+		 *
 		 * @param player the player whose context to return.
 		 * @return ConversationContext
 		 */
@@ -1614,7 +1623,7 @@ public class Prayer implements ConversationManager
 
 		/**
 		 * Changes prayer status for <code>player</code> to <code>option</code> and tells them.
-		 * 
+		 *
 		 * @param player the player the manipulate.
 		 * @param option the boolean to set to.
 		 */
@@ -1639,9 +1648,9 @@ public class Prayer implements ConversationManager
 
 		/**
 		 * Changes prayer status for <code>player</code> to <code>option</code> silently.
-		 * 
-		 * @param player the player the manipulate.
-		 * @param option the boolean to set to.
+		 *
+		 * @param player     the player the manipulate.
+		 * @param option     the boolean to set to.
 		 * @param recordChat whether or not the chat should be recorded.
 		 */
 		public static void togglePrayingSilent(Player player, boolean option, boolean recordChat)

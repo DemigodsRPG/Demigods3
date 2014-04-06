@@ -92,7 +92,8 @@ public class Skill extends DataAccess<UUID, Skill>
 	}
 
 	public Skill()
-	{}
+	{
+	}
 
 	@Register(idType = IdType.UUID)
 	public Skill(UUID id, ConfigurationSection conf)

@@ -12,7 +12,7 @@ public class ExConfigs
 {
 	/**
 	 * Constructor to create a new Configs for the given PLUGIN's <code>instance</code>.
-	 * 
+	 *
 	 * @param instance The demigods instance the Configs attaches to.
 	 * @param copyDefaults Boolean for copying the default config.yml found inside this demigods over the config file utilized by this library.
 	 */
@@ -25,7 +25,7 @@ public class ExConfigs
 
 	/**
 	 * Retrieve the Integer setting for String <code>id</code>.
-	 * 
+	 *
 	 * @param id The String key for the setting.
 	 * @return Integer setting.
 	 */
@@ -37,7 +37,7 @@ public class ExConfigs
 
 	/**
 	 * Retrieve the String setting for String <code>id</code>.
-	 * 
+	 *
 	 * @param id The String key for the setting.
 	 * @return String setting.
 	 */
@@ -49,7 +49,7 @@ public class ExConfigs
 
 	/**
 	 * Retrieve the Boolean setting for String <code>id</code>.
-	 * 
+	 *
 	 * @param id The String key for the setting.
 	 * @return Boolean setting.
 	 */
@@ -60,7 +60,7 @@ public class ExConfigs
 
 	/**
 	 * Retrieve the Double setting for String <code>id</code>.
-	 * 
+	 *
 	 * @param id The String key for the setting.
 	 * @return Double setting.
 	 */
@@ -72,7 +72,7 @@ public class ExConfigs
 
 	/**
 	 * Retrieve the List<String> setting for String <code>id</code>.
-	 * 
+	 *
 	 * @param id The String key for the setting.
 	 * @return List<String> setting.
 	 */

@@ -47,5 +47,6 @@ public class NewPlayerNeedsHelp implements Trigger
 
 	@Override
 	public void processAsync()
-	{}
+	{
+	}
 }

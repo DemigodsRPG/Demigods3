@@ -12,7 +12,7 @@ public class Configs
 {
 	/**
 	 * Constructor to create a new Configs for the given plugin's <code>instance</code>.
-	 * 
+	 *
 	 * @param instance The demigods instance the Configs attaches to.
 	 * @param copyDefaults Boolean for copying the default config.yml found inside this demigods over the config file utilized by this library.
 	 */
@@ -25,7 +25,7 @@ public class Configs
 
 	/**
 	 * Retrieve the Integer setting for String <code>id</code>.
-	 * 
+	 *
 	 * @param id The String key for the setting.
 	 * @return Integer setting.
 	 */
@@ -37,7 +37,7 @@ public class Configs
 
 	/**
 	 * Retrieve the String setting for String <code>id</code>.
-	 * 
+	 *
 	 * @param id The String key for the setting.
 	 * @return String setting.
 	 */
@@ -49,7 +49,7 @@ public class Configs
 
 	/**
 	 * Retrieve the Boolean setting for String <code>id</code>.
-	 * 
+	 *
 	 * @param id The String key for the setting.
 	 * @return Boolean setting.
 	 */
@@ -60,7 +60,7 @@ public class Configs
 
 	/**
 	 * Retrieve the Float setting for String <code>id</code>.
-	 * 
+	 *
 	 * @param id The String key for the setting.
 	 * @return Float setting.
 	 */
@@ -73,13 +73,14 @@ public class Configs
 			return Float.valueOf(floatValue);
 		}
 		catch(Exception ignored)
-		{}
+		{
+		}
 		return -1F;
 	}
 
 	/**
 	 * Retrieve the Double setting for String <code>id</code>.
-	 * 
+	 *
 	 * @param id The String key for the setting.
 	 * @return Double setting.
 	 */
@@ -91,7 +92,7 @@ public class Configs
 
 	/**
 	 * Retrieve the List<String> setting for String <code>id</code>.
-	 * 
+	 *
 	 * @param id The String key for the setting.
 	 * @return List<String> setting.
 	 */

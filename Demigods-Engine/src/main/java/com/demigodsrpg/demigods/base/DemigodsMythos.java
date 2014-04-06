@@ -48,7 +48,7 @@ public class DemigodsMythos implements Mythos
 	@Override
 	public String[] getIncompatible()
 	{
-		return new String[] {};
+		return new String[] { };
 	}
 
 	@Override
@@ -147,9 +147,11 @@ public class DemigodsMythos implements Mythos
 
 	@Override
 	public void setSecondary()
-	{}
+	{
+	}
 
 	@Override
 	public void lock()
-	{}
+	{
+	}
 }

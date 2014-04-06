@@ -149,12 +149,13 @@ public class RestrictedArea implements DemigodsStructureType, DemigodsStructureT
 	public static class Util
 	{
 		private Util()
-		{}
+		{
+		}
 
 		/**
 		 * Makes all invisible walls/areas visible to the <code>player</code> as glass with
 		 * a fake block update.
-		 * 
+		 *
 		 * @param player the player to make the blocks visible to
 		 */
 		public static void toggleDebugRestrictedAreas(final Player player, boolean option)

@@ -2,7 +2,6 @@ package com.demigodsrpg.demigods.engine;
 
 import com.censoredsoftware.library.helper.CensoredCentralizedClass;
 import com.censoredsoftware.library.helper.ConversationManager;
-import com.censoredsoftware.shaded.org.mcstats.MetricsLite;
 import com.demigodsrpg.demigods.base.DemigodsConversation;
 import com.demigodsrpg.demigods.base.listener.ChatListener;
 import com.demigodsrpg.demigods.base.listener.SpigotFeatures;
@@ -41,6 +40,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicesManager;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.mcstats.MetricsLite;
 
 import java.util.*;
 
@@ -83,17 +83,16 @@ public class DemigodsServer extends CensoredCentralizedClass
 
 			if(!DemigodsPlugin.getInst().getServer().getOnlineMode())
 			{
-				Messages.severe("Demigods might not work in offline mode.");
-				Messages.severe("We depend on Mojang's servers for ids.");
-				Messages.severe("Any player who joins and is not premium may be kicked from the game.");
+				Messages.warning("We depend on Mojang's auth servers for player id.");
+				Messages.warning("Players who are not premium may be kicked from the game.");
 			}
 
 			// Check for world load errors
 			if(loadWorlds() > 0)
 			{
-				Messages.severe("Demigods was unable to confirm any worlds.");
-				Messages.severe("This may be caused by misspelled world names.");
-				Messages.severe("Multi-world plugins can cause this message, and in that case this may be a false alarm.");
+				Messages.warning("Demigods was unable to confirm any worlds.");
+				Messages.warning("This may be caused by misspelled world names.");
+				Messages.warning("Multi-world plugins can cause this message, and in that case this may be a false alarm.");
 			}
 
 			// Load the data
@@ -422,7 +421,8 @@ public class DemigodsServer extends CensoredCentralizedClass
 			});
 		}
 		catch(Exception ignored)
-		{}
+		{
+		}
 		return null;
 	}
 

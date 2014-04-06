@@ -30,7 +30,8 @@ public class DemigodsTameable extends DataAccess<UUID, DemigodsTameable> impleme
 	private UUID owner;
 
 	public DemigodsTameable()
-	{}
+	{
+	}
 
 	@Register(idType = IdType.UUID)
 	public DemigodsTameable(UUID id, ConfigurationSection conf)
@@ -46,7 +47,7 @@ public class DemigodsTameable extends DataAccess<UUID, DemigodsTameable> impleme
 	@Override
 	public Map<String, Object> serialize()
 	{
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>();
 		map.put("entityType", entityType);
 		if(animalTamer != null) map.put("animalTamer", animalTamer);
 		map.put("PvP", PvP);
@@ -131,7 +132,8 @@ public class DemigodsTameable extends DataAccess<UUID, DemigodsTameable> impleme
 			return getEntity().getLocation();
 		}
 		catch(Exception ignored)
-		{}
+		{
+		}
 		return null;
 	}
 

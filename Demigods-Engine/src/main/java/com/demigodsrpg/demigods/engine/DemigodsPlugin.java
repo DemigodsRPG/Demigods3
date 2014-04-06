@@ -1,7 +1,6 @@
 package com.demigodsrpg.demigods.engine;
 
 import com.censoredsoftware.library.helper.CensoredJavaPlugin;
-import com.censoredsoftware.plugin.CensoredLibPlugin;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
@@ -34,11 +33,11 @@ public class DemigodsPlugin extends CensoredJavaPlugin
 	{
 		INST = this;
 
-		if(!checkForCensoredLib())
-		{
-			getPluginLoader().disablePlugin(this);
-			return;
-		}
+		// if(!checkForCensoredLib())
+		// {
+		// getPluginLoader().disablePlugin(this);
+		// return;
+		// }
 
 		loadAddons();
 
@@ -51,7 +50,7 @@ public class DemigodsPlugin extends CensoredJavaPlugin
 		else ready = true;
 
 		// Print success!
-		message("enabled");
+		message(" enabled");
 	}
 
 	/**
@@ -62,7 +61,7 @@ public class DemigodsPlugin extends CensoredJavaPlugin
 	{
 		Demigods.getServer().uninit();
 
-		message("disabled");
+		message(" disabled");
 	}
 
 	public static boolean getReady()
@@ -78,7 +77,7 @@ public class DemigodsPlugin extends CensoredJavaPlugin
 		getLogger().info("    |____/|___|_|_|_|_|_  |___|___|___|");
 		getLogger().info("        Battle of the |___| Chosen");
 		getLogger().info("  ");
-		getLogger().info(" ...version " + getDescription().getVersion() + " has " + status + " successfully!");
+		getLogger().info(" ver. " + getDescription().getVersion() + status + "!");
 	}
 
 	private boolean checkForCensoredLib()
@@ -86,11 +85,11 @@ public class DemigodsPlugin extends CensoredJavaPlugin
 		// Check for CensoredLib
 		boolean messageOption = true;
 		Plugin check = Bukkit.getPluginManager().getPlugin("CensoredLib");
-		if(check instanceof CensoredLibPlugin)
-		{
-			if(check.getDescription().getVersion().startsWith(CENSORED_LIBRARY_VERSION)) return true;
-			messageOption = false;
-		}
+		// if(check instanceof CensoredLibPlugin)
+		// {
+		// if(check.getDescription().getVersion().startsWith(CENSORED_LIBRARY_VERSION)) return true;
+		// messageOption = false;
+		// }
 		getLogger().severe("  ");
 		getLogger().severe("                  888        d8b   888");
 		getLogger().severe("                  888              888");

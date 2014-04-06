@@ -65,7 +65,8 @@ public class DemigodsCharacter extends DataAccess<UUID, DemigodsCharacter> imple
 	private Set<String> deaths;
 
 	private DemigodsCharacter(Object ignored)
-	{}
+	{
+	}
 
 	public DemigodsCharacter()
 	{
@@ -150,7 +151,8 @@ public class DemigodsCharacter extends DataAccess<UUID, DemigodsCharacter> imple
 			if(potionEffects != null) map.put("potionEffects", Lists.newArrayList(potionEffects));
 		}
 		catch(Exception ignored)
-		{}
+		{
+		}
 		return map;
 	}
 
@@ -281,7 +283,8 @@ public class DemigodsCharacter extends DataAccess<UUID, DemigodsCharacter> imple
 				}
 			}
 			catch(Exception ignored)
-			{}
+			{
+			}
 		}
 
 		potionEffects.clear(); // METHOD MUST BE PRIVATE IF WE DO THIS HERE
@@ -301,7 +304,8 @@ public class DemigodsCharacter extends DataAccess<UUID, DemigodsCharacter> imple
 					return DemigodsPotionEffect.get(UUID.fromString(s));
 				}
 				catch(Exception ignored)
-				{}
+				{
+				}
 				return null;
 			}
 		});
@@ -327,6 +331,11 @@ public class DemigodsCharacter extends DataAccess<UUID, DemigodsCharacter> imple
 	public OfflinePlayer getBukkitOfflinePlayer()
 	{
 		return Bukkit.getOfflinePlayer(getPlayerName());
+	}
+
+	public DemigodsPlayer getDemigodsPlayer()
+	{
+		return DemigodsPlayer.get(mojangAccount);
 	}
 
 	public Player getBukkitPlayer()
@@ -494,7 +503,8 @@ public class DemigodsCharacter extends DataAccess<UUID, DemigodsCharacter> imple
 					return Death.get(UUID.fromString(s));
 				}
 				catch(Exception ignored)
-				{}
+				{
+				}
 				return null;
 			}
 		});

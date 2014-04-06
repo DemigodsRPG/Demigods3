@@ -1,0 +1,17 @@
+This compiled jar additionally contains the following projects:
+
+- org.mcstats.bukkit:metrics-lite
+    - SOURCE: https://github.com/Hidendra/Plugin-Metrics/tree/master/mods/bukkit/metrics-lite
+    - LICENSE (in source): https://github.com/Hidendra/Plugin-Metrics/blob/master/mods/bukkit/metrics-lite/src/main/java/org/mcstats/MetricsLite.java
+- org.atteo:evo-inflector
+    - SOURCE: https://github.com/atteo/evo-inflector
+    - LICENSE: https://github.com/atteo/evo-inflector/blob/master/LICENSE
+- org.jgrapht:jgrapht-core
+    - SOURCE: https://github.com/jgrapht/jgrapht/tree/master/jgrapht-core
+    - LICENSE: https://github.com/jgrapht/jgrapht/blob/master/license-EPL.txt
+- org.jgrapht:jgrapht-ext
+    - SOURCE: https://github.com/jgrapht/jgrapht/tree/master/jgrapht-ext
+    - LICENSE: https://github.com/jgrapht/jgrapht/blob/master/license-EPL.txt
+- com.mojang:AccountsClient
+    - SOURCE: https://github.com/Mojang/AccountsClient
+    - LICENSE: "This code is provided as a courtesy and feel free to build a client in another language to share with the community."

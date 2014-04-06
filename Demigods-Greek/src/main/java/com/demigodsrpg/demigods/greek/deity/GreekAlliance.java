@@ -71,7 +71,8 @@ public enum GreekAlliance implements Alliance
 			});
 		}
 		catch(Exception ignored)
-		{}
+		{
+		}
 		return false;
 	}
 }

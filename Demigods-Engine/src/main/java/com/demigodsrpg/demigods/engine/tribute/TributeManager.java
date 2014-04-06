@@ -30,7 +30,7 @@ public class TributeManager
 
 	/**
 	 * Returns all saved tribute data with attached current value.
-	 * 
+	 *
 	 * @return a Map of all tribute data.
 	 */
 	public static Map<Material, Integer> getTributeValuesMap()
@@ -48,7 +48,7 @@ public class TributeManager
 
 	/**
 	 * Returns the total number of tributes for the entire server.
-	 * 
+	 *
 	 * @return the total server tributes.
 	 */
 	public static int getTotalTributes()
@@ -61,7 +61,7 @@ public class TributeManager
 
 	/**
 	 * Returns the number of tributes for the <code>material</code>.
-	 * 
+	 *
 	 * @param material the material to check.
 	 * @return the total number of tributes.
 	 */
@@ -74,7 +74,7 @@ public class TributeManager
 
 	/**
 	 * Returns the number of tributes for the <code>category</code>.
-	 * 
+	 *
 	 * @param category the category to check.
 	 * @return the total number of tributes.
 	 */
@@ -89,7 +89,7 @@ public class TributeManager
 
 	/**
 	 * Saves the <code>item</code> amount into the server tribute stats.
-	 * 
+	 *
 	 * @param item the item whose amount to save.
 	 */
 	public static void saveTribute(ItemStack item)
@@ -116,7 +116,7 @@ public class TributeManager
 
 	/**
 	 * Returns the value for the <code>item</code> based on current tribute stats.
-	 * 
+	 *
 	 * @param item the item whose value to calculate.
 	 * @return the value of the item.
 	 */
@@ -136,7 +136,7 @@ public class TributeManager
 
 	/**
 	 * Returns the category of the <code>material</code>.
-	 * 
+	 *
 	 * @param material the material whose category to check
 	 * @return the category
 	 */
@@ -171,7 +171,7 @@ public class TributeManager
 
 	/**
 	 * Called when actually tributing the <code>item</code>.
-	 * 
+	 *
 	 * @param item the item to process.
 	 * @return the value of the item.
 	 */
@@ -189,7 +189,7 @@ public class TributeManager
 
 	/**
 	 * Returns the base value of the <code>material</code>.
-	 * 
+	 *
 	 * @param material the material whose value to return.
 	 * @return the base value of the item.
 	 */

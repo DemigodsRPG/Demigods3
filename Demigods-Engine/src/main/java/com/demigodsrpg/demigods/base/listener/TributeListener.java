@@ -82,7 +82,7 @@ public class TributeListener implements Listener
 		if(character == null) return;
 
 		// If it isn't a tribute chest then break the method
-		if(!event.getInventory().getName().contains("Tribute to") /* TODO make this work with translations, I'm sleepy */|| !DemigodsStructureType.Util.partOfStructureWithFlag(player.getTargetBlock(null, 10).getLocation(), DemigodsStructureType.Flag.TRIBUTE_LOCATION)) return;
+		if(!event.getInventory().getName().contains("Tribute to") /* TODO make this work with translations, I'm sleepy */ || !DemigodsStructureType.Util.partOfStructureWithFlag(player.getTargetBlock(null, 10).getLocation(), DemigodsStructureType.Flag.TRIBUTE_LOCATION)) return;
 
 		// Get the creator of the shrine
 		DemigodsStructure save = DemigodsStructure.get(DemigodsWorld.of(player.getWorld()), UUID.fromString(TempDataManager.getValueTemp(player.getName(), character.getName()).toString()));

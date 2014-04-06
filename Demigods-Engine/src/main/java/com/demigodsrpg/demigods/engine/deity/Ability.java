@@ -88,9 +88,9 @@ public interface Ability
 
 		/**
 		 * Returns true if the <code>target</code> can be attacked by the <code>player</code> with the defined <code>ability</code>.
-		 * 
-		 * @param player the Player doing the ability
-		 * @param target the LivingEntity being targeted
+		 *
+		 * @param player  the Player doing the ability
+		 * @param target  the LivingEntity being targeted
 		 * @param ability the ability itself
 		 * @return true/false depending on if all pre-process tests have passed
 		 */
@@ -147,9 +147,9 @@ public interface Ability
 		/**
 		 * Processes the ability by removing its cost from the <code>character</code>'s
 		 * current favor and then setting the players cooldown.
-		 * 
+		 *
 		 * @param character the character to manipulate.
-		 * @param ability the ability whose details to use.
+		 * @param ability   the ability whose details to use.
 		 */
 		public static void postProcessAbility(DemigodsCharacter character, Ability ability)
 		{
@@ -159,7 +159,7 @@ public interface Ability
 
 		/**
 		 * Returns true if the event <code>event</code> is caused by a left click.
-		 * 
+		 *
 		 * @param event the interact event
 		 * @return true/false depending on if the event is caused by a left click or not
 		 */
@@ -171,7 +171,7 @@ public interface Ability
 
 		/**
 		 * Returns the LivingEntity that <code>player</code> is target.
-		 * 
+		 *
 		 * @param player the player
 		 * @return the targeted LivingEntity
 		 */
@@ -186,7 +186,8 @@ public interface Ability
 				target = player.getTargetBlock(null, range).getLocation();
 			}
 			catch(Exception ignored)
-			{}
+			{
+			}
 			if(target == null) return null;
 			BlockIterator iterator = new BlockIterator(player, range);
 			List<Entity> targets = Lists.newArrayList();
@@ -231,7 +232,8 @@ public interface Ability
 				return (LivingEntity) targets.get(0);
 			}
 			catch(Exception ignored)
-			{}
+			{
+			}
 
 			return null;
 		}
@@ -243,7 +245,7 @@ public interface Ability
 
 		/**
 		 * Returns true if the <code>player</code> ability hits <code>target</code>.
-		 * 
+		 *
 		 * @param player the player using the ability
 		 * @param target the targeted LivingEntity
 		 * @return true/false depending on if the ability hits or misses
@@ -260,9 +262,9 @@ public interface Ability
 		/**
 		 * Returns the location that <code>character</code> is actually aiming
 		 * at when target <code>target</code>.
-		 * 
+		 *
 		 * @param character the character triggering the ability callAbilityEvent
-		 * @param target the location the character is target at
+		 * @param target    the location the character is target at
 		 * @return the aimed at location
 		 */
 		public static Location adjustedAimLocation(DemigodsCharacter character, Location target)
@@ -311,9 +313,9 @@ public interface Ability
 
 		/**
 		 * Returns true if <code>target</code> is hit at <code>hit</code>.
-		 * 
+		 *
 		 * @param target the LivingEntity being targeted
-		 * @param hit the location actually hit
+		 * @param hit    the location actually hit
 		 * @return true/false if <code>target</code> is hit
 		 */
 		public static boolean isHit(Location target, Location hit)
@@ -401,8 +403,8 @@ public interface Ability
 
 		/**
 		 * Returns the instance of an ability with a deity matching <code>deityName</code> and command matching <code>commandName</code>.
-		 * 
-		 * @param deityName the deity to look for.
+		 *
+		 * @param deityName   the deity to look for.
 		 * @param commandName the command name to look for.
 		 * @return the ability found
 		 */
@@ -429,8 +431,8 @@ public interface Ability
 
 		/**
 		 * Returns the instance of an ability with a deity matching <code>deityName</code> and name matching <code>abilityName</code>.
-		 * 
-		 * @param deityName the deity to look for.
+		 *
+		 * @param deityName   the deity to look for.
 		 * @param abilityName the ability name to look for.
 		 * @return the ability found
 		 */
@@ -457,7 +459,7 @@ public interface Ability
 
 		/**
 		 * Finds all ability instances for the currently loaded deities.
-		 * 
+		 *
 		 * @return a collection of abilities.
 		 */
 		public static Collection<Ability> getLoadedAbilities()

@@ -18,7 +18,8 @@ public class TimedServerData extends DataAccess<UUID, TimedServerData>
 	private long expiration;
 
 	public TimedServerData()
-	{}
+	{
+	}
 
 	@Register(idType = IdType.UUID)
 	public TimedServerData(UUID id, ConfigurationSection conf)
@@ -33,7 +34,7 @@ public class TimedServerData extends DataAccess<UUID, TimedServerData>
 	@Override
 	public Map<String, Object> serialize()
 	{
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>();
 		map.put("key", key);
 		map.put("subKey", subKey);
 		map.put("data", data);

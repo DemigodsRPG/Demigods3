@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentMap;
 
 /**
  * Abstract class extending ConfigFile for easy yaml file creation inside of Demigods.
- * 
+ *
  * @param <K> The id type.
  * @param <V> The data type.
  */
@@ -25,7 +25,7 @@ public abstract class DemigodsWorldFile<K extends Comparable, V extends WorldDat
 
 	/**
 	 * Create a DemigodsWorldFile from the file name, file extension, and file directory path.
-	 * 
+	 *
 	 * @param fileName The name of the file.
 	 * @param fileType The extension of the file.
 	 * @param savePath The file directory path.

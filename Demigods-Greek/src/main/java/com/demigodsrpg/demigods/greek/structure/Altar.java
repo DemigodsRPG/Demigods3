@@ -534,7 +534,8 @@ public class Altar extends GreekStructureType
 				});
 			}
 			catch(NoSuchElementException ignored)
-			{}
+			{
+			}
 			return null;
 		}
 	}

@@ -23,7 +23,6 @@ public class DemigodsLocation extends WorldDataAccess<UUID, DemigodsLocation>
 {
 	private UUID id;
 	private String world;
-	private Long seed;
 	private Double X;
 	private Double Y;
 	private Double Z;
@@ -32,13 +31,13 @@ public class DemigodsLocation extends WorldDataAccess<UUID, DemigodsLocation>
 	private String region;
 
 	DemigodsLocation()
-	{}
+	{
+	}
 
 	public DemigodsLocation(UUID id, ConfigurationSection conf, String... args)
 	{
 		this.id = id;
 		this.world = args[0];
-		seed = conf.getLong("seed");
 		X = conf.getDouble("X");
 		Y = conf.getDouble("Y");
 		Z = conf.getDouble("Z");
@@ -51,7 +50,6 @@ public class DemigodsLocation extends WorldDataAccess<UUID, DemigodsLocation>
 	public Map<String, Object> serialize()
 	{
 		Map<String, Object> map = Maps.newHashMap();
-		map.put("seed", seed);
 		map.put("X", X);
 		map.put("Y", Y);
 		map.put("Z", Z);
@@ -69,11 +67,6 @@ public class DemigodsLocation extends WorldDataAccess<UUID, DemigodsLocation>
 	public void setWorld(String world)
 	{
 		this.world = world;
-	}
-
-	public void setWorldSeed(Long worldSeed)
-	{
-		this.seed = worldSeed;
 	}
 
 	public void setX(Double X)
@@ -207,10 +200,10 @@ public class DemigodsLocation extends WorldDataAccess<UUID, DemigodsLocation>
 	/**
 	 * Randoms a random location with the center being <code>reference</code>.
 	 * Must be at least <code>min</code> blocks from the center and no more than <code>max</code> blocks away.
-	 * 
+	 *
 	 * @param reference the location used as the center for reference.
-	 * @param min the minimum number of blocks away.
-	 * @param max the maximum number of blocks away.
+	 * @param min       the minimum number of blocks away.
+	 * @param max       the maximum number of blocks away.
 	 * @return the random location generated.
 	 */
 	public static Location randomLocation(Location reference, int min, int max)
@@ -226,7 +219,7 @@ public class DemigodsLocation extends WorldDataAccess<UUID, DemigodsLocation>
 
 	/**
 	 * Returns a random location within the <code>chunk</code> passed in.
-	 * 
+	 *
 	 * @param chunk the chunk that we will obtain the location from.
 	 * @return the random location generated.
 	 */
@@ -241,9 +234,9 @@ public class DemigodsLocation extends WorldDataAccess<UUID, DemigodsLocation>
 
 	/**
 	 * Returns a set of blocks in a radius of <code>radius</code> at the provided <code>location</code>.
-	 * 
+	 *
 	 * @param location the center location to getDesign the blocks from.
-	 * @param radius the radius around the center block from which to getDesign the blocks.
+	 * @param radius   the radius around the center block from which to getDesign the blocks.
 	 * @return Set<Block>
 	 */
 	public static Set<Block> getBlocks(Location location, int radius)
@@ -270,7 +263,7 @@ public class DemigodsLocation extends WorldDataAccess<UUID, DemigodsLocation>
 		final double X = center.getX();
 		final double Y = center.getY();
 		final double Z = center.getZ();
-		List<Location> list = new ArrayList<Location>();
+		List<Location> list = new ArrayList<>();
 		for(int i = 0; i < points; i++)
 		{
 			double x = X + radius * Math.cos((2 * Math.PI * i) / points);
@@ -322,7 +315,8 @@ public class DemigodsLocation extends WorldDataAccess<UUID, DemigodsLocation>
 			return location.getBukkitLocation();
 		}
 		catch(Exception ignored)
-		{}
+		{
+		}
 		return null;
 	}
 
@@ -360,9 +354,6 @@ public class DemigodsLocation extends WorldDataAccess<UUID, DemigodsLocation>
 
 	public static DemigodsLocation track(Location bukkitLocation)
 	{
-		DemigodsLocation location = of(bukkitLocation);
-		location.generateId();
-		location.save();
-		return location;
+		return track(of(bukkitLocation));
 	}
 }

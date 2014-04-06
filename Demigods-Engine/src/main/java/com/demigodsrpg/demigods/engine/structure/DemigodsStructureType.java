@@ -1,8 +1,6 @@
 package com.demigodsrpg.demigods.engine.structure;
 
 import com.censoredsoftware.library.schematic.Schematic;
-import com.censoredsoftware.shaded.org.jgrapht.graph.DefaultWeightedEdge;
-import com.censoredsoftware.shaded.org.jgrapht.graph.SimpleWeightedGraph;
 import com.demigodsrpg.demigods.engine.data.DemigodsWorld;
 import com.demigodsrpg.demigods.engine.data.WorldDataManager;
 import com.demigodsrpg.demigods.engine.entity.player.DemigodsCharacter;
@@ -16,6 +14,8 @@ import com.google.common.collect.Sets;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import org.jgrapht.graph.DefaultWeightedEdge;
+import org.jgrapht.graph.SimpleWeightedGraph;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -68,7 +68,7 @@ public interface DemigodsStructureType
 
 	public enum Flag
 	{
-		DELETE_WITH_OWNER, DESTRUCT_ON_BREAK, PROTECTED_BLOCKS, NO_GRIEFING, NO_PVP, PRAYER_LOCATION, OBELISK_LOCATION, TRIBUTE_LOCATION, RESTRICTED_AREA, NO_OVERLAP, STRUCTURE_WAND_GENERABLE;
+		DELETE_WITH_OWNER, DESTRUCT_ON_BREAK, PROTECTED_BLOCKS, NO_GRIEFING, NO_PVP, PRAYER_LOCATION, OBELISK_LOCATION, TRIBUTE_LOCATION, RESTRICTED_AREA, NO_OVERLAP, STRUCTURE_WAND_GENERABLE
 	}
 
 	public static class Util
@@ -87,7 +87,8 @@ public interface DemigodsStructureType
 				});
 			}
 			catch(NoSuchElementException ignored)
-			{}
+			{
+			}
 			return null;
 		}
 
@@ -105,7 +106,8 @@ public interface DemigodsStructureType
 				});
 			}
 			catch(NoSuchElementException ignored)
-			{}
+			{
+			}
 			return null;
 		}
 
@@ -308,9 +310,9 @@ public interface DemigodsStructureType
 		/**
 		 * Strictly checks the <code>reference</code> location to validate if the area is safe
 		 * for automated generation.
-		 * 
+		 *
 		 * @param reference the location to be checked
-		 * @param area how big of an area (in blocks) to validate
+		 * @param area      how big of an area (in blocks) to validate
 		 * @return Boolean
 		 */
 		public static boolean canGenerateStrict(Location reference, int area)

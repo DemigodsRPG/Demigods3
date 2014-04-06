@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentMap;
 
 /**
  * Abstract class extending ConfigFile for easy yaml file creation inside of Demigods.
- * 
+ *
  * @param <K> The id type.
  * @param <V> The data type.
  */
@@ -59,8 +59,7 @@ public abstract class DemigodsFile<K extends Comparable, V extends DataAccess<K,
 
 	public final boolean containsKey(K key)
 	{
-		if(key == null) return false;
-		return dataStore.containsKey(key);
+		return key != null && dataStore.containsKey(key);
 	}
 
 	public final V get(K key)

@@ -16,7 +16,8 @@ public class Exclusive
 	private static int worldTaskId = -1;
 
 	private Exclusive()
-	{}
+	{
+	}
 
 	private static Exclusive inst()
 	{

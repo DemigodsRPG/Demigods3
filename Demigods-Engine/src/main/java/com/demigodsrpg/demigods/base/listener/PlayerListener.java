@@ -6,6 +6,7 @@ import com.demigodsrpg.demigods.engine.conversation.Prayer;
 import com.demigodsrpg.demigods.engine.data.TempDataManager;
 import com.demigodsrpg.demigods.engine.entity.player.DemigodsCharacter;
 import com.demigodsrpg.demigods.engine.entity.player.DemigodsPlayer;
+import com.demigodsrpg.demigods.engine.entity.player.attribute.Notification;
 import com.demigodsrpg.demigods.engine.language.English;
 import com.demigodsrpg.demigods.engine.util.Configs;
 import com.demigodsrpg.demigods.engine.util.Messages;
@@ -19,6 +20,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.concurrent.TimeUnit;
 
 public class PlayerListener implements Listener
 {
@@ -51,7 +54,17 @@ public class PlayerListener implements Listener
 		Long now = System.currentTimeMillis();
 		wrapper.setLastLoginTime(now);
 
-		// Check for changed usernames
+		// Welcome back message
+		Long time = wrapper.getLastLogoutTime();
+		if(time != null && TimeUnit.DAYS.convert(time, TimeUnit.MILLISECONDS) > 1)
+		{
+			Notification welcomeBack = Notification.create(Notification.SenderType.SERVER,
+					character, Notification.Alert.NEUTRAL, "Welcome back!",
+					"Lots has happened while you were away. You should check back more often!");
+			wrapper.sendNotification(welcomeBack);
+		}
+
+		// Check for changed names
 		if(!player.getName().equals(wrapper.getPlayerName())) wrapper.setPlayerName(player.getName());
 
 		// Set display name
@@ -74,9 +87,6 @@ public class PlayerListener implements Listener
 			player.sendMessage(English.RUNNING_DG_VERSION.getLine().replace("{version}", DemigodsPlugin.getInst().getDescription().getVersion()));
 			player.sendMessage(English.DG_FOR_MORE_INFORMATION.getLine());
 		}
-
-		// TODO First join book
-		// if(!player.hasPlayedBefore()) player.getInventory().addItem(DivineItem.WELCOME_BOOK.getItem());
 
 		// Notifications
 		if(character != null && character.getMeta().hasNotifications())

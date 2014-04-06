@@ -15,7 +15,8 @@ public class DemigodsItemStack extends DataAccess<UUID, DemigodsItemStack>
 	private ItemStack item;
 
 	public DemigodsItemStack()
-	{}
+	{
+	}
 
 	@Register(idType = IdType.UUID)
 	public DemigodsItemStack(UUID id, ConfigurationSection conf)
@@ -47,7 +48,7 @@ public class DemigodsItemStack extends DataAccess<UUID, DemigodsItemStack>
 
 	/**
 	 * Returns the DItemStack as an actual, usable ItemStack.
-	 * 
+	 *
 	 * @return ItemStack
 	 */
 	public ItemStack getBukkitItem()
