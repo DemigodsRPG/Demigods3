@@ -1,5 +1,6 @@
 package com.demigodsrpg.demigods.engine.entity.player;
 
+import com.censoredsoftware.library.helper.MojangIdProvider;
 import com.censoredsoftware.library.language.Symbol;
 import com.demigodsrpg.demigods.engine.Demigods;
 import com.demigodsrpg.demigods.engine.DemigodsPlugin;
@@ -45,7 +46,7 @@ public class DemigodsCharacter extends DataAccess<UUID, DemigodsCharacter> imple
 {
 	private UUID id;
 	private String name;
-	private String mojangAccount;
+	private UUID mojangAccount;
 	private boolean alive;
 	private double health;
 	private Integer hunger;
@@ -80,7 +81,14 @@ public class DemigodsCharacter extends DataAccess<UUID, DemigodsCharacter> imple
 	{
 		this.id = id;
 		name = conf.getString("name");
-		mojangAccount = conf.getString("mojangAccount");
+
+		// TODO REMOVE Temp fix for old UUID saving.
+		String account = conf.getString("mojangAccount");
+		if(!account.contains("-"))
+			mojangAccount = MojangIdProvider.toUUID(account);
+		else mojangAccount = UUID.fromString(conf.getString("mojangAccount"));
+		// TODO REMOVE
+
 		if(conf.isBoolean("alive")) alive = conf.getBoolean("alive");
 		health = conf.getDouble("health");
 		hunger = conf.getInt("hunger");
@@ -388,7 +396,7 @@ public class DemigodsCharacter extends DataAccess<UUID, DemigodsCharacter> imple
 		return getBukkitOfflinePlayer().getPlayer();
 	}
 
-	public String getMojangAccount()
+	public UUID getMojangAccount()
 	{
 		return mojangAccount;
 	}

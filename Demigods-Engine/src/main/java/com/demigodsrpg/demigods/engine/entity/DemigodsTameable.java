@@ -147,6 +147,12 @@ public class DemigodsTameable extends DataAccess<UUID, DemigodsTameable> impleme
 			{
 				return "Disowned";
 			}
+
+			@Override
+			public UUID getUniqueId()
+			{
+				return null;
+			}
 		});
 	}
 
@@ -275,6 +281,12 @@ public class DemigodsTameable extends DataAccess<UUID, DemigodsTameable> impleme
 				public String getName()
 				{
 					return "Disowned";
+				}
+
+				@Override
+				public UUID getUniqueId()
+				{
+					return null;
 				}
 			});
 		}

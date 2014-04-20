@@ -24,7 +24,7 @@ public enum DataType
 	/**
 	 * DemigodsPlayer.
 	 */
-	PLAYER(DemigodsPlayer.class, IdType.STRING, "pl"),
+	PLAYER(DemigodsPlayer.class, IdType.UUID, "pl"),
 	/**
 	 * DemigodsCharacter.
 	 */

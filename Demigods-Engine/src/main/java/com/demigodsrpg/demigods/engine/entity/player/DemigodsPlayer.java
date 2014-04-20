@@ -37,9 +37,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-public class DemigodsPlayer extends DataAccess<String, DemigodsPlayer>
+public class DemigodsPlayer extends DataAccess<UUID, DemigodsPlayer>
 {
-	private String mojangAccount;
+	private UUID mojangAccount;
 	private String playerName;
 	private String mortalName, mortalListName;
 	private boolean canPvp;
@@ -57,7 +57,7 @@ public class DemigodsPlayer extends DataAccess<String, DemigodsPlayer>
 	}
 
 	@Register(idType = IdType.STRING)
-	public DemigodsPlayer(String mojangAccount, ConfigurationSection conf)
+	public DemigodsPlayer(UUID mojangAccount, ConfigurationSection conf)
 	{
 		this.mojangAccount = mojangAccount;
 		this.playerName = conf.getString("playerName");
@@ -105,7 +105,7 @@ public class DemigodsPlayer extends DataAccess<String, DemigodsPlayer>
 		this.playerName = player;
 	}
 
-	void setMojangAccount(String account)
+	void setMojangAccount(UUID account)
 	{
 		this.mojangAccount = account;
 	}
@@ -365,7 +365,7 @@ public class DemigodsPlayer extends DataAccess<String, DemigodsPlayer>
 		return playerName;
 	}
 
-	public String getMojangAccount()
+	public UUID getMojangAccount()
 	{
 		return mojangAccount;
 	}
@@ -474,7 +474,7 @@ public class DemigodsPlayer extends DataAccess<String, DemigodsPlayer>
 	}
 
 	@Override
-	protected String getId()
+	protected UUID getId()
 	{
 		return getMojangAccount();
 	}
@@ -528,21 +528,21 @@ public class DemigodsPlayer extends DataAccess<String, DemigodsPlayer>
 	public static DemigodsPlayer create(final OfflinePlayer player)
 	{
 		DemigodsPlayer playerSave = new DemigodsPlayer();
-		playerSave.setMojangAccount(MojangIdProvider.getId(player));
+		playerSave.setMojangAccount(MojangIdProvider.getId(player.getName()));
 		playerSave.setPlayerName(player.getName());
 		playerSave.setLastLoginTime(player.getLastPlayed());
 		playerSave.setCanPvp(true);
 		playerSave.save();
 
 		// Log the creation
-		Messages.info(English.LOG_PLAYER_CREATED.getLine().replace("{player}", player.getName()).replace("{id}", MojangIdProvider.getId(player)));
+		Messages.info(English.LOG_PLAYER_CREATED.getLine().replace("{player}", player.getName()).replace("{id}", MojangIdProvider.getId(player.getName()).toString()));
 
 		return playerSave;
 	}
 
 	public static DemigodsPlayer of(final OfflinePlayer player)
 	{
-		String id = MojangIdProvider.getId(player);
+		UUID id = MojangIdProvider.getId(player.getName());
 		if(id == null) throw new MojangIdNotFoundException(player.getName());
 		DemigodsPlayer found = get(id);
 		if(found == null) return create(player);
@@ -568,9 +568,9 @@ public class DemigodsPlayer extends DataAccess<String, DemigodsPlayer>
 		return null;
 	}
 
-	private static final DataAccess<String, DemigodsPlayer> DATA_ACCESS = new DemigodsPlayer();
+	private static final DataAccess<UUID, DemigodsPlayer> DATA_ACCESS = new DemigodsPlayer();
 
-	public static DemigodsPlayer get(String mojangAccount)
+	public static DemigodsPlayer get(UUID mojangAccount)
 	{
 		return DATA_ACCESS.getDirect(mojangAccount);
 	}

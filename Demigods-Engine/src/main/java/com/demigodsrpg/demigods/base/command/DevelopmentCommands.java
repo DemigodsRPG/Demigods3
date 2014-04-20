@@ -1,7 +1,6 @@
 package com.demigodsrpg.demigods.base.command;
 
 import com.censoredsoftware.library.helper.CommandManager;
-import com.censoredsoftware.library.helper.MojangIdProvider;
 import com.demigodsrpg.demigods.engine.Demigods;
 import com.demigodsrpg.demigods.engine.DemigodsPlugin;
 import com.demigodsrpg.demigods.engine.entity.player.DemigodsCharacter;
@@ -49,15 +48,13 @@ public class DevelopmentCommands extends CommandManager
 	{
 		final Player player = (Player) sender;
 
-		String id = DemigodsPlayer.of(player).getMojangAccount();
-
-		final UUID uuid = MojangIdProvider.toUUID(id);
+		final UUID id = DemigodsPlayer.of(player).getMojangAccount();
 
 		Bukkit.getScheduler().scheduleAsyncDelayedTask(DemigodsPlugin.getInst(), new Runnable()
 		{
 			@Override public void run()
 			{
-				OfflinePlayer offline = Bukkit.getServer().getOfflinePlayer(uuid);
+				OfflinePlayer offline = Bukkit.getServer().getOfflinePlayer(id);
 
 				player.sendMessage(offline.isOnline() ? "Success!" : "Failure.");
 			}
