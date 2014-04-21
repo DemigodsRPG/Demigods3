@@ -56,7 +56,7 @@ public class DemigodsPlayer extends DataAccess<UUID, DemigodsPlayer>
 		characterSlots = Configs.getSettingInt("character.default_character_slots");
 	}
 
-	@Register(idType = IdType.STRING)
+	@Register(idType = IdType.UUID)
 	public DemigodsPlayer(UUID mojangAccount, ConfigurationSection conf)
 	{
 		this.mojangAccount = mojangAccount;
