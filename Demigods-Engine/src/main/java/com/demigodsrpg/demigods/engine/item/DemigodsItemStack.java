@@ -9,66 +9,56 @@ import org.bukkit.inventory.ItemStack;
 import java.util.Map;
 import java.util.UUID;
 
-public class DemigodsItemStack extends DataAccess<UUID, DemigodsItemStack>
-{
-	private UUID id;
-	private ItemStack item;
+public class DemigodsItemStack extends DataAccess<UUID, DemigodsItemStack> {
+    private UUID id;
+    private ItemStack item;
 
-	public DemigodsItemStack()
-	{
-	}
+    public DemigodsItemStack() {
+    }
 
-	@Register(idType = IdType.UUID)
-	public DemigodsItemStack(UUID id, ConfigurationSection conf)
-	{
-		this.id = id;
-		if(conf.getValues(true) != null) item = ItemStack.deserialize(conf.getValues(true));
-	}
+    @Register(idType = IdType.UUID)
+    public DemigodsItemStack(UUID id, ConfigurationSection conf) {
+        this.id = id;
+        if (conf.getValues(true) != null) item = ItemStack.deserialize(conf.getValues(true));
+    }
 
-	@Override
-	public Map<String, Object> serialize()
-	{
-		return item.serialize();
-	}
+    @Override
+    public Map<String, Object> serialize() {
+        return item.serialize();
+    }
 
-	public void generateId()
-	{
-		id = UUID.randomUUID();
-	}
+    public void generateId() {
+        id = UUID.randomUUID();
+    }
 
-	public UUID getId()
-	{
-		return id;
-	}
+    public UUID getId() {
+        return id;
+    }
 
-	public void setItem(ItemStack item)
-	{
-		this.item = item;
-	}
+    public void setItem(ItemStack item) {
+        this.item = item;
+    }
 
-	/**
-	 * Returns the DItemStack as an actual, usable ItemStack.
-	 *
-	 * @return ItemStack
-	 */
-	public ItemStack getBukkitItem()
-	{
-		return item;
-	}
+    /**
+     * Returns the DItemStack as an actual, usable ItemStack.
+     *
+     * @return ItemStack
+     */
+    public ItemStack getBukkitItem() {
+        return item;
+    }
 
-	private static final DataAccess<UUID, DemigodsItemStack> DATA_ACCESS = new DemigodsItemStack();
+    private static final DataAccess<UUID, DemigodsItemStack> DATA_ACCESS = new DemigodsItemStack();
 
-	public static DemigodsItemStack get(UUID id)
-	{
-		return DATA_ACCESS.getDirect(id);
-	}
+    public static DemigodsItemStack get(UUID id) {
+        return DATA_ACCESS.getDirect(id);
+    }
 
-	public static DemigodsItemStack create(ItemStack item)
-	{
-		DemigodsItemStack trackedItem = new DemigodsItemStack();
-		trackedItem.generateId();
-		trackedItem.setItem(item);
-		trackedItem.save();
-		return trackedItem;
-	}
+    public static DemigodsItemStack create(ItemStack item) {
+        DemigodsItemStack trackedItem = new DemigodsItemStack();
+        trackedItem.generateId();
+        trackedItem.setItem(item);
+        trackedItem.save();
+        return trackedItem;
+    }
 }

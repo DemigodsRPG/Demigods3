@@ -13,43 +13,36 @@ import org.bukkit.event.entity.EntityDamageEvent;
 
 import java.util.List;
 
-public class NoDamage extends GreekAbility.Passive
-{
-	private static final String NAME = "No Damage";
-	private static final int REPEAT = 0;
-	private static final List<String> DETAILS = Lists.newArrayList("Take no corruption, give no corruption.");
+public class NoDamage extends GreekAbility.Passive {
+    private static final String NAME = "No Damage";
+    private static final int REPEAT = 0;
+    private static final List<String> DETAILS = Lists.newArrayList("Take no corruption, give no corruption.");
 
-	public NoDamage(final String deity)
-	{
-		super(NAME, deity, REPEAT, DETAILS, new Listener()
-		{
-			@EventHandler(priority = EventPriority.HIGHEST)
-			public void onEntityDamage(EntityDamageEvent damageEvent)
-			{
-				if(Zones.inNoDemigodsZone(damageEvent.getEntity().getLocation())) return;
-				if(damageEvent.getEntity() instanceof Player)
-				{
-					Player player = (Player) damageEvent.getEntity();
-					if(!Deity.Util.canUseDeitySilent(player, deity)) return;
+    public NoDamage(final String deity) {
+        super(NAME, deity, REPEAT, DETAILS, new Listener() {
+            @EventHandler(priority = EventPriority.HIGHEST)
+            public void onEntityDamage(EntityDamageEvent damageEvent) {
+                if (Zones.inNoDemigodsZone(damageEvent.getEntity().getLocation())) return;
+                if (damageEvent.getEntity() instanceof Player) {
+                    Player player = (Player) damageEvent.getEntity();
+                    if (!Deity.Util.canUseDeitySilent(player, deity)) return;
 
-					// If the player receives corrupt, cancel it
-					damageEvent.setCancelled(true);
-				}
-			}
+                    // If the player receives corrupt, cancel it
+                    damageEvent.setCancelled(true);
+                }
+            }
 
-			@EventHandler(priority = EventPriority.HIGHEST)
-			public void onEntityDamageByEntity(EntityDamageByEntityEvent damageEvent)
-			{
-				if(Zones.inNoDemigodsZone(damageEvent.getEntity().getLocation())) return;
-				if(damageEvent.getDamager() instanceof Player)
-				{
-					Player player = (Player) damageEvent.getDamager();
-					if(!Deity.Util.canUseDeitySilent(player, deity)) return;
+            @EventHandler(priority = EventPriority.HIGHEST)
+            public void onEntityDamageByEntity(EntityDamageByEntityEvent damageEvent) {
+                if (Zones.inNoDemigodsZone(damageEvent.getEntity().getLocation())) return;
+                if (damageEvent.getDamager() instanceof Player) {
+                    Player player = (Player) damageEvent.getDamager();
+                    if (!Deity.Util.canUseDeitySilent(player, deity)) return;
 
-					// If the player receives corrupt, cancel it
-					damageEvent.setCancelled(true);
-				}
-			}
-		}, null);
-	}
+                    // If the player receives corrupt, cancel it
+                    damageEvent.setCancelled(true);
+                }
+            }
+        }, null);
+    }
 }

@@ -6,31 +6,29 @@ import org.bukkit.inventory.Recipe;
 
 import java.util.Set;
 
-public interface DivineItem
-{
-	@Override String toString();
+public interface DivineItem {
+    @Override
+    String toString();
 
-	String getName();
+    String getName();
 
-	String getDescription();
+    String getDescription();
 
-	Set<Flag> getFlags();
+    Set<Flag> getFlags();
 
-	Category getCategory();
+    Category getCategory();
 
-	ItemStack getItem();
+    ItemStack getItem();
 
-	Recipe getRecipe();
+    Recipe getRecipe();
 
-	Listener getUniqueListener();
+    Listener getUniqueListener();
 
-	public enum Flag
-	{
-		UNENCHANTABLE
-	}
+    public enum Flag {
+        UNENCHANTABLE
+    }
 
-	public enum Category
-	{
-		ARMOR, WEAPON, CONSUMABLE, BOOK
-	}
+    public enum Category {
+        ARMOR, WEAPON, CONSUMABLE, BOOK
+    }
 }

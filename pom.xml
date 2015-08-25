@@ -7,37 +7,21 @@
     <groupId>com.demigodsrpg</groupId>
     <artifactId>Demigods-Parent</artifactId>
     <packaging>pom</packaging>
-    <version>DEV.2014.April.22.R1</version>
+    <version>3.0.0-SNAPSHOT</version>
     <modules>
         <module>Demigods-Engine</module>
         <module>Demigods-Greek</module>
-        <module>Demigods-Exclusive</module>
     </modules>
 
-    <name>Demigods</name>
+    <name>Demigods3</name>
     <inceptionYear>2012</inceptionYear>
     <description>Demigods RPG for Bukkit/Spigot Minecraft Servers.</description>
-    <url>http://github.com/CensoredSoftware/Demigods</url>
-
-    <licenses>
-        <license>
-            <name>Artistic License 2.0</name>
-            <url>LICENSE.txt</url>
-            <distribution>repo</distribution>
-            <comments>License on all contributions</comments>
-        </license>
-    </licenses>
-
-    <ciManagement>
-        <system>Jenkins</system>
-        <url>http://builds.censoredsoftware.com/</url>
-    </ciManagement>
+    <url>http://github.com/DemigodsRPG/Demigods3</url>
 
     <properties> <!-- It is important to keep up to date manually. -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spigot.version>1.7.9-R0.1-SNAPSHOT</spigot.version>
-        <mcstats.version>R7</mcstats.version>
-        <worldguard.version>5.9.1-SNAPSHOT</worldguard.version>
+        <spigot.version>1.8.8-R0.1-SNAPSHOT</spigot.version>
+        <worldguard.version>6.0.0-SNAPSHOT</worldguard.version>
     </properties>
 
     <developers>
@@ -69,16 +53,12 @@
 
     <repositories>
         <repository>
-            <id>censored-software</id>
-            <url>http://repo.censoredsoftware.com</url>
+            <id>dg-mg</id>
+            <url>http://repo.ii.dg-mg.club</url>
         </repository>
         <repository>
-            <id>md_5-releases</id>
-            <url>http://repo.md-5.net/content/repositories/snapshots</url>
-        </repository>
-        <repository>
-            <id>Plugin Metrics</id>
-            <url>http://repo.mcstats.org/content/repositories/public</url>
+            <id>spigot-releases</id>
+            <url>http://hub.spigotmc.org/nexus/content/repositories/public</url>
         </repository>
         <repository>
             <id>sk89q-repo</id>
@@ -90,46 +70,14 @@
         <!-- Spigot Server -->
         <dependency>
             <groupId>org.spigotmc</groupId>
-            <artifactId>spigot</artifactId>
+            <artifactId>spigot-api</artifactId>
             <version>${spigot.version}</version>
-        </dependency>
-        <!-- PostgreSQL JBDC -->
-        <dependency>
-            <groupId>postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>9.1-901.jdbc4</version>
-        </dependency>
-        <!-- MCStats -->
-        <dependency>
-            <groupId>org.mcstats.bukkit</groupId>
-            <artifactId>metrics-lite</artifactId>
-            <version>${mcstats.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.bukkit</groupId>
-                    <artifactId>bukkit</artifactId>
-                </exclusion>
-            </exclusions>
-            <scope>compile</scope>
-            <optional>false</optional>
         </dependency>
         <!-- English Inflector -->
         <dependency>
             <groupId>org.atteo</groupId>
             <artifactId>evo-inflector</artifactId>
             <version>1.0.1</version>
-        </dependency>
-        <!-- JGraphT -->
-        <dependency>
-            <groupId>org.jgrapht</groupId>
-            <artifactId>jgrapht-core</artifactId>
-            <version>0.9.0</version>
-        </dependency>
-        <!-- JGraphT Extend -->
-        <dependency>
-            <groupId>org.jgrapht</groupId>
-            <artifactId>jgrapht-ext</artifactId>
-            <version>0.9.0</version>
         </dependency>
         <!-- WorldGuard -->
         <dependency>
@@ -192,12 +140,6 @@
                     <artifactId>junit</artifactId>
                 </exclusion>
             </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>com.mojang</groupId>
-            <artifactId>AccountsClient</artifactId>
-            <version>latest</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 

@@ -7,7 +7,6 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.CONSTRUCTOR)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Register
-{
-	IdType idType();
+public @interface Register {
+    IdType idType();
 }

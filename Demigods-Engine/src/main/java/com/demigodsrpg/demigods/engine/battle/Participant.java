@@ -6,15 +6,14 @@ import org.bukkit.entity.LivingEntity;
 
 import java.util.UUID;
 
-public interface Participant
-{
-	UUID getId();
+public interface Participant {
+    UUID getId();
 
-	boolean canPvp();
+    boolean canPvp();
 
-	Location getCurrentLocation();
+    Location getCurrentLocation();
 
-	DemigodsCharacter getRelatedCharacter();
+    DemigodsCharacter getRelatedCharacter();
 
-	LivingEntity getEntity();
+    LivingEntity getEntity();
 }

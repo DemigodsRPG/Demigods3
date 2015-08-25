@@ -13,37 +13,33 @@ import org.bukkit.util.Vector;
 
 import java.util.List;
 
-public class Shove extends GreekAbility
-{
-	private static final String NAME = "Shove", COMMAND = "shove";
-	private static final int COST = 170, DELAY = 15, REPEAT = 0;
-	private static final List<String> DETAILS = Lists.newArrayList("Shove your target away from you.");
-	private static final Skill.Type TYPE = Skill.Type.SUPPORT;
+public class Shove extends GreekAbility {
+    private static final String NAME = "Shove", COMMAND = "shove";
+    private static final int COST = 170, DELAY = 15, REPEAT = 0;
+    private static final List<String> DETAILS = Lists.newArrayList("Shove your target away from you.");
+    private static final Skill.Type TYPE = Skill.Type.SUPPORT;
 
-	public Shove(String deity)
-	{
-		super(NAME, COMMAND, deity, COST, DELAY, REPEAT, DETAILS, TYPE, null, new Predicate<Player>()
-		{
-			@Override
-			public boolean apply(Player player)
-			{
-				LivingEntity target = Ability.Util.autoTarget(player);
+    public Shove(String deity) {
+        super(NAME, COMMAND, deity, COST, DELAY, REPEAT, DETAILS, TYPE, null, new Predicate<Player>() {
+            @Override
+            public boolean apply(Player player) {
+                LivingEntity target = Ability.Util.autoTarget(player);
 
-				if(!Ability.Util.target(player, target.getLocation(), true)) return false;
+                if (!Ability.Util.target(player, target.getLocation(), true)) return false;
 
-				// Define variables
-				DemigodsCharacter character = DemigodsCharacter.of(player);
-				int ascensions = character.getMeta().getAscensions();
-				double multiply = 0.1753 * Math.pow(ascensions, 0.322917);
+                // Define variables
+                DemigodsCharacter character = DemigodsCharacter.of(player);
+                int ascensions = character.getMeta().getAscensions();
+                double multiply = 0.1753 * Math.pow(ascensions, 0.322917);
 
-				Vector vector = player.getLocation().toVector();
-				Vector victor = target.getLocation().toVector().subtract(vector);
-				victor.multiply(multiply);
-				target.setVelocity(victor);
-				Ability.Util.dealDamage(player, target, 0, EntityDamageEvent.DamageCause.FALL);
+                Vector vector = player.getLocation().toVector();
+                Vector victor = target.getLocation().toVector().subtract(vector);
+                victor.multiply(multiply);
+                target.setVelocity(victor);
+                Ability.Util.dealDamage(player, target, 0, EntityDamageEvent.DamageCause.FALL);
 
-				return true;
-			}
-		}, null, null);
-	}
+                return true;
+            }
+        }, null, null);
+    }
 }

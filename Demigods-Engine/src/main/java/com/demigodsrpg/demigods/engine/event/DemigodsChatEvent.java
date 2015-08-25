@@ -16,72 +16,58 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
 
-public class DemigodsChatEvent extends Event implements Cancellable
-{
-	private static final HandlerList HANDLERS = new HandlerList();
-	private boolean cancel = false;
-	private String message;
-	private Set<Player> recipients;
+public class DemigodsChatEvent extends Event implements Cancellable {
+    private static final HandlerList HANDLERS = new HandlerList();
+    private boolean cancel = false;
+    private String message;
+    private Set<Player> recipients;
 
-	public DemigodsChatEvent(String message)
-	{
-		this.message = message;
-		this.recipients = Collections.synchronizedSet(Sets.newHashSet(Bukkit.getServer().getOnlinePlayers()));
-	}
+    public DemigodsChatEvent(String message) {
+        this.message = message;
+        this.recipients = Collections.synchronizedSet(Sets.newHashSet(Bukkit.getServer().getOnlinePlayers()));
+    }
 
-	public DemigodsChatEvent(String message, Collection<DemigodsCharacter> recipients)
-	{
-		this.message = message;
-		this.recipients = Sets.newHashSet(Collections2.filter(Collections2.transform(recipients, new Function<DemigodsCharacter, Player>()
-		{
-			@Override
-			public Player apply(DemigodsCharacter character)
-			{
-				return character.getBukkitOfflinePlayer().isOnline() ? character.getBukkitOfflinePlayer().getPlayer() : null;
-			}
-		}), new Predicate<Player>()
-		{
-			@Override
-			public boolean apply(@Nullable Player player)
-			{
-				return player != null;
-			}
-		}));
-	}
+    public DemigodsChatEvent(String message, Collection<DemigodsCharacter> recipients) {
+        this.message = message;
+        this.recipients = Sets.newHashSet(Collections2.filter(Collections2.transform(recipients, new Function<DemigodsCharacter, Player>() {
+            @Override
+            public Player apply(DemigodsCharacter character) {
+                return character.getBukkitOfflinePlayer().isOnline() ? character.getBukkitOfflinePlayer().getPlayer() : null;
+            }
+        }), new Predicate<Player>() {
+            @Override
+            public boolean apply(@Nullable Player player) {
+                return player != null;
+            }
+        }));
+    }
 
-	public boolean isCancelled()
-	{
-		return cancel;
-	}
+    public boolean isCancelled() {
+        return cancel;
+    }
 
-	public void setCancelled(boolean cancel)
-	{
-		this.cancel = cancel;
-	}
+    public void setCancelled(boolean cancel) {
+        this.cancel = cancel;
+    }
 
-	public String getMessage()
-	{
-		return message;
-	}
+    public String getMessage() {
+        return message;
+    }
 
-	public Set<Player> getRecipients()
-	{
-		return recipients;
-	}
+    public Set<Player> getRecipients() {
+        return recipients;
+    }
 
-	public void setRecipients(Set<Player> recipients)
-	{
-		this.recipients = recipients;
-	}
+    public void setRecipients(Set<Player> recipients) {
+        this.recipients = recipients;
+    }
 
-	@Override
-	public HandlerList getHandlers()
-	{
-		return HANDLERS;
-	}
+    @Override
+    public HandlerList getHandlers() {
+        return HANDLERS;
+    }
 
-	public static HandlerList getHandlerList()
-	{
-		return HANDLERS;
-	}
+    public static HandlerList getHandlerList() {
+        return HANDLERS;
+    }
 }

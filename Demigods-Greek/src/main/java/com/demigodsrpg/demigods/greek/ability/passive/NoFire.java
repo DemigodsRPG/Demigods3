@@ -13,33 +13,28 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.List;
 
-public class NoFire extends GreekAbility.Passive
-{
-	private static final String NAME = "No Fire Damage";
-	private static final int REPEAT = 0;
-	private static final List<String> DETAILS = Lists.newArrayList("Take no corruption from fire.");
+public class NoFire extends GreekAbility.Passive {
+    private static final String NAME = "No Fire Damage";
+    private static final int REPEAT = 0;
+    private static final List<String> DETAILS = Lists.newArrayList("Take no corruption from fire.");
 
-	public NoFire(final String deity)
-	{
-		super(NAME, deity, REPEAT, DETAILS, null, new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				for(DemigodsCharacter character : Demigods.getServer().getOnlineCharactersWithAbility(NAME))
-				{
-					if(Zones.inNoDemigodsZone(character.getBukkitOfflinePlayer().getPlayer().getLocation())) continue;
-					Player player = character.getBukkitOfflinePlayer().getPlayer();
-					potionEffect(player);
-					if(player.isInsideVehicle() && player.getVehicle().getType().equals(EntityType.HORSE)) potionEffect((LivingEntity) player.getVehicle());
-				}
-			}
+    public NoFire(final String deity) {
+        super(NAME, deity, REPEAT, DETAILS, null, new Runnable() {
+            @Override
+            public void run() {
+                for (DemigodsCharacter character : Demigods.getServer().getOnlineCharactersWithAbility(NAME)) {
+                    if (Zones.inNoDemigodsZone(character.getBukkitOfflinePlayer().getPlayer().getLocation())) continue;
+                    Player player = character.getBukkitOfflinePlayer().getPlayer();
+                    potionEffect(player);
+                    if (player.isInsideVehicle() && player.getVehicle().getType().equals(EntityType.HORSE))
+                        potionEffect((LivingEntity) player.getVehicle());
+                }
+            }
 
-			private void potionEffect(LivingEntity entity)
-			{
-				entity.removePotionEffect(PotionEffectType.FIRE_RESISTANCE);
-				entity.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 120, 1));
-			}
-		});
-	}
+            private void potionEffect(LivingEntity entity) {
+                entity.removePotionEffect(PotionEffectType.FIRE_RESISTANCE);
+                entity.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 999999, 1));
+            }
+        });
+    }
 }

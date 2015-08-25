@@ -18,111 +18,99 @@ import java.util.concurrent.ConcurrentMap;
  * This is the data management file for Demigods.
  */
 @SuppressWarnings("unchecked")
-public class FileDataManager extends DataManager
-{
-	// -- VARIABLES -- //
+public class FileDataManager extends DataManager {
+    // -- VARIABLES -- //
 
-	// Data Folder
-	public static final String SAVE_PATH = DemigodsPlugin.getInst().getDataFolder() + "/data/"; // Don't change this.
+    // Data Folder
+    public static final String SAVE_PATH = DemigodsPlugin.getInst().getDataFolder() + "/data/"; // Don't change this.
 
-	// -- YAML FILES -- //
+    // -- YAML FILES -- //
 
-	ConcurrentMap<Class, DemigodsFile> yamlFiles;
+    ConcurrentMap<Class, DemigodsFile> yamlFiles;
 
-	// -- UTIL METHODS -- //
+    // -- UTIL METHODS -- //
 
-	// Prevent accidental double init.
-	private static boolean didInit = false;
+    // Prevent accidental double init.
+    private static boolean didInit = false;
 
-	@Override
-	protected boolean preInit()
-	{
-		return true;
-	}
+    @Override
+    protected boolean preInit() {
+        return true;
+    }
 
-	@Override
-	public void init()
-	{
-		// Check if init has happened already...
-		if(didInit) throw new RuntimeException("Data tried to initialize more than once.");
+    @Override
+    public void init() {
+        // Check if init has happened already...
+        if (didInit) throw new RuntimeException("Data tried to initialize more than once.");
 
-		// Create/Load YAML files.
-		yamlFiles = Maps.newConcurrentMap();
-		for(Class clazz : DataType.classes())
-		{
-			DemigodsFile file = DemigodsFileFactory.create(DataType.typeFromClass(clazz), SAVE_PATH);
-			if(file == null) continue;
-			file.loadDataFromFile();
-			yamlFiles.put(clazz, file);
-		}
+        // Create/Load YAML files.
+        yamlFiles = Maps.newConcurrentMap();
+        for (Class clazz : DataType.classes()) {
+            DemigodsFile file = DemigodsFileFactory.create(DataType.typeFromClass(clazz), SAVE_PATH);
+            if (file == null) continue;
+            file.loadDataFromFile();
+            yamlFiles.put(clazz, file);
+        }
 
-		// Let the plugin know that this has finished.
-		didInit = true;
-	}
+        // Let the plugin know that this has finished.
+        didInit = true;
+    }
 
-	@Override
-	public void save()
-	{
-		for(DemigodsFile data : yamlFiles.values())
-			data.saveDataToFile();
-	}
+    @Override
+    public void save() {
+        for (DemigodsFile data : yamlFiles.values())
+            data.saveDataToFile();
+    }
 
-	@Override
-	public void flushData()
-	{
-		// Kick everyone
-		for(Player player : Bukkit.getOnlinePlayers())
-			player.kickPlayer(ChatColor.GREEN + English.DATA_RESET_KICK.getLine());
+    @Override
+    public void flushData() {
+        // Kick everyone
+        for (Player player : Bukkit.getOnlinePlayers())
+            player.kickPlayer(ChatColor.GREEN + English.DATA_RESET_KICK.getLine());
 
-		// Clear the data
-		for(DemigodsFile data : yamlFiles.values())
-			data.clear();
-		TempDataManager.clear();
+        // Clear the data
+        for (DemigodsFile data : yamlFiles.values())
+            data.clear();
+        TempDataManager.clear();
 
-		save();
+        save();
 
-		// Reload the PLUGIN
-		Bukkit.getServer().getPluginManager().disablePlugin(DemigodsPlugin.getInst());
-		Bukkit.getServer().getPluginManager().enablePlugin(DemigodsPlugin.getInst());
-	}
+        // Reload the PLUGIN
+        Bukkit.getServer().getPluginManager().disablePlugin(DemigodsPlugin.getInst());
+        Bukkit.getServer().getPluginManager().enablePlugin(DemigodsPlugin.getInst());
+    }
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public <K extends Comparable, V extends DataAccess<K, V>> V getFor(final Class<V> clazz, final K key)
-	{
-		if(getFile(clazz).containsKey(key)) return getFile(clazz).get(key);
-		return null;
-	}
+    @SuppressWarnings("unchecked")
+    @Override
+    public <K extends Comparable, V extends DataAccess<K, V>> V getFor(final Class clazz, final K key) {
+        if (getFile(clazz).containsKey(key)) return (V) getFile(clazz).get(key);
+        return null;
+    }
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public <K extends Comparable, V extends DataAccess<K, V>> Collection<V> getAllOf(final Class<V> clazz)
-	{
-		return getFile(clazz).values();
-	}
+    @SuppressWarnings("unchecked")
+    @Override
+    public <K extends Comparable, V extends DataAccess<K, V>> Collection<DataAccess> getAllOf(final Class clazz) {
+        return getFile(clazz).values();
+    }
 
-	@Override
-	public <K extends Comparable, V extends DataAccess<K, V>> ConcurrentMap<K, V> getMapFor(final Class<V> clazz)
-	{
-		return getFile(clazz).getLoadedData();
-	}
+    @Override
+    public <K extends Comparable, V extends DataAccess<K, V>> ConcurrentMap<K, V> getMapFor(final Class clazz) {
+        return getFile(clazz).getLoadedData();
+    }
 
-	@Override
-	public <K extends Comparable, V extends DataAccess<K, V>> void putFor(final Class<V> clazz, final K key, final V value)
-	{
-		getFile(clazz).put(key, value);
-	}
+    @Override
+    public <K extends Comparable, V extends DataAccess<K, V>> void putFor(final Class clazz, final K key, final V value) {
+        getFile(clazz).put(key, value);
+    }
 
-	@Override
-	public <K extends Comparable, V extends DataAccess<K, V>> void removeFor(final Class<V> clazz, final K key)
-	{
-		getFile(clazz).remove(key);
-	}
+    @Override
+    public <K extends Comparable, V extends DataAccess<K, V>> void removeFor(final Class clazz, final K key) {
+        getFile(clazz).remove(key);
+    }
 
-	@SuppressWarnings("unchecked")
-	private <K extends Comparable, V extends DataAccess<K, V>> DemigodsFile<K, V> getFile(Class<V> clazz)
-	{
-		if(yamlFiles.containsKey(clazz)) return (DemigodsFile<K, V>) yamlFiles.get(clazz);
-		throw new UnsupportedOperationException("Demigods wants a data type that does not exist.");
-	}
+    @SuppressWarnings("unchecked")
+    private <K extends Comparable, V extends DataAccess<K, V>> DemigodsFile<K, V> getFile(Class<V> clazz) {
+        if (yamlFiles.containsKey(clazz)) return (DemigodsFile<K, V>) yamlFiles.get(clazz);
+        throw new UnsupportedOperationException("Demigods wants a data type that does not exist.");
+    }
 }
