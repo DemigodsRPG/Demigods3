@@ -38,7 +38,7 @@ commands:
         permission: demigods.basic
     tributes:
         usage: /tributes
-        aliases: [t, values]
+        aliases: [t, v, values]
         permission: demigods.basic
     binds:
         usage: /binds

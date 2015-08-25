@@ -12,7 +12,6 @@ import com.demigodsrpg.demigods.engine.structure.DemigodsStructure;
 import com.demigodsrpg.demigods.engine.structure.DemigodsStructureType;
 import com.demigodsrpg.demigods.engine.util.Colors;
 import com.demigodsrpg.demigods.engine.util.Configs;
-import com.demigodsrpg.demigods.engine.util.Messages;
 import com.demigodsrpg.demigods.engine.util.Zones;
 import com.demigodsrpg.demigods.greek.language.English;
 import com.google.common.base.Function;
@@ -155,9 +154,8 @@ public class Obelisk extends GreekStructureType {
 
                         player.sendMessage(ChatColor.GRAY + English.NOTIFICATION_OBELISK_CREATED.getLine());
                         event.setCancelled(true);
-                    } catch (Exception errored) {
-                        // Creation of shrine failed...
-                        Messages.warning(errored.getMessage());
+                    } catch (Exception oops) {
+                        oops.printStackTrace();
                     }
                 }
             }
