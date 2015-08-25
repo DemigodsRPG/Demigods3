@@ -15,8 +15,10 @@ import com.demigodsrpg.demigods.engine.language.Symbol;
 import com.demigodsrpg.demigods.engine.location.DemigodsLocation;
 import com.demigodsrpg.demigods.engine.util.*;
 import com.google.common.base.Function;
-import com.google.common.base.Predicate;
-import com.google.common.collect.*;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -24,16 +26,15 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Tameable;
 import org.bukkit.potion.PotionEffect;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.util.Vector;
 
-import javax.annotation.Nullable;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 public class Battle extends DataAccess<UUID, Battle> {
     private UUID id;
@@ -49,6 +50,7 @@ public class Battle extends DataAccess<UUID, Battle> {
     private Map<String, Object> kills;
     private Map<String, Object> deaths;
     private UUID startedBy;
+    private Scoreboard scoreboard;
 
     private Battle(Object ignored) {
     }
@@ -192,7 +194,8 @@ public class Battle extends DataAccess<UUID, Battle> {
         this.killCounter += 1;
         DemigodsCharacter character = participant.getRelatedCharacter();
         if (this.kills.containsKey(character.getId().toString()))
-            this.kills.put(character.getId().toString(), Integer.parseInt(this.kills.get(character.getId().toString()).toString()) + 1);
+            this.kills.put(character.getId().toString(), Integer.parseInt(this.kills.get(character.getId().toString()).
+                    toString()) + 1);
         else this.kills.put(character.getId().toString(), 1);
         save();
     }
@@ -200,7 +203,8 @@ public class Battle extends DataAccess<UUID, Battle> {
     public void addDeath(Participant participant) {
         DemigodsCharacter character = participant.getRelatedCharacter();
         if (this.deaths.containsKey(character.getId().toString()))
-            this.deaths.put(character.getId().toString(), Integer.parseInt(this.deaths.get(character.getId().toString()).toString()) + 1);
+            this.deaths.put(character.getId().toString(), Integer.parseInt(this.deaths.get(character.getId().toString()).
+                    toString()) + 1);
         else this.deaths.put(character.getId().toString(), 1);
         save();
     }
@@ -210,28 +214,16 @@ public class Battle extends DataAccess<UUID, Battle> {
     }
 
     public Set<Participant> getParticipants() {
-        return Sets.filter(Sets.union(Sets.newHashSet(Collections2.transform(involvedPlayers, new Function<String, Participant>() {
-            @Override
-            public Participant apply(String character) {
-                return DemigodsCharacter.get(UUID.fromString(character));
-            }
-        })), Sets.newHashSet(Collections2.transform(involvedTameable, new Function<String, Participant>() {
-            @Override
-            public Participant apply(String tamable) {
-                return DemigodsTameable.get(UUID.fromString(tamable));
-            }
-        }))), new Predicate<Participant>() {
-            @Override
-            public boolean apply(@Nullable Participant participant) {
-                return participant != null && participant.getRelatedCharacter() != null;
-            }
-        });
+        return Sets.filter(Sets.union(Sets.newHashSet(Collections2.transform(involvedPlayers, character ->
+                        DemigodsCharacter.get(UUID.fromString(character)))), Sets.newHashSet(Collections2.
+                        transform(involvedTameable, tamable -> DemigodsTameable.get(UUID.fromString(tamable))))),
+                participant -> participant != null && participant.getRelatedCharacter() != null);
     }
 
     public Collection<Alliance> getInvolvedAlliances() {
         Set<Alliance> set = Sets.newHashSet();
-        for (Participant participant : getParticipants())
-            set.add(participant.getRelatedCharacter().getAlliance());
+        set.addAll(getParticipants().stream().map(participant -> participant.getRelatedCharacter().getAlliance()).
+                collect(Collectors.toList()));
         return set;
     }
 
@@ -279,34 +271,16 @@ public class Battle extends DataAccess<UUID, Battle> {
             score.put(UUID.fromString(entry.getKey()), base - Integer.parseInt(entry.getValue().toString()));
         }
         int sum = 0;
-        for (int i : Collections2.transform(Collections2.filter(score.entrySet(), new Predicate<Map.Entry<UUID, Integer>>() {
-            @Override
-            public boolean apply(Map.Entry<UUID, Integer> entry) {
-                return DemigodsCharacter.get(entry.getKey()).getAlliance().getName().equalsIgnoreCase(alliance.getName());
-            }
-        }), new Function<Map.Entry<UUID, Integer>, Integer>() {
-            @Override
-            public Integer apply(Map.Entry<UUID, Integer> entry) {
-                return entry.getValue();
-            }
-        }))
+        for (int i : score.entrySet().stream().filter(entry ->
+                DemigodsCharacter.get(entry.getKey()).getAlliance().getName().equalsIgnoreCase(alliance.getName())).map(Map.Entry::getValue).collect(Collectors.toList()))
             sum += i;
         return sum;
     }
 
     public Collection<DemigodsCharacter> getMVPs() {
         final int max = Collections.max(getScores().values());
-        return Collections2.transform(Collections2.filter(getScores().entrySet(), new Predicate<Map.Entry<UUID, Integer>>() {
-            @Override
-            public boolean apply(Map.Entry<UUID, Integer> entry) {
-                return entry.getValue() == max;
-            }
-        }), new Function<Map.Entry<UUID, Integer>, DemigodsCharacter>() {
-            @Override
-            public DemigodsCharacter apply(Map.Entry<UUID, Integer> entry) {
-                return DemigodsCharacter.get(entry.getKey());
-            }
-        });
+        return Collections2.transform(Collections2.filter(getScores().entrySet(), entry -> entry.getValue() == max),
+                entry -> DemigodsCharacter.get(entry.getKey()));
     }
 
     public int getKillCounter() {
@@ -372,14 +346,12 @@ public class Battle extends DataAccess<UUID, Battle> {
     public void startScoreboardRunnable() {
         final Battle battle = this;
 
-        runnableId = Bukkit.getScheduler().scheduleSyncRepeatingTask(DemigodsPlugin.getInst(), new BukkitRunnable() {
-            @Override
-            public void run() {
-                // TODO: This loop could cause some lag
-                for (String stringId : involvedPlayers) {
-                    OfflinePlayer offlinePlayer = DemigodsCharacter.get(UUID.fromString(stringId)).getBukkitOfflinePlayer();
-                    if (offlinePlayer.isOnline()) updateScoreboard(offlinePlayer.getPlayer(), battle);
-                }
+        runnableId = Bukkit.getScheduler().scheduleSyncRepeatingTask(DemigodsPlugin.getInst(), () -> {
+            // FIXME This loop LAGS THE HECK OUT OF EVERYTHING
+            updateScoreboard(battle);
+            for (String stringId : involvedPlayers) {
+                OfflinePlayer offlinePlayer = DemigodsCharacter.get(UUID.fromString(stringId)).getBukkitOfflinePlayer();
+                if (offlinePlayer.isOnline()) offlinePlayer.getPlayer().setScoreboard(battle.scoreboard);
             }
         }, 20, 20);
     }
@@ -429,21 +401,11 @@ public class Battle extends DataAccess<UUID, Battle> {
     }
 
     public static List<Battle> getAllActive() {
-        return Lists.newArrayList(Collections2.filter(all(), new Predicate<Battle>() {
-            @Override
-            public boolean apply(Battle battle) {
-                return battle.isActive();
-            }
-        }));
+        return all().stream().filter(Battle::isActive).collect(Collectors.toList());
     }
 
     public static List<Battle> getAllInactive() {
-        return Lists.newArrayList(Collections2.filter(all(), new Predicate<Battle>() {
-            @Override
-            public boolean apply(Battle battle) {
-                return !battle.isActive();
-            }
-        }));
+        return all().stream().filter(b -> !b.isActive()).collect(Collectors.toList());
     }
 
     public static boolean existsInRadius(Location location) {
@@ -452,36 +414,23 @@ public class Battle extends DataAccess<UUID, Battle> {
 
     public static Battle getInRadius(final Location location) {
         try {
-            return Iterators.find(getAllActive().iterator(), new Predicate<Battle>() {
-                @Override
-                public boolean apply(Battle battle) {
-                    return battle.getStartLocation().distance(location) <= battle.getRadius();
-                }
-            });
-        } catch (NoSuchElementException ignored) {
+            return getAllActive().stream().filter(battle -> battle.getStartLocation().distance(location)
+                    <= battle.getRadius()).findAny().get();
+        } catch (Exception ignored) {
             // ignored
         }
         return null;
     }
 
     public static boolean isInBattle(final Participant participant) {
-        return Iterators.any(getAllActive().iterator(), new Predicate<Battle>() {
-            @Override
-            public boolean apply(Battle battle) {
-                return battle.getParticipants().contains(participant);
-            }
-        });
+        return getAllActive().stream().anyMatch(battle -> battle.getParticipants().contains(participant));
     }
 
     public static Battle getBattle(final Participant participant) {
         try {
-            return Iterators.find(getAllActive().iterator(), new Predicate<Battle>() {
-                @Override
-                public boolean apply(Battle battle) {
-                    return battle.getParticipants().contains(participant);
-                }
-            });
-        } catch (NoSuchElementException ignored) {
+            return getAllActive().stream().filter(battle -> battle.getParticipants().contains(participant)).findAny()
+                    .get();
+        } catch (Exception ignored) {
             // ignored
         }
         return null;
@@ -493,27 +442,21 @@ public class Battle extends DataAccess<UUID, Battle> {
 
     public static Battle getNear(final Location location) {
         try {
-            return Iterators.find(getAllActive().iterator(), new Predicate<Battle>() {
-                @Override
-                public boolean apply(Battle battle) {
+            return getAllActive().stream().filter(battle -> {
                     double distance = battle.getStartLocation().distance(location);
                     return distance > battle.getRadius() && distance <= Configs.getSettingInt("battles.merge_radius");
-                }
-            });
-        } catch (NoSuchElementException ignored) {
+            }).findAny().get();
+        } catch (Exception ignored) {
             // ignored
         }
         return null;
     }
 
-    public static Collection<Location> battleBorder(final Battle battle) {
+    public static List<Location> battleBorder(final Battle battle) {
         if (!DemigodsServer.isRunningSpigot()) throw new SpigotNotFoundException();
-        return Collections2.transform(DemigodsLocation.getCirclePoints(battle.getStartLocation().getBukkitLocation(), battle.getRadius(), 120), new Function<Location, Location>() {
-            @Override
-            public Location apply(Location point) {
-                return new Location(point.getWorld(), point.getBlockX(), point.getWorld().getHighestBlockYAt(point), point.getBlockZ());
-            }
-        });
+        return DemigodsLocation.getCirclePoints(battle.getStartLocation().getBukkitLocation(), battle.getRadius(), 120).
+                stream().map(point -> new Location(point.getWorld(), point.getBlockX(), point.getWorld().
+                getHighestBlockYAt(point), point.getBlockZ())).collect(Collectors.toList());
     }
 
     /*
@@ -554,12 +497,7 @@ public class Battle extends DataAccess<UUID, Battle> {
             public Location apply(Location point) {
                 return new Location(point.getWorld(), point.getBlockX(), point.getWorld().getHighestBlockYAt(point), point.getBlockZ());
             }
-        }), new Predicate<Location>() {
-            @Override
-            public boolean apply(Location location) {
-                return isSafeLocation(battle.getStartLocation().getBukkitLocation(), location);
-            }
-        }));
+        }), location -> isSafeLocation(battle.getStartLocation().getBukkitLocation(), location)));
     }
 
     public static boolean canParticipate(Entity entity) {
@@ -641,59 +579,55 @@ public class Battle extends DataAccess<UUID, Battle> {
      */
     public static void updateBattles() {
         // End all active battles that should end.
-        for (Battle battle : Collections2.filter(getAllActive(), new Predicate<Battle>() {
-            @Override
-            public boolean apply(Battle battle) {
-                return battle.getKillCounter() >= battle.getMaxKills() || battle.getStartTime() + battle.getDuration() <= System.currentTimeMillis() && battle.getKillCounter() >= battle.getMinKills() || battle.getParticipants().size() < 2 || battle.getInvolvedAlliances().size() < 2;
-            }
-        })) {
+        getAllActive().stream().filter(battle -> battle.getKillCounter() >= battle.getMaxKills() || battle.getStartTime() + battle.getDuration()
+                <= System.currentTimeMillis() && battle.getKillCounter() >= battle.getMinKills() || battle.getParticipants().size() < 2 || battle.getInvolvedAlliances().size() < 2).forEach(battle -> {
             battle.end();
             Skill.processBattle(battle);
-        }
+        });
 
         // Delete all inactive battles that should be deleted.
-        for (Battle battle : Collections2.filter(getAllInactive(), new Predicate<Battle>() {
-            @Override
-            public boolean apply(Battle battle) {
-                return battle.getDeleteTime() >= System.currentTimeMillis();
-            }
-        }))
-            battle.remove();
+        getAllInactive().stream().filter(battle -> battle.getDeleteTime() >= System.currentTimeMillis()).
+                forEach(Battle::remove);
     }
 
     /**
      * Updates the scoreboard for the given <code>player</code> with information from the <code>battle</code>.
      *
-     * @param player the player to give the scoreboard to.
      * @param battle the battle to grab stats from.
      */
-    public static void updateScoreboard(Player player, Battle battle) {
-        // Define variables
-        Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
+    public static void updateScoreboard(Battle battle) {
+        // Define sidebar objective
+        Objective info;
+
+        // Define scoreboard
+        if (battle.scoreboard == null) {
+            battle.scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
+            info = battle.scoreboard.registerNewObjective("battle_info", "dummy");
+        } else {
+            info = battle.scoreboard.getObjective("battle_info");
+        }
 
         // Define sidebar objective
-        Objective info = scoreboard.registerNewObjective("battle_info", "dummy");
+
         info.setDisplaySlot(DisplaySlot.SIDEBAR);
         info.setDisplayName(ChatColor.AQUA + "Current Battle Stats");
 
         // Add the information
-        Score kills = info.getScore(Bukkit.getOfflinePlayer(ChatColor.GRAY + "Total Kills"));
+        Score kills = info.getScore(ChatColor.GRAY + "Total Kills");
         kills.setScore(battle.getKillCounter());
 
-        Score neededKills = info.getScore(Bukkit.getOfflinePlayer(ChatColor.GRAY + "Kills Needed"));
+        Score neededKills = info.getScore(ChatColor.GRAY + "Kills Needed");
         neededKills.setScore(battle.getMinKills());
 
         for (Alliance alliance : battle.getInvolvedAlliances()) {
-            Score allianceKills = info.getScore(Bukkit.getOfflinePlayer(ChatColor.YELLOW + alliance.getName() + ChatColor.GRAY + " Score"));
+            Score allianceKills = info.getScore(ChatColor.YELLOW + alliance.getName() + ChatColor.GRAY + " Score");
             allianceKills.setScore(battle.getScore(alliance));
         }
 
-        Score participants = info.getScore(Bukkit.getOfflinePlayer(ChatColor.GRAY + "Participants"));
+        Score participants = info.getScore(ChatColor.GRAY + "Participants");
         participants.setScore(battle.involvedPlayers.size());
 
-        Score points = info.getScore(Bukkit.getOfflinePlayer(ChatColor.GRAY + "Duration"));
+        Score points = info.getScore(ChatColor.GRAY + "Duration");
         points.setScore((int) (System.currentTimeMillis() - battle.getStartTime()) / 1000);
-
-        player.setScoreboard(scoreboard);
     }
 }

@@ -32,7 +32,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>2.1</version>
+                <version>2.4</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -42,29 +42,13 @@
                         <configuration>
                             <artifactSet>
                                 <includes>
-                                    <include>org.mcstats.bukkit:metrics-lite</include>
                                     <include>org.atteo:evo-inflector</include>
-                                    <include>org.jgrapht:jgrapht-core</include>
-                                    <include>org.jgrapht:jgrapht-ext</include>
-                                    <include>com.mojang:AccountsClient</include>
                                 </includes>
                             </artifactSet>
                             <relocations>
                                 <relocation>
-                                    <pattern>org.mcstats</pattern>
-                                    <shadedPattern>com.censoredsoftware.shaded.org.mcstats</shadedPattern>
-                                </relocation>
-                                <relocation>
                                     <pattern>org.atteo</pattern>
-                                    <shadedPattern>com.censoredsoftware.shaded.org.atteo</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>org.jgrapht</pattern>
-                                    <shadedPattern>com.censoredsoftware.shaded.org.jgrapht</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>com.mojang</pattern>
-                                    <shadedPattern>com.censoredsoftware.shaded.com.mojang</shadedPattern>
+                                    <shadedPattern>com.demigodsrpg.shaded.org.atteo</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
@@ -86,8 +70,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.1</version>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
             <plugin>
