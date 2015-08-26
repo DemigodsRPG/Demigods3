@@ -50,73 +50,58 @@ public class Obelisk extends GreekStructureType {
             }
         }
     };
-    private static final Function<GreekStructureType.Design, DemigodsStructure> createNew = new Function<GreekStructureType.Design, DemigodsStructure>() {
-        @Override
-        public DemigodsStructure apply(GreekStructureType.Design design) {
-            DemigodsStructure save = new DemigodsStructure();
-            save.setSanctifiers(new HashMap<String, Long>());
-            save.setCorruptors(new HashMap<String, Long>());
-            return save;
-        }
+    private static final Function<GreekStructureType.Design, DemigodsStructure> createNew = design -> {
+        DemigodsStructure save = new DemigodsStructure();
+        save.setSanctifiers(new HashMap<>());
+        save.setCorruptors(new HashMap<>());
+        return save;
     };
-    private static final DemigodsStructureType.InteractFunction<Boolean> sanctify = new DemigodsStructureType.InteractFunction<Boolean>() {
-        @Override
-        public Boolean apply(DemigodsStructure data, DemigodsCharacter character) {
-            if (!character.alliedTo(DemigodsCharacter.get(data.getOwner())) || !data.getSanctifiers().contains(character.getId()))
+    private static final DemigodsStructureType.InteractFunction<Boolean> sanctify = (data, character) -> {
+        if (!character.alliedTo(DemigodsCharacter.get(data.getOwner())) || !data.getSanctifiers().contains(character.getId()))
+            return false;
+        Location location = data.getBukkitLocation();
+        location.getWorld().playSound(location, Sound.CAT_PURR, 0.3f, 0.7F);
+        MaterialData colorData = Colors.getMaterial(character.getDeity().getColor());
+        location.getWorld().playEffect(location.clone().add(0, 1, 0), Effect.STEP_SOUND, colorData.getItemTypeId(), colorData.getData());
+        return true;
+    };
+    private static final DemigodsStructureType.InteractFunction<Boolean> corrupt = (data, character) -> {
+        if (character.alliedTo(DemigodsCharacter.get(data.getOwner()))) return false;
+        if (DemigodsCharacter.get(data.getOwner()) != null) {
+            DemigodsPlayer demigodsPlayer = DemigodsPlayer.of(DemigodsCharacter.get(data.getOwner()).getBukkitOfflinePlayer());
+            long lastLogoutTime = demigodsPlayer.getLastLogoutTime();
+            Calendar calendarHalfHour = Calendar.getInstance();
+            calendarHalfHour.add(Calendar.MINUTE, -30);
+            long thirtyMinutesAgo = calendarHalfHour.getTime().getTime();
+            Calendar calendarWeek = Calendar.getInstance();
+            calendarWeek.add(Calendar.WEEK_OF_YEAR, -3);
+            long threeWeeksAgo = calendarWeek.getTime().getTime();
+            if (!demigodsPlayer.getBukkitOfflinePlayer().isOnline() && lastLogoutTime != -1 && (lastLogoutTime > System.currentTimeMillis() - thirtyMinutesAgo || lastLogoutTime < threeWeeksAgo)) {
+                character.getBukkitOfflinePlayer().getPlayer().sendMessage(ChatColor.YELLOW + "This obelisk currently immune to damage.");
                 return false;
-            Location location = data.getBukkitLocation();
-            location.getWorld().playSound(location, Sound.CAT_PURR, 0.3f, 0.7F);
-            MaterialData colorData = Colors.getMaterial(character.getDeity().getColor());
-            location.getWorld().playEffect(location.clone().add(0, 1, 0), Effect.STEP_SOUND, colorData.getItemTypeId(), colorData.getData());
-            return true;
-        }
-    };
-    private static final DemigodsStructureType.InteractFunction<Boolean> corrupt = new DemigodsStructureType.InteractFunction<Boolean>() {
-        @Override
-        public Boolean apply(DemigodsStructure data, DemigodsCharacter character) {
-            if (character.alliedTo(DemigodsCharacter.get(data.getOwner()))) return false;
-            if (DemigodsCharacter.get(data.getOwner()) != null) {
-                DemigodsPlayer demigodsPlayer = DemigodsPlayer.of(DemigodsCharacter.get(data.getOwner()).getBukkitOfflinePlayer());
-                long lastLogoutTime = demigodsPlayer.getLastLogoutTime();
-                Calendar calendarHalfHour = Calendar.getInstance();
-                calendarHalfHour.add(Calendar.MINUTE, -30);
-                long thirtyMinutesAgo = calendarHalfHour.getTime().getTime();
-                Calendar calendarWeek = Calendar.getInstance();
-                calendarWeek.add(Calendar.WEEK_OF_YEAR, -3);
-                long threeWeeksAgo = calendarWeek.getTime().getTime();
-                if (!demigodsPlayer.getBukkitOfflinePlayer().isOnline() && lastLogoutTime != -1 && (lastLogoutTime > System.currentTimeMillis() - thirtyMinutesAgo || lastLogoutTime < threeWeeksAgo)) {
-                    character.getBukkitOfflinePlayer().getPlayer().sendMessage(ChatColor.YELLOW + "This obelisk currently immune to damage.");
-                    return false;
-                }
             }
-            Location location = data.getBukkitLocation();
-            location.getWorld().playSound(location, Sound.WITHER_HURT, 0.4F, 1.5F);
-            for (Location found : data.getBukkitLocations())
-                location.getWorld().playEffect(found, Effect.STEP_SOUND, Material.REDSTONE_BLOCK.getId());
+        }
+        Location location = data.getBukkitLocation();
+        location.getWorld().playSound(location, Sound.WITHER_HURT, 0.4F, 1.5F);
+        for (Location found : data.getBukkitLocations())
+            location.getWorld().playEffect(found, Effect.STEP_SOUND, Material.REDSTONE_BLOCK.getId());
 
-            character.getBukkitOfflinePlayer().getPlayer().sendMessage("Corruption: " + (data.getSanctity() - data.getCorruption()));
+        character.getBukkitOfflinePlayer().getPlayer().sendMessage("Remaining Sanctity: " + (data.getSanctity() - data.getCorruption()));
 
-            return true;
-        }
+        return true;
     };
-    private static final DemigodsStructureType.InteractFunction<Boolean> birth = new DemigodsStructureType.InteractFunction<Boolean>() {
-        @Override
-        public Boolean apply(DemigodsStructure data, DemigodsCharacter character) {
-            Location location = data.getBukkitLocation();
-            location.getWorld().strikeLightningEffect(location);
-            location.getWorld().strikeLightningEffect(character.getLocation());
-            return true;
-        }
+    private static final DemigodsStructureType.InteractFunction<Boolean> birth = (data, character) -> {
+        Location location = data.getBukkitLocation();
+        location.getWorld().strikeLightningEffect(location);
+        location.getWorld().strikeLightningEffect(character.getLocation());
+        return true;
     };
-    private static final DemigodsStructureType.InteractFunction<Boolean> kill = new DemigodsStructureType.InteractFunction<Boolean>() {
-        @Override
-        public Boolean apply(DemigodsStructure data, DemigodsCharacter character) {
-            Location location = data.getBukkitLocation();
-            location.getWorld().playSound(location, Sound.WITHER_DEATH, 1F, 1.2F);
-            location.getWorld().createExplosion(location, 2F, false);
-            character.addKill();
-            return true;
-        }
+    private static final DemigodsStructureType.InteractFunction<Boolean> kill = (data, character) -> {
+        Location location = data.getBukkitLocation();
+        location.getWorld().playSound(location, Sound.WITHER_DEATH, 1F, 1.2F);
+        location.getWorld().createExplosion(location, 2F, false);
+        character.addKill();
+        return true;
     };
     private static final Set<DemigodsStructureType.Flag> flags = new HashSet<DemigodsStructureType.Flag>() {
         {

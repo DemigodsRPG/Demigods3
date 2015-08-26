@@ -6,7 +6,9 @@ import com.demigodsrpg.demigods.engine.structure.DemigodsStructure;
 import com.demigodsrpg.demigods.engine.structure.DemigodsStructureType;
 import com.demigodsrpg.demigods.engine.util.Zones;
 import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Sets;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -64,13 +66,16 @@ public class GriefListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onBlockBreak(BlockBreakEvent event) {
         Location location = event.getBlock().getLocation();
-        if (Zones.inNoDemigodsZone(location) || DemigodsStructureType.Util.partOfStructureWithFlag(location, DemigodsStructureType.Flag.DESTRUCT_ON_BREAK))
+        if (Zones.inNoDemigodsZone(location) || DemigodsStructureType.Util.partOfStructureWithFlag(location, DemigodsStructureType.Flag.DESTRUCT_ON_BREAK)) {
             return;
+        }
         DemigodsStructure save = Iterables.getFirst(DemigodsStructureType.Util.getInRadiusWithFlag(location, DemigodsStructureType.Flag.NO_GRIEFING), null);
         if (save != null && save.hasMembers()) {
             DemigodsCharacter character = DemigodsCharacter.of(event.getPlayer());
             Collection<UUID> members = save.getSanctifiers();
-            if (character != null && members.contains(character.getId())) return;
+            if (character != null && members.contains(character.getId())) {
+                return;
+            }
             event.setCancelled(true);
         }
     }
@@ -143,25 +148,34 @@ public class GriefListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onBlockDamage(BlockDamageEvent event) {
         Location location = event.getBlock().getLocation();
-        if (Zones.inNoDemigodsZone(location)) return;
+        if (Zones.inNoDemigodsZone(location)) {
+            return;
+        }
         DemigodsStructure save = Iterables.getFirst(DemigodsStructureType.Util.getInRadiusWithFlag(location, DemigodsStructureType.Flag.NO_GRIEFING), null);
         if (save != null && save.hasMembers()) {
-            if (DemigodsStructureType.Util.partOfStructureWithAllFlags(location, DemigodsStructureType.Flag.NO_GRIEFING, DemigodsStructureType.Flag.DESTRUCT_ON_BREAK))
+            if (DemigodsStructureType.Util.partOfStructureWithAllFlags(location, DemigodsStructureType.Flag.NO_GRIEFING, DemigodsStructureType.Flag.DESTRUCT_ON_BREAK)) {
                 return;
+            }
             DemigodsCharacter character = DemigodsCharacter.of(event.getPlayer());
             Collection<UUID> members = save.getSanctifiers();
-            if (character != null && members.contains(character.getId())) return;
+            if (character != null && members.contains(character.getId())) {
+                return;
+            }
             event.setCancelled(true);
         }
     }
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerInteract(final PlayerInteractEvent event) {
-        if (Zones.inNoDemigodsZone(event.getPlayer().getLocation())) return;
+        if (Zones.inNoDemigodsZone(event.getPlayer().getLocation())) {
+            return;
+        }
         DemigodsStructure save = event.getAction().equals(Action.LEFT_CLICK_BLOCK) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK) ? Iterables.getFirst(DemigodsStructureType.Util.getInRadiusWithFlag(event.getClickedBlock().getLocation(), DemigodsStructureType.Flag.NO_GRIEFING), null) : Iterables.getFirst(DemigodsStructureType.Util.getInRadiusWithFlag(event.getPlayer().getLocation(), DemigodsStructureType.Flag.NO_GRIEFING), null);
         if (save != null && save.hasMembers()) {
-            if (DemigodsStructureType.Util.partOfStructureWithAllFlags(event.getPlayer().getLocation(), DemigodsStructureType.Flag.NO_GRIEFING, DemigodsStructureType.Flag.DESTRUCT_ON_BREAK))
+            if (save.getRawFlags().containsAll(
+                    Collections2.transform(Sets.newHashSet(DemigodsStructureType.Flag.NO_GRIEFING, DemigodsStructureType.Flag.DESTRUCT_ON_BREAK), Enum::name))) {
                 return;
+            }
             DemigodsCharacter character = DemigodsCharacter.of(event.getPlayer());
             Collection<UUID> members = save.getSanctifiers();
             if (character != null && members.contains(character.getId())) return;

@@ -14,6 +14,7 @@ import com.google.common.collect.Lists;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Item;
 import org.bukkit.event.EventHandler;
@@ -22,6 +23,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
 import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -62,10 +64,37 @@ public class FlagListener implements Listener {
     public void onBlockDamage(BlockDamageEvent event) {
         Location location = event.getBlock().getLocation();
         if (event.isCancelled() || Zones.inNoDemigodsZone(location)) return;
-        if (DemigodsStructureType.Util.partOfStructureWithFlag(location, DemigodsStructureType.Flag.PROTECTED_BLOCKS, DemigodsStructureType.Flag.DESTRUCT_ON_BREAK))
+        if (DemigodsStructureType.Util.partOfStructureWithFlag(location, DemigodsStructureType.Flag.PROTECTED_BLOCKS, DemigodsStructureType.Flag.DESTRUCT_ON_BREAK)) {
             event.setCancelled(true);
-        if (DemigodsPlayer.of(event.getPlayer()).isACharacter() && DemigodsStructureType.Util.partOfStructureWithFlag(location, DemigodsStructureType.Flag.DESTRUCT_ON_BREAK))
-            DemigodsStructureType.Util.getStructureRegional(location).corrupt(DemigodsCharacter.of(event.getPlayer()), 1F);
+        }
+        if (DemigodsPlayer.of(event.getPlayer()).isACharacter() && DemigodsStructureType.Util.partOfStructureWithFlag(location, DemigodsStructureType.Flag.DESTRUCT_ON_BREAK)) {
+            float amount = damageAmount(event.getItemInHand());
+            DemigodsStructureType.Util.getStructureRegional(location).corrupt(DemigodsCharacter.of(event.getPlayer()), amount);
+        }
+    }
+
+    private float damageAmount(ItemStack itemStack) {
+        Material type = itemStack.getType();
+        if (type.name().contains("HELM") || type.name().contains("CHEST") || type.name().contains("LEG") ||
+                type.name().contains("BOOT")) {
+            return 1F;
+        }
+        if (type.name().startsWith("WOODEN")) {
+            return 1.5F;
+        }
+        if (type.name().startsWith("STONE")) {
+            return 2F;
+        }
+        if (type.name().startsWith("GOLD")) {
+            return 2.5F;
+        }
+        if (type.name().startsWith("IRON")) {
+            return 3F;
+        }
+        if (type.name().startsWith("DIAMOND")) {
+            return 4F;
+        }
+        return 1F;
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -89,28 +118,23 @@ public class FlagListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onEntityExplode(final EntityExplodeEvent event) {
         if (event.getEntity() == null || Zones.inNoDemigodsZone(event.getEntity().getLocation())) return;
-        final List<DemigodsStructure> saves = Lists.newArrayList(DemigodsStructureType.Util.getInRadiusWithFlag(event.getLocation(), DemigodsStructureType.Flag.PROTECTED_BLOCKS, DemigodsStructureType.Flag.DESTRUCT_ON_BREAK));
+        final List<DemigodsStructure> saves = Lists.newArrayList(DemigodsStructureType.Util.getInRadiusWithFlag(
+                event.getLocation(), DemigodsStructureType.Flag.PROTECTED_BLOCKS,
+                DemigodsStructureType.Flag.DESTRUCT_ON_BREAK));
 
-        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.getInst(), new Runnable() {
-            @Override
-            public void run() {
-                // Remove all drops from explosion zone
-                for (final DemigodsStructure save : saves)
-                    for (Item drop : event.getLocation().getWorld().getEntitiesByClass(Item.class))
-                        if (drop.getLocation().distance(save.getBukkitLocation()) <= save.getType().getRadius())
-                            drop.remove();
-            }
+        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.getInst(), () -> {
+            // Remove all drops from explosion zone
+            for (final DemigodsStructure save : saves)
+                event.getLocation().getWorld().getEntitiesByClass(Item.class).stream().filter(drop ->
+                        drop.getLocation().distance(save.getBukkitLocation()) <= save.getType().getRadius()).
+                        forEach(org.bukkit.entity.Item::remove);
         }, 1);
 
         if (TimedServerData.exists("explode-structure", "blaam")) return;
         TimedServerData.saveTimed("explode-structure", "blaam", true, 2, TimeUnit.SECONDS);
 
-        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.getInst(), new Runnable() {
-            @Override
-            public void run() {
-                for (final DemigodsStructure save : saves)
-                    save.generate();
-            }
+        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.getInst(), () -> {
+            saves.forEach(DemigodsStructure::generate);
         }, 30);
     }
 }

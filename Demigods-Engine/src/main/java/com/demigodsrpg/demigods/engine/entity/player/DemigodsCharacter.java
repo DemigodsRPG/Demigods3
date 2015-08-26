@@ -250,15 +250,12 @@ public class DemigodsCharacter extends DataAccess<UUID, DemigodsCharacter> imple
 
     public Collection<DemigodsPotionEffect> getRawPotionEffects() {
         if (potionEffects == null) potionEffects = Sets.newHashSet();
-        return Collections2.transform(potionEffects, new Function<String, DemigodsPotionEffect>() {
-            @Override
-            public DemigodsPotionEffect apply(String s) {
-                try {
-                    return DemigodsPotionEffect.get(UUID.fromString(s));
-                } catch (Exception ignored) {
-                }
-                return null;
+        return Collections2.transform(potionEffects, s -> {
+            try {
+                return DemigodsPotionEffect.get(UUID.fromString(s));
+            } catch (Exception ignored) {
             }
+            return null;
         });
     }
 
@@ -278,7 +275,7 @@ public class DemigodsCharacter extends DataAccess<UUID, DemigodsCharacter> imple
     }
 
     public OfflinePlayer getBukkitOfflinePlayer() {
-        return Bukkit.getOfflinePlayer(getPlayerName());
+        return Bukkit.getOfflinePlayer(mojangAccount);
     }
 
     public DemigodsPlayer getDemigodsPlayer() {

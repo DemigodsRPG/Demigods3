@@ -104,8 +104,13 @@ public class PlayerListener implements Listener {
             Prayer.Util.togglePraying(event.getPlayer(), false);
     }
 
-    // TODO @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerQuit(PlayerQuitEvent event) {
+        // Set their last logout-time
+        Long now = System.currentTimeMillis();
+        DemigodsPlayer.of(event.getPlayer()).setLastLogoutTime(now);
+
+        // Everything else
         final String name = event.getPlayer().getName();
         if (Zones.inNoDemigodsZone(event.getPlayer().getLocation())) return;
         final DemigodsCharacter loggingOff = DemigodsCharacter.of(event.getPlayer());
@@ -118,7 +123,7 @@ public class PlayerListener implements Listener {
                 Bukkit.getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.getInst(), new BukkitRunnable() {
                     @Override
                     public void run() {
-                        if (!Bukkit.getOfflinePlayer(name).isOnline() && TempDataManager.hasKeyTemp(name, "quit_during_battle")) {
+                        if (!loggingOff.getBukkitOfflinePlayer().isOnline() && TempDataManager.hasKeyTemp(name, "quit_during_battle")) {
                             Battle battle = Battle.getBattle(loggingOff);
                             battle.removeParticipant(loggingOff);
                             TempDataManager.removeTemp(name, "quit_during_battle");
@@ -129,10 +134,6 @@ public class PlayerListener implements Listener {
                 }, 200);
             }
         }
-
-        // Set their last logout-time
-        Long now = System.currentTimeMillis();
-        DemigodsPlayer.of(event.getPlayer()).setLastLogoutTime(now);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)

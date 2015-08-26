@@ -78,7 +78,13 @@ public class DemigodsPlayer extends DataAccess<UUID, DemigodsPlayer> {
         map.put("characterSlots", characterSlots);
         try {
             map.put("canPvp", canPvp);
+        } catch (Exception ignored) {
+        }
+        try {
             map.put("lastLoginTime", lastLoginTime);
+        } catch (Exception ignored) {
+        }
+        try {
             map.put("lastLogoutTime", lastLogoutTime);
         } catch (Exception ignored) {
         }

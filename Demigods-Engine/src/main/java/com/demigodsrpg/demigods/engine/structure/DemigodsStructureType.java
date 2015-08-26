@@ -5,8 +5,6 @@ import com.demigodsrpg.demigods.engine.data.WorldDataManager;
 import com.demigodsrpg.demigods.engine.entity.player.DemigodsCharacter;
 import com.demigodsrpg.demigods.engine.location.DemigodsRegion;
 import com.demigodsrpg.demigods.engine.schematic.Schematic;
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
@@ -51,7 +49,7 @@ public interface DemigodsStructureType {
 
     DemigodsStructure createNew(boolean generate, @Nullable String design, Location... reference);
 
-    public interface Design {
+    interface Design {
         String getName();
 
         Set<Location> getClickableBlocks(Location reference);
@@ -59,23 +57,20 @@ public interface DemigodsStructureType {
         Schematic getSchematic(@Nullable DemigodsStructure data);
     }
 
-    public interface InteractFunction<T> {
+    interface InteractFunction<T> {
         T apply(@Nullable DemigodsStructure data, @Nullable DemigodsCharacter character);
     }
 
-    public enum Flag {
-        DELETE_WITH_OWNER, DESTRUCT_ON_BREAK, PROTECTED_BLOCKS, NO_GRIEFING, NO_PVP, PRAYER_LOCATION, OBELISK_LOCATION, TRIBUTE_LOCATION, RESTRICTED_AREA, NO_OVERLAP, STRUCTURE_WAND_GENERABLE
+    enum Flag {
+        DELETE_WITH_OWNER, DESTRUCT_ON_BREAK, PROTECTED_BLOCKS, NO_GRIEFING, NO_PVP, PRAYER_LOCATION, OBELISK_LOCATION,
+        TRIBUTE_LOCATION, RESTRICTED_AREA, NO_OVERLAP, STRUCTURE_WAND_GENERABLE
     }
 
-    public static class Util {
+    class Util {
         public static DemigodsStructure getStructureRegional(final Location location) {
             try {
-                return Iterables.find(getStructuresInRegionalArea(location), new Predicate<DemigodsStructure>() {
-                    @Override
-                    public boolean apply(DemigodsStructure save) {
-                        return save.getBukkitLocations().contains(location);
-                    }
-                });
+                return Iterables.find(getStructuresInRegionalArea(location), save -> save.getBukkitLocations().
+                        contains(location));
             } catch (NoSuchElementException ignored) {
             }
             return null;
@@ -83,12 +78,8 @@ public interface DemigodsStructureType {
 
         public static DemigodsStructure getStructureGlobal(final Location location) {
             try {
-                return Iterables.find(DemigodsStructure.all(DemigodsWorld.of(location)), new Predicate<DemigodsStructure>() {
-                    @Override
-                    public boolean apply(DemigodsStructure save) {
-                        return save.getBukkitLocations().contains(location);
-                    }
-                });
+                return Iterables.find(DemigodsStructure.all(DemigodsWorld.of(location)), save ->
+                        save.getBukkitLocations().contains(location));
             } catch (NoSuchElementException ignored) {
             }
             return null;
@@ -103,65 +94,38 @@ public interface DemigodsStructureType {
         }
 
         public static Collection<DemigodsStructure> getStructuresInSingleRegion(final DemigodsRegion region) {
-            return DemigodsStructure.find(WorldDataManager.getWorld(region.getWorld()), new Predicate<DemigodsStructure>() {
-                @Override
-                public boolean apply(DemigodsStructure save) {
-                    return save.getRegion().equals(region.toString());
-                }
-            });
+            return DemigodsStructure.find(WorldDataManager.getWorld(region.getWorld()), save -> save.getRegion().
+                    equals(region.toString()));
         }
 
         public static boolean partOfStructureWithType(final Location location, final String type) {
-            return Iterables.any(getStructuresInRegionalArea(location), new Predicate<DemigodsStructure>() {
-                @Override
-                public boolean apply(DemigodsStructure save) {
-                    return save.getTypeName().equals(type) && save.getBukkitLocations().contains(location);
-                }
-            });
+            return Iterables.any(getStructuresInRegionalArea(location), save -> save.getTypeName().equals(type) &&
+                    save.getBukkitLocations().contains(location));
         }
 
         public static boolean partOfStructureWithAllFlags(final Location location, final Flag... flags) {
-            return Iterables.any(getStructuresInRegionalArea(location), new Predicate<DemigodsStructure>() {
-                @Override
-                public boolean apply(DemigodsStructure save) {
-                    return save.getRawFlags() != null && save.getBukkitLocations().contains(location) && save.getRawFlags().containsAll(Collections2.transform(Sets.newHashSet(flags), new Function<Flag, String>() {
-                        @Override
-                        public String apply(Flag flag) {
-                            return flag.name();
-                        }
-                    }));
-                }
-            });
+            return Iterables.any(getStructuresInRegionalArea(location), save -> save.getRawFlags() != null &&
+                    save.getBukkitLocations().contains(location) && save.getRawFlags().containsAll(
+                    Collections2.transform(Sets.newHashSet(flags), Enum::name)));
         }
 
         public static boolean partOfStructureWithFlag(final Location location, final Flag... flags) {
-            return Iterables.any(getStructuresInRegionalArea(location), new Predicate<DemigodsStructure>() {
-                @Override
-                public boolean apply(DemigodsStructure save) {
-                    if (save.getRawFlags() == null || !save.getBukkitLocations().contains(location)) return false;
-                    for (Flag flag : flags)
-                        if (save.getRawFlags().contains(flag.name())) return true;
-                    return false;
-                }
+            return Iterables.any(getStructuresInRegionalArea(location), save -> {
+                if (save.getRawFlags() == null || !save.getBukkitLocations().contains(location)) return false;
+                for (Flag flag : flags)
+                    if (save.getRawFlags().contains(flag.name())) return true;
+                return false;
             });
         }
 
         public static boolean partOfStructureWithFlag(final Location location, final Flag flag) {
-            return Iterables.any(getStructuresInRegionalArea(location), new Predicate<DemigodsStructure>() {
-                @Override
-                public boolean apply(DemigodsStructure save) {
-                    return save.getRawFlags() != null && save.getRawFlags().contains(flag.name()) && save.getBukkitLocations().contains(location);
-                }
-            });
+            return Iterables.any(getStructuresInRegionalArea(location), save -> save.getRawFlags() != null &&
+                    save.getRawFlags().contains(flag.name()) && save.getBukkitLocations().contains(location));
         }
 
         public static boolean isClickableBlockWithFlag(final Location location, final Flag flag) {
-            return Iterables.any(getStructuresInRegionalArea(location), new Predicate<DemigodsStructure>() {
-                @Override
-                public boolean apply(DemigodsStructure save) {
-                    return save.getRawFlags() != null && save.getRawFlags().contains(flag.name()) && save.getClickableBlocks().contains(location);
-                }
-            });
+            return Iterables.any(getStructuresInRegionalArea(location), save -> save.getRawFlags() != null &&
+                    save.getRawFlags().contains(flag.name()) && save.getClickableBlocks().contains(location));
         }
 
         public static boolean isInRadiusWithFlag(Location location, Flag flag) {
@@ -169,25 +133,21 @@ public interface DemigodsStructureType {
         }
 
         public static Collection<DemigodsStructure> getInRadiusWithFlag(final Location location, final Flag... flags) {
-            return Collections2.filter(getStructuresInRegionalArea(location), new Predicate<DemigodsStructure>() {
-                @Override
-                public boolean apply(DemigodsStructure save) {
-                    if (save.getRawFlags() == null || !save.getBukkitLocation().getWorld().equals(location.getWorld()) || save.getBukkitLocation().distance(location) > save.getType().getRadius())
-                        return false;
-                    for (Flag flag : flags)
-                        if (save.getRawFlags().contains(flag.name())) return true;
+            return Collections2.filter(getStructuresInRegionalArea(location), save -> {
+                if (save.getRawFlags() == null || !save.getBukkitLocation().getWorld().equals(location.getWorld())
+                        || save.getBukkitLocation().distance(location) > save.getType().getRadius())
                     return false;
-                }
+                for (Flag flag : flags)
+                    if (save.getRawFlags().contains(flag.name())) return true;
+                return false;
             });
         }
 
         public static Collection<DemigodsStructure> getInRadiusWithFlag(final Location location, final Flag flag) {
-            return Collections2.filter(getStructuresInRegionalArea(location), new Predicate<DemigodsStructure>() {
-                @Override
-                public boolean apply(DemigodsStructure save) {
-                    return save.getRawFlags() != null && save.getRawFlags().contains(flag.name()) && save.getBukkitLocation().getWorld().equals(location.getWorld()) && save.getBukkitLocation().distance(location) <= save.getType().getRadius();
-                }
-            });
+            return Collections2.filter(getStructuresInRegionalArea(location), save -> save.getRawFlags() != null &&
+                    save.getRawFlags().contains(flag.name()) && save.getBukkitLocation().getWorld().
+                    equals(location.getWorld()) && save.getBukkitLocation().distance(location) <= save.getType().
+                    getRadius());
         }
 
         public static DemigodsStructure closestInRadiusWithFlag(final Location location, final Flag flag) {
@@ -205,45 +165,28 @@ public interface DemigodsStructureType {
             return found;
         }
 
-        public static Set<DemigodsStructure> getInRadiusWithFlag(final Location location, final Flag flag, final int radius) {
-            return Sets.filter(getStructuresInRegionalArea(location), new Predicate<DemigodsStructure>() {
-                @Override
-                public boolean apply(DemigodsStructure save) {
-                    return save.getRawFlags() != null && save.getRawFlags().contains(flag.name()) && save.getBukkitLocation().getWorld().equals(location.getWorld()) && save.getBukkitLocation().distance(location) <= radius;
-                }
-            });
+        public static Set<DemigodsStructure> getInRadiusWithFlag(final Location location, final Flag flag,
+                                                                 final int radius) {
+            return Sets.filter(getStructuresInRegionalArea(location), save -> save.getRawFlags() != null &&
+                    save.getRawFlags().contains(flag.name()) && save.getBukkitLocation().getWorld().
+                    equals(location.getWorld()) && save.getBukkitLocation().distance(location) <= radius);
         }
 
         public static void regenerateStructures() {
-            for (DemigodsStructure save : DemigodsStructure.all())
-                save.generate();
+            DemigodsStructure.all().forEach(com.demigodsrpg.demigods.engine.structure.DemigodsStructure::generate);
         }
 
         public static Collection<DemigodsStructure> getStructuresWithFlag(final Flag flag) {
-            return DemigodsStructure.find(new Predicate<DemigodsStructure>() {
-                @Override
-                public boolean apply(DemigodsStructure save) {
-                    return save.getRawFlags() != null && save.getRawFlags().contains(flag.name());
-                }
-            });
+            return DemigodsStructure.find(save -> save.getRawFlags() != null && save.getRawFlags().contains(flag.name()));
         }
 
         public static Collection<DemigodsStructure> getStructuresWithType(final String type) {
-            return DemigodsStructure.find(new Predicate<DemigodsStructure>() {
-                @Override
-                public boolean apply(DemigodsStructure save) {
-                    return type.equals(save.getTypeName());
-                }
-            });
+            return DemigodsStructure.find(save -> type.equals(save.getTypeName()));
         }
 
         public static boolean noOverlapStructureNearby(Location location) {
-            return Iterables.any(getStructuresInRegionalArea(location), new Predicate<DemigodsStructure>() {
-                @Override
-                public boolean apply(DemigodsStructure save) {
-                    return save.getRawFlags().contains(Flag.NO_OVERLAP.name());
-                }
-            });
+            return Iterables.any(getStructuresInRegionalArea(location), save -> save.getRawFlags().
+                    contains(Flag.NO_OVERLAP.name()));
         }
 
         /**

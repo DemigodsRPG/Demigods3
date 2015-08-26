@@ -32,7 +32,6 @@ public class SpigotFeatures implements Listener {
                     }
                     online.spigot().setCollidesWithEntities(false);
                 }
-
             }
 
             @Override
